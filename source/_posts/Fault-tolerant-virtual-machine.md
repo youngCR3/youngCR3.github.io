@@ -11,7 +11,7 @@ tags: 6.824
 
 # Basic Fault-Tolerant Design
 
-![img](https://img2020.cnblogs.com/blog/1616773/202008/1616773-20200814212404116-959184244.png)
+![img](1616773-20200814212404116-959184244.png)
 
 ## Deterministic Replay Implementation
 
@@ -41,7 +41,7 @@ tags: 6.824
 - Output requirement：使backup在primary故障后接手时，仍能保证与primary的输出具有一致的行为
 - Primary输出到external world前，必须先向backup发送log并收到backup返回的acknowledgement
 
-<img src="C:\Users\young\AppData\Roaming\Typora\typora-user-images\image-20211210204305175.png" alt="image-20211210204305175" style="zoom:80%;" />
+![image-20211210204305175](image-20211210204305175.png)
 
 ### Duplicate output
 
