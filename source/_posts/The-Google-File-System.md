@@ -1,7 +1,7 @@
 ---
 title: The Google File System
 date: 2021-12-09 16:42:41
-tags: 
+tags: 6.824
 ---
 
 # 1 Introduction

@@ -1,7 +1,7 @@
 ---
 title: 6.824 Lec2 RPC and threads
 date: 2021-12-09 14:46:49
-tags:
+tags: 6.824
 ---
 
 # 1 线程

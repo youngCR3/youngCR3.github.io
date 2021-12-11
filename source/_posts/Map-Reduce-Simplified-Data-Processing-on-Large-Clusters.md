@@ -1,7 +1,7 @@
 ---
 title: 'Map Reduce: Simplified Data Processing on Large Clusters'
 date: 2021-12-04 11:23:07
-tags:
+tags: 6.824
 ---
 
 ## 1 Google的机器配置
