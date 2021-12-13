@@ -139,7 +139,7 @@ mathjax: true
 
 - state machine command
 - term number，当前任期
-- integer index在，log中的位置
+- integer index，在log中的位置
 
 ### commit
 
