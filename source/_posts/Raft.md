@@ -92,7 +92,7 @@ mathjax: true
 
 ### 状态转移图
 
-![image](role.png)
+![](role.png)
 
 ### heartbeat机制
 
