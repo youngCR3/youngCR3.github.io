@@ -2,6 +2,7 @@
 title: 6.824 Lec4 FT-VM
 date: 2021-12-11 16:23:10
 tags: 6.824
+categories: Distributed System
 ---
 
 # 复制
@@ -46,6 +47,8 @@ tags: 6.824
 - 当任一VM故障时，剩下的primary VM必须在另一服务器上**启动新的backup VM，此时只能使用state transfer**保证该VM的状态与当前primary VM一致
 - VMware FT的复制：**复制完整的机器状态，包括所有内存和寄存器**
 - VMware没有考虑的因素：多核会带来不确定性，而**VMware只考虑两个VM都是单核的情况**
+
+<!--more-->
 
 # VMware公司介绍
 

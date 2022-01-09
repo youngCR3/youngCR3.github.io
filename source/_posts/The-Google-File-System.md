@@ -2,6 +2,7 @@
 title: The Google File System
 date: 2021-12-09 16:42:41
 tags: 6.824
+categories: Distributed System
 ---
 
 # 1 Introduction
@@ -41,6 +42,8 @@ tags: 6.824
 - 文件追加**Record append**
 
   allows multiple clients to append data to the same file concurrently while guaranteeing the atomicity of each individual client's append.
+
+<!--more-->
 
 ## 2.3 Architecture
 

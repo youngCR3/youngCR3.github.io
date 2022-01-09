@@ -2,6 +2,7 @@
 title: Fault tolerant virtual machine
 date: 2021-12-10 20:22:41
 tags: 6.824
+categories: Distributed System
 ---
 
 # Intro
@@ -66,6 +67,8 @@ tags: 6.824
 
 - 如果primary和backup之间的连接丢失，但是primary和backup均未故障，则**两个虚拟机都可能尝试go live**，必须避免出现这种情况
 - 因此，规定**go live前必须在shared storage中执行atomic test-and-set操作**，该操作保证同时只有一台VM可能go live
+
+<!--more-->
 
 # 具体实现中的问题
 

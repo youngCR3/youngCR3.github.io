@@ -2,6 +2,7 @@
 title: 'Map Reduce: Simplified Data Processing on Large Clusters'
 date: 2021-12-04 11:23:07
 tags: 6.824
+categories: Distributed System
 ---
 
 ## 1 Google的机器配置
@@ -29,6 +30,8 @@ tags: 6.824
 
 - reduce worker按intermediate key将数据分次输入**reduce function**，并将结果写入**output file**
 - 所有Map和Reduce tasks完成后，master将返回**user program**
+
+<!--more-->
 
 ## 3 Master数据结构
 

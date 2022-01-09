@@ -3,6 +3,7 @@ title: Raft
 date: 2021-12-11 17:35:51
 tags: 6.824
 mathjax: true
+categories: Distributed System
 ---
 
 # Intro
@@ -44,6 +45,8 @@ mathjax: true
 
 - 晦涩难懂
 - 难以用于建立实际系统，如没有提供multi-Paxos的具体做法
+
+<!--more-->
 
 # 处于可理解性的设计
 

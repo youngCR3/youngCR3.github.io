@@ -2,6 +2,7 @@
 title: 6.824 Lec2 RPC and threads
 date: 2021-12-09 14:46:49
 tags: 6.824
+categories: Distributed System
 ---
 
 # 1 线程
@@ -37,6 +38,8 @@ tags: 6.824
 
 - 对于每个请求，server都会新建一个goroutine处理
 - 因此RPC handler中对shared data的修改必须使用lock
+
+<!--more-->
 
 ## 2.3 RPC如何处理failure
 
