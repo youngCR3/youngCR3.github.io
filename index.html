@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -140,7 +140,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,82 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/08/hexo%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/08/hexo%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">hexo无法插入图片的解决方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-08 22:18:16 / 修改时间：22:23:24" itemprop="dateCreated datePublished" datetime="2022-04-08T22:18:16+08:00">2022-04-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="hexo-asset-image">hexo-asset-image</h2>
+<ul>
+<li>大多数技术博客提到的插入图片方法，都是基于hexo-asset-image@0.0.5实现的，而直接安装hexo-asset-image对应的是1.0.0版本，所以导致插入图片失败</li>
+<li>将hexo 根目录下的
+<code>/node_modules/hexo-asset-image/index.js</code>文件替换为下列文件即可恢复到hexo-asset-image@0.0.5版本</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> cheerio = <span class="built_in">require</span>(<span class="string">&#x27;cheerio&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPosition</span>(<span class="params">str, m, i</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> version = <span class="built_in">String</span>(hexo.version).split(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;after_post_render&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> config = hexo.config;</span><br><span class="line">  <span class="keyword">if</span>(config.post_asset_folder)&#123;</span><br><span class="line">        <span class="keyword">var</span> link = data.permalink;</span><br><span class="line">    <span class="keyword">if</span>(version.length &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">Number</span>(version[<span class="number">0</span>]) == <span class="number">3</span>)</span><br><span class="line">       <span class="keyword">var</span> beginPos = getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">       <span class="keyword">var</span> beginPos = getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span></span><br><span class="line">    <span class="keyword">var</span> endPos = link.lastIndexOf(<span class="string">&#x27;/&#x27;</span>) + <span class="number">1</span>;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> toprocess = [<span class="string">&#x27;excerpt&#x27;</span>, <span class="string">&#x27;more&#x27;</span>, <span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      <span class="keyword">var</span> key = toprocess[i];</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">var</span> $ = cheerio.load(data[key], &#123;</span><br><span class="line">        <span class="attr">ignoreWhitespace</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">xmlMode</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">lowerCaseTags</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">decodeEntities</span>: <span class="literal">false</span></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(<span class="string">&#x27;img&#x27;</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src = $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">            <span class="keyword">if</span>(!<span class="regexp">/http[s]*.*|\/\/.*/</span>.test(src) &amp;&amp;</span><br><span class="line">               !<span class="regexp">/^\s*\//</span>.test(src)) &#123;</span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray = link.split(<span class="string">&#x27;/&#x27;</span>).filter(<span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray = src.split(<span class="string">&#x27;/&#x27;</span>).filter(<span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span> &amp;&amp; elem != <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length &gt; <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src = srcArray.join(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">              $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);</span><br><span class="line">              <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info(<span class="string">&quot;update link as:--&gt;&quot;</span>+config.root + link + src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info($(<span class="built_in">this</span>));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2866,274 +2942,6 @@ grandparent</strong>：节点15的uncle是黑色，且与parent12形成直线，
 <li><strong>引用折叠发生的语境</strong>：模板实例化、auto类型生成、typedef和别名声明，decltype</li>
 <li><strong>引用折叠</strong>：编译器在引用折叠语境下生成引用的引用，结果会变为单个引用。若原始的引用中存在任意一个为左值引用，则结果为左值引用；否则，为右值引用</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86-%E7%B4%A2%E5%BC%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86-%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">数据库原理-索引</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-10 23:54:04" itemprop="dateCreated datePublished" datetime="2022-03-10T23:54:04+08:00">2022-03-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/OS/" itemprop="url" rel="index"><span itemprop="name">OS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="basic">Basic</h1>
-<ul>
-<li><p>引入</p>
-<p>如果我们想在A市范围内寻找<strong>名为张伟且年龄为98岁</strong>的男子，我有一个包含A市所有人信息的登记表</p>
-<ul>
-<li>假如该登记表杂乱无章，那只能从头开始核对登记表的每个人，直到找到符合的人的信息<code>O(N)</code></li>
-<li>如果该登记表按名字拼音顺序排列，则可以快速地定位到Z开头的部分，找到张姓的部分，并找到张伟，然后逐个核对直到找到符合的人的信息<code>O(logN)</code></li>
-<li>如果翻动登记表时，突然掉出了一张纸，里面记录了A市所有年龄为98岁的人，在登记表中的页号与行号，而且总共只有10个人年龄是98岁，则我可以非常迅速地分别找到这10个人的信息，并找到张伟<code>O(C)</code></li>
-</ul></li>
-<li><p>索引产生的<strong>原因</strong></p>
-<p>许多时候，查询只涉及文件的一小部分记录，如</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> t <span class="keyword">WHERE</span> name<span class="operator">=</span>&quot;Amy&quot;</span><br></pre></td></tr></table></figure>
-<p>倘若为此搜寻数据库的每一条记录，则查询效率低下，因此引入了索引</p></li>
-<li><p>索引的<strong>作用</strong></p>
-<p>建立记录的属性或属性集到记录之间的映射关系，可以通过某个属性或某几个属性组成的属性集快速定位到具有此属性
-(集) 值的记录</p></li>
-<li><p>索引的<strong>搜索码</strong></p>
-<p>用于在文件中查找记录的属性或属性集。如果一个文件上有多个索引，则它有多个搜索码</p></li>
-<li><p>索引的<strong>种类</strong></p>
-<ul>
-<li><strong>顺序索引</strong>：基于<strong>值的顺序</strong>排序</li>
-<li><strong>散列索引</strong>：基于将值平均分布到若干<strong>桶</strong>中，一个值所属的桶是由<strong>散列函数</strong>决定的</li>
-</ul></li>
-<li><p>索引的<strong>评价标准</strong></p>
-<ul>
-<li>支持的访问类型</li>
-<li>访问时间</li>
-<li>插入时间</li>
-<li>删除时间</li>
-<li>空间开销</li>
-</ul></li>
-</ul>
-<h1 id="顺序索引">顺序索引</h1>
-<ul>
-<li><strong>顺序索引</strong>：按照排好的<strong>顺序存储搜索码的值</strong>，并将每个搜索码与包含该搜索码的记录关联起来</li>
-<li><strong>聚集索引/主索引</strong>：搜索码定义了文件的次序</li>
-<li><strong>非聚集索引/辅助索引</strong>：搜索码指定的次序与文件的排列次序不同的索引</li>
-<li><strong>索引项或索引记录</strong>：由一个<strong>搜索码值</strong>和<strong>指针</strong>组成，指针指向具有该搜索码的一个或多条记录，指针由&lt;磁盘块标识，块内偏移量&gt;组成</li>
-</ul>
-<h2 id="稠密索引与稀疏索引">稠密索引与稀疏索引</h2>
-<ul>
-<li><p><strong>稠密索引</strong>：每个搜索码值都有一个索引项</p></li>
-<li><p><strong>稀疏索引</strong>：只有部分搜索码值有索引项，索引是聚集索引时才能使用稀疏索引</p></li>
-<li><p>比较</p>
-<ul>
-<li><strong>稠密索引</strong>的查找<strong>速度更快</strong></li>
-<li><strong>稀疏索引</strong>占用的<strong>空间更小</strong>，所需的插入和删除时的维护开销也较小</li>
-</ul></li>
-<li><p>常用方案</p>
-<p><strong>为每个块建立一个索引项的稀疏索引</strong>，因为查询的开销集中在把块从磁盘读入内存，而把块读入内存后扫描的开销较小</p></li>
-</ul>
-<h2 id="多级索引">多级索引</h2>
-<ul>
-<li><p>索引的空间开销问题</p>
-<p>假如数据库元组较多，即使使用每个块建立一个索引项的稀疏索引，仍然占用较大的空间</p></li>
-<li><p>引入<strong>多级索引</strong>，即在<strong>内层索引</strong>基础上，建立<strong>外层索引</strong></p></li>
-<li><p>多级索引形成了树形结构</p></li>
-</ul>
-<h2 id="索引更新">索引更新</h2>
-<ul>
-<li><p>索引什么时候更新</p>
-<p>文件中有<strong>记录插入或删除</strong>时，<strong>每个索引</strong>都必须更新</p>
-<p>文件中有<strong>记录被更新</strong>时，<strong>搜索码属性受影响的任何索引</strong>也必须更新</p>
-<p>记录的更新可以转换为紧接着的索引的删除和插入操作，因此我们只需考虑索引的删除和插入操作</p></li>
-<li><p><strong>插入一条记录</strong></p>
-<ul>
-<li>稠密索引
-<ul>
-<li>如果搜索码值未出现在索引中，则在索引中适当的位置插入带有该搜索码值的索引项</li>
-<li>如果索引项存储指向具有相同搜索码值的所有记录的指针，则系统在索引项中增加一个指向新纪录的指针</li>
-<li>索引项存储一个仅指向具有相同搜索码值的第一条记录的指针，则把待插入的记录放到具有相同搜索码值的其他记录后</li>
-</ul></li>
-<li>稀疏索引，假设索引为每个块保存一个索引项
-<ul>
-<li>如果系统创建了一个<strong>新的块</strong>，则将出现在新块中的<strong>第一个搜索码值插入索引中</strong></li>
-<li>如果新插入的记录具有它在块中的最小搜索码值，则<strong>更新指向该块的索引项</strong></li>
-<li>否则，索引无需改动</li>
-</ul></li>
-</ul></li>
-<li><p>删除一条记录</p>
-<ul>
-<li><p>稠密索引</p>
-<ul>
-<li>如果所删除的记录是具有该搜索码值的唯一记录，则从索引中删除具有该搜索码的索引项</li>
-<li>如果索引项存储指向具有相同搜索码值的所有记录的指针，则系统在索引项中删除指向该纪录的指针</li>
-<li>如果索引项存储一个仅指向具有相同搜索码值的第一条记录的指针，如果待删除的记录是第一条记录，则更新索引项使其指向下一条记录</li>
-</ul></li>
-<li><p>稀疏索引</p>
-<ul>
-<li><p>如果索引中并不包含具有待删除记录搜索码值的索引项，则索引不必改动</p></li>
-<li><p>如果被删除的记录是具有该搜索码的唯一记录，则系统用下一个记录的搜索码值的索引记录替换相应的索引记录，如果下一个记录已经有索引项，则直接删除索引项</p></li>
-<li><p>如果被删除的记录并非具有该搜索码的唯一记录，则更新索引项使其指向具有该搜索码的下一条记录</p></li>
-</ul></li>
-</ul></li>
-</ul>
-<h2 id="辅助索引">辅助索引</h2>
-<h2 id="多码索引">多码索引</h2>
-<ul>
-<li>搜索码的属性可以不止一个，包含多个属性的搜索码称为复合搜索码</li>
-</ul>
-<h2 id="顺序索引的缺点">顺序索引的缺点</h2>
-<ul>
-<li>随着文件增大，<strong>索引查找</strong>的性能和数据<strong>顺序扫描</strong>的<strong>性能都会下降</strong></li>
-</ul>
-<h1 id="b树索引文件">B+树索引文件</h1>
-<h2 id="b树的结构">B+树的结构</h2>
-<ul>
-<li><p>叶节点的结构</p>
-<ul>
-<li>最多包含n-1个搜索码值，和n个指针，指针<span class="math inline">\(P_i\)</span>指向具有搜索码值<span class="math inline">\(K_i\)</span>的一条文件记录<span class="math inline">\((1\leq i \leq n-1)\)</span></li>
-<li>最多包含n-1个搜索码值，最少包含<span class="math inline">\(\lceil
-(n-1)/2 \rceil\)</span>个搜索码值</li>
-<li>节点内的搜索码值有序存放</li>
-<li>如果两个叶节点<span class="math inline">\(L_i\)</span>和<span class="math inline">\(L_j\)</span>满足<span class="math inline">\(i \lt
-j\)</span>，则<span class="math inline">\(L_i\)</span>内的每个搜索码值都小于<span class="math inline">\(L_j\)</span>内的每个搜索码值</li>
-<li>指针<span class="math inline">\(P_n\)</span>指向按顺序排列的<strong>下一个叶节点</strong></li>
-</ul></li>
-<li><p>非叶节点的结构</p>
-<ul>
-<li>至多包含n个指针，至少包含<span class="math inline">\(\lceil n/2
-\rceil\)</span>个指针</li>
-<li>每个指针都指向另一个节点</li>
-<li>一个节点中的指针数称为该节点的扇出 fanout</li>
-<li>对于一个包含m个指针的非叶节点
-<ul>
-<li>指针<span class="math inline">\(P_i(2\leq i \leq
-m-1)\)</span>指向的子树所包含的搜索码值均满足<span class="math inline">\(K_{i-1} \leq k \lt K_i\)</span></li>
-<li>指针<span class="math inline">\(P_m\)</span>指向搜索码值大于等于<span class="math inline">\(K_i\)</span>的子树</li>
-<li>指针<span class="math inline">\(P_1\)</span>指向搜索码值小于<span class="math inline">\(K_1\)</span>的子树</li>
-</ul></li>
-</ul></li>
-<li><p>根节点的结构</p>
-<ul>
-<li>根节点包含的指针数可以小于<span class="math inline">\(\lceil n/2
-\rceil\)</span></li>
-<li>除非整棵树只有1个节点，否则根节点至少拥有2个指针</li>
-</ul></li>
-<li><p>B+树是<strong>平衡</strong>的</p>
-<p>从<strong>根</strong>节点到每个<strong>叶</strong>节点的<strong>路径具有相同长度</strong></p></li>
-<li><p>非唯一搜索码的处理</p>
-<p>如果关系r的搜索码<span class="math inline">\(a_i\)</span>属性并非唯一，则建立索引时使用唯一复合搜索码<span class="math inline">\((a_i,A_p)\)</span>代替<span class="math inline">\(a_i\)</span>建立索引，其中<span class="math inline">\(A_p\)</span>是关系<span class="math inline">\(r\)</span>的主码或保证唯一性的任何一组属性</p></li>
-</ul>
-<h2 id="b树的查询">B+树的查询</h2>
-<ul>
-<li><p>单点查询</p></li>
-<li><p>范围查询</p></li>
-<li><p>查询时间复杂度 <span class="math display">\[
-\lceil log_{\lceil n/2 \rceil }(N)\rceil
-\]</span></p></li>
-<li><p>节点规模</p>
-<p>典型的节点规模选取为和磁盘块一样大，通常为4KB</p>
-<p>假如搜索码大小为32字节，指针大小为8字节，则n可取100。当文件中包含100万个搜索码值时，只需要查找<span class="math inline">\(\lceil log_{\lceil n/2 \rceil
-}(N)\rceil=4\)</span></p></li>
-<li><p>非唯一搜索码</p>
-<p>假设要在非唯一搜索码<span class="math inline">\(a_i\)</span>上建立索引，则我们会在唯一复合搜索码<span class="math inline">\((a_i,A_p)\)</span>上建立索引</p>
-<p>如果我们想查找具有搜索码值<span class="math inline">\(v\)</span>的所有记录，则我们执行一个从<span class="math inline">\((v,-inf)\)</span>到<span class="math inline">\((v,inf)\)</span>的范围查询</p></li>
-</ul>
-<h2 id="b树的更新">B+树的更新</h2>
-<ul>
-<li>对记录的更新可建模为对旧纪录的删除，后接对新纪录的插入，因此仅考虑插入和删除的情况</li>
-<li>假设<strong>没有节点拆分与合并</strong>
-<ul>
-<li><strong>插入</strong>：使用和查找同样的技术，找到搜索码出现的叶节点，在叶节点中插入一项，使得插入后搜索码仍然有序</li>
-<li><strong>删除</strong>：使用和查找相同的技术，找到包含待删除搜索码的叶节点，如果包含多个相同搜索码值的项，则遍历直到找到指向待删除记录的项，移除该项，并将右边的所有项都左移一个位置，以便在删除后不留下空隙</li>
-</ul></li>
-</ul>
-<h3 id="b树的插入">B+树的插入</h3>
-<ul>
-<li><p><strong>叶节点拆分</strong></p>
-<p>假如待插入的叶节点已经具有n-1个搜索码，则必须进行拆分</p>
-<p>前<span class="math inline">\(\lceil n / 2
-\rceil\)</span>个搜索码保留在原来的节点，剩余节点加入新拆分的节点</p>
-<p>将新拆分节点的第一个搜索码加入原叶节点的父节点</p>
-<p>如果该父节点也满了，则需要进行拆分，该过程将从叶节点向根节点进行</p>
-<p>最坏情况下，根节点也要拆分，则树的深度增加了</p></li>
-<li><p><strong>非叶节点拆分</strong></p>
-<p>加入非叶节点原来具有n-1个搜索码，则需要进行拆分</p>
-<p>将前<span class="math inline">\(\lceil (n + 1)/2
-\rceil\)</span>个指针及它们之间的搜索码插入节点P</p>
-<p>将剩余指针及它们之间的搜索码插入新节点P'</p>
-<p>令K‘’为P的最后一个指针，与P'第一个指针之间的搜索码值</p>
-<p>将K''插入P的父节点中</p></li>
-</ul>
-<h3 id="b树的删除">B+树的删除</h3>
 
       
     </div>
