@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/.com//B_plus_tree_leaf_node.drawio.svg">
 <meta property="og:image" content="http://example.com/.com//covering_index.drawio.svg">
 <meta property="article:published_time" content="2022-04-08T12:27:12.000Z">
-<meta property="article:modified_time" content="2022-04-08T13:55:33.721Z">
+<meta property="article:modified_time" content="2022-04-08T14:06:45.726Z">
 <meta property="article:author" content="Young">
 <meta property="article:tag" content="Database System">
 <meta property="article:tag" content="面试">
@@ -245,7 +245,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-04-08 20:27:12 / 修改时间：21:55:33" itemprop="dateCreated datePublished" datetime="2022-04-08T20:27:12+08:00">2022-04-08</time>
+      <time title="创建时间：2022-04-08 20:27:12 / 修改时间：22:06:45" itemprop="dateCreated datePublished" datetime="2022-04-08T20:27:12+08:00">2022-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -296,19 +296,13 @@ tree，M路指的是每个节点最多有M个子节点</li>
 <li>B+树的每个节点恰好是一页</li>
 <li>对于每个内部节点，都包含k个keys和k+1个非空子节点，其中第i个key与第i+1个key之间的指针指向的子树的值均在<span class="math inline">\([key_i,key_{i+1})\)</span>范围内</li>
 </ul>
-<figure>
-<img src="/.com//B_plus_inner_node.svg" alt="B_plus_inner_node">
-<figcaption aria-hidden="true">B_plus_inner_node</figcaption>
-</figure>
+<p><img src="/.com//B_plus_inner_node.svg"></p>
 <ul>
 <li>对于叶子节点，每个节点都保存了两个sibling
 pointers，分别指向左侧叶子节点和右侧叶子节点，应用中实际存储的是左/右侧叶子节点的page
 id</li>
 </ul>
-<figure>
-<img src="/.com//B_plus_tree_leaf_node.drawio.svg" alt="B_plus_tree_leaf_node.drawio">
-<figcaption aria-hidden="true">B_plus_tree_leaf_node.drawio</figcaption>
-</figure>
+<p><img src="/.com//B_plus_tree_leaf_node.drawio.svg"></p>
 <ul>
 <li><p>对于叶子节点，它包含n个keys和n个数据项，实际存储是keys和数据项是分开存储的，因为它们的数据大小不一致</p></li>
 <li><p>节点存储的值是什么？</p>
@@ -345,10 +339,7 @@ node进行合并</li>
 <p>假设我们在搜索码&lt;student_id,
 score&gt;上建立了索引，则查询时可以利用搜索码的前缀&lt;student_id,
 *&gt;进行查找，同时到达叶子节点时，我们只依靠索引的信息就能够获取score，从而得到最终需要查询的数据，无需回表查询</p>
-<figure>
-<img src="/.com//covering_index.drawio.svg" alt="covering_index.drawio">
-<figcaption aria-hidden="true">covering_index.drawio</figcaption>
-</figure></li>
+<p><img src="/.com//covering_index.drawio.svg"></p></li>
 </ul>
 <h2 id="范围查询">范围查询</h2>
 <ul>
