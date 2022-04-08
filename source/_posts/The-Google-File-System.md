@@ -70,7 +70,7 @@ categories: Distributed System
   - primary chunk和租约时间也无需写入disk，master重启后只要确保所有租约到期，并重新分配primary chunk即可
 - Log
   - 当GFS create chunk或更新chunk的版本号时，会向磁盘追加一条log记录
-  - 维护log而不是数据库的原因：数据库本质是B+ tree或hash table，其写入效率比如log
+  - 维护log而不是数据库的原因：数据库本质是B+ tree或hash table，其写入效率不如log
   - crash recovery：**从最近的checkpoint开始逐条执行log，直至恢复状态**
 
 ## 2.5 Chunk size
