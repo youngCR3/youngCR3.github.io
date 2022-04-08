@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="元朗食品">
 <meta property="og:description" content="Intro  研究对象：具有容错机制的虚拟机，Fault-Tolerant Virtual Machine 架构：primary&#x2F;backup approach，primary故障时，backup上线，且应用程序感受不到切换过程  Basic Fault-Tolerant Design   img  Deterministic Replay Implementation 有限状态机  对于两个有限">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1616773-20200814212404116-959184244.png">
-<meta property="og:image" content="http://example.com/.com//image-20211210204305175.png">
+<meta property="og:image" content="http://example.com/2021/12/10/Fault-tolerant-virtual-machine/1616773-20200814212404116-959184244.png">
+<meta property="og:image" content="http://example.com/2021/12/10/Fault-tolerant-virtual-machine/image-20211210204305175.png">
 <meta property="article:published_time" content="2021-12-10T12:22:41.000Z">
 <meta property="article:modified_time" content="2022-04-08T12:08:32.857Z">
 <meta property="article:author" content="Young">
 <meta property="article:tag" content="6.824">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1616773-20200814212404116-959184244.png">
+<meta name="twitter:image" content="http://example.com/2021/12/10/Fault-tolerant-virtual-machine/1616773-20200814212404116-959184244.png">
 
 
 <link rel="canonical" href="http://example.com/2021/12/10/Fault-tolerant-virtual-machine/">
@@ -282,7 +282,7 @@ approach，primary故障时，backup上线，且应用程序感受不到切换�
 </ul>
 <h1 id="basic-fault-tolerant-design">Basic Fault-Tolerant Design</h1>
 <figure>
-<img src="/.com//1616773-20200814212404116-959184244.png" alt="img">
+<img src="/2021/12/10/Fault-tolerant-virtual-machine/1616773-20200814212404116-959184244.png" alt="img">
 <figcaption aria-hidden="true">img</figcaption>
 </figure>
 <h2 id="deterministic-replay-implementation">Deterministic Replay
@@ -320,7 +320,7 @@ requirement：使backup在primary故障后接手时，仍能保证与primary的�
 world前，必须先向backup发送log并收到backup返回的acknowledgement</li>
 </ul>
 <figure>
-<img src="/.com//image-20211210204305175.png" alt="image-20211210204305175">
+<img src="/2021/12/10/Fault-tolerant-virtual-machine/image-20211210204305175.png" alt="image-20211210204305175">
 <figcaption aria-hidden="true">image-20211210204305175</figcaption>
 </figure>
 <h3 id="duplicate-output">Duplicate output</h3>

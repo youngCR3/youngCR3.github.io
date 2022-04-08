@@ -29,15 +29,15 @@
 <meta property="og:site_name" content="元朗食品">
 <meta property="og:description" content="C++ Primer第15章笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//1.png">
-<meta property="og:image" content="http://example.com/.com//2.png">
-<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="og:image" content="http://example.com/2022/02/21/C++-Primer-Chapter-15/1.png">
+<meta property="og:image" content="http://example.com/2022/02/21/C++-Primer-Chapter-15/2.png">
+<meta property="og:image" content="http://example.com/2022/02/21/C++-Primer-Chapter-15/3.png">
 <meta property="article:published_time" content="2022-02-21T04:32:51.000Z">
 <meta property="article:modified_time" content="2022-04-08T12:08:32.850Z">
 <meta property="article:author" content="Young">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//1.png">
+<meta name="twitter:image" content="http://example.com/2022/02/21/C++-Primer-Chapter-15/1.png">
 
 
 <link rel="canonical" href="http://example.com/2022/02/21/C++-Primer-Chapter-15/">
@@ -682,20 +682,20 @@ function）</p></li>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_data1, m_data2;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
 <li><p>类<code>A</code>的虚表如下</p></li>
 </ul>
-<p><img src="/.com//1.png"></p>
+<p><img src="/2022/02/21/C++-Primer-Chapter-15/1.png"></p>
 <h3 id="虚表指针">虚表指针</h3>
 <ul>
 <li>为了指定对象的虚表，对象内部包含一个虚表的指针，<strong>指向对象所使用的虚表</strong>，称为<strong>虚表指针</strong></li>
 <li>编译器在类中添加了一个<strong>指针<code>*__vptr</code>来指向虚表</strong>，对象创建时便拥有了该指针，其值将在创建时被自动设置为指向类的虚表</li>
 </ul>
-<p><img src="/.com//2.png"></p>
+<p><img src="/2022/02/21/C++-Primer-Chapter-15/2.png"></p>
 <h3 id="动态绑定-1">动态绑定</h3>
 <ul>
 <li><p>示例代码</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> m_data1, m_data2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> m_data3;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span> <span class="keyword">public</span> B &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> m_data1, m_data4;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
 <li><p>基类为<code>A</code>，派生类<code>B</code>继承<code>A</code>，派生类<code>C</code>继承<code>B</code>，则它们的对象模型如下</p></li>
 </ul>
-<p><img src="/.com//3.png"></p>
+<p><img src="/2022/02/21/C++-Primer-Chapter-15/3.png"></p>
 <ul>
 <li><p>三个类都包含虚函数，因此编译器为每个类都创建一个虚表，其虚表指针<code>*__vptr</code>分别指向自己的虚表</p></li>
 <li><p>类<code>A</code>包含两个虚函数，因此类<code>A</code>的虚表包含两个指针，分别指向<code>A::vfunc1()</code>和<code>A::vfunc2()</code></p></li>

@@ -29,14 +29,14 @@
 <meta property="og:site_name" content="元朗食品">
 <meta property="og:description" content="总结 lab0 功能实现  lab0实现了位于内存中的一个byte stream，其核心是一个缓冲区buffer，writer可以将字符依次写入该缓冲区，reader可依次从缓冲区读出字符 使用双端队列deque模拟buffer  注意点  c++ private类变量需要在定义时候初始化 read方法的实现依赖于peek_output和pop_output，需要在pop_output中修改rea">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/.com//lab0_1.png">
-<meta property="og:image" content="http://example.com/.com//TCP%20segment.png">
+<meta property="og:image" content="http://example.com/2022/02/11/CS-144-Summary/lab0_1.png">
+<meta property="og:image" content="http://example.com/2022/02/11/CS-144-Summary/TCP%20segment.png">
 <meta property="article:published_time" content="2022-02-11T13:36:20.000Z">
 <meta property="article:modified_time" content="2022-04-08T12:08:32.857Z">
 <meta property="article:author" content="Young">
 <meta property="article:tag" content="CS-144">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/.com//lab0_1.png">
+<meta name="twitter:image" content="http://example.com/2022/02/11/CS-144-Summary/lab0_1.png">
 
 
 <link rel="canonical" href="http://example.com/2022/02/11/CS-144-Summary/">
@@ -377,7 +377,7 @@ ssh指令，使用ssh连接到VM，<code>ssh cs144@localhost -p 2222</code></li>
 <li><p>typing in either terminal and transfer it, then it will appears
 in the other terminal</p></li>
 </ul>
-<p><img src="/.com//lab0_1.png"></p>
+<p><img src="/2022/02/11/CS-144-Summary/lab0_1.png"></p>
 <h2 id="writing-a-network-program-using-an-os-stream-socket">Writing a
 network program using an OS stream socket</h2>
 <h3 id="modern-c-代码规范">Modern C++ 代码规范</h3>
@@ -593,7 +593,7 @@ seqno即可</p></li>
 segment传输回TCP的另一端</li>
 </ul>
 <h3 id="tcp-segment的结构">TCP segment的结构</h3>
-<p><img src="/.com//TCP%20segment.png"></p>
+<p><img src="/2022/02/11/CS-144-Summary/TCP%20segment.png"></p>
 <ul>
 <li>本实验关注的是<strong>seqno、payload、SYN标志和FIN标志</strong>，它们是由sender写入，由receiver读取的</li>
 </ul>
