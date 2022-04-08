@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="操作系统内存管理重要知识总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS-内存管理">
+<meta property="og:url" content="http://example.com/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="操作系统内存管理重要知识总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-03T02:50:21.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.861Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/","path":"2022/03/03/OS-内存管理/","title":"OS-内存管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OS-内存管理 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5"><span class="nav-text">2 内存管理策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">2.1 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2"><span class="nav-text">2.2 交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E6%97%A9%E6%9C%9F%E6%96%B9%E6%B3%95"><span class="nav-text">2.3 连续内存分配（早期方法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%AE%B5"><span class="nav-text">2.4 分段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5"><span class="nav-text">2.5 分页</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="nav-text">基本方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E6%94%AF%E6%8C%81"><span class="nav-text">硬件支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E6%8A%A4"><span class="nav-text">保护</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-text">2.6 页表结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B1%82%E5%88%86%E9%A1%B5"><span class="nav-text">分层分页</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85xv6%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E9%A1%B5"><span class="nav-text">2.7 补充：xv6中的内存分页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">3 虚拟内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-text">3.1 基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E8%B0%83%E9%A1%B5demand-paging"><span class="nav-text">3.2 请求调页Demand paging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6copy-on-write"><span class="nav-text">3.3 写时复制Copy-on-Write</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2"><span class="nav-text">3.4 页面置换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fifo"><span class="nav-text">FIFO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#opt%E6%9C%80%E4%BC%98%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2"><span class="nav-text">OPT最优页面置换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lru"><span class="nav-text">LRU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%AE%A1%E6%95%B0%E7%9A%84%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2"><span class="nav-text">基于计数的页面置换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A7%E5%88%86%E9%85%8D"><span class="nav-text">3.5 帧分配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%A7%E7%9A%84%E6%9C%80%E5%B0%8F%E6%95%B0"><span class="nav-text">帧的最小数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="nav-text">分配算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%88%86%E9%85%8D%E4%B8%8E%E5%B1%80%E9%83%A8%E5%88%86%E9%85%8D"><span class="nav-text">全局分配与局部分配</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%8A%96%E5%8A%A8"><span class="nav-text">3.6 系统抖动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6memory-mapped-file"><span class="nav-text">3.7 内存映射文件memory-mapped
+file</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OS-内存管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-03 10:50:21" itemprop="dateCreated datePublished" datetime="2022-03-03T10:50:21+08:00">2022-03-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OS/" itemprop="url" rel="index"><span itemprop="name">OS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>操作系统内存管理重要知识总结</strong></p>
+<span id="more"></span>
+<h1 id="内存管理">内存管理</h1>
+<h2 id="内存管理策略">2 内存管理策略</h2>
+<h3 id="基本概念">2.1 基本概念</h3>
+<ul>
+<li>高速缓存</li>
+<li>内存空间保护
+<ul>
+<li>每个进程都有单独的内存空间，<strong>基地址寄存器（重定位寄存器）</strong>、<strong>界限地址寄存器</strong></li>
+<li>用户进程试图访问操作系统的内存空间或其他用户的内存空间，将trap进入内核态，操作系统将该程序中止</li>
+<li>只有内核态中能修改基地址寄存器和界限地址寄存器</li>
+</ul></li>
+<li>内存调度，将进程从外存调度进入内存，等待调到内存以便执行的进程形成了输入队列</li>
+<li>地址绑定，将指令和数据绑定到存储器地址
+<ul>
+<li>编译时绑定，生成绝对代码</li>
+<li>加载时绑定，生成可重定位代码（开始地址可变、相对于该开始地址的位置确定）</li>
+<li>运行时绑定</li>
+</ul></li>
+<li>逻辑地址空间、物理地址空间
+<ul>
+<li>CPU生成的地址为逻辑地址</li>
+<li>加载到内存地址寄存器中的地址为物理地址</li>
+</ul></li>
+<li>内存管理单元MMU，从<strong>虚拟地址</strong>到<strong>物理地址</strong>的运行时映射由<strong>MMU硬件完成</strong></li>
+</ul>
+<h3 id="交换">2.2 交换</h3>
+<ul>
+<li><p>交换指进程暂时从<strong>内存</strong>交换到<strong>备份存储</strong>（通常是快速磁盘），再次执行时再<strong>调回内存</strong></p></li>
+<li><p><strong>标准交换</strong>过程：操作系统维护进程的就绪队列，当CPU调度器决定执行一个进程时，检查队列中的下一个进程是否位于内存，如果不在且内存没有空闲区域，则将一个内存中的进程换出，将该进程换入，并将控制器转移到所选进程</p></li>
+<li><p>换出进程时，必须确保其处于完全空闲状态，如等待I/O的进程不能直接换出</p></li>
+<li><p>交换的<strong>转移时间</strong>与所交换的<strong>内存空间大小成正比</strong></p></li>
+</ul>
+<h3 id="连续内存分配早期方法">2.3 连续内存分配（早期方法）</h3>
+<ul>
+<li><strong>内存保护</strong>，CPU将用户进程想访问的地址与重定位寄存器、界地址寄存器进行对比，以确保它只访问其内存空间中的地址</li>
+<li><strong>固定分区</strong>的内存分配，内存划分为多个分区，每个分区可包含一个进程，当分区空闲时将进程调入内存，多道程序的数量受限于<strong>分区数</strong></li>
+<li><strong>可变分区</strong>的内存分配，操作系统维护一个<strong>表</strong>记录<strong>哪些内存可用、哪些内存已用</strong>
+<ul>
+<li>可理解为有序区间列表</li>
+<li>为进程分配空间时存在不同方案：<strong>首次适应、最优适应、最差适应</strong></li>
+<li>如果无法为该进程分配空间，则考虑等待，或尝试为就绪队列中的其他进程分配空间</li>
+</ul></li>
+<li><strong>碎片</strong>
+<ul>
+<li><strong>外部碎片</strong>，当采用可变分区的内存分配时，空闲内存空间会被划分小的片段，形成大量的小孔</li>
+<li><strong>内部碎片</strong>，按固定大小的块来分配内存，因此进程可能分得比其所需空间更大的内存，称为内部碎片</li>
+<li><strong>紧缩</strong>，通过移动内存内容解决外部碎片问题，但代价较高，且只能用于运行时重定位的进程</li>
+<li>通过<strong>不连续内存分配</strong>可解决外部碎片问题</li>
+</ul></li>
+</ul>
+<h3 id="分段">2.4 分段</h3>
+<ul>
+<li>逻辑地址空间由一组<strong>段</strong>构成，每个段都有<strong>名称和长度</strong></li>
+<li>逻辑地址是由<strong>段名称</strong>和<strong>段偏移</strong>构成的二元组</li>
+<li>通过<strong>段表</strong>将该逻辑地址映射到实际物理地址，每个条目包含<strong>段基地址</strong>和<strong>段界限</strong></li>
+<li>逻辑地址的<strong>段偏移<span class="math inline">\(d\)</span></strong>应该位于<strong>0到段界限之间</strong>，否则会<strong>陷入</strong>操作系统，终止该用户进程</li>
+<li>如果逻辑地址的<strong>段偏移<span class="math inline">\(d\)</span></strong>合法，则将其<strong>与段基地址相加得到物理内存地址</strong></li>
+</ul>
+<h3 id="分页">2.5 分页</h3>
+<h4 id="基本方法">基本方法</h4>
+<ul>
+<li><p><strong>帧、页帧</strong>frame，物理内存的一块</p></li>
+<li><p><strong>页、页表</strong>page，逻辑内存的一块，大小与帧相等</p></li>
+<li><p><strong>块</strong>，快速存储分块，大小与帧相等</p></li>
+<li><p>逻辑地址由<strong>页码</strong>和<strong>页偏移</strong>组成</p></li>
+<li><p><strong>页表</strong>将逻辑地址映射为物理地址，页表项保存<strong>该页的物理内存的基地址</strong></p></li>
+<li><p><strong>页的大小</strong>通常选为<strong>2的幂</strong>，原因是？</p>
+<p><strong>便于将逻辑地址转为物理地址</strong>，假设逻辑地址空间大小为<span class="math inline">\(2^m\)</span>，而页的大小为<span class="math inline">\(2^n\)</span>，则逻辑地址的前<span class="math inline">\(m-n\)</span>位为页码，而后面的<span class="math inline">\(n\)</span>位是页偏移。根据页码在页表中查得对应的页表项，将页表项中的页基地址加上页偏移即得到了物理地址</p></li>
+</ul>
+<h4 id="硬件支持">硬件支持</h4>
+<ul>
+<li>操作系统为每个进程分配一个页表，页表的指针存入进程控制块PCB，进程运行时其<strong>页表位于内存</strong>，并将<strong>页表指针</strong>放入<strong>页表基地址寄存器</strong></li>
+<li>访问用户一个字节需要<strong>执行两次访存</strong>，首先根据逻辑地址查找内存中的<strong>页表</strong>，将得到的帧基地址加上页偏移得到<strong>真实物理地址</strong>，再去<strong>访问该物理地址</strong>对应的内存位置</li>
+<li>为了提高效率，引入了<strong>转换表缓冲区TLB</strong>，是关联的高速内存。当访问内存时，先在TLB中查找，找不到（<strong>TLB未命中</strong>）再<strong>查询页表</strong></li>
+</ul>
+<h4 id="保护">保护</h4>
+<ul>
+<li>分页环境下的内存保护，通过<strong>每个帧关联的保护位</strong>实现</li>
+<li>用一个位定义一个页是<strong>可读可写或只读</strong></li>
+<li><strong>有效-无效位</strong>，表示页是否处于进程的逻辑地址空间内</li>
+</ul>
+<h3 id="页表结构">2.6 页表结构</h3>
+<h4 id="分层分页">分层分页</h4>
+<ul>
+<li>目的：为了减少<strong>页表</strong>所占的内存空间</li>
+<li><strong>两层分页算法</strong>
+<ul>
+<li>页表分页，如32位逻辑地址空间，页大小为4K，则逻辑地址分为20位的页码和12位的页偏移</li>
+<li>将20位的页码分为<strong>10位的顶层页码</strong>和<strong>10位的内层页码</strong>，首先根据前10位在<strong>顶层页表</strong>找到对应的表项，它保存了某个<strong>内层页表的基地址</strong></li>
+<li>取出后再访问该<strong>内部页表</strong>，并用中间10位再内层页表中找到对应的表项，它保存了<strong>某个页的基地址</strong></li>
+<li>取出该<strong>基地址</strong>，加上12位的<strong>页偏移</strong>，便得到了逻辑地址对应的<strong>物理地址</strong>，访问该物理内存即可</li>
+</ul></li>
+</ul>
+<h3 id="补充xv6中的内存分页">2.7 补充：xv6中的内存分页</h3>
+<ul>
+<li>xv6的虚拟地址是64位的，使用低39位用于寻址</li>
+<li>xv6页的大小为4KB，因此页偏移占据12位，页码占据27位</li>
+<li>页表共包含<span class="math inline">\(2^{27}\)</span>个页表项（PTE），每个页表项包含44位的页的基地址（PPN）和10位的标志位</li>
+<li>MMU取虚拟地址低39位中的前27位索引PTE，并将其44位的PPN与原虚拟地址12位的页偏移拼接得到56位的物理地址</li>
+<li>xv6的分层分页
+<ul>
+<li>27位的页码分为三层，每层占据9位，分别称为<strong>L2、L1、L0索引</strong></li>
+<li>先用L2索引在顶级页表（1个）中索引PTE，从中取出PPN，是某个中级页表的基地址</li>
+<li>再取L1索引在中极页表中索引PTE，从中取出PPN，是某个低级页表的基地址</li>
+<li>再取L0索引再低级页表中索引PTE，从中取出44位的PPN并与12位的页偏移组成56位的物理地址</li>
+</ul></li>
+<li>分层分页结构的<strong>优点</strong>
+<ul>
+<li>xv6的逻辑地址空间为39位，页大小为4KB，因此总共包含<span class="math inline">\(2^{27}\)</span>个页</li>
+<li>假如某个进程只使用了1个页，<strong>采用不分层结构</strong>，则它仍然需要存储<span class="math inline">\(2^{27}\)</span>个页表项，而每个页表项的大小为8B，因此<strong>占据了1GB，共<span class="math inline">\(2^{18}\)</span>个页表</strong></li>
+<li>而进程<strong>使用分层结构</strong>，由于只使用了1个页，因此只需要1个顶层页表、1个中层页表、1个底层页表，共3个页表，<strong>包含<span class="math inline">\(3*2^9\)</span>个页表项，因此占据了12KB</strong></li>
+</ul></li>
+</ul>
+<h2 id="虚拟内存管理">3 虚拟内存管理</h2>
+<ul>
+<li>Lazy allocation</li>
+<li>Zero fill on demand</li>
+<li>Copy on Write Fork</li>
+<li>Demand Paging</li>
+<li>Memory Mapped Files</li>
+</ul>
+<h3 id="基础">3.1 基础</h3>
+<ul>
+<li>许多情况<strong>不需要把整个程序置于内存中</strong>也可运行，如
+<ul>
+<li>部分代码几乎<strong>从不执行</strong>（异常处理）</li>
+<li><strong>数组</strong>等所分配的内存<strong>远多于实际需要的值</strong></li>
+<li>某些选项和功能很少使用</li>
+</ul></li>
+<li>虚拟内存将用户<strong>逻辑内存</strong>与<strong>物理内存</strong>分开</li>
+<li>虚拟内存允许文件和内存通过<strong>共享页</strong>而为多个进程所共享</li>
+</ul>
+<h3 id="请求调页demand-paging">3.2 请求调页Demand paging</h3>
+<ul>
+<li><strong>请求调页</strong>技术的实现
+<ul>
+<li>进程的部分页面驻留在外存上</li>
+<li>进程的页表包含<strong>有效-无效位</strong>，有效意味着该页<strong>属于该进程</strong>，且<strong>位于内存中</strong></li>
+<li>当进程访问有效页时，可以直接访问在内存中的页面</li>
+<li>当进程访问<strong>无效页</strong>时，将产生<strong>page
+fault（缺页错误）</strong>，<strong>陷入</strong>操作系统</li>
+<li>操作系统处理page fault的过程
+<ul>
+<li>检查进程的<strong>内部表</strong>确定该引用是有效还是无效的内存访问</li>
+<li>如果引用无效则终止进程，如果有效但尚未调入页面，则现在调入</li>
+<li>找到<strong>空闲帧</strong>，并将页面调入该帧</li>
+<li><strong>修改</strong>进程的<strong>内部表和页表</strong>，指示该页已位于内存中</li>
+<li>返回到<strong>用户态</strong>，进程<strong>重新执行</strong>引发陷入的<strong>指令</strong>，由于该页面已位于内存中，因此进程可以正常执行该指令</li>
+</ul></li>
+</ul></li>
+<li>支持demand paging的<strong>硬件</strong>
+<ul>
+<li><strong>页表</strong>，通过有效-无效位标记页表项是否属于进程且位于内存中</li>
+<li><strong>外存</strong>，用于保存进程不在内存中的页面</li>
+</ul></li>
+</ul>
+<h3 id="写时复制copy-on-write">3.3 写时复制Copy-on-Write</h3>
+<ul>
+<li><p>系统调用<code>fork()</code>创建<strong>父进程的一个复制</strong>，以作为<strong>子进程</strong>，<code>fork()</code>为子进程创建一个父进程<strong>地址空间的副本</strong>，<strong>复制属于父进程的页面</strong></p></li>
+<li><p>然而子进程大多在创建后立即调用<code>exec()</code>，父进程地址空间的复制没有必要，可使用<strong>写时复制copy-on-write技术</strong></p></li>
+<li><p>写时复制copy-on-write技术</p>
+<ul>
+<li>创建子进程时，父进程和子进程最初共享相同的页面工作，<strong>子进程</strong>页表的<strong>PTE指向父进程</strong>相应的物理内存<strong>page</strong></li>
+<li>这些共享页面<strong>标记为写时复制</strong></li>
+<li>如果任何一个进程（父进程或子进程）<strong>写入共享页面</strong>，会导致<strong>page
+fault并陷入</strong>，在内核中需要
+<ul>
+<li><strong>创建</strong>物理page</li>
+<li>将内容<strong>拷贝</strong>过去以得到共享页面的副本</li>
+<li>修改进行写操作的进程页表的<strong>PTE</strong>，使其<strong>指向该副本</strong></li>
+<li>父进程和子进程的页表的相关PTE的<strong>copy-on-write标志清除</strong></li>
+<li>返回到用户空间，<strong>重新执行用户指令</strong></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="页面置换">3.4 页面置换</h3>
+<h4 id="fifo">FIFO</h4>
+<ul>
+<li>置换<strong>最早被换入内存</strong>的页</li>
+</ul>
+<h4 id="opt最优页面置换">OPT最优页面置换</h4>
+<ul>
+<li>置换<strong>最长时间不会使用</strong>的页面，需要引用串的未来知识，实践中难以实现，常用于与其他算法的比较研究</li>
+</ul>
+<h4 id="lru">LRU</h4>
+<ul>
+<li>手撕LRU，<strong>双向链表 + 哈希表</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> key;</span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    shared_ptr&lt;Node&gt; prev;</span><br><span class="line">    shared_ptr&lt;Node&gt; next;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="keyword">int</span> k = <span class="number">0</span>, <span class="keyword">int</span> v = <span class="number">0</span>): <span class="built_in">key</span>(k), <span class="built_in">value</span>(v) &#123;&#125; </span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> capacity_;</span><br><span class="line">    shared_ptr&lt;Node&gt; head;</span><br><span class="line">    shared_ptr&lt;Node&gt; tail;</span><br><span class="line">    <span class="keyword">int</span> size_;</span><br><span class="line">    unordered_map&lt;<span class="keyword">int</span>, shared_ptr&lt;Node&gt;&gt; f;</span><br><span class="line">    <span class="built_in">LRUCache</span>(<span class="keyword">int</span> capacity): <span class="built_in">capacity_</span>(capacity), <span class="built_in">head</span>(make_shared&lt;Node&gt;()), <span class="built_in">tail</span>(make_shared&lt;Node&gt;()), <span class="built_in">size_</span>(<span class="number">0</span>), <span class="built_in">f</span>(&#123;&#125;) &#123;</span><br><span class="line">        head-&gt;next = tail;</span><br><span class="line">        tail-&gt;prev = head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">top</span><span class="params">(shared_ptr&lt;Node&gt; p)</span> </span>&#123;</span><br><span class="line">        p-&gt;prev-&gt;next = p-&gt;next;</span><br><span class="line">        p-&gt;next-&gt;prev = p-&gt;prev;</span><br><span class="line">        p-&gt;next = head-&gt;next;</span><br><span class="line">        p-&gt;next-&gt;prev = p;</span><br><span class="line">        head-&gt;next = p;</span><br><span class="line">        p-&gt;prev = head;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (f.<span class="built_in">count</span>(key)) &#123;</span><br><span class="line">            ans = f[key]-&gt;value;</span><br><span class="line">            <span class="built_in">top</span>(f[key]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (f.<span class="built_in">count</span>(key)) &#123;</span><br><span class="line">            f[key]-&gt;value = value;</span><br><span class="line">            <span class="built_in">top</span>(f[key]);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">auto</span> p = make_shared&lt;Node&gt;(key, value);</span><br><span class="line">            f[key] = p;</span><br><span class="line">            p-&gt;next = head-&gt;next;</span><br><span class="line">            p-&gt;next-&gt;prev = p;</span><br><span class="line">            head-&gt;next = p;</span><br><span class="line">            p-&gt;prev = head;</span><br><span class="line">            <span class="keyword">if</span> (f.<span class="built_in">size</span>() &gt; capacity_) &#123;</span><br><span class="line">                <span class="keyword">auto</span> p = tail-&gt;prev;</span><br><span class="line">                tail-&gt;prev = p-&gt;prev;</span><br><span class="line">                p-&gt;prev-&gt;next = tail;</span><br><span class="line">                <span class="keyword">auto</span> it = f.<span class="built_in">find</span>(p-&gt;key);</span><br><span class="line">                f.<span class="built_in">erase</span>(it);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>近似LRU</strong>
+<ul>
+<li>额外引用位</li>
+<li>第二次机会算法</li>
+<li>增强型第二次机会算法</li>
+</ul></li>
+</ul>
+<h4 id="基于计数的页面置换">基于计数的页面置换</h4>
+<ul>
+<li><p><strong>LFU</strong></p></li>
+<li><p><strong>MFU</strong></p></li>
+<li><p>手撕LFU</p>
+<ul>
+<li>通过<code>set</code>实现，需要<strong>重载<code>&lt;</code></strong>实现排序规则</li>
+<li>注意<strong>无法修改<code>set</code>中的元素</strong>，因此必须先取出，修改后再放回</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> key;</span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    <span class="keyword">int</span> cnt;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="keyword">int</span> k=<span class="number">0</span>, <span class="keyword">int</span> v=<span class="number">0</span>, <span class="keyword">int</span> time = <span class="number">0</span>): <span class="built_in">key</span>(k), <span class="built_in">value</span>(v), <span class="built_in">cnt</span>(<span class="number">1</span>), <span class="built_in">t</span>(time) &#123;&#125;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Node&amp; rhs) <span class="keyword">const</span> &#123; </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;cnt == rhs.cnt? <span class="keyword">this</span>-&gt;t &lt; rhs.t: <span class="keyword">this</span>-&gt;cnt &lt; rhs.cnt; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LFUCache</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> capacity_;</span><br><span class="line">    set&lt;Node&gt; s&#123;&#125;;</span><br><span class="line">    unordered_map&lt;<span class="keyword">int</span>, Node&gt; f&#123;&#125;;</span><br><span class="line">    <span class="keyword">int</span> t = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">LFUCache</span>(<span class="keyword">int</span> capacity): <span class="built_in">capacity_</span>(capacity) &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (f.<span class="built_in">count</span>(key)) &#123;</span><br><span class="line">            <span class="keyword">auto</span> node = f[key];</span><br><span class="line">            s.<span class="built_in">erase</span>(node);</span><br><span class="line">            ++node.cnt;</span><br><span class="line">            node.t = t++;</span><br><span class="line">            s.<span class="built_in">insert</span>(node);</span><br><span class="line">            f[key] = node;</span><br><span class="line">            <span class="keyword">return</span> node.value;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (capacity_ == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span> (f.<span class="built_in">count</span>(key)) &#123;</span><br><span class="line">            <span class="keyword">auto</span> node = f[key];</span><br><span class="line">            s.<span class="built_in">erase</span>(node);</span><br><span class="line">            ++node.cnt;</span><br><span class="line">            node.t = t++;</span><br><span class="line">            node.value = value;</span><br><span class="line">            f[key] = node;</span><br><span class="line">            s.<span class="built_in">insert</span>(node);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.<span class="built_in">size</span>() == capacity_) &#123;</span><br><span class="line">                <span class="keyword">auto</span> node = f[s.<span class="built_in">begin</span>()-&gt;key];</span><br><span class="line">                f.<span class="built_in">erase</span>(node.key);</span><br><span class="line">                s.<span class="built_in">erase</span>(s.<span class="built_in">begin</span>());</span><br><span class="line">            &#125;</span><br><span class="line">            Node node = <span class="built_in">Node</span>(key, value, t++);</span><br><span class="line">            s.<span class="built_in">insert</span>(node);</span><br><span class="line">            f[key] = node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="帧分配">3.5 帧分配</h3>
+<h4 id="帧的最小数">帧的最小数</h4>
+<ul>
+<li>如果允许<strong>每条指令的内存引用最大数目</strong>为<span class="math inline">\(x\)</span>，则运行时一个进程至少要分配<span class="math inline">\(x+1\)</span>帧，否则它执行该指令会引发page
+fault，且其所拥有的帧都无法换出，（后果或许是，进程不得不终止）</li>
+</ul>
+<h4 id="分配算法">分配算法</h4>
+<ul>
+<li><strong>平均</strong>分配</li>
+<li><strong>比例</strong>分配</li>
+<li>结合<strong>优先级</strong>和比例分配</li>
+</ul>
+<h4 id="全局分配与局部分配">全局分配与局部分配</h4>
+<ul>
+<li><strong>全局分配</strong>，允许一个进程从另一个进程处获取帧</li>
+<li><strong>局部分配</strong>，进程只能置换自己拥有的帧</li>
+<li><strong>全局置换</strong>使得进程不能控制其缺页错误率，但往往有<strong>更好的系统吞吐量</strong></li>
+</ul>
+<h3 id="系统抖动">3.6 系统抖动</h3>
+<ul>
+<li>刚刚换出的页面马上又要换入内存，刚刚换入的页面又要马上换出内存，如果一个进程在<strong>页面置换的时间多于执行时间</strong>，则进程在<strong>抖动</strong></li>
+<li>原因是<strong>进程频繁访问的页面数量</strong>高于<strong>可用的物理页帧数目</strong></li>
+</ul>
+<h3 id="内存映射文件memory-mapped-file">3.7 内存映射文件memory-mapped
+file</h3>
+<ul>
+<li>内存映射文件，将<strong>文件I/O</strong>作为<strong>常规内存</strong>访问，将每个磁盘块映射到一个或多个内存页面</li>
+<li><strong>lazy</strong>：文件访问按普通请求调页进行，从而产生<strong>缺页错误</strong>，然后文件的页面<strong>从文件系统读取到物理页面</strong>，此后文件读写就可按常规内存访问处理了</li>
+<li>内存映射文件写入，<strong>不一定</strong>对磁盘文件<strong>同步</strong>写入，操作系统<strong>定期检查文件的内存映射页面是否被修改</strong>，以便选择是否更新到磁盘文件</li>
+<li><strong>关闭文件</strong>时，<strong>所有</strong>内存映射的数据都<strong>写入磁盘文件</strong>，并从打开它的进程的虚拟内存中删除</li>
+<li><strong>多个进程</strong>并发地对<strong>同一文件内存映射</strong>，可实现<strong>数据共享</strong>。任何一个进程写入该内存映射文件，其他映射同一文件的进程都可以看到，因为每个进程的虚拟内存映射<strong>指向物理内存的同一页面</strong></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="OS-内存管理">http://example.com/2022/03/03/OS-内存管理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/OS/" rel="tag"># OS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/02/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/" rel="prev" title="算法-排序">
+                  <i class="fa fa-chevron-left"></i> 算法-排序
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" rel="next" title="OS-文件管理">
+                  OS-文件管理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

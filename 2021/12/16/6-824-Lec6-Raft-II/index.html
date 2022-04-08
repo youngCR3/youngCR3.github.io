@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="日志恢复 NextIndex的作用  NextIndex存储了在leader看来，某个follower下一个应该匹配的log entry位置 当leader发送AppendEntries RPC给follower时，follower会对比prevLogIndex位置（该位置是NextIndex的前一位置）上的log entry，如果该log匹配则从该位置之后开始添加leader发送过来的log e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.824 Lec6 Raft II">
+<meta property="og:url" content="http://example.com/2021/12/16/6-824-Lec6-Raft-II/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="日志恢复 NextIndex的作用  NextIndex存储了在leader看来，某个follower下一个应该匹配的log entry位置 当leader发送AppendEntries RPC给follower时，follower会对比prevLogIndex位置（该位置是NextIndex的前一位置）上的log entry，如果该log匹配则从该位置之后开始添加leader发送过来的log e">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-16T13:04:28.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.849Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="6.824">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/16/6-824-Lec6-Raft-II/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/16/6-824-Lec6-Raft-II/","path":"2021/12/16/6-824-Lec6-Raft-II/","title":"6.824 Lec6 Raft II"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>6.824 Lec6 Raft II | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%81%A2%E5%A4%8D"><span class="nav-text">日志恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nextindex%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">NextIndex的作用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%89%E4%B8%BE%E7%BA%A6%E6%9D%9F"><span class="nav-text">选举约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E4%B8%BAleader%E7%9A%84%E9%99%90%E5%88%B6%E6%9D%A1%E4%BB%B6"><span class="nav-text">成为leader的限制条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D"><span class="nav-text">快速恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%81%A2%E5%A4%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">日志恢复存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D-1"><span class="nav-text">快速恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#conflictterm"><span class="nav-text">ConflictTerm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conflictindex"><span class="nav-text">ConflictIndex</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#leader%E6%94%B6%E5%88%B0reply%E5%90%8E%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-text">leader收到reply后的操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-text">持久化的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E7%8A%B6%E6%80%81votedforcurrenttermlog"><span class="nav-text">持久化状态：votedFor、currentTerm、log</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%BF%AB%E7%85%A7-log-snapshot"><span class="nav-text">日志快照 log snapshot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E7%9A%84"><span class="nav-text">目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E6%83%B3"><span class="nav-text">思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#installsnapshot-rpc"><span class="nav-text">InstallSnapshot RPC</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4"><span class="nav-text">线性一致</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4%E5%BC%BA%E4%B8%80%E8%87%B4"><span class="nav-text">正确&#x3D;线性一致&#x2F;强一致</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/16/6-824-Lec6-Raft-II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6.824 Lec6 Raft II
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-16 21:04:28" itemprop="dateCreated datePublished" datetime="2021-12-16T21:04:28+08:00">2021-12-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="日志恢复">日志恢复</h1>
+<h2 id="nextindex的作用"><code>NextIndex</code>的作用</h2>
+<ul>
+<li><code>NextIndex</code>存储了在leader看来，某个follower下一个应该匹配的log
+entry位置</li>
+<li>当leader发送AppendEntries
+RPC给follower时，follower会对比<code>prevLogIndex</code>位置（该位置是<code>NextIndex</code>的前一位置）上的log
+entry，如果该log匹配则从该位置之后开始添加leader发送过来的log
+entries，<strong>如果不匹配则拒绝该RPC并返回false</strong></li>
+<li>如果leader收到来自follower的拒绝，则leader知道该follower在<code>prevLogIndex</code>上的log
+entry不匹配，因此leader会<strong>将<code>NextIndex</code>减一</strong>，从而对比更前面的位置是否匹配</li>
+<li>该过程将持续<strong>直到follower成功匹配<code>prevLogIndex</code>上的log
+entry</strong>，并将leader发送过来的log entry添加到自己的log中</li>
+</ul>
+<h1 id="选举约束">选举约束</h1>
+<h2 id="成为leader的限制条件">成为leader的限制条件</h2>
+<ul>
+<li>当candidate向其他server发送<code>RequesetVote</code>
+RPC时，只有当candidate的log is <strong>at least as up-to-date as
+receiver's log</strong>时，server才会向其投票</li>
+<li>up-to-date
+<ul>
+<li>如果candidate的<strong>last term大于自己的last term</strong></li>
+<li>或两者一样大但candidate的<strong>last index大于等于自己的last
+index</strong>时，就认为它是at least as up-to-date as receiver</li>
+</ul></li>
+<li>当leader收到过半数选票，即它<strong>比过半数的服务器更加up-to-date时</strong>，才有可能成为leader</li>
+</ul>
+<h1 id="快速恢复">快速恢复</h1>
+<h2 id="日志恢复存在的问题">日志恢复存在的问题</h2>
+<ul>
+<li>日志恢复中<code>NextIndex</code>每次减一，这对于实际场景太慢</li>
+</ul>
+<h2 id="快速恢复-1">快速恢复</h2>
+<ul>
+<li>当follower因为log
+inconsistent而拒绝leader时，可携带额外信息来加速日志恢复</li>
+</ul>
+<h3 id="conflictterm">ConflictTerm</h3>
+<ul>
+<li>follower中与leader冲突的log对应的term，如果follower在对应位置没有log则设为-1</li>
+</ul>
+<h3 id="conflictindex">ConflictIndex</h3>
+<ul>
+<li>follower中对应任期号为ConflictTerm的第一条log的index，当follower在对应位置没有log时则返回log的长度</li>
+</ul>
+<h2 id="leader收到reply后的操作">leader收到reply后的操作</h2>
+<ul>
+<li>搜索其log，找到term等于ConflictTerm的log
+<ul>
+<li>若找到了则将nextIndex设为该term最后一个log entry之后的位置</li>
+<li>若没有找到则将nextIndex设为ConflictIndex</li>
+</ul></li>
+</ul>
+<span id="more"></span>
+<h1 id="持久化">持久化</h1>
+<h2 id="持久化的原因">持久化的原因</h2>
+<ul>
+<li>当一些服务器因为故障（如断电）而退出时，启动另一些服务器去替换它，为此需要将某些<strong>状态信息持久化存储，以便新启动的服务器恢复状态</strong></li>
+</ul>
+<h2 id="持久化状态votedforcurrenttermlog">持久化状态：votedFor、currentTerm、log</h2>
+<ul>
+<li>持久化votedFor和currentTerm是因为我们必须保证server在一个任期内只给一个candidate投票，否则可能产生两个leader</li>
+<li>持久化log是因为这是能够恢复状态的唯一信息</li>
+</ul>
+<h1 id="日志快照-log-snapshot">日志快照 log snapshot</h1>
+<h2 id="目的">目的</h2>
+<ul>
+<li>对于一个长期运行的系统，如果让其log持续增长，则最终会导致磁盘空间耗尽</li>
+<li>此外，如果服务器重启了，需要重投开始执行log来恢复状态，将花费大量时间</li>
+<li>为此，引入快照snapshot</li>
+</ul>
+<h2 id="思想">思想</h2>
+<ul>
+<li><p>应用程序将其状态的拷贝作为一种特殊的log条目（snapshot）存储下来</p></li>
+<li><p><strong>对于大多数应用程序，其状态远小于log的大小</strong>，因此将其状态snapshot并存储下来，可以压缩存储空间</p></li>
+<li><p>当snapshot后，之前的snapshots，以及当前快照对应的最后一个index之前的log
+entry都可以被<strong>丢弃</strong>，因为恢复时只需要直接加载当前snapshot即可，无需执行之前的log
+entry</p></li>
+</ul>
+<h2 id="installsnapshot-rpc">InstallSnapshot RPC</h2>
+<ul>
+<li>若某些follower远远落后于leader，以至于其nextIndex对应的log
+entry早已被leader丢弃，此时leader会发送InstallSnapshot
+RPC并携带snapshot给follower</li>
+<li>follower收到该snapshot后，将其发送给应用程序使其加载该snapshot，从而跟上leader的步伐</li>
+</ul>
+<h1 id="线性一致">线性一致</h1>
+<h2 id="正确线性一致强一致">正确=线性一致/强一致</h2>
+<ul>
+<li>如果一个服务表现得就像只有一个服务器，并且该服务器没有故障，每次只执行一个客户端请求并正确返回，则认为该服务是<strong>线性一致</strong>的</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/12/16/6-824-Lec6-Raft-II/" title="6.824 Lec6 Raft II">http://example.com/2021/12/16/6-824-Lec6-Raft-II/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/6-824/" rel="tag"># 6.824</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/14/6-824-Lab-2/" rel="prev" title="6.824 Lab 2">
+                  <i class="fa fa-chevron-left"></i> 6.824 Lab 2
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/17/6-824-Lab-3/" rel="next" title="6.824 Lab 3">
+                  6.824 Lab 3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="基础知识  稳定排序，不改变相等元素的相对顺序，即如果a&#x3D;b且i(a)&lt;i(b)，而排序后保证i(a)&lt;i(b)仍然满足则为稳定排序 非稳定排序，可能改变相等元素的相对顺序 原地排序，排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换 非原地排序，需要利用额外的数组空间来辅助排序  十大排序算法  选择排序 插入排序 冒泡排序 希尔排序 归并排序 快速排序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法-排序">
+<meta property="og:url" content="http://example.com/2022/03/02/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="基础知识  稳定排序，不改变相等元素的相对顺序，即如果a&#x3D;b且i(a)&lt;i(b)，而排序后保证i(a)&lt;i(b)仍然满足则为稳定排序 非稳定排序，可能改变相等元素的相对顺序 原地排序，排序过程中不申请多余的存储空间，只利用原来存储待排数据的存储空间进行比较和交换 非原地排序，需要利用额外的数组空间来辅助排序  十大排序算法  选择排序 插入排序 冒泡排序 希尔排序 归并排序 快速排序">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-02T13:16:03.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.864Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="Algorithm">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/02/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/02/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/","path":"2022/03/02/算法-排序/","title":"算法-排序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>算法-排序 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-text">十大排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-text">选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-text">冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-text">归并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="nav-text">堆排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="nav-text">计数排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%85%E8%A1%A5%E5%85%85"><span class="nav-text">待补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%B6%E6%8E%92%E5%BA%8F"><span class="nav-text">桶排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="nav-text">基数排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><span class="nav-text">希尔排序</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法-排序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-02 21:16:03" itemprop="dateCreated datePublished" datetime="2022-03-02T21:16:03+08:00">2022-03-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基础知识">基础知识</h1>
+<ul>
+<li><strong>稳定排序</strong>，不改变<strong>相等元素的相对顺序</strong>，即如果<code>a=b</code>且<code>i(a)&lt;i(b)</code>，而排序后保证<code>i(a)&lt;i(b)</code>仍然满足则为稳定排序</li>
+<li><strong>非稳定排序</strong>，可能改变相等元素的相对顺序</li>
+<li><strong>原地排序</strong>，排序过程中<strong>不申请多余的存储空间</strong>，只利用原来存储待排数据的存储空间进行比较和交换</li>
+<li><strong>非原地排序</strong>，需要利用<strong>额外的数组空间</strong>来辅助排序</li>
+</ul>
+<h1 id="十大排序算法">十大排序算法</h1>
+<ul>
+<li>选择排序</li>
+<li>插入排序</li>
+<li>冒泡排序</li>
+<li>希尔排序</li>
+<li>归并排序</li>
+<li>快速排序</li>
+<li>堆排序</li>
+<li>基数排序</li>
+<li>桶排序</li>
+<li>基数排序</li>
+</ul>
+<h2 id="选择排序">选择排序</h2>
+<ul>
+<li><p>假设数组大小为<span class="math inline">\(n\)</span>，初始<span class="math inline">\(i=1\)</span></p></li>
+<li><p>找到数组中从第<span class="math inline">\(i\)</span>到第<span class="math inline">\(n\)</span>个元素的最小值，将其与第<span class="math inline">\(i\)</span>个元素交换，然后<span class="math inline">\(i\)</span>递增</p></li>
+<li><p>重复该过程，直至<span class="math inline">\(i=n\)</span></p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SelectSort</span><span class="params">(vector&lt;T&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        T min_v = a[i]:</span><br><span class="line">        <span class="keyword">int</span> min_i = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; a.<span class="built_in">size</span>(); ++j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[j] &lt; min_v) &#123;</span><br><span class="line">                min_v = a[j];</span><br><span class="line">                min_i = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        a[min_i] = a[i];</span><br><span class="line">        a[i] = min_v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>性质：原地排序、非稳定排序、时间复杂度<span class="math inline">\(O(N^2)\)</span></li>
+</ul>
+<h2 id="插入排序">插入排序</h2>
+<ul>
+<li>将第<span class="math inline">\(i\)</span>个元素与其左边的元素对比，直到找到第一个小于等于它的元素，然后插入其右侧</li>
+<li><span class="math inline">\(i\)</span>从2增大到<span class="math inline">\(n\)</span></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertSort</span><span class="params">(vector&lt;T&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; a.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[i] &gt;= a[j]) &#123;</span><br><span class="line">                <span class="keyword">int</span> v = a[i];</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = i; k &gt; j + <span class="number">1</span>; k--)</span><br><span class="line">                    a[k] = a[k - <span class="number">1</span>];</span><br><span class="line">                a[j + <span class="number">1</span>] = a[i];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>性质：原地排序、稳定排序、时间复杂度<span class="math inline">\(O(N^2)\)</span></li>
+</ul>
+<h2 id="冒泡排序">冒泡排序</h2>
+<ul>
+<li>思路：每次都将0-i位置的最大元素交换至位置i，i不断递减</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">(std::vector&lt;<span class="keyword">int</span>&gt; &amp;a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n = a.<span class="built_in">size</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">		<span class="keyword">int</span> max_ele = <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">int</span> max_idx = <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= i; ++j) &#123;</span><br><span class="line">			<span class="keyword">if</span> (a[j] &gt; max_ele) &#123;</span><br><span class="line">				max_ele = a[j];</span><br><span class="line">				max_idx = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> temp = a[i];</span><br><span class="line">		a[i] = max_ele;</span><br><span class="line">		a[max_idx] = temp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="归并排序">归并排序</h2>
+<ul>
+<li><strong>递归</strong>：将数组分为两份，分别将两份排序，然后再合并，该过程不断递归直至数组大小为1</li>
+<li><strong>迭代</strong>：初始每组大小sz为1，将相邻的两组进行合并，然后sz加倍直至覆盖整个数组</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergeSort</span><span class="params">(std::vector&lt;<span class="keyword">int</span>&gt; &amp;a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n = a.<span class="built_in">size</span>();</span><br><span class="line">	<span class="keyword">int</span> sz = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (sz &lt; n) &#123;</span><br><span class="line">		<span class="function">std::vector&lt;<span class="keyword">int</span>&gt; <span class="title">b</span><span class="params">(a)</span></span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i += <span class="number">2</span> * sz) &#123;</span><br><span class="line">			<span class="keyword">int</span> j = i, k = i + sz;</span><br><span class="line">			<span class="keyword">int</span> x = i;</span><br><span class="line">			<span class="keyword">while</span> (j &lt; std::<span class="built_in">min</span>(i + sz, n) &amp;&amp; k &lt; std::<span class="built_in">min</span>(i + <span class="number">2</span> * sz, n)) &#123;</span><br><span class="line">				<span class="keyword">if</span> (a[j] &lt; a[k]) &#123;</span><br><span class="line">					b[x] = a[j];</span><br><span class="line">					++j;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					b[x] = a[k];</span><br><span class="line">					++k;</span><br><span class="line">				&#125;</span><br><span class="line">				++x;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">while</span> (j &lt; std::<span class="built_in">min</span>(i + sz, n)) &#123;</span><br><span class="line">				b[x] = a[j];</span><br><span class="line">				++j; ++x;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">while</span> (k &lt; std::<span class="built_in">min</span>(i + <span class="number">2</span> * sz, n)) &#123;</span><br><span class="line">				b[x] = a[k];</span><br><span class="line">				++k; ++x;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		sz &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">		a = std::<span class="built_in">move</span>(b);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="快速排序">快速排序</h2>
+<ul>
+<li><p>思路</p>
+<ul>
+<li>任意选择一个<strong>基准值</strong>，将<strong>大于等于</strong>该基准值的元素放在<strong>右边</strong>、<strong>小于等于</strong>该基准值的元素放在<strong>左边</strong>，该基准值位于两者中间</li>
+<li>如此，该基准值必定位于排序后的<strong>最终位置</strong></li>
+<li>对基准值的<strong>左侧子数组、右侧子数组</strong>分别<strong>递归</strong>地执行上述操作，直至子<strong>数组大小为1时停止</strong></li>
+<li>最终，返回排序后的数组</li>
+</ul></li>
+<li><p><strong>单向</strong>移动</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp;a, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (l + <span class="number">1</span> &gt; r)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">int</span> i = l + <span class="number">1</span>, j = l + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (j &lt;= r) &#123;</span><br><span class="line">		<span class="keyword">if</span> (a[j] &lt;= a[l]) &#123;</span><br><span class="line">			<span class="keyword">int</span> tmp = a[i];</span><br><span class="line">			a[i] = a[j];</span><br><span class="line">			a[j] = tmp;</span><br><span class="line">			++i;</span><br><span class="line">			++j; </span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			++j;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> tmp = a[i - <span class="number">1</span>];</span><br><span class="line">	a[i - <span class="number">1</span>] = a[l];</span><br><span class="line">	a[l] = tmp;</span><br><span class="line">	<span class="built_in">quickSort</span>(a, l, i - <span class="number">2</span>);</span><br><span class="line">	<span class="built_in">quickSort</span>(a, i, r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	vector&lt;<span class="keyword">int</span>&gt; a&#123;<span class="number">13</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">13</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">435</span>,<span class="number">21</span>,<span class="number">43</span>,<span class="number">8</span>,<span class="number">412</span>,<span class="number">5</span>,<span class="number">124</span>&#125;;</span><br><span class="line">	<span class="built_in">quickSort</span>(a, <span class="number">0</span>, a.<span class="built_in">size</span>() - <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; v: a)</span><br><span class="line">		cout &lt;&lt; v &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">	cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>双向</strong>移动</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; a, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (l &gt;= r)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">int</span> i = l + <span class="number">1</span>, j = r;</span><br><span class="line">	<span class="keyword">while</span> (i &lt;= j) &#123;</span><br><span class="line">		<span class="keyword">while</span> (i &lt;= j &amp;&amp; a[i] &lt;= a[l])</span><br><span class="line">			++i;</span><br><span class="line">		<span class="keyword">while</span> (i &lt;= j &amp;&amp; a[j] &gt;= a[l])</span><br><span class="line">			--j;</span><br><span class="line">		<span class="keyword">if</span> (i &lt; j) &#123;</span><br><span class="line">			<span class="keyword">int</span> tmp = a[i];</span><br><span class="line">			a[i] = a[j];</span><br><span class="line">			a[j] = tmp;</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> tmp = a[l];</span><br><span class="line">	a[l] = a[j];</span><br><span class="line">	a[j] = tmp;</span><br><span class="line">	<span class="built_in">quickSort</span>(a, l, j - <span class="number">1</span>);</span><br><span class="line">	<span class="built_in">quickSort</span>(a, j + <span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="堆排序">堆排序</h2>
+<ul>
+<li><p><strong>大顶堆</strong></p>
+<p><strong>大小关系</strong>：堆顶的元素是最大的，每个元素的子节点必定小于等于自己</p>
+<p><strong>下标关系</strong>：如果建立在数组上，则节点i的左子节点为2i+1，右子节点为2i+2</p></li>
+<li><p>思路</p>
+<p><strong>建堆</strong>：建堆后，最大元素必定位于a[0]</p>
+<p><strong>交换</strong>：将a[0]与a[i]进行交换，并将i递减</p>
+<p><strong>下沉</strong>：由于堆顶元素并非最大，因此将其不断下沉至恰当位置，此时只需考虑a[0]-a[i]中的元素</p>
+<p><strong>结束条件</strong>：下沉完成后，再次回到交换步骤，直至i=0</p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下沉调整</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">downAdjust</span><span class="params">(std::vector&lt;<span class="keyword">int</span>&gt; &amp;a, <span class="keyword">int</span> i, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">		<span class="keyword">int</span> lc = <span class="number">2</span> * i + <span class="number">1</span>, rc = <span class="number">2</span> * i + <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">if</span> (lc &gt;= n)</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">int</span> c;</span><br><span class="line">		<span class="keyword">if</span> (rc &gt;= n || a[lc] &gt; a[rc])</span><br><span class="line">			c = lc;</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			c = rc;</span><br><span class="line">		<span class="keyword">if</span> (a[i] &gt;= a[c])</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">int</span> temp = a[c];</span><br><span class="line">		a[c] = a[i];</span><br><span class="line">		a[i] = temp;</span><br><span class="line">		i = c;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 堆排序</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">heapSort</span><span class="params">(std::vector&lt;<span class="keyword">int</span>&gt; &amp;a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> n = a.<span class="built_in">size</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">		<span class="built_in">downAdjust</span>(a, i, n);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">		<span class="keyword">int</span> temp = a[i];</span><br><span class="line">		a[i] = a[<span class="number">0</span>];</span><br><span class="line">		a[<span class="number">0</span>] = temp;</span><br><span class="line">		<span class="built_in">downAdjust</span>(a, <span class="number">0</span>, i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="计数排序">计数排序</h2>
+<ul>
+<li><strong>适用范围</strong>：待排序元素的取值范围有限，对取值范围中的每个值进行计数，然后还原</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">countSort</span><span class="params">(std::vector&lt;<span class="keyword">int</span>&gt; &amp;a)</span> </span>&#123;</span><br><span class="line">	<span class="function">std::vector&lt;<span class="keyword">int</span>&gt; <span class="title">b</span><span class="params">(<span class="number">1e6</span> + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v: a) &#123;</span><br><span class="line">		++b[v];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1e6</span> + <span class="number">1</span>; ++i) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; b[i]; ++j) &#123;</span><br><span class="line">			a[k] = i;</span><br><span class="line">			++k;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="待补充">待补充</h2>
+<h3 id="桶排序">桶排序</h3>
+<h3 id="基数排序">基数排序</h3>
+<h3 id="希尔排序">希尔排序</h3>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/02/%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/" title="算法-排序">http://example.com/2022/03/02/算法-排序/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/01/%E9%A1%B9%E7%9B%AE-%E5%AE%9E%E7%8E%B0TCP%E8%BF%9E%E6%8E%A5/" rel="prev" title="项目-实现TCP连接">
+                  <i class="fa fa-chevron-left"></i> 项目-实现TCP连接
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="next" title="OS-内存管理">
+                  OS-内存管理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

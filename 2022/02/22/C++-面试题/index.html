@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="C++常考面试题总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++-面试题">
+<meta property="og:url" content="http://example.com/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="C++常考面试题总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-22T07:39:30.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.853Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/","path":"2022/02/22/C++-面试题/","title":"C++-面试题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++-面试题 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-text">基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#static%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">static的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this%E6%8C%87%E9%92%88"><span class="nav-text">this指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E4%B8%8E%E6%8C%87%E9%92%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">引用与指针的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E4%B8%8E%E9%87%8D%E5%86%99%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">重载与重写的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E7%9A%84%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">C++的显式类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B6%E5%B1%82const%E5%92%8C%E5%BA%95%E5%B1%82const%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">顶层const和底层const的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-text">引用类型作为函数返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sizeof"><span class="nav-text">sizeof</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88%E5%8C%BA%E5%92%8C%E5%A0%86%E5%8C%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">栈区和堆区的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E6%96%B9%E5%BC%8F"><span class="nav-text">申请方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E5%90%8E%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%93%8D%E5%BA%94"><span class="nav-text">申请后系统的响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E5%A4%A7%E5%B0%8F%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-text">申请大小的限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E5%8C%BA%E5%92%8C%E6%A0%88%E5%8C%BA%E7%9A%84%E5%AD%98%E5%82%A8%E5%86%85%E5%AE%B9"><span class="nav-text">堆区和栈区的存储内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E7%9A%84%E5%86%85%E5%AD%98%E5%88%86%E4%B8%BA%E5%93%AA%E5%87%A0%E4%B8%AA%E5%8C%BA"><span class="nav-text">C++的内存分为哪几个区？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#newdeletemallocfree%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">new&#x2F;delete、malloc&#x2F;free的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E6%8C%87%E9%92%88%E6%8C%87%E5%90%91%E7%9A%84%E6%95%B0%E7%BB%84%E7%9A%84%E5%A4%A7%E5%B0%8F"><span class="nav-text">delete[]如何确定指针指向的数组的大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E7%9A%84%E5%8E%9F%E5%88%99%E5%92%8C%E4%BD%9C%E7%94%A8"><span class="nav-text">内存对齐的原则和作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete-this%E5%90%88%E6%B3%95%E5%90%97"><span class="nav-text">delete this合法吗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E5%8F%AA%E8%83%BD%E5%9C%A8%E5%A0%86%E4%B8%8A%E6%A0%88%E4%B8%8A%E7%94%9F%E6%88%90%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%B1%BB"><span class="nav-text">如何定义一个只能在堆上&#x2F;栈上生成对象的类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E7%9B%B8%E5%85%B3"><span class="nav-text">类相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7"><span class="nav-text">面向对象三大特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-text">动态绑定的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E5%87%BD%E6%95%B0%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">什么是虚函数？什么是纯虚函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E5%87%BD%E6%95%B0%E4%B8%8D%E8%83%BD%E4%BD%9C%E4%B8%BA%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">什么函数不能作为虚函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6"><span class="nav-text">虚函数的实现机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%BB%A7%E6%89%BF%E5%92%8C%E5%A4%9A%E7%BB%A7%E6%89%BF%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-text">单继承和多继承的虚函数表结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A6%81%E6%AD%A2%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">如何禁止构造函数的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%B1%BB%E7%9A%84%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">什么是类的默认构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E6%98%AF%E5%90%A6%E9%9C%80%E8%A6%81%E5%AE%9A%E4%B9%89%E6%88%90%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%BA%E4%BB%80%E4%B9%88"><span class="nav-text">构造函数、析构函数是否需要定义成虚函数？为什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E8%83%BD%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8%E5%90%97"><span class="nav-text">析构函数能抛出异常吗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%BF%85%E9%A1%BB%E6%8E%A5%E5%8F%97%E5%BC%95%E7%94%A8"><span class="nav-text">为什么拷贝构造函数必须接受引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E7%B1%BB%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%BA%E5%BA%8F"><span class="nav-text">C++类对象的初始化顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">深拷贝和浅拷贝的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8%E5%92%8C%E5%9C%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%AD%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">使用初始化列表和在构造函数中初始化的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E6%BA%90%E6%96%87%E4%BB%B6%E4%BB%8E%E6%96%87%E6%9C%AC%E5%88%B0%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%BB%8F%E5%8E%86%E7%9A%84%E5%9B%9B%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-text">C++源文件从文本到可执行文件经历的四个阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-text">链接的两种方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stl"><span class="nav-text">STL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E5%AE%B9%E5%99%A8%E7%B1%BB%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-text">C++容器类的底层实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-text">红黑树</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++-面试题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-22 15:39:30" itemprop="dateCreated datePublished" datetime="2022-02-22T15:39:30+08:00">2022-02-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>C++常考面试题总结</strong></p>
+<span id="more"></span>
+<h1 id="基本语法">基本语法</h1>
+<h2 id="static的作用">static的作用</h2>
+<ul>
+<li><strong>修饰普通变量</strong>，修改变量的存储区域和生命周期，存储在静态区域，生命周期在main函数运行前分配空间并初始化，程序执行结束时才销毁，若未指定初始值则执行值初始化</li>
+<li><strong>修饰普通函数</strong>，表明函数的作用范围仅在定义该函数的文件内使用</li>
+<li><strong>修饰成员变量</strong>，该类的所有对象共享一个成员变量，且无需生成对象也可访问该成员</li>
+<li><strong>修饰成员函数</strong>，无需生成对象也可以访问该函数，但static成员函数不能访问非静态成员</li>
+</ul>
+<h2 id="this指针">this指针</h2>
+<ul>
+<li><strong>this指针的值</strong>：对象调用成员函数时，先将<strong>对象的地址赋给this指针</strong>，然后调用成员函数。成员函数存取数据成员时，都隐式地使用this指针</li>
+<li><strong>this指针的const类型</strong>：this指针被隐式地声明为顶层const，因此在成员函数中不能改变this的值。特别地，如果成员函数使用了const限定符，则this指针还具有底层const，即该成员函数不能修改数据成员</li>
+<li><strong>this是一个右值</strong>：不能取得this的地址</li>
+</ul>
+<h2 id="引用与指针的区别">引用与指针的区别</h2>
+<ul>
+<li><strong>初始化</strong>：引用必须初始化，指针不必</li>
+<li><strong>改变</strong>：引用初始化后不能改变，指针可以改变所指向的对象</li>
+</ul>
+<h2 id="重载与重写的区别">重载与重写的区别</h2>
+<ul>
+<li><strong>重载</strong>：指同名的函数具有不同的形参列表（数量不同或类型不同）</li>
+<li><strong>重写</strong>：指派生类堆基类的虚函数进行重新定义override</li>
+</ul>
+<h2 id="c的显式类型转换">C++的显式类型转换</h2>
+<ul>
+<li>static_cast：<strong>非多态</strong>类型的转换，通常用于转换数值数据类型</li>
+<li>dynamic_cast：用于<strong>多态</strong>类型的转换，执行运行时类型检查，只适用于<strong>指针或引用</strong>，可以实现继承体系中的向上或向下转换</li>
+<li>const_cast：移除const特性</li>
+<li>reinterpret_cast</li>
+</ul>
+<h2 id="顶层const和底层const的区别">顶层const和底层const的区别</h2>
+<ul>
+<li><strong>底层const</strong>:
+const右结合修饰的为类型或*，则为底层const，表示指针所指向的对象是个常量</li>
+<li><strong>顶层const</strong>:
+const右结合修饰的为标识符，则为顶层const，表示指针本身是个常量</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* ptr = &amp;i;	<span class="comment">// 底层const</span></span><br><span class="line"><span class="keyword">int</span>* <span class="keyword">const</span> ptr = &amp;i;	<span class="comment">// 顶层const</span></span><br></pre></td></tr></table></figure>
+<h2 id="引用类型作为函数返回值">引用类型作为函数返回值</h2>
+<ul>
+<li><strong>不能返回局部变量的引用</strong>，因为在函数执行完后局部变量被销毁</li>
+<li><strong>不能返回new分配的内存的引用</strong>，因为导致所指向的空间无法释放，造成内存泄漏</li>
+</ul>
+<h2 id="sizeof">sizeof</h2>
+<ul>
+<li>sizeof(数组)，得到整个数组所占空间的大小</li>
+<li>sizeof(指针)，得到存放指针本身所占空间的大小</li>
+</ul>
+<h1 id="内存管理">内存管理</h1>
+<h2 id="栈区和堆区的区别">栈区和堆区的区别</h2>
+<h3 id="申请方式">申请方式</h3>
+<ul>
+<li><strong>栈区</strong>：由编译器分配释放，存放函数参数值、局部变量值</li>
+<li><strong>堆区</strong>：由程序员使用new/delete或malloc/free分配释放</li>
+</ul>
+<h3 id="申请后系统的响应">申请后系统的响应</h3>
+<ul>
+<li><strong>栈区</strong>：若栈的剩余空间大于所申请空间，则系统为程序提供内存，否则报告异常提示栈溢出</li>
+<li><strong>堆区</strong>：操作系统有一个<strong>记录空闲内存地址的链表</strong>，当系统收到程序申请时，遍历该链表以寻找第一个空间大于所申请空间的堆结点，将该节点从空闲节点链表删除，并将该节点的空间分配给程序。且找到的堆节点大小不一定正好等于申请的大小，系统会自动将多余部分重新让入空闲链表</li>
+</ul>
+<h3 id="申请大小的限制">申请大小的限制</h3>
+<ul>
+<li><strong>栈区</strong>：Windows的栈是向低地址扩展的数据结构，是一块连续的内存空间，而栈顶的地址和栈的最大容量是编译时确定的，如果申请的栈空间超过了栈的剩余空间，将提示overflow</li>
+<li><strong>堆区</strong>：堆是向高地址扩展的数据结构，是不连续的内存区域，因为系统用链表来存储空闲内存地址，堆的大小受限于计算机系统中有效的虚拟内存</li>
+</ul>
+<h3 id="堆区和栈区的存储内容">堆区和栈区的存储内容</h3>
+<ul>
+<li><strong>栈区</strong>：在<strong>函数调用</strong>时，首先将主函数中函数调用语句的下一条可执行语句的地址入栈，然后是函数的各个参数，再到函数的局部变量。函数调用结束后，局部变量先出栈，函数参数出栈，然后栈顶指针指向最开始存储的下一条指令的地址，程序从该点开始继续运行</li>
+<li><strong>堆区</strong>：在堆的头部用一个字节存放堆的大小，堆中内容由程序员管理</li>
+</ul>
+<h2 id="c的内存分为哪几个区">C++的内存分为哪几个区？</h2>
+<ul>
+<li><strong>栈区</strong></li>
+<li><strong>堆区</strong></li>
+<li><strong>全局/静态存储区</strong></li>
+<li><strong>常量存储区</strong></li>
+<li><strong>程序代码区</strong></li>
+</ul>
+<h2 id="newdeletemallocfree的区别">new/delete、malloc/free的区别</h2>
+<ul>
+<li><strong>分配内存的位置</strong>：new分配自由存储区的内存，malloc分配堆区的内存</li>
+<li><strong>内存分配成功的返回值</strong>：new返回指向所创建对象的指针，malloc返回void*指针，指向分配内存的起始地址</li>
+<li><strong>内存分配失败</strong>：new分配失败抛出<code>bad_alloc</code>异常，malloc分配失败返回NULL</li>
+<li><strong>分配内存大小</strong>：new由编译器根据创建对象类型计算得到，malloc需要显式指定字节数</li>
+<li><strong>处理数组</strong>：new[]，malloc需要用户根据数组大小计算内存大小</li>
+<li><strong>功能</strong>：new/delete除了分配/释放内存外，还会创建/销毁对象</li>
+</ul>
+<h2 id="delete如何确定指针指向的数组的大小">delete[]如何确定指针指向的数组的大小</h2>
+<ul>
+<li><strong>数组大小</strong>：使用new[]创建对象数组时，编译器会多分配4个字节的内存空间，用于存储数组大小，delete[]时取出该数组大小即可</li>
+</ul>
+<h2 id="内存对齐的原则和作用">内存对齐的原则和作用</h2>
+<ul>
+<li><p><strong>原则</strong>：从0位置开始存储，变量存储的起始位置是变量大小的整数倍，struct的大小是其最大元素大小的整数倍</p></li>
+<li><p><strong>作用</strong></p>
+<p>适应某些无法访问任意地址的硬件平台</p>
+<p>CPU在读取内存时是按块进行读取的，内存对齐可提高CPU的内存访问速度</p></li>
+</ul>
+<h2 id="delete-this合法吗">delete this合法吗</h2>
+<ul>
+<li><p><strong>作用</strong>：delete this允许对象销毁自己</p></li>
+<li><p>满足以下条件时合法</p>
+<p><strong>new分配</strong>：this指向的对象是通过new分配的</p>
+<p><strong>不再使用this指针</strong>：执行delete
+this的成员函数是最后一个使用this的成员函数，保证该成员函数在delete
+this后没有使用this的语句</p>
+<p><strong>不再访问数据成员和虚函数</strong>：执行delete
+this后不能再访问该对象的任意数据成员或调用虚函数，因为<strong>delete
+this会回收对象的数据成员、虚表指针等，但不包含函数代码</strong></p></li>
+</ul>
+<h2 id="如何定义一个只能在堆上栈上生成对象的类">如何定义一个只能在堆上/栈上生成对象的类</h2>
+<ul>
+<li><strong>只能在堆上</strong>：将<strong>析构函数设置为私有</strong>。因为C++是静态绑定语言，编译器管理栈上对象的生命周期，编译器在为类对象分配栈空间时，会先检查类的析构函数的访问性，
+若析构函数不可访问则不能在栈上创建对象</li>
+<li><strong>只能在栈上</strong>：将new和delete重载为私有。在堆上生成对象，使用new在堆上分配内存并调用构造函数生成对象，若new设置为私有则无法在堆上生成对象</li>
+</ul>
+<h1 id="类相关">类相关</h1>
+<h2 id="面向对象三大特性">面向对象三大特性</h2>
+<ul>
+<li><strong>封装</strong></li>
+<li><strong>继承</strong></li>
+<li><strong>动态绑定</strong></li>
+</ul>
+<h2 id="动态绑定的概念">动态绑定的概念</h2>
+<ul>
+<li><strong>概念</strong>：在运行时（非编译器）判断所引用对象的实际类型</li>
+<li><strong>发生的时机</strong>：通过基类的<strong>引用或指针</strong>调用<strong>虚函数</strong>时，发生动态绑定。C++动态绑定是通过虚函数实现的，而虚函数调用是通过虚函数表实现的</li>
+</ul>
+<h2 id="什么是虚函数什么是纯虚函数">什么是虚函数？什么是纯虚函数？</h2>
+<ul>
+<li><strong>虚函数</strong>：基类在声明成员函数时，如果希望派生类覆盖该成员函数，提供派生类自己的版本，则通过关键字<code>virtual</code>将其声明为虚函数，派生类可以覆盖虚函数</li>
+<li><strong>动态绑定</strong>：如果通过基类的指针、引用调用虚函数时，将发生动态绑定，具体执行哪个类中的虚函数版本，将由该指针、引用所指向的对象的类型决定（动态类型），也称为运行时绑定</li>
+<li><strong>纯虚函数</strong>：声明虚函数时，如果在形参列表后加上<code>=0</code>，则该成员为纯虚函数</li>
+<li><strong>纯虚函数的作用</strong>：纯虚函数的目的是提供接口，该成员在基类中是没有意义的，各个派生类应该提供自己的版本</li>
+<li><strong>抽象基类</strong>：含有纯虚函数的基类，被称为抽象基类，抽象基类不可以创建对象</li>
+<li><strong>抽象类不能创建对象</strong>：如果继承了抽象基类的派生类，没有覆盖所有纯虚函数，则它仍然是抽象类，不能创建对象</li>
+<li><strong>抽象类不能作为函数的参数，不能作为函数返回类型</strong></li>
+<li><strong>可以声明抽象类指针，可以声明抽象类的引用</strong></li>
+</ul>
+<h2 id="什么函数不能作为虚函数">什么函数不能作为虚函数</h2>
+<ul>
+<li><strong>普通函数</strong>（非类成员函数）</li>
+<li><strong>静态成员函数</strong></li>
+<li><strong>构造函数</strong>：调用构造函数时，对象仍未创建，无法取得对象的虚表指针，从而无法进行虚函数调用</li>
+<li><strong>内联函数</strong></li>
+</ul>
+<h2 id="虚函数的实现机制">虚函数的实现机制</h2>
+<ul>
+<li><strong>虚函数表</strong>：通过虚函数表实现，虚函数的地址保存在虚函数表中，虚函数表在<strong>编译阶段创建</strong></li>
+<li><strong>虚表指针</strong>：类的对象的内存空间中，保存了虚表指针，它将指向类对应的虚表，虚表指针存放在对象的内存空间中最前面的位置</li>
+<li><strong>类的对象共享一个虚函数表</strong>：每个类拥有一张虚函数表，该类的对象的虚表指针都指向该虚函数表</li>
+</ul>
+<h2 id="单继承和多继承的虚函数表结构">单继承和多继承的虚函数表结构</h2>
+<ul>
+<li>待补充</li>
+</ul>
+<h2 id="如何禁止构造函数的使用">如何禁止构造函数的使用</h2>
+<ul>
+<li>构造函数的形参列表后加上<code>=deleted</code></li>
+</ul>
+<h2 id="什么是类的默认构造函数">什么是类的默认构造函数</h2>
+<ul>
+<li>如果构造函数不接受任何形参，或为每个形参都提供了默认实参，则为默认构造函数</li>
+<li>如果类没有定义任何默认构造函数，则编译器将合成默认构造函数</li>
+</ul>
+<h2 id="构造函数析构函数是否需要定义成虚函数为什么">构造函数、析构函数是否需要定义成虚函数？为什么?</h2>
+<ul>
+<li><strong>构造函数不应定义为虚函数</strong>，因为虚表指针由对象持有，构造函数执行时对象仍未创建，无法调用虚函数</li>
+<li><strong>析构函数定义为虚函数</strong>，因为基类的引用或指针可能指向派生类对象。调用<code>delete p</code>销毁该对象时，只有定义为虚函数，才会根据对象的动态类型调用相应版本的析构函数，否则<strong>该对象只有基类部分的内存被释放</strong>，将产生未定义的行为</li>
+</ul>
+<h2 id="析构函数能抛出异常吗">析构函数能抛出异常吗</h2>
+<ul>
+<li><strong>不能</strong></li>
+<li><strong>析构函数抛出异常，则异常点后的程序不会执行</strong>，导致析构函数异常点后的释放资源操作无法进行，可能造成<strong>资源泄露问题</strong></li>
+<li>异常发生时，通常会调用已构造对象的析构函数来释放资源，若此时析构函数本身也抛出异常，则前一个异常尚未处理又有新的异常，会造成<strong>程序崩溃的问题</strong></li>
+</ul>
+<h2 id="为什么拷贝构造函数必须接受引用">为什么拷贝构造函数必须接受引用</h2>
+<ul>
+<li>因为将对象值传参或返回时，将发生拷贝</li>
+<li>如果拷贝构造函数接受值传递，会导致无限递归</li>
+</ul>
+<h2 id="c类对象的初始化顺序">C++类对象的初始化顺序</h2>
+<ul>
+<li>按类派生列表依次调用各个类的构造函数</li>
+<li>按成员声明顺序初始化各个成员</li>
+<li>执行构造函数的函数体</li>
+</ul>
+<h2 id="深拷贝和浅拷贝的区别">深拷贝和浅拷贝的区别</h2>
+<ul>
+<li>如果一个类拥有资源，该类的对象进行复制时，若资源重新分配则为深拷贝；否则为浅拷贝</li>
+<li><strong>深拷贝</strong>：该对象和原对象占用不同内存空间，既拷贝存储在栈空间的内容，又拷贝存储在堆空间的内容</li>
+<li><strong>浅拷贝</strong>：该对象和原对象占用同一块内存空间，仅拷贝类中位于栈空间的内容</li>
+<li><strong>深拷贝的使用</strong>：如果成员变量中有指针变量则最好使用深拷贝。否则，当其中一个对象删除后，该指针指向的内存空间会被释放，另一个对象指向的就是垃圾内存</li>
+</ul>
+<h2 id="使用初始化列表和在构造函数中初始化的区别">使用初始化列表和在构造函数中初始化的区别</h2>
+<ul>
+<li>若在构造函数中初始化，则实际上会先对成员变量执行默认初始化，再对其赋值。对于类类型对象，则<strong>先调用默认构造函数</strong>执行默认初始化，再执行<strong>拷贝赋值操作</strong></li>
+</ul>
+<h1 id="其他">其他</h1>
+<h2 id="c源文件从文本到可执行文件经历的四个阶段">C++源文件从文本到可执行文件经历的四个阶段</h2>
+<ul>
+<li><strong>预处理阶段</strong>，对预编译语句、预处理变量等进行分析和替换，生成预编译文件（<code>.i</code>文件）</li>
+<li><strong>编译阶段</strong>，对预编译文件进行汇编，得到汇编文件（<code>.s</code>文件）</li>
+<li><strong>汇编阶段</strong>，对汇编文件转换为机器码，生成可重定位目标文件（<code>.o</code>文件）</li>
+<li><strong>链接阶段</strong>，将多个目标文件及所需的库连接成最终的可执行目标文件（<code>.exe</code>文件）</li>
+</ul>
+<h2 id="链接的两种方式">链接的两种方式</h2>
+<ul>
+<li><p><strong>静态链接</strong>：代码从所在的静态链接库拷贝到最终的<strong>可执行程序</strong>中，在该程序被执行时，这些代码会被装入到进程的虚拟地址空间中</p></li>
+<li><p><strong>动态链接</strong>：代码放在<strong>动态链接库</strong>或共享对象的某个目标文件中，链接程序只在最终的可执行程序中记录共享对象的名字等信息。程序执行时，动态链接库的全部内容会被映射到运行时相应进行的虚拟地址空间</p></li>
+<li><p>静态链接特点</p>
+<p><strong>浪费空间</strong>，每个可执行程序都有目标文件的一个副本</p>
+<p><strong>更新困难</strong>，对目标文件的更新将导致程序的重新编译和链接生成可执行程序</p>
+<p><strong>执行速度快</strong></p></li>
+<li><p>动态链接特点</p>
+<p><strong>节省内存</strong></p>
+<p><strong>更新方便</strong></p>
+<p><strong>性能损失</strong></p></li>
+</ul>
+<h1 id="stl">STL</h1>
+<h2 id="c容器类的底层实现">C++容器类的底层实现</h2>
+<ul>
+<li>vector用数组实现</li>
+<li>list、forward_list用链表实现</li>
+<li>stack、queue用数组或链表实现</li>
+<li>deque用一个中央控制器和多个缓冲区实现</li>
+<li>priority_queue用二叉大根堆实现</li>
+<li>unordered_set、unordered_set用哈希表实现</li>
+<li>set、map用红黑树实现</li>
+</ul>
+<h2 id="红黑树">红黑树</h2>
+<ul>
+<li><p>特性</p>
+<p>每个节点要么是黑色，要么是红色</p>
+<p>根节点和叶节点都是黑色节点</p>
+<p>红色节点的子节点必定是黑色节点</p>
+<p>从根节点到叶节点的每条路径上的黑色节点数量相等</p>
+<p>从根节点到叶节点的最长路径不超过最短路径长度的两倍</p></li>
+<li><p>插入</p>
+<p>插入的节点初始时涂为红色</p>
+<p><strong>无需调整</strong>：父节点为黑色</p>
+<p><strong>需要调整</strong>：父节点为红色</p>
+<ul>
+<li><p><strong>空树</strong>的插入，则插入根节点，重涂为黑色</p></li>
+<li><p>父节点为红色，<strong>uncle为红色</strong>，recolor</p></li>
+<li><p>父节点为红色，uncle为黑色，且为<strong>三角形</strong>，则在父节点上旋转变为直线</p></li>
+<li><p>父节点为红色，uncle为黑色，且为<strong>直线</strong>，在祖父节点上旋转</p></li>
+</ul></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/" title="C++-面试题">http://example.com/2022/02/22/C++-面试题/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/21/C++-Primer-Chapter-15/" rel="prev" title="C++ Primer Chapter 15">
+                  <i class="fa fa-chevron-left"></i> C++ Primer Chapter 15
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/22/C++-Primer-Chapter-16/" rel="next" title="C++ Primer Chapter 16">
+                  C++ Primer Chapter 16 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

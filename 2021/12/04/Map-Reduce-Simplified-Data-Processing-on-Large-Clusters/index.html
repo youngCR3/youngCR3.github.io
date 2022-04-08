@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1 Google的机器配置 文章首先介绍了当时Google使用MapReduce的典型场景中的机器配置环境，其特点是large clusters of commodity PCs connected together with switched Ethernet  多个PC集群通过以太网连接，每个PC集群包含成百上千台PC 使用商业网络硬件，速度可达100MB&#x2F;s-1GB&#x2F;s 数据存储在普通IDE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Map Reduce: Simplified Data Processing on Large Clusters">
+<meta property="og:url" content="http://example.com/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="1 Google的机器配置 文章首先介绍了当时Google使用MapReduce的典型场景中的机器配置环境，其特点是large clusters of commodity PCs connected together with switched Ethernet  多个PC集群通过以太网连接，每个PC集群包含成百上千台PC 使用商业网络硬件，速度可达100MB&#x2F;s-1GB&#x2F;s 数据存储在普通IDE">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-04T03:23:07.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.861Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="6.824">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/","path":"2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/","title":"Map Reduce: Simplified Data Processing on Large Clusters"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Map Reduce: Simplified Data Processing on Large Clusters | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#google%E7%9A%84%E6%9C%BA%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-text">1 Google的机器配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-text">2 任务执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#master%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">3 Master数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E9%94%99"><span class="nav-text">4 容错</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#worker-failure"><span class="nav-text">4.1 Worker failure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#master-failure"><span class="nav-text">4.2 Master failure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%80%A7%E4%BF%9D%E8%AF%81"><span class="nav-text">4.3 故障情况下的正确性保证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#locality"><span class="nav-text">5 Locality</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E7%BB%86%E7%B2%92%E5%BA%A6"><span class="nav-text">6 任务的细粒度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backup-tasks"><span class="nav-text">7 Backup tasks</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Map Reduce: Simplified Data Processing on Large Clusters
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-04 11:23:07" itemprop="dateCreated datePublished" datetime="2021-12-04T11:23:07+08:00">2021-12-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="google的机器配置">1 Google的机器配置</h2>
+<p>文章首先介绍了当时Google使用MapReduce的典型场景中的<strong>机器配置环境</strong>，其特点是<strong>large
+clusters of commodity PCs connected together with switched
+Ethernet</strong></p>
+<ul>
+<li><strong>多个PC集群</strong>通过以太网连接，每个PC集群包含成百上千台PC</li>
+<li>使用商业网络硬件，<strong>速度可达100MB/s-1GB/s</strong></li>
+<li>数据存储在<strong>普通IDE硬盘</strong>上，通过<strong>冗余配置</strong>（文件拷贝）增加可靠性</li>
+<li>由<strong>调度系统</strong>负责任务分发</li>
+</ul>
+<h2 id="任务执行流程">2 任务执行流程</h2>
+<ul>
+<li><p>输入文件被划分为<strong>M份</strong>，每份大小是16-64MB</p></li>
+<li><p>master负责任务分发，共有<strong>M个map任务和R个reduce任务</strong></p></li>
+<li><p>Map worker读取其对应的input file，将数据输入<strong>map
+function</strong>，产生intermediate
+K/V，并<strong>缓存在内存中</strong></p></li>
+<li><p>缓存的intermediate K/B被<strong>定期写入local
+disks</strong>，其<strong>位置传入master</strong></p></li>
+<li><p>master将地址告知reduce worker，它们从对应地址的local
+disks读取intermediate data，并对数据<strong>排序</strong></p>
+<blockquote>
+<p>排序是因为一个Reduce worker可能需要处理多个intermediate
+key对应的数据，而数据来自于多个Map workers，因此需要将相同intermediate
+key的数据放在一起</p>
+</blockquote></li>
+<li><p>reduce worker按intermediate key将数据分次输入<strong>reduce
+function</strong>，并将结果写入<strong>output file</strong></p></li>
+<li><p>所有Map和Reduce tasks完成后，master将返回<strong>user
+program</strong></p></li>
+</ul>
+<span id="more"></span>
+<h2 id="master数据结构">3 Master数据结构</h2>
+<p>master需要存储的数据包括</p>
+<ul>
+<li>每个Map/Reduce
+task的<strong>状态（idle/in-progress/completed）</strong></li>
+<li>worker machine的标识</li>
+<li>map task完成后生成的R个<strong>intermediate
+file的位置及其大小</strong></li>
+</ul>
+<h2 id="容错">4 容错</h2>
+<ul>
+<li>由于MapReduce依赖于大量计算机，故障在所难免，因此必须考虑容错机制</li>
+</ul>
+<h3 id="worker-failure">4.1 Worker failure</h3>
+<ol type="1">
+<li><p>如何发现故障？</p>
+<p>master周期性地ping
+workers，若一定时间后仍未收到回复，则master将该worker标记为failed</p></li>
+<li><p>故障如何处置？</p>
+<p>（1）对于map
+worker，其任务都将被恢复为idle状态，并重新分配给其他workers</p>
+<p>（2）对于reduce
+worker，其未完成或进行中的任务恢复为idle状态，并分配给其他workers，<strong>已完成的任务无需再次执行</strong></p>
+<blockquote>
+<p>这是因为map worker产生的intermediate file将写入local disks，若map
+worker故障导致其local
+disks无法读取，因此其任务（无论是否完成）必须重新执行。对于reduce
+worker，其输出文件将写入GFS，即使reduce worker故障能够被读取。</p>
+</blockquote></li>
+</ol>
+<h3 id="master-failure">4.2 Master failure</h3>
+<ol type="1">
+<li>master将定期地写其<strong>data structures的checkpoints</strong></li>
+<li>当master故障时，可以将其任务复制并<strong>从上一个checkpoint处继续执行</strong>。当如果只有一个master，则其故障意味着整个MapReduce任务的终止</li>
+</ol>
+<h3 id="故障情况下的正确性保证">4.3 故障情况下的正确性保证</h3>
+<ol type="1">
+<li><p>map和reduce都是其输入值的确定函数，即输出结果只与其输入参数有关</p></li>
+<li><p>这依赖于atomic commits of map and reduce task outputs</p>
+<ul>
+<li>对于map，当它完成任务时，会生成R个intermediate
+files，并将其名字告知master，master将在其data
+structure中查找该task的完成情况，若未完成则记录R个文件的名字</li>
+<li>对于reduce，完成任务时worker会将文件命名指定为output
+file的指定名字，而GFS提供了atomic rename operation</li>
+</ul>
+<p>以上机制保证了<strong>对于每个map或reduce
+task，其输出结果是唯一的</strong></p></li>
+</ol>
+<h2 id="locality">5 Locality</h2>
+<p>MapReduce如何减少网络带宽使用？</p>
+<ul>
+<li>尽量将input
+file<strong>分配给本地或相邻的worker</strong>进行map操作</li>
+<li>每份文件都有<strong>若干份（如3份）拷贝</strong>，因此可以对每个拷贝查询其所在worker或邻近worker是否空闲</li>
+</ul>
+<p>所以<strong>大部分input data都无需通过网络传输</strong>即可执行map
+operation</p>
+<h2 id="任务的细粒度">6 任务的细粒度</h2>
+<ol type="1">
+<li><p>map被划分为M份， reduce划分为R份</p></li>
+<li><p>master需要进行<code>O(M+R)</code>个调度决定，并存储<code>O(MR)</code>个状态变量</p></li>
+<li><p>通常M的大小保证输入文件被划分为每份16-64MB，R的大小是总worker的几倍</p>
+<blockquote>
+<p>We often perform MapReduce computations with M=200,000 and R=5,000
+using 2,000 worker machines.</p>
+</blockquote></li>
+</ol>
+<h2 id="backup-tasks">7 Backup tasks</h2>
+<ol type="1">
+<li>系统中可能出现个别的执行地异常慢的workers（<strong>straggler</strong>），可能原因是：bad
+disk/other tasks on the machine/bug等</li>
+<li><strong>当一个操作快完成时，将其in-progress的任务分发给backup
+worker执行</strong>，只要原worker或backup
+worker任一个完成任务，则将任务标记为completed</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/" title="Map Reduce: Simplified Data Processing on Large Clusters">http://example.com/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/6-824/" rel="tag"># 6.824</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/03/6-824-Lec1/" rel="prev" title="6.824 Lec1 Introduction">
+                  <i class="fa fa-chevron-left"></i> 6.824 Lec1 Introduction
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/09/6-824-Lec2-RPC-and-threads/" rel="next" title="6.824 Lec2 RPC and threads">
+                  6.824 Lec2 RPC and threads <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

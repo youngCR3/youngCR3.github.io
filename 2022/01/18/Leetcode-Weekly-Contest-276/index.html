@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="总结  AK，但是T4用了太长时间，又掉一波分 T4一开始就想到了二分查找思路，但是具体实现的确不易想到，花了较长时间 排名：国服155，全服371  2141. 同时运行 N 台电脑的最长时间  标签：二分查找 分析：对能够运行的最长时间\(t\)进行二分查找  check函数中，对每个电池进行遍历，假如它的电量大于\(x\)则最多也只可提供\(x\)的电量。最终我们计算得到总电量，并与\(n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode Weekly Contest 276">
+<meta property="og:url" content="http://example.com/2022/01/18/Leetcode-Weekly-Contest-276/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="总结  AK，但是T4用了太长时间，又掉一波分 T4一开始就想到了二分查找思路，但是具体实现的确不易想到，花了较长时间 排名：国服155，全服371  2141. 同时运行 N 台电脑的最长时间  标签：二分查找 分析：对能够运行的最长时间\(t\)进行二分查找  check函数中，对每个电池进行遍历，假如它的电量大于\(x\)则最多也只可提供\(x\)的电量。最终我们计算得到总电量，并与\(n">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-18T15:13:32.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.861Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Leetcode">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/01/18/Leetcode-Weekly-Contest-276/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/01/18/Leetcode-Weekly-Contest-276/","path":"2022/01/18/Leetcode-Weekly-Contest-276/","title":"Leetcode Weekly Contest 276"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Leetcode Weekly Contest 276 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E6%97%B6%E8%BF%90%E8%A1%8C-n-%E5%8F%B0%E7%94%B5%E8%84%91%E7%9A%84%E6%9C%80%E9%95%BF%E6%97%B6%E9%97%B4"><span class="nav-text">2141.
+同时运行 N 台电脑的最长时间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%99%BA%E5%8A%9B%E9%97%AE%E9%A2%98"><span class="nav-text">2140.
+解决智力问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%97%E5%88%B0%E7%9B%AE%E6%A0%87%E5%80%BC%E7%9A%84%E6%9C%80%E5%B0%91%E8%A1%8C%E5%8A%A8%E6%AC%A1%E6%95%B0"><span class="nav-text">2139.
+得到目标值的最少行动次数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%86%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8B%86%E5%88%86%E4%B8%BA%E8%8B%A5%E5%B9%B2%E9%95%BF%E5%BA%A6%E4%B8%BA-k-%E7%9A%84%E7%BB%84"><span class="nav-text">2138.
+将字符串拆分为若干长度为 k 的组</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/18/Leetcode-Weekly-Contest-276/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Leetcode Weekly Contest 276
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-18 23:13:32" itemprop="dateCreated datePublished" datetime="2022-01-18T23:13:32+08:00">2022-01-18</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="总结">总结</h1>
+<ul>
+<li>AK，但是T4用了太长时间，又掉一波分</li>
+<li>T4一开始就想到了二分查找思路，但是具体实现的确不易想到，花了较长时间</li>
+<li>排名：国服155，全服371</li>
+</ul>
+<h1 id="同时运行-n-台电脑的最长时间"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-running-time-of-n-computers/">2141.
+同时运行 N 台电脑的最长时间</a></h1>
+<ul>
+<li>标签：二分查找</li>
+<li>分析：对能够运行的最长时间<span class="math inline">\(t\)</span>进行二分查找
+<ul>
+<li>check函数中，对每个电池进行遍历，假如它的电量大于<span class="math inline">\(x\)</span>则最多也只可提供<span class="math inline">\(x\)</span>的电量。最终我们计算得到总电量，并与<span class="math inline">\(n \times x\)</span>进行对比</li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxRunTime</span>(<span class="params">self, n: <span class="built_in">int</span>, batteries: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">x</span>):</span></span><br><span class="line">            r = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> batteries:</span><br><span class="line">                r += <span class="built_in">min</span>(i, x)</span><br><span class="line">            <span class="keyword">return</span> r &gt;= n * x</span><br><span class="line">        </span><br><span class="line">        batteries.sort()</span><br><span class="line">        L = batteries[<span class="number">0</span>]</span><br><span class="line">        R = <span class="built_in">sum</span>(batteries) // n</span><br><span class="line">        <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">            mid = (L + R) // <span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> check(mid):</span><br><span class="line">                L = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                R = mid - <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> R</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="解决智力问题"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/solving-questions-with-brainpower/">2140.
+解决智力问题</a></h1>
+<ul>
+<li>标签：动态规划</li>
+<li>分析：<span class="math inline">\(dp[i]\)</span>表示遍历到第<span class="math inline">\(i\)</span>个问题时获得的最大分数，此时可以选择
+<ul>
+<li>解决问题<span class="math inline">\(i\)</span>并跳转到第<span class="math inline">\(i+questions[i][1]+1\)</span>个问题</li>
+<li>不解决问题<span class="math inline">\(i\)</span>并跳转到第<span class="math inline">\(i+1\)</span>个问题</li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mostPoints</span>(<span class="params">self, questions: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [-<span class="number">1</span>] * (<span class="built_in">len</span>(questions) + <span class="number">1</span>)</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">        r = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(questions) + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> dp[i] &gt;= <span class="number">0</span>:</span><br><span class="line">                r = <span class="built_in">max</span>(r, dp[i])</span><br><span class="line">                <span class="keyword">if</span> i + <span class="number">1</span> &lt; <span class="built_in">len</span>(dp):</span><br><span class="line">                    <span class="keyword">if</span> dp[i + <span class="number">1</span>] == -<span class="number">1</span> <span class="keyword">or</span> dp[i + <span class="number">1</span>] &lt; dp[i]:</span><br><span class="line">                        dp[i + <span class="number">1</span>] = dp[i]</span><br><span class="line">                    <span class="keyword">if</span> i + questions[i][<span class="number">1</span>] + <span class="number">1</span> &lt; <span class="built_in">len</span>(dp):</span><br><span class="line">                        <span class="keyword">if</span> dp[i + questions[i][<span class="number">1</span>] + <span class="number">1</span>] == -<span class="number">1</span> <span class="keyword">or</span> dp[i + questions[i][<span class="number">1</span>] + <span class="number">1</span>] &lt; dp[i] + questions[i][<span class="number">0</span>]:</span><br><span class="line">                            dp[i + questions[i][<span class="number">1</span>] + <span class="number">1</span>] = dp[i] + questions[i][<span class="number">0</span>]</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        r = <span class="built_in">max</span>(r, dp[i] + questions[i][<span class="number">0</span>])</span><br><span class="line">        <span class="comment"># print(dp)</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+<h1 id="得到目标值的最少行动次数"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-moves-to-reach-target-score/">2139.
+得到目标值的最少行动次数</a></h1>
+<ul>
+<li><p>标签：贪心</p></li>
+<li><p>分析：由于数越大的时候，乘以二的收益越大。因此，将此过程逆向思考，我们可以从<span class="math inline">\(x=target\)</span>开始，若<span class="math inline">\(x\)</span>是偶数且还有乘以的次数，则令<span class="math inline">\(x = x/2\)</span>；我们令<span class="math inline">\(x=x-1\)</span></p></li>
+<li><p>由于<span class="math inline">\(target\)</span>较大，而乘以次数较少，当乘法的次数用完后，我们只能每次减一，因此此时可直接根据<span class="math inline">\(x\)</span>的值求得行动次数</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minMoves</span>(<span class="params">self, target: <span class="built_in">int</span>, maxDoubles: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        r = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> target &gt; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> target % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">and</span> maxDoubles:</span><br><span class="line">                target //= <span class="number">2</span></span><br><span class="line">                maxDoubles -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                target -= <span class="number">1</span></span><br><span class="line">            r += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> maxDoubles == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> r + target - <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> r </span><br></pre></td></tr></table></figure>
+<h1 id="将字符串拆分为若干长度为-k-的组"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/divide-a-string-into-groups-of-size-k/">2138.
+将字符串拆分为若干长度为 k 的组</a></h1>
+<ul>
+<li>标签：模拟</li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">divideString</span>(<span class="params">self, s: <span class="built_in">str</span>, k: <span class="built_in">int</span>, fill: <span class="built_in">str</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">str</span>]:</span></span><br><span class="line">        r = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(s), k):</span><br><span class="line">            <span class="keyword">if</span> i + k &lt;= <span class="built_in">len</span>(s):</span><br><span class="line">                r.append(s[i: i + k])</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                t = s[i: ]</span><br><span class="line">                t += fill * (k - <span class="built_in">len</span>(t))</span><br><span class="line">                r.append(t)</span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/01/18/Leetcode-Weekly-Contest-276/" title="Leetcode Weekly Contest 276">http://example.com/2022/01/18/Leetcode-Weekly-Contest-276/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/18/CF-751/" rel="prev" title="CF 751">
+                  <i class="fa fa-chevron-left"></i> CF 751
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/21/CF-750-Div-2/" rel="next" title="CF 750 (Div.2)">
+                  CF 750 (Div.2) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

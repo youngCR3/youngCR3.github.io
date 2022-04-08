@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="数据库索引数据结构——B+树总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="B+ tree">
+<meta property="og:url" content="http://example.com/2022/04/08/B+-tree/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="数据库索引数据结构——B+树总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/.com//B_plus_inner_node.svg">
+<meta property="og:image" content="http://example.com/.com//B_plus_tree_leaf_node.drawio.svg">
+<meta property="og:image" content="http://example.com/.com//covering_index.drawio.svg">
+<meta property="article:published_time" content="2022-04-08T12:27:12.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:56:52.732Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Database System">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/.com//B_plus_inner_node.svg">
+
+
+<link rel="canonical" href="http://example.com/2022/04/08/B+-tree/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/08/B+-tree/","path":"2022/04/08/B+-tree/","title":"B+ tree"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>B+ tree | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#b%E6%A0%91"><span class="nav-text">B+树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-text">索引的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E7%9A%84%E5%AE%B6%E6%97%8F"><span class="nav-text">B树的家族</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-text">B+树的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-text">B+树的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E4%B8%8Eb%E6%A0%91%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">B树与B+树的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E7%9A%84%E6%8F%92%E5%85%A5%E5%92%8C%E5%88%A0%E9%99%A4"><span class="nav-text">B+树的插入和删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5"><span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-text">删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95%E4%B8%8E%E9%9D%9E%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95"><span class="nav-text">聚集索引与非聚集索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8C%83%E5%9B%B4%E6%9F%A5%E8%AF%A2"><span class="nav-text">范围查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%A4%A7%E5%B0%8F%E9%80%89%E5%8F%96"><span class="nav-text">节点大小选取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E8%8A%82%E7%82%B9%E7%9A%84%E6%97%B6%E6%9C%BA"><span class="nav-text">合并节点的时机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#non-unique-key"><span class="nav-text">Non-unique key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E5%86%85%E9%83%A8%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-text">节点内部的查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#b%E6%A0%91%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-text">B+树的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%BC%80%E5%8E%8B%E7%BC%A9"><span class="nav-text">前缀压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%BC%80%E8%A3%81%E5%88%87"><span class="nav-text">后缀裁切</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bulk-insert"><span class="nav-text">bulk insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pointer-swizzling"><span class="nav-text">pointer swizzling</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BC%80%E6%A0%91"><span class="nav-text">前缀树</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/08/B+-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          B+ tree
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-08 20:27:12 / 修改时间：20:56:52" itemprop="dateCreated datePublished" datetime="2022-04-08T20:27:12+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Database-System/" itemprop="url" rel="index"><span itemprop="name">Database System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>数据库索引数据结构——B+树总结</strong></p>
+<span id="more"></span>
+<h1 id="b树">B+树</h1>
+<h2 id="索引的概念">索引的概念</h2>
+<ul>
+<li>一个表的属性集合，用于加快查询速度</li>
+<li>DBMS必须保证表格数据与索引的内容在逻辑上是同步的</li>
+<li>索引能够加快查询速度，但索引本身占据存储空间，且对数据项进行增删改时维护索引也需要开销，因此如何建立索引是查询速度与维护索引的开销之间的trade-off</li>
+</ul>
+<h2 id="b树的家族">B树的家族</h2>
+<ul>
+<li>B树</li>
+<li>B+树</li>
+<li>B*树</li>
+<li>B-link树</li>
+</ul>
+<h2 id="b树的属性">B+树的属性</h2>
+<ul>
+<li>perfectly balanced，M-way search
+tree，M路指的是每个节点最多有M个子节点</li>
+<li>除了根节点，每个节点至少是half-full的，即每个节点的keys数量都在<span class="math inline">\([M/2-1, M-1]\)</span>之间</li>
+<li>对于内部节点，若它包含k个keys，则有k+1个非空子节点</li>
+<li>每个叶子节点都有sibling pointers，分别指向其相邻的两个叶子节点</li>
+</ul>
+<h2 id="b树的结构">B+树的结构</h2>
+<ul>
+<li>B+树的每个节点恰好是一页</li>
+<li>对于每个内部节点，都包含k个keys和k+1个非空子节点，其中第i个key与第i+1个key之间的指针指向的子树的值均在<span class="math inline">\([key_i,key_{i+1})\)</span>范围内</li>
+</ul>
+<figure>
+<img src="/.com//B_plus_inner_node.svg" alt="B_plus_inner_node">
+<figcaption aria-hidden="true">B_plus_inner_node</figcaption>
+</figure>
+<ul>
+<li>对于叶子节点，每个节点都保存了两个sibling
+pointers，分别指向左侧叶子节点和右侧叶子节点，应用中实际存储的是左/右侧叶子节点的page
+id</li>
+</ul>
+<figure>
+<img src="/.com//B_plus_tree_leaf_node.drawio.svg" alt="B_plus_tree_leaf_node.drawio">
+<figcaption aria-hidden="true">B_plus_tree_leaf_node.drawio</figcaption>
+</figure>
+<ul>
+<li><p>对于叶子节点，它包含n个keys和n个数据项，实际存储是keys和数据项是分开存储的，因为它们的数据大小不一致</p></li>
+<li><p>节点存储的值是什么？</p>
+<p>方法一：主索引存储数据项本身，辅助索引存储主键</p>
+<p>方法二：存储指向数据项的指针，则在B+树进行索引查找后，还需要再进行一次I/O才能获得数据项</p></li>
+</ul>
+<h2 id="b树与b树的区别">B树与B+树的区别</h2>
+<ul>
+<li>B树在内部节点也存储数据项，B树只在叶子节点存储数据项</li>
+<li>B树的key最多只会出现一次，因此节省空间</li>
+<li>B+树的内部节点无data域，当节点大小一致时，每个节点能保存的条目更多，因而索引范围更大，磁盘I/O的次数更少</li>
+</ul>
+<h2 id="b树的插入和删除">B+树的插入和删除</h2>
+<h3 id="插入">插入</h3>
+<ul>
+<li>找到对应的叶子节点，若叶子节点非满则插入并返回</li>
+<li>若叶子节点已满，尝试将部分数据项分配给相邻节点</li>
+<li>若无法通过重新分配数据项实现插入，则需要将当前节点分裂为两个节点</li>
+</ul>
+<h3 id="删除">删除</h3>
+<ul>
+<li>找到对应的叶子节点，删除数据项</li>
+<li>若叶子节点仍然为at least half-full，则完成</li>
+<li>若叶子节点数据项不足一半，则尝试将相邻节点的数据项分配给本节点</li>
+<li>若无法通过重新分配数据项实现插入，则需要将当前节点跟一个sibling leaf
+node进行合并</li>
+</ul>
+<h2 id="聚集索引与非聚集索引">聚集索引与非聚集索引</h2>
+<ul>
+<li><p>聚集索引/主索引：数据项排列的顺序与索引排列的顺序一致，一般在主键上建立聚集索引。B+树叶子节点存储的值就是数据项本身</p></li>
+<li><p>非聚集索引/辅助索引：数据项排列的顺序与索引排列的顺序不一致，B+树叶子节点存储的是数据项的主键，<strong>可能</strong>需要通过回表查询获取数据项</p></li>
+<li><p>使用辅助索引也无需进行回表查询的情况——覆盖索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> score <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> student_id <span class="operator">&lt;=</span> <span class="number">1000</span></span><br><span class="line"># 查询学号小于等于<span class="number">1000</span>的学生的分数</span><br></pre></td></tr></table></figure>
+<p>假设我们在搜索码&lt;student_id,
+score&gt;上建立了索引，则查询时可以利用搜索码的前缀&lt;student_id,
+*&gt;进行查找，同时到达叶子节点时，我们只依靠索引的信息就能够获取score，从而得到最终需要查询的数据，无需回表查询</p>
+<figure>
+<img src="/.com//covering_index.drawio.svg" alt="covering_index.drawio">
+<figcaption aria-hidden="true">covering_index.drawio</figcaption>
+</figure></li>
+</ul>
+<h2 id="范围查询">范围查询</h2>
+<ul>
+<li><strong>部分索引查询</strong>：B+树的索引可以在多个属性值上组成的搜索码上建立，此时B+树支持部分索引查询，即如果查询的搜索码是索引搜索码的某个前缀，则可以使用该索引进行查询</li>
+<li><strong>范围查询</strong>：进行范围查询时，总是先找到匹配的最左侧数据项，然后通过叶子节点的sibling
+pointers遍历数据项直至不满足条件</li>
+</ul>
+<h2 id="节点大小选取">节点大小选取</h2>
+<ul>
+<li><p>磁盘I/O速度：磁盘I/O越慢，则更应该减小I/O次数，通过增大节点大小，可以增加一个节点能够存储的数据，从而减小I/O次数</p></li>
+<li><p>workload</p>
+<p>如果workload以leaf node
+scans为主，则适宜选取更大的节点大小，从而一次磁盘I/O能够读得更多数据项</p>
+<p>如果workload以root-to-leaf
+traversals为主，则应该减小节点大小，否则在节点内部搜索对应的子节点指针时更费时</p></li>
+</ul>
+<h2 id="合并节点的时机">合并节点的时机</h2>
+<ul>
+<li>在工程应用中，可能不会在每次节点少于half-full时都进行合并，而是视具体应用场景而定。如一种做法是不进行合并，直至整个节点为空时才进行合并</li>
+</ul>
+<h2 id="non-unique-key">Non-unique key</h2>
+<ul>
+<li>方法一：允许存储重复的keys</li>
+<li>方法二：B+树中的keys仍然是唯一的，每个键对应的值以链表的方式保存</li>
+<li>方法三：通过在key后面加上record id保证key的唯一性（record
+id是DBMS存储数据项时自动分配的隐藏字段）</li>
+</ul>
+<h2 id="节点内部的查询">节点内部的查询</h2>
+<ul>
+<li>线性搜索</li>
+<li>二分搜索</li>
+</ul>
+<h2 id="b树的优化">B+树的优化</h2>
+<h3 id="前缀压缩">前缀压缩</h3>
+<ul>
+<li>一个节点的多个keys具有公共前缀，提取该公共前缀后，keys可以只存储剩下的部分</li>
+</ul>
+<h3 id="后缀裁切">后缀裁切</h3>
+<ul>
+<li>内部节点的作用是对查询进行正确的路由，为了达到该目的无需存储整个搜索码，而是可以裁切去某一段后缀</li>
+<li>如：搜索码apple和banana，只需各自的第一个字符a、b即可进行正确路由</li>
+</ul>
+<h3 id="bulk-insert">bulk insert</h3>
+<ul>
+<li>假如在创建B+树时就可得知所有数据项，则无需按照B+树的插入规则逐项插入，而是直接利用各个数据项建立叶子节点，并自底向上地建立B+树</li>
+</ul>
+<h3 id="pointer-swizzling">pointer swizzling</h3>
+<ul>
+<li>通常情况下，索引中的节点通过保存其他节点的page
+id以指向该节点，假如其他节点的page已经存在buffer
+pool中，则我们可以通过裸指针直接指向该page</li>
+</ul>
+<h2 id="前缀树">前缀树</h2>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/04/08/B+-tree/" title="B+ tree">http://example.com/2022/04/08/B+-tree/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Database-System/" rel="tag"># Database System</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/05/C++-%E5%AE%9E%E7%8E%B0Vector/" rel="prev" title="C++ 实现Vector">
+                  <i class="fa fa-chevron-left"></i> C++ 实现Vector
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

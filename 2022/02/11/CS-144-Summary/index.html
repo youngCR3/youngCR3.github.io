@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="总结 lab0 功能实现  lab0实现了位于内存中的一个byte stream，其核心是一个缓冲区buffer，writer可以将字符依次写入该缓冲区，reader可依次从缓冲区读出字符 使用双端队列deque模拟buffer  注意点  c++ private类变量需要在定义时候初始化 read方法的实现依赖于peek_output和pop_output，需要在pop_output中修改rea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS-144 Summary">
+<meta property="og:url" content="http://example.com/2022/02/11/CS-144-Summary/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="总结 lab0 功能实现  lab0实现了位于内存中的一个byte stream，其核心是一个缓冲区buffer，writer可以将字符依次写入该缓冲区，reader可依次从缓冲区读出字符 使用双端队列deque模拟buffer  注意点  c++ private类变量需要在定义时候初始化 read方法的实现依赖于peek_output和pop_output，需要在pop_output中修改rea">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/.com//lab0_1.png">
+<meta property="og:image" content="http://example.com/.com//TCP%20segment.png">
+<meta property="article:published_time" content="2022-02-11T13:36:20.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.857Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="CS-144">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/.com//lab0_1.png">
+
+
+<link rel="canonical" href="http://example.com/2022/02/11/CS-144-Summary/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/02/11/CS-144-Summary/","path":"2022/02/11/CS-144-Summary/","title":"CS-144 Summary"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CS-144 Summary | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lab0"><span class="nav-text">lab0</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-text">功能实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-text">注意点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lab1"><span class="nav-text">lab1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-1"><span class="nav-text">功能实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9-1"><span class="nav-text">注意点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lab2"><span class="nav-text">lab2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-2"><span class="nav-text">功能实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9-2"><span class="nav-text">注意点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab0-networking-warmup"><span class="nav-text">Lab0: networking warmup</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#setting-up-your-cs144-vm"><span class="nav-text">Setting up your CS144 VM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#networking-by-hand"><span class="nav-text">Networking by hand</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fetch-a-web-page"><span class="nav-text">Fetch a Web page</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#send-yourself-an-email"><span class="nav-text">Send yourself an email</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#listening-and-connecting"><span class="nav-text">Listening and connecting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#writing-a-network-program-using-an-os-stream-socket"><span class="nav-text">Writing a
+network program using an OS stream socket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#modern-c-%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83"><span class="nav-text">Modern C++ 代码规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#writing-webget"><span class="nav-text">Writing webget</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#an-in-memory-reliable-byte-stream"><span class="nav-text">An in-memory reliable byte
+stream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8F%98%E9%87%8F"><span class="nav-text">定义类变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eof%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">eof函数的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97deque%E6%A8%A1%E6%8B%9Fbuffer"><span class="nav-text">使用双端队列deque模拟buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assign%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">assign函数的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab1-stitching-substrings-into-a-byte-stream"><span class="nav-text">Lab1: Stitching
+substrings into a byte stream</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%8F%E8%BF%B0"><span class="nav-text">任务描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-text">数据结构设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#push_substring%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">push_substring方法的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E4%BF%9D%E5%AD%98%E4%B8%8B%E6%A0%87%E5%B0%8F%E4%BA%8E_expected_index%E7%9A%84%E5%AD%97%E8%8A%82"><span class="nav-text">不要保存下标小于_expected_index的字节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E9%87%8F%E6%A3%80%E6%B5%8B"><span class="nav-text">容量检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eof%E6%A3%80%E6%B5%8B"><span class="nav-text">eof检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eof%E6%A3%80%E6%B5%8B%E7%9A%84%E4%B8%80%E7%A7%8D%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5"><span class="nav-text">eof检测的一种特殊情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BE%E9%81%87%E5%88%B0%E7%9A%84bug"><span class="nav-text">曾遇到的bug</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eof%E6%A3%80%E6%B5%8B%E9%97%AE%E9%A2%98"><span class="nav-text">eof检测问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#capacity%E9%97%AE%E9%A2%98"><span class="nav-text">capacity问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lab-2-the-tcp-receiver"><span class="nav-text">Lab 2: the TCP receiver</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%8F%E8%BF%B0-1"><span class="nav-text">任务描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E4%B8%8064%E4%BD%8D%E7%9A%84%E4%B8%8B%E6%A0%87%E4%B8%8E32%E4%BD%8D%E7%9A%84seqnos%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-text">任务一：64位的下标与32位的seqnos之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%A8%E6%9E%90stream-indexabsolute-sequence-number%E5%92%8Cseqno"><span class="nav-text">辨析stream
+index、absolute sequence number和seqno</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86absolute-seqno%E8%BD%AC%E6%8D%A2%E4%B8%BAseqno"><span class="nav-text">将absolute seqno转换为seqno</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86seqno%E8%BD%AC%E6%8D%A2%E4%B8%BAabsolute-seqno"><span class="nav-text">将seqno转换为absolute seqno</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#checkpoint%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">checkpoint的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-text">分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E4%BA%8C%E5%AE%9E%E7%8E%B0tcp-receiver"><span class="nav-text">任务二：实现TCP Receiver</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tcp-receiver%E5%8A%9F%E8%83%BD"><span class="nav-text">TCP Receiver功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tcp-segment%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-text">TCP segment的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0segment_received%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-text">实现segment_received()成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="nav-text">功能描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-1"><span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0ackno%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-text">实现ackno()成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-2"><span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-3"><span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0window_size%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-text">实现window_size()成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-3"><span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-4"><span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-5"><span class="nav-text">代码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/11/CS-144-Summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CS-144 Summary
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-11 21:36:20" itemprop="dateCreated datePublished" datetime="2022-02-11T21:36:20+08:00">2022-02-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Computer-Network/" itemprop="url" rel="index"><span itemprop="name">Computer Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="总结">总结</h1>
+<h2 id="lab0">lab0</h2>
+<h3 id="功能实现">功能实现</h3>
+<ul>
+<li>lab0实现了位于内存中的一个byte
+stream，其核心是一个缓冲区buffer，writer可以将字符依次写入该缓冲区，reader可依次从缓冲区读出字符</li>
+<li>使用双端队列deque模拟buffer</li>
+</ul>
+<h3 id="注意点">注意点</h3>
+<ul>
+<li>c++ private类变量需要在定义时候初始化</li>
+<li>read方法的实现依赖于peek_output和pop_output，需要在pop_output中修改read_ptr</li>
+<li>peek时需要使用assign方法将字符从deque数据结构复制到string中</li>
+</ul>
+<h2 id="lab1">lab1</h2>
+<h3 id="功能实现-1">功能实现</h3>
+<ul>
+<li>lab1实现一个stream reassembler，它将多个byte
+streams中的片段按正确顺序重新组合成一个连续的字节流</li>
+<li>通过map有序容器，使得<code>StreamReassembler</code>能够处理由于网络传输引起的datagrams乱序、重复等问题</li>
+</ul>
+<h3 id="注意点-1">注意点</h3>
+<ul>
+<li><code>StreamReassembler</code>的容量<code>capacity</code>，需要考虑在<code>ByteStream</code>中的字节数，以及在<code>_buf</code>中的字节数</li>
+<li><code>StreamReassembler</code>的eof检测，需要考虑不写入任何字节直接到达eof的特殊情况</li>
+</ul>
+<h2 id="lab2">lab2</h2>
+<h3 id="功能实现-2">功能实现</h3>
+<ul>
+<li>实现seqno、absolute seqno和stream index三者之间的转换</li>
+<li>实现<code>TCPReceiver</code>类，从TCP的另一端接收TCP
+segments，将数据以及文件结尾等送入<code>StreamReassembler</code>类，并<strong>计算ackno和window
+size等信息</strong>，这些信息将通过发送给另一端的TCP
+segments进行传输</li>
+</ul>
+<h3 id="注意点-2">注意点</h3>
+<ul>
+<li>absolute seqno和stream
+index之间的转换只相差1，关键在于如何实现<strong>seqno、absolute
+seqno之间的转换</strong>。将一个32位数转换为64位数，可以有很多可能的值，因此需要<strong>通过checkpoint（取离checkpoint最接近的64位数）确定唯一的值</strong></li>
+<li><code>TCPReceiver</code>类需要
+<ul>
+<li>接收TCP segment，<strong>记录ISN</strong>用于seqno和stream
+index之间的转换</li>
+<li>对于每条非空TCP segment，需要计算其data首个字节对应的stream
+index，并调用<code>StreamReassembler</code>类的<code>push_substring</code>成员</li>
+<li>计算ackno和window size</li>
+<li>对于seqno和stream index的转换，需要考虑FIN和SYN标志的影响</li>
+<li>更新checkpoint，讲义要求将checkpoint设置为TCP最后一个reassembled的字节的stream
+index，程序中将其设置为上一个收到的string的首字节的stream
+index，也能通过</li>
+<li>EOF的检测：只有当<code>stream_out().input_ended()</code>为真时，才代表EOF被reassembled</li>
+</ul></li>
+</ul>
+<span id="more"></span>
+<h1 id="lab0-networking-warmup">Lab0: networking warmup</h1>
+<h2 id="setting-up-your-cs144-vm">Setting up your CS144 VM</h2>
+<p>Use a <a target="_blank" rel="noopener" href="https://stanford.edu/class/cs144/vm_howto/vm-howto-image.html">VM
+image that we prepared</a> in VirtualBox</p>
+<ul>
+<li>安装虚拟机工具，VM VirtualBox</li>
+<li>导入VM文件</li>
+<li>通过powershell
+ssh指令，使用ssh连接到VM，<code>ssh cs144@localhost -p 2222</code></li>
+</ul>
+<h2 id="networking-by-hand">Networking by hand</h2>
+<h3 id="fetch-a-web-page">Fetch a Web page</h3>
+<ul>
+<li><p>浏览器访问http://cs144.keithw.org/hello，会看到一个句子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello, CS144!</span><br></pre></td></tr></table></figure></li>
+<li><p>使用SSH连接虚拟机后，键入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ telnet cs144.keithw.org http</span><br></pre></td></tr></table></figure>
+<p>响应如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Trying 104.196.238.229...</span><br><span class="line">Connected to cs144.keithw.org.</span><br><span class="line">Escape character is &#x27;^]&#x27;.</span><br></pre></td></tr></table></figure></li>
+<li><p>然后分三行依次输入，并按下回车键</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /hello HTTP/1.1</span><br><span class="line">Host: cs144.keithw.org</span><br><span class="line">Connection: close</span><br></pre></td></tr></table></figure>
+<p>响应如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Fri, 11 Feb 2022 14:01:53 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">Last-Modified: Thu, 13 Dec 2018 15:45:29 GMT</span><br><span class="line">ETag: &quot;e-57ce93446cb64&quot;</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Content-Length: 14</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">Hello, CS144!</span><br><span class="line">Connection closed by foreign host.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="send-yourself-an-email">Send yourself an email</h3>
+<ul>
+<li><p>qq邮箱smtp服务授权码</p>
+<ul>
+<li>使用python的base64模块将其转化为base64码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">s1 = <span class="string">&#x27;974227915@qq.com&#x27;</span></span><br><span class="line">s2 = <span class="string">&#x27;onijfuqefrubbegh&#x27;</span></span><br><span class="line">a1 = base64.b64encode(s1.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">a2 = base64.b64encode(s2.encode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(a1)</span><br><span class="line"><span class="built_in">print</span>(a2)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>得到</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">账户: OTc0MjI3OTE1QHFxLmNvbQ==</span><br><span class="line">授权码: b25pamZ1cWVmcnViYmVnaA==</span><br></pre></td></tr></table></figure></li>
+<li><p>使用qq邮箱发送邮件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">telnet smtp.qq.com 25</span><br><span class="line">HELO host</span><br><span class="line"><span class="meta">#</span><span class="bash"> 登录时使用上述base64编码后的账户和授权码</span></span><br><span class="line">AUTH LOGIN</span><br><span class="line">OTc0MjI3OTE1QHFxLmNvbQ==</span><br><span class="line">b25pamZ1cWVmcnViYmVnaA==</span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定收发邮箱</span></span><br><span class="line">MAIL FROM: &lt;974227915@qq.com&gt;</span><br><span class="line">RCPT TO: &lt;22010064@zju.edus.cn&gt;</span><br><span class="line">DATA</span><br><span class="line"><span class="meta">#</span><span class="bash"> 邮件的收发邮箱和主题</span></span><br><span class="line">From: 974227915@qq.com</span><br><span class="line">To: 22010064@zju.edu.cn</span><br><span class="line">Subject: Hello from cs144 lab 0</span><br><span class="line"><span class="meta">#</span><span class="bash"> 正文</span></span><br><span class="line">Hello world.</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输入单个.并按下回车后发送</span></span><br><span class="line">.</span><br><span class="line">250 OK: queued as.</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输入QUIT并回车后退出</span></span><br><span class="line">QUIT</span><br><span class="line">221 Bye.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="listening-and-connecting">Listening and connecting</h3>
+<ul>
+<li><p>服务器端</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> netcat -v -l -p 9090</span></span><br><span class="line">Listening on [0.0.0.0] (family 0, port 9090)</span><br><span class="line"><span class="meta">#</span><span class="bash"> After client connecting</span></span><br><span class="line">Connection from localhost 37504 received!</span><br></pre></td></tr></table></figure></li>
+<li><p>客户端</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> telnet localhost 9090</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> After client connecting</span></span><br><span class="line">Trying 127.0.0.1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is &#x27;^]&#x27;.</span><br></pre></td></tr></table></figure></li>
+<li><p>typing in either terminal and transfer it, then it will appears
+in the other terminal</p></li>
+</ul>
+<p><img src="/.com//lab0_1.png"></p>
+<h2 id="writing-a-network-program-using-an-os-stream-socket">Writing a
+network program using an OS stream socket</h2>
+<h3 id="modern-c-代码规范">Modern C++ 代码规范</h3>
+<ul>
+<li>不要使用<code>malloc()</code>和<code>free()</code>，不要使用new和delete</li>
+<li>不要使用裸指针，用智能指针代替</li>
+<li>不要使用C字符串，使用标准库中的<code>std::string</code></li>
+<li>不要使用C风格的类型转换，使用<code>static_cast</code></li>
+<li>尽可能通过const引用方式传递函数参数</li>
+<li>尽可能定义const变量</li>
+<li>避免使用全局变量，使每个变量的作用域尽可能小</li>
+</ul>
+<h3 id="writing-webget">Writing webget</h3>
+<ul>
+<li>实现get_URL函数，功能为<strong>向指定IP地址发送HTTP
+GET请求</strong>，并输出所有响应</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_URL</span><span class="params">(<span class="keyword">const</span> string &amp;host, <span class="keyword">const</span> string &amp;path)</span> </span>&#123;</span><br><span class="line">    <span class="function">Address <span class="title">server</span><span class="params">(host, <span class="string">&quot;http&quot;</span>)</span></span>;</span><br><span class="line">    TCPSocket sock;</span><br><span class="line">    sock.<span class="built_in">connect</span>(server);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;GET &quot;</span> + path + <span class="string">&quot; HTTP/1.1\r\n&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;Host: &quot;</span> + host + <span class="string">&quot;\r\n&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;Connection: close\r\n\r\n&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">while</span> (!sock.<span class="built_in">eof</span>()) &#123;</span><br><span class="line">        <span class="keyword">auto</span> recvd = sock.<span class="built_in">read</span>();</span><br><span class="line">        cout &lt;&lt; recvd;</span><br><span class="line">    &#125;</span><br><span class="line">    sock.<span class="built_in">close</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="an-in-memory-reliable-byte-stream">An in-memory reliable byte
+stream</h2>
+<h3 id="定义类变量">定义类变量</h3>
+<ul>
+<li><code>ByteStream</code>容量大小<code>capacity</code></li>
+<li><code>ByteStream</code>缓存<code>_buf</code>，定义为双端队列</li>
+<li>读指针和写指针（负责对读写了多少数据进行计数）<code>read_ptr</code>和<code>write_ptr</code></li>
+<li>是否已经停止写的布尔变量<code>end</code></li>
+</ul>
+<h3 id="eof函数的实现"><code>eof</code>函数的实现</h3>
+<ul>
+<li>根据讲义，eof的定义如下，因此只有当写入已经结束且<code>_buf</code>中的数据均被读出才到达eof，即</li>
+</ul>
+<blockquote>
+<p>When the reader has read to the end of the stream, it will reach
+"EOF"</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ByteStream::eof</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="comment">// When the reader has read to the end of the stream, it will reach &quot;EOF&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">input_ended</span>() &amp;&amp; <span class="built_in">buffer_empty</span>(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用双端队列deque模拟buffer">使用双端队列deque模拟buffer</h3>
+<ul>
+<li><p>读取即从队首读出字符并pop，写入即将字符push进队尾</p></li>
+<li><p>read方法的实现可借助于<code>peek_output</code>和<code>pop_output</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//! \param[in] len bytes will be copied from the output side of the buffer</span></span><br><span class="line"><span class="function">string <span class="title">ByteStream::peek_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> l = <span class="built_in">min</span>(len, <span class="built_in">buffer_size</span>());</span><br><span class="line">    string s;</span><br><span class="line">    s.<span class="built_in">assign</span>(_buf.<span class="built_in">begin</span>(), _buf.<span class="built_in">begin</span>() + l);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! \param[in] len bytes will be removed from the output side of the buffer</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ByteStream::pop_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> l = <span class="built_in">min</span>(len, <span class="built_in">buffer_size</span>());</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; l; ++i)</span><br><span class="line">        _buf.<span class="built_in">pop_front</span>();</span><br><span class="line">    read_ptr += l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! Read (i.e., copy and then pop) the next &quot;len&quot; bytes of the stream</span></span><br><span class="line"><span class="comment">//! \param[in] len bytes will be popped and returned</span></span><br><span class="line"><span class="comment">//! \returns a string</span></span><br><span class="line"><span class="function">std::string <span class="title">ByteStream::read</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> </span>&#123;</span><br><span class="line">    string r = <span class="built_in">peek_output</span>(len);</span><br><span class="line">    <span class="built_in">pop_output</span>(len);</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="assign函数的使用">assign函数的使用</h3>
+<ul>
+<li><p>读取时，在<code>peek_output</code>中需要将队首的<code>l</code>个字符读取，可通过<code>assign</code>方法实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">ByteStream::peek_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> l = <span class="built_in">min</span>(len, <span class="built_in">buffer_size</span>());</span><br><span class="line">    string s;</span><br><span class="line">    s.<span class="built_in">assign</span>(_buf.<span class="built_in">begin</span>(), _buf.<span class="built_in">begin</span>() + l);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="总结-1">总结</h3>
+<ul>
+<li><p>c++private类变量需要在定义时候初始化</p></li>
+<li><p>使用双端队列deque模拟buffer</p></li>
+<li><p>read方法的实现依赖于peek_output和pop_output，需要在pop_output中修改read_ptr</p></li>
+<li><p>peek时需要使用assign方法将字符从deque数据结构复制到string中</p></li>
+</ul>
+<h3 id="代码">代码</h3>
+<ul>
+<li><code>byte_stream.cc</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;byte_stream.hh&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Dummy implementation of a flow-controlled in-memory byte stream.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// For Lab 0, please replace with a real implementation that passes the</span></span><br><span class="line"><span class="comment">// automated checks run by `make check_lab0`.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// You will need to add private members to the class declaration in `byte_stream.hh`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Targs&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DUMMY_CODE</span><span class="params">(Targs &amp;&amp;... <span class="comment">/* unused */</span>)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">ByteStream::<span class="built_in">ByteStream</span>(<span class="keyword">const</span> <span class="keyword">size_t</span> c) &#123;</span><br><span class="line">    capacity = c;</span><br><span class="line">    write_ptr = <span class="number">0</span>;</span><br><span class="line">    read_ptr = <span class="number">0</span>;</span><br><span class="line">    end = <span class="literal">false</span>;</span><br><span class="line">    _buf = deque&lt;<span class="keyword">char</span>&gt;&#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">ByteStream::write</span><span class="params">(<span class="keyword">const</span> string &amp;data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> c = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;ch : data) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">remaining_capacity</span>() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            _buf.<span class="built_in">push_back</span>(ch);</span><br><span class="line">            ++write_ptr;</span><br><span class="line">            ++c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! \param[in] len bytes will be copied from the output side of the buffer</span></span><br><span class="line"><span class="function">string <span class="title">ByteStream::peek_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> l = <span class="built_in">min</span>(len, <span class="built_in">buffer_size</span>());</span><br><span class="line">    string s;</span><br><span class="line">    s.<span class="built_in">assign</span>(_buf.<span class="built_in">begin</span>(), _buf.<span class="built_in">begin</span>() + l);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! \param[in] len bytes will be removed from the output side of the buffer</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ByteStream::pop_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> l = <span class="built_in">min</span>(len, <span class="built_in">buffer_size</span>());</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; l; ++i)</span><br><span class="line">        _buf.<span class="built_in">pop_front</span>();</span><br><span class="line">    read_ptr += l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! Read (i.e., copy and then pop) the next &quot;len&quot; bytes of the stream</span></span><br><span class="line"><span class="comment">//! \param[in] len bytes will be popped and returned</span></span><br><span class="line"><span class="comment">//! \returns a string</span></span><br><span class="line"><span class="function">std::string <span class="title">ByteStream::read</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> </span>&#123;</span><br><span class="line">    string r = <span class="built_in">peek_output</span>(len);</span><br><span class="line">    <span class="built_in">pop_output</span>(len);</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ByteStream::end_input</span><span class="params">()</span> </span>&#123; end = <span class="literal">true</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ByteStream::input_ended</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> end; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">ByteStream::buffer_size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _buf.<span class="built_in">size</span>(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ByteStream::buffer_empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _buf.<span class="built_in">size</span>() == <span class="number">0</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ByteStream::eof</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="comment">// When the reader has read to the end of the stream, it will reach &quot;EOF&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">input_ended</span>() &amp;&amp; <span class="built_in">buffer_empty</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">ByteStream::bytes_written</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> write_ptr; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">ByteStream::bytes_read</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> read_ptr; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">ByteStream::remaining_capacity</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> capacity - _buf.<span class="built_in">size</span>(); &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>byte_stream.hh</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> SPONGE_LIBSPONGE_BYTE_STREAM_HH</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SPONGE_LIBSPONGE_BYTE_STREAM_HH</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! \brief An in-order byte stream.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//! Bytes are written on the &quot;input&quot; side and read from the &quot;output&quot;</span></span><br><span class="line"><span class="comment">//! side.  The byte stream is finite: the writer can end the input,</span></span><br><span class="line"><span class="comment">//! and then no more bytes can be written.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ByteStream</span> &#123;</span></span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// Your code here -- add private members as necessary.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Hint: This doesn&#x27;t need to be a sophisticated data structure at</span></span><br><span class="line">    <span class="comment">// all, but if any of your tests are taking longer than a second,</span></span><br><span class="line">    <span class="comment">// that&#x27;s a sign that you probably want to keep exploring</span></span><br><span class="line">    <span class="comment">// different approaches.</span></span><br><span class="line">    <span class="keyword">size_t</span> capacity = <span class="number">0</span>;</span><br><span class="line">    deque&lt;<span class="keyword">char</span>&gt; _buf = &#123;&#125;;</span><br><span class="line">    <span class="keyword">size_t</span> read_ptr = <span class="number">0</span>, write_ptr = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">bool</span> end = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> _error&#123;&#125;;  <span class="comment">//!&lt; Flag indicating that the stream suffered an error.</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//! Construct a stream with room for `capacity` bytes.</span></span><br><span class="line">    <span class="built_in">ByteStream</span>(<span class="keyword">const</span> <span class="keyword">size_t</span> capacity);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \name &quot;Input&quot; interface for the writer</span></span><br><span class="line">    <span class="comment">//!@&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Write a string of bytes into the stream. Write as many</span></span><br><span class="line">    <span class="comment">//! as will fit, and return how many were written.</span></span><br><span class="line">    <span class="comment">//! \returns the number of bytes accepted into the stream</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">write</span><span class="params">(<span class="keyword">const</span> std::string &amp;data)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \returns the number of additional bytes that the stream has space for</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">remaining_capacity</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Signal that the byte stream has reached its ending</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">end_input</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Indicate that the stream suffered an error.</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set_error</span><span class="params">()</span> </span>&#123; _error = <span class="literal">true</span>; &#125;</span><br><span class="line">    <span class="comment">//!@&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \name &quot;Output&quot; interface for the reader</span></span><br><span class="line">    <span class="comment">//!@&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Peek at next &quot;len&quot; bytes of the stream</span></span><br><span class="line">    <span class="comment">//! \returns a string</span></span><br><span class="line">    <span class="function">std::string <span class="title">peek_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Remove bytes from the buffer</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">pop_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Read (i.e., copy and then pop) the next &quot;len&quot; bytes of the stream</span></span><br><span class="line">    <span class="comment">//! \returns a string</span></span><br><span class="line">    <span class="function">std::string <span class="title">read</span><span class="params">(<span class="keyword">const</span> <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \returns `true` if the stream input has ended</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">input_ended</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \returns `true` if the stream has suffered an error</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">error</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _error; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \returns the maximum amount that can currently be read from the stream</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">buffer_size</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \returns `true` if the buffer is empty</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">buffer_empty</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \returns `true` if the output has reached the ending</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">eof</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">//!@&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \name General accounting</span></span><br><span class="line">    <span class="comment">//!@&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Total number of bytes written</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">bytes_written</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! Total number of bytes popped</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">bytes_read</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">//!@&#125;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// SPONGE_LIBSPONGE_BYTE_STREAM_HH</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="lab1-stitching-substrings-into-a-byte-stream">Lab1: Stitching
+substrings into a byte stream</h1>
+<h2 id="任务描述">任务描述</h2>
+<ul>
+<li>TCP发送方将其字节流划分为多个片段发送，使得每个片段都能存储在一个datagram中，但由于不可靠的网络传输，这些datagrams可能被乱序、丢弃、重发等，因此接收方需要将这些datagrams重组，使其恢复原来的字节流</li>
+<li>实现<code>StreamReassembler</code>类，它将接受多个（1）子串，以及（2）该子串滴第一个字节在整个字节流中的下标</li>
+<li>字节流中的每个字节都有自己的下标，从零开始，不断递增</li>
+<li><code>StreamReassembler</code>类拥有一个<code>ByteStream</code>，当它获取字节流中的下一个字节后，便会将其写入该<code>ByteStream</code></li>
+<li><strong>能够处理datagrams乱序、重发等情况</strong></li>
+<li><code>StreamReassembler</code>类具有容量<code>capacity</code>，当容量满了后，不再存储到达的datagrams</li>
+</ul>
+<h2 id="数据结构设计">数据结构设计</h2>
+<ul>
+<li>我们需要能够处理字符串乱序、重叠等情况，因此必须对字符按其在字节流中的下标进行排序，同时防止重复存储，由此可选用<strong>有序容器map</strong>存储接收到的字符</li>
+<li>当我们能够将某一字节写入<code>ByteStream</code>中时就立刻写入，我们按照下标递增依次写入，假设已经写入下标为<span class="math inline">\(0-x\)</span>的字节，当前我们拥有下标为<span class="math inline">\(x+1\)</span>的字节，那么我们就能将其写入<code>ByteStream</code>中，因此我们维护一个变量<code>_expected_index</code>代表<code>ByteStream</code>希望我们写入的下一个字节下标</li>
+</ul>
+<h2 id="push_substring方法的实现"><code>push_substring</code>方法的实现</h2>
+<ul>
+<li>首先到达的字符串<code>data</code>的第一个字符在整个字节流中的下标为<code>index</code>，假如我们使用循环变量<code>i</code>遍历字符串<code>data</code>，则<code>data[i]</code>的真实下标为<code>i + index</code></li>
+</ul>
+<h3 id="不要保存下标小于_expected_index的字节">不要保存下标小于<code>_expected_index</code>的字节</h3>
+<ul>
+<li>因为我们已经将该下标的字节写入了<code>ByteStream</code>中，我们无需再保存该字节，直接丢弃即可</li>
+</ul>
+<h3 id="容量检测">容量检测</h3>
+<ul>
+<li>因为题目要求<code>StreamReassembler</code>类具有容量<code>capacity</code>，容量包含的是写入<code>ByteStream</code>且未被读出的字节数，可通过<code>_ouput.buffer_size()</code>获得，以及当前存储于<code>StreamReassembler</code>未写入<code>ByteStream</code>中的字节数，为<code>_buf.size()</code></li>
+<li>将<code>data</code>中的字符写入<code>_buf</code>后，检查是否超过了容量，若超过了则将<code>_buf</code>中最后一个元素移除（erase）</li>
+</ul>
+<h3 id="eof检测">eof检测</h3>
+<ul>
+<li>根据<code>ByteStream</code>类的要求，当writer已经到达eof时，要调用该类的<code>ended_input()</code>方法告知不会再有字节写入，因此<code>StreamReassembler</code>也需要实现eof检测</li>
+<li><code>push_substring</code>接收到eof标志说明我们知道了哪个下标对应的字节是最后一个字节，当<strong>该字节被写入<code>ByteStream</code>中</strong>时，我们可以确定此后不会再有字节写入，因此可调用<code>ByteStream</code>的<code>ended_input()</code>方法</li>
+</ul>
+<h3 id="eof检测的一种特殊情况">eof检测的一种特殊情况</h3>
+<ul>
+<li>考虑未写入任何字节就到达eof的情况，此时我们可以直接判定eof</li>
+<li>因此，我们不能将eof检测代码放在将字节写入<code>ByteStream</code>的代码中</li>
+<li>正确的做法时，当写入<code>ByteStream</code>的字节是最后一个字节时，我们break。并在函数的最后进行eof检测。这样，无论是写入若干个字节后到达eof，还是未写入任何字节就到达eof，我们都能够正确地调用<code>ByteStream</code>中的<code>ended_input()</code>方法并告知eof</li>
+</ul>
+<h2 id="曾遇到的bug">曾遇到的bug</h2>
+<h3 id="eof检测问题">eof检测问题</h3>
+<ul>
+<li>上述eof检测的特殊情况，一开始时把eof检测放在了将字节写入<code>ByteStream</code>的代码中，这样若不写入任何字节直接eof的情况，程序无法正确调用<code>ByteStream</code>的<code>ended_input()</code>方法</li>
+</ul>
+<h3 id="capacity问题">capacity问题</h3>
+<ul>
+<li><code>StreamReassembler</code>的容量是由<code>ByteStream</code>中的字节和存在于buf且未写入<code>ByteStream</code>的字节共同组成的</li>
+</ul>
+<h2 id="代码-1">代码</h2>
+<ul>
+<li><code>stream_reassembler.cc</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;stream_reassembler.hh&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Dummy implementation of a stream reassembler.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// For Lab 1, please replace with a real implementation that passes the</span></span><br><span class="line"><span class="comment">// automated checks run by `make check_lab1`.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// You will need to add private members to the class declaration in `stream_reassembler.hh`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Targs&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DUMMY_CODE</span><span class="params">(Targs &amp;&amp;... <span class="comment">/* unused */</span>)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line">StreamReassembler::<span class="built_in">StreamReassembler</span>(<span class="keyword">const</span> <span class="keyword">size_t</span> capacity) : _output(capacity), _capacity(capacity) &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! \details This function accepts a substring (aka a segment) of bytes,</span></span><br><span class="line"><span class="comment">//! possibly out-of-order, from the logical stream, and assembles any newly</span></span><br><span class="line"><span class="comment">//! contiguous substrings and writes them into the output stream in order.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">StreamReassembler::push_substring</span><span class="params">(<span class="keyword">const</span> string &amp;data, <span class="keyword">const</span> <span class="keyword">size_t</span> index, <span class="keyword">const</span> <span class="keyword">bool</span> eof)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!_buf.<span class="built_in">empty</span>() &amp;&amp; _buf.<span class="built_in">begin</span>()-&gt;first == _expected_index) &#123;</span><br><span class="line">        ++_expected_index;</span><br><span class="line">        string r;</span><br><span class="line">        r += _buf.<span class="built_in">begin</span>()-&gt;second;</span><br><span class="line">        _buf.<span class="built_in">erase</span>(_buf.<span class="built_in">begin</span>());</span><br><span class="line">        _output.<span class="built_in">write</span>(r);</span><br><span class="line">        <span class="keyword">if</span> (_eof_flag &amp;&amp; _expected_index == _eof_index) &#123;</span><br><span class="line">            _eof = <span class="literal">true</span>;</span><br><span class="line">            _output.<span class="built_in">end_input</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (eof) &#123;</span><br><span class="line">        _eof_index = index + data.<span class="built_in">size</span>();</span><br><span class="line">        _eof_flag = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; data.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i + index &gt;= _expected_index) &#123;</span><br><span class="line">            _buf[i + index] = data[i]; </span><br><span class="line">            <span class="keyword">if</span> (_buf.<span class="built_in">size</span>() + _output.<span class="built_in">buffer_size</span>() &gt; _capacity) &#123;</span><br><span class="line">                <span class="keyword">auto</span> it = _buf.<span class="built_in">end</span>();</span><br><span class="line">                it--;</span><br><span class="line">                _buf.<span class="built_in">erase</span>(it);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">StreamReassembler::unassembled_bytes</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _buf.<span class="built_in">size</span>(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">StreamReassembler::empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _buf.<span class="built_in">empty</span>(); &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>stream_reassembler.hh</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> SPONGE_LIBSPONGE_STREAM_REASSEMBLER_HH</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SPONGE_LIBSPONGE_STREAM_REASSEMBLER_HH</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;byte_stream.hh&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdint&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,</span></span><br><span class="line"><span class="comment">//! possibly overlapping) into an in-order byte stream.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StreamReassembler</span> &#123;</span></span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// Your code here -- add private members as necessary.</span></span><br><span class="line"></span><br><span class="line">    ByteStream _output;  <span class="comment">//!&lt; The reassembled in-order byte stream</span></span><br><span class="line">    <span class="keyword">size_t</span> _capacity;    <span class="comment">//!&lt; The maximum number of bytes</span></span><br><span class="line">    map&lt;<span class="keyword">size_t</span>, <span class="keyword">char</span>&gt; _buf;</span><br><span class="line">    <span class="keyword">size_t</span> _expected_index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">size_t</span> _eof_index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">bool</span> _eof_flag = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">bool</span> _eof = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//! \brief Construct a `StreamReassembler` that will store up to `capacity` bytes.</span></span><br><span class="line">    <span class="comment">//! \note This capacity limits both the bytes that have been reassembled,</span></span><br><span class="line">    <span class="comment">//! and those that have not yet been reassembled.</span></span><br><span class="line">    <span class="built_in">StreamReassembler</span>(<span class="keyword">const</span> <span class="keyword">size_t</span> capacity);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \brief Receive a substring and write any newly contiguous bytes into the stream.</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! The StreamReassembler will stay within the memory limits of the `capacity`.</span></span><br><span class="line">    <span class="comment">//! Bytes that would exceed the capacity are silently discarded.</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! \param data the substring</span></span><br><span class="line">    <span class="comment">//! \param index indicates the index (place in sequence) of the first byte in `data`</span></span><br><span class="line">    <span class="comment">//! \param eof the last byte of `data` will be the last byte in the entire stream</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">push_substring</span><span class="params">(<span class="keyword">const</span> std::string &amp;data, <span class="keyword">const</span> <span class="keyword">uint64_t</span> index, <span class="keyword">const</span> <span class="keyword">bool</span> eof)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \name Access the reassembled byte stream</span></span><br><span class="line">    <span class="comment">//!@&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">const</span> ByteStream &amp;<span class="title">stream_out</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _output; &#125;</span><br><span class="line">    <span class="function">ByteStream &amp;<span class="title">stream_out</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _output; &#125;</span><br><span class="line">    <span class="comment">//!@&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! The number of bytes in the substrings stored but not yet reassembled</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! \note If the byte at a particular index has been pushed more than once, it</span></span><br><span class="line">    <span class="comment">//! should only be counted once for the purpose of this function.</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">unassembled_bytes</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \brief Is the internal state empty (other than the output stream)?</span></span><br><span class="line">    <span class="comment">//! \returns `true` if no substrings are waiting to be assembled</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// SPONGE_LIBSPONGE_STREAM_REASSEMBLER_HH</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="lab-2-the-tcp-receiver">Lab 2: the TCP receiver</h1>
+<h2 id="任务描述-1">任务描述</h2>
+<ul>
+<li><p><strong>实现<code>TCPReceiver</code>类</strong>，它从网络接受segments，然后将它们送<code>StreamReassembler</code>类，最终写入<code>ByteStream</code>，应用程序从<code>ByteStream</code>中读出各个字节</p></li>
+<li><p>此外，<code>TCPReceiver</code>类还需要告诉发送方两个信息</p>
+<ul>
+<li>第一个unassembled的字节的下标，也被称为<span class="math inline">\(ackno\)</span>，这是接收方需要发送方传输的第一个字节</li>
+<li>第一个unassembled的字节的下标，与第一个未接收的字节的下标之差，被称为<strong>窗口宽度window
+size</strong></li>
+</ul></li>
+<li><p>ackno和window
+size描述了TCP接收方的窗口，TCP发送方只能发送下标在该范围内的字节。通过该窗口，TCP接收方能够控制数据流，<strong>ackno通常被视作窗口的最左侧，ackno
++ window size通常被视作窗口的最右侧</strong></p></li>
+</ul>
+<blockquote>
+<p>TCP中</p>
+<ul>
+<li>acknowledgement means
+为了接收并重组更多字节，接收方所需要的下一个字节的下标；</li>
+<li>flow control means接收方希望且愿意接收的下标范围；</li>
+</ul>
+</blockquote>
+<h2 id="任务一64位的下标与32位的seqnos之间的转换">任务一：64位的下标与32位的seqnos之间的转换</h2>
+<ul>
+<li><code>StreamReassembler</code>中的某个字节都有一个64位的stream
+index，该下标从零开始，不断递增</li>
+<li>在<strong>TCP
+header中</strong>，每个字节的下标是用<strong>32位的sequence
+number，也称为seqno表示的</strong>
+<ul>
+<li>由于32位的seqno有限，而字节数很容易就超过该范围，因此<strong>seqno必须循环使用</strong>，当字节下标达到<span class="math inline">\(2^{32}-1\)</span>之后，下一个字节下标应为0</li>
+<li>为了安全性，TCP规定<strong>第一个字节的seqno应该是一个随机的32位数</strong>，称为<strong>Initial
+Sequence Number，ISN</strong>。该sequence number代表了SYN（beginning of
+the stream）</li>
+<li>TCP传输的<strong>开头、结束也占据了一个seqno</strong>，因此SYN（beginning
+of stream）、FIN（end of stream）控制标志也被分配了一个sequence
+number，<strong>SYN标志拥有的seqno即上述ISN</strong>。需要注意的是，SYN和FIN只是控制标志，它们本身并不包含内容，因此也不是字节</li>
+</ul></li>
+<li>此外，还有一种编号称为<strong>absolute sequence
+number</strong>，它是一个64位数，<strong>总是以0开始</strong>，并且不循环使用</li>
+</ul>
+<h3 id="辨析stream-indexabsolute-sequence-number和seqno">辨析stream
+index、absolute sequence number和seqno</h3>
+<ul>
+<li>stream
+index是64位数，从0开始，只对字节编码（忽略SYN和FIN控制标志）</li>
+<li>absolute sequence
+number是64位数，从0开始，包含SYN和FIN控制标志（SYN的absolute sequence
+number 为0）</li>
+<li>seqno真实存在于TCP
+header中，是32位数，从ISN（随机的32位数）开始，包含SYN和FIN控制标志（SYN的seqno为ISN）</li>
+</ul>
+<h3 id="将absolute-seqno转换为seqno">将absolute seqno转换为seqno</h3>
+<ul>
+<li><p><code>WrappingInt32 wrap(uint64_t n, WrappinInt32 isn)</code></p></li>
+<li><p>分析</p>
+<ul>
+<li>因为n是一个64位数，而isn是一个32位数，应该将isn转为64位数进行运算，得到结果后再转回32位数，防止溢出</li>
+<li>定义<code>MOD=2^32</code>，首先n对<code>MOD</code>取模，<code>isn</code>转为64位数<code>isn1</code>，然后将<code>n + isn1</code>再次对<code>MOD</code>取模，并将结果转化回32位数</li>
+</ul></li>
+<li><p>代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">WrappingInt32 <span class="title">wrap</span><span class="params">(<span class="keyword">uint64_t</span> n, WrappingInt32 isn)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> mod = <span class="number">0x100000000</span>;</span><br><span class="line">    n %= mod;</span><br><span class="line">    <span class="keyword">uint64_t</span> isn1 = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(isn.<span class="built_in">raw_value</span>());</span><br><span class="line">    <span class="keyword">uint64_t</span> r = (n + isn1) % mod;</span><br><span class="line">    <span class="keyword">return</span> WrappingInt32&#123;<span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;(r)&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="将seqno转换为absolute-seqno">将seqno转换为absolute seqno</h3>
+<ul>
+<li><p><code>uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint)</code></p></li>
+<li><p>给出seqno及isn，同时还有64位数checkpoint，将seqno转化为<strong>最接近checkpoint的64位absolute
+seqno</strong></p></li>
+</ul>
+<h4 id="checkpoint的作用">checkpoint的作用</h4>
+<ul>
+<li>因为一个32位的seqno能够转化为多个64位的absolute
+seqno，因此需要提供checkpoint使得结果唯一</li>
+<li>在TCP中，将上一个reassembled的字节的下标作为checkpoint</li>
+</ul>
+<h4 id="分析">分析</h4>
+<ul>
+<li><p>首先求出seqno与isn的距离<span class="math inline">\(d\)</span>（无符号数）</p></li>
+<li><p>然后求checkpoint对<code>mod=2^32</code>的余数<code>r</code>，则<code>checkpoint-r</code>是一个<span class="math inline">\(2^{32}\)</span>的倍数，此时一个可能的值是<span class="math inline">\(v_1=checkpoint-r+d\)</span></p></li>
+<li><p>还有的可能值是<span class="math inline">\(v_2=v_1-mod\)</span>，<span class="math inline">\(v_3=v_1+mod\)</span>，但应注意在部分情况下，<span class="math inline">\(v_2\)</span>可能不存在（小于0），<span class="math inline">\(v_3\)</span>也可能不存在（超过了64位数的表示范围，溢出）</p></li>
+<li><p>最后分别求<span class="math inline">\(v_1\)</span>、<span class="math inline">\(v_2\)</span>、<span class="math inline">\(v_3\)</span>与<span class="math inline">\(checkpoint\)</span>之间的差值，取最小的作为absolute
+seqno即可</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">uint64_t</span> <span class="title">unwrap</span><span class="params">(WrappingInt32 n, WrappingInt32 isn, <span class="keyword">uint64_t</span> checkpoint)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> mod = <span class="number">1ul</span> &lt;&lt; <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> maxv = <span class="number">0xffffffffffffffff</span>;</span><br><span class="line">    <span class="keyword">uint64_t</span> d;</span><br><span class="line">    <span class="keyword">if</span> (n.<span class="built_in">raw_value</span>() &gt;= isn.<span class="built_in">raw_value</span>())    </span><br><span class="line">        d = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(n.<span class="built_in">raw_value</span>() - isn.<span class="built_in">raw_value</span>());</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        d = mod - <span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(isn.<span class="built_in">raw_value</span>() - n.<span class="built_in">raw_value</span>());</span><br><span class="line">    <span class="keyword">uint64_t</span> r = checkpoint % mod;</span><br><span class="line">    <span class="keyword">uint64_t</span> v1 = checkpoint - r + d, v2, v3;</span><br><span class="line">    <span class="comment">// possible val can be v1, v1 - mod, v1 + mod</span></span><br><span class="line">    <span class="keyword">if</span> (v1 &lt; mod) &#123;</span><br><span class="line">        v2 = v3 = v1 + mod;</span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (maxv - v1 &lt; mod) &#123;</span><br><span class="line">        v2 = v3 = v1 - mod;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        v2 = v1 + mod;</span><br><span class="line">        v3 = v1 - mod;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">uint64_t</span> d1, d2, d3;</span><br><span class="line">    <span class="keyword">if</span> (v1 &gt; checkpoint)</span><br><span class="line">        d1 = v1 - checkpoint;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        d1 = checkpoint - v1;</span><br><span class="line">    <span class="keyword">if</span> (v2 &gt; checkpoint)</span><br><span class="line">        d2 = v2 - checkpoint;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        d2 = checkpoint - v2;</span><br><span class="line">    <span class="keyword">if</span> (v3 &gt; checkpoint)</span><br><span class="line">        d3 = v3 - checkpoint;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        d3 = checkpoint - v3;</span><br><span class="line">    <span class="keyword">if</span> (d1 &lt;= d2 &amp;&amp; d1 &lt;= d3)</span><br><span class="line">        <span class="keyword">return</span> v1;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (d2 &lt;= d1 &amp;&amp; d2 &lt;= d3)</span><br><span class="line">        <span class="keyword">return</span> v2;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="任务二实现tcp-receiver">任务二：实现TCP Receiver</h2>
+<h3 id="tcp-receiver功能"><code>TCP Receiver</code>功能</h3>
+<ul>
+<li>接收TCP另一端传来的segments</li>
+<li>使用<code>StreamReassembler</code>重组<code>ByteStream</code></li>
+<li>计算ackno和window size，这两个信息最终会通过一个outgoing
+segment传输回TCP的另一端</li>
+</ul>
+<h3 id="tcp-segment的结构">TCP segment的结构</h3>
+<p><img src="/.com//TCP%20segment.png"></p>
+<ul>
+<li>本实验关注的是<strong>seqno、payload、SYN标志和FIN标志</strong>，它们是由sender写入，由receiver读取的</li>
+</ul>
+<h3 id="实现segment_received成员函数">实现<code>segment_received()</code>成员函数</h3>
+<h4 id="功能描述">功能描述</h4>
+<ul>
+<li>记录ISN，假如接收到一个设置了SYN标志的TCP
+Segment，需要记录ISN，因为此后的seqno与stream
+index之间的转换需要用到ISN</li>
+<li>将数据或者eof送入<code>StreamReassembler</code>，将TCP
+segment的payload中的数据送入<code>StreamReassembler</code>，同时若TCP
+segment的header设置了FIN标志，代表已到达eof，因此同样将eof送入<code>StreamReassembler</code></li>
+</ul>
+<h4 id="分析-1">分析</h4>
+<ul>
+<li>对于包含SYN flag的TCP
+segment，如果它带有payload，则其data的首个字节的seqno，应该是TCP
+header中的seqno的后一个，因为TCP header中的seqno对应的时SYN
+flag的seqno</li>
+<li>在进行seqno和stream
+index之间的转换时，需要考虑SYN的影响，因此计算的<code>index</code>最后要减一</li>
+</ul>
+<h4 id="代码-2">代码</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TCPReceiver::segment_received</span><span class="params">(<span class="keyword">const</span> TCPSegment &amp;seg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// set the ISN if necessary</span></span><br><span class="line">    WrappingInt32 seqno = seg.<span class="built_in">header</span>().seqno;</span><br><span class="line">    <span class="keyword">if</span> (seg.<span class="built_in">header</span>().syn) &#123;</span><br><span class="line">        _isn = seqno;</span><br><span class="line">        seqno = seqno + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// push any data, or eof to the StreamReassembler</span></span><br><span class="line">    <span class="keyword">if</span> (_isn) &#123;</span><br><span class="line">        <span class="keyword">uint64_t</span> index = <span class="built_in">unwrap</span>(seqno, _isn.<span class="built_in">value</span>(), _checkpoint) - <span class="number">1</span>;</span><br><span class="line">        _checkpoint = index;</span><br><span class="line">        _reassembler.<span class="built_in">push_substring</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> std::string&gt;(seg.<span class="built_in">payload</span>().<span class="built_in">str</span>()), index, seg.<span class="built_in">header</span>().fin);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现ackno成员函数">实现<code>ackno()</code>成员函数</h3>
+<h4 id="分析-2">分析</h4>
+<ul>
+<li>我们通过<code>stream_out().bytes_written()</code>可以获取当前需要的首个字节的stream
+index，考虑将其转换为seqno</li>
+<li>考虑SYN flag，需要将其加1</li>
+<li>考虑FIN flag，也需要将其加1，但这只有在FIN
+flag被reassembled时才需要执行，也就是说并非收到了FIN flag为真的TCP
+segment就执行，而是<code>StreamReassembler</code>类将其送入<code>ByteStream</code>时才执行，这可以通过<code>stream_out().input_ended()</code>进行判断</li>
+</ul>
+<h4 id="代码-3">代码</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">optional&lt;WrappingInt32&gt; <span class="title">TCPReceiver::ackno</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (!_isn)</span><br><span class="line">        <span class="keyword">return</span> nullopt;</span><br><span class="line">    <span class="comment">// considering syn flag</span></span><br><span class="line">    <span class="keyword">uint64_t</span> index = <span class="built_in">stream_out</span>().<span class="built_in">bytes_written</span>() + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// considering fin flag</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">stream_out</span>().<span class="built_in">input_ended</span>())</span><br><span class="line">        ++index;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">wrap</span>(index, _isn.<span class="built_in">value</span>());</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现window_size成员函数">实现<code>window_size()</code>成员函数</h3>
+<h4 id="分析-3">分析</h4>
+<ul>
+<li><code>window_size</code>代表的是当前第一个未接收的字节编号，与当前第一个未assembled的字节编号的差</li>
+<li>回忆Lab1中<code>StreamReassembler</code>类的capacity的含义，它是第一个未接收的字节编号，与第一个未被<code>ByteStream</code>的reader读出的字节编号之间的差，包含了<code>ByteStream</code>存储和<code>StreamReassembler</code>存储区中的字节</li>
+<li>对比两者定义，可以发现<code>window_size</code>等于<code>StreamReassembler</code>类的capacity，减去<code>ByteStream</code>存储区的字节数，因此通过<code>_capacity - stream_out().buffer_size()</code>可以直接获得<code>window_size</code></li>
+</ul>
+<h4 id="代码-4">代码</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">TCPReceiver::window_size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> _capacity - <span class="built_in">stream_out</span>().<span class="built_in">buffer_size</span>();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码-5">代码</h2>
+<ul>
+<li><code>wrapping_integers.cc</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;wrapping_integers.hh&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Dummy implementation of a 32-bit wrapping integer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// For Lab 2, please replace with a real implementation that passes the</span></span><br><span class="line"><span class="comment">// automated checks run by `make check_lab2`.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Targs&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DUMMY_CODE</span><span class="params">(Targs &amp;&amp;... <span class="comment">/* unused */</span>)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! Transform an &quot;absolute&quot; 64-bit sequence number (zero-indexed) into a WrappingInt32</span></span><br><span class="line"><span class="comment">//! \param n The input absolute 64-bit sequence number</span></span><br><span class="line"><span class="comment">//! \param isn The initial sequence number</span></span><br><span class="line"><span class="function">WrappingInt32 <span class="title">wrap</span><span class="params">(<span class="keyword">uint64_t</span> n, WrappingInt32 isn)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> mod = <span class="number">1ul</span> &lt;&lt; <span class="number">32</span>;</span><br><span class="line">    n %= mod;</span><br><span class="line">    <span class="keyword">uint64_t</span> isn1 = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(isn.<span class="built_in">raw_value</span>());</span><br><span class="line">    <span class="keyword">uint64_t</span> r = (n + isn1) % mod;</span><br><span class="line">    <span class="keyword">return</span> WrappingInt32&#123;<span class="keyword">static_cast</span>&lt;<span class="keyword">uint32_t</span>&gt;(r)&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//! Transform a WrappingInt32 into an &quot;absolute&quot; 64-bit sequence number (zero-indexed)</span></span><br><span class="line"><span class="comment">//! \param n The relative sequence number</span></span><br><span class="line"><span class="comment">//! \param isn The initial sequence number</span></span><br><span class="line"><span class="comment">//! \param checkpoint A recent absolute 64-bit sequence number</span></span><br><span class="line"><span class="comment">//! \returns the 64-bit sequence number that wraps to `n` and is closest to `checkpoint`</span></span><br><span class="line"><span class="comment">//!</span></span><br><span class="line"><span class="comment">//! \note Each of the two streams of the TCP connection has its own ISN. One stream</span></span><br><span class="line"><span class="comment">//! runs from the local TCPSender to the remote TCPReceiver and has one ISN,</span></span><br><span class="line"><span class="comment">//! and the other stream runs from the remote TCPSender to the local TCPReceiver and</span></span><br><span class="line"><span class="comment">//! has a different ISN.</span></span><br><span class="line"><span class="function"><span class="keyword">uint64_t</span> <span class="title">unwrap</span><span class="params">(WrappingInt32 n, WrappingInt32 isn, <span class="keyword">uint64_t</span> checkpoint)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> mod = <span class="number">1ul</span> &lt;&lt; <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint64_t</span> maxv = <span class="number">0xffffffffffffffff</span>;</span><br><span class="line">    <span class="keyword">uint64_t</span> d;</span><br><span class="line">    <span class="keyword">if</span> (n.<span class="built_in">raw_value</span>() &gt;= isn.<span class="built_in">raw_value</span>())    </span><br><span class="line">        d = <span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(n.<span class="built_in">raw_value</span>() - isn.<span class="built_in">raw_value</span>());</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        d = mod - <span class="keyword">static_cast</span>&lt;<span class="keyword">uint64_t</span>&gt;(isn.<span class="built_in">raw_value</span>() - n.<span class="built_in">raw_value</span>());</span><br><span class="line">    <span class="keyword">uint64_t</span> r = checkpoint % mod;</span><br><span class="line">    <span class="keyword">uint64_t</span> v1 = checkpoint - r + d, v2, v3;</span><br><span class="line">    <span class="comment">// possible val can be v1, v1 - mod, v1 + mod</span></span><br><span class="line">    <span class="keyword">if</span> (v1 &lt; mod) &#123;</span><br><span class="line">        v2 = v3 = v1 + mod;</span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (maxv - v1 &lt; mod) &#123;</span><br><span class="line">        v2 = v3 = v1 - mod;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        v2 = v1 + mod;</span><br><span class="line">        v3 = v1 - mod;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">uint64_t</span> d1, d2, d3;</span><br><span class="line">    <span class="keyword">if</span> (v1 &gt; checkpoint)</span><br><span class="line">        d1 = v1 - checkpoint;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        d1 = checkpoint - v1;</span><br><span class="line">    <span class="keyword">if</span> (v2 &gt; checkpoint)</span><br><span class="line">        d2 = v2 - checkpoint;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        d2 = checkpoint - v2;</span><br><span class="line">    <span class="keyword">if</span> (v3 &gt; checkpoint)</span><br><span class="line">        d3 = v3 - checkpoint;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        d3 = checkpoint - v3;</span><br><span class="line">    <span class="keyword">if</span> (d1 &lt;= d2 &amp;&amp; d1 &lt;= d3)</span><br><span class="line">        <span class="keyword">return</span> v1;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (d2 &lt;= d1 &amp;&amp; d2 &lt;= d3)</span><br><span class="line">        <span class="keyword">return</span> v2;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>tcp_receiver.cc</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;tcp_receiver.hh&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Dummy implementation of a TCP receiver</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// For Lab 2, please replace with a real implementation that passes the</span></span><br><span class="line"><span class="comment">// automated checks run by `make check_lab2`.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Targs&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DUMMY_CODE</span><span class="params">(Targs &amp;&amp;... <span class="comment">/* unused */</span>)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TCPReceiver::segment_received</span><span class="params">(<span class="keyword">const</span> TCPSegment &amp;seg)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// set the ISN if necessary</span></span><br><span class="line">    WrappingInt32 seqno = seg.<span class="built_in">header</span>().seqno;</span><br><span class="line">    <span class="keyword">if</span> (seg.<span class="built_in">header</span>().syn) &#123;</span><br><span class="line">        _isn = seqno;</span><br><span class="line">        seqno = seqno + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// push any data, or eof to the StreamReassembler</span></span><br><span class="line">    <span class="keyword">if</span> (_isn) &#123;</span><br><span class="line">        <span class="keyword">uint64_t</span> index = <span class="built_in">unwrap</span>(seqno, _isn.<span class="built_in">value</span>(), _checkpoint) - <span class="number">1</span>;</span><br><span class="line">        _checkpoint = index;</span><br><span class="line">        _reassembler.<span class="built_in">push_substring</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> std::string&gt;(seg.<span class="built_in">payload</span>().<span class="built_in">str</span>()), index, seg.<span class="built_in">header</span>().fin);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">optional&lt;WrappingInt32&gt; <span class="title">TCPReceiver::ackno</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (!_isn)</span><br><span class="line">        <span class="keyword">return</span> nullopt;</span><br><span class="line">    <span class="comment">// considering syn flag</span></span><br><span class="line">    <span class="keyword">uint64_t</span> index = <span class="built_in">stream_out</span>().<span class="built_in">bytes_written</span>() + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// considering fin flag</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">stream_out</span>().<span class="built_in">input_ended</span>())</span><br><span class="line">        ++index;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">wrap</span>(index, _isn.<span class="built_in">value</span>());</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">TCPReceiver::window_size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> _capacity - <span class="built_in">stream_out</span>().<span class="built_in">buffer_size</span>();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>tcp_receiver.hh</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> SPONGE_LIBSPONGE_TCP_RECEIVER_HH</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SPONGE_LIBSPONGE_TCP_RECEIVER_HH</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;byte_stream.hh&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;stream_reassembler.hh&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;tcp_segment.hh&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;wrapping_integers.hh&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;optional&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//! \brief The &quot;receiver&quot; part of a TCP implementation.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//! Receives and reassembles segments into a ByteStream, and computes</span></span><br><span class="line"><span class="comment">//! the acknowledgment number and window size to advertise back to the</span></span><br><span class="line"><span class="comment">//! remote TCPSender.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TCPReceiver</span> &#123;</span></span><br><span class="line">    <span class="comment">//! Our data structure for re-assembling bytes.</span></span><br><span class="line">    StreamReassembler _reassembler;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! The maximum number of bytes we&#x27;ll store.</span></span><br><span class="line">    <span class="keyword">size_t</span> _capacity;</span><br><span class="line"></span><br><span class="line">    std::optional&lt;WrappingInt32&gt; _isn = nullopt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint64_t</span> _checkpoint = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//! \brief Construct a TCP receiver</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! \param capacity the maximum number of bytes that the receiver will</span></span><br><span class="line">    <span class="comment">//!                 store in its buffers at any give time.</span></span><br><span class="line">    <span class="built_in">TCPReceiver</span>(<span class="keyword">const</span> <span class="keyword">size_t</span> capacity) : _reassembler(capacity), _capacity(capacity) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \name Accessors to provide feedback to the remote TCPSender</span></span><br><span class="line">    <span class="comment">//!@&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \brief The ackno that should be sent to the peer</span></span><br><span class="line">    <span class="comment">//! \returns empty if no SYN has been received</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! This is the beginning of the receiver&#x27;s window, or in other words, the sequence number</span></span><br><span class="line">    <span class="comment">//! of the first byte in the stream that the receiver hasn&#x27;t received.</span></span><br><span class="line">    <span class="function">std::optional&lt;WrappingInt32&gt; <span class="title">ackno</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \brief The window size that should be sent to the peer</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! Operationally: the capacity minus the number of bytes that the</span></span><br><span class="line">    <span class="comment">//! TCPReceiver is holding in its byte stream (those that have been</span></span><br><span class="line">    <span class="comment">//! reassembled, but not consumed).</span></span><br><span class="line">    <span class="comment">//!</span></span><br><span class="line">    <span class="comment">//! Formally: the difference between (a) the sequence number of</span></span><br><span class="line">    <span class="comment">//! the first byte that falls after the window (and will not be</span></span><br><span class="line">    <span class="comment">//! accepted by the receiver) and (b) the sequence number of the</span></span><br><span class="line">    <span class="comment">//! beginning of the window (the ackno).</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">window_size</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">//!@&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \brief number of bytes stored but not yet reassembled</span></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">unassembled_bytes</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _reassembler.<span class="built_in">unassembled_bytes</span>(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \brief handle an inbound segment</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">segment_received</span><span class="params">(<span class="keyword">const</span> TCPSegment &amp;seg)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//! \name &quot;Output&quot; interface for the reader</span></span><br><span class="line">    <span class="comment">//!@&#123;</span></span><br><span class="line">    <span class="function">ByteStream &amp;<span class="title">stream_out</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _reassembler.<span class="built_in">stream_out</span>(); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">const</span> ByteStream &amp;<span class="title">stream_out</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _reassembler.<span class="built_in">stream_out</span>(); &#125;</span><br><span class="line">    <span class="comment">//!@&#125;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  <span class="comment">// SPONGE_LIBSPONGE_TCP_RECEIVER_HH</span></span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/02/11/CS-144-Summary/" title="CS-144 Summary">http://example.com/2022/02/11/CS-144-Summary/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CS-144/" rel="tag"># CS-144</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/11/C++-Primer-Chapter-2/" rel="prev" title="C++ Primer Chapter 2">
+                  <i class="fa fa-chevron-left"></i> C++ Primer Chapter 2
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/12/C++-Primer-Chapter-3/" rel="next" title="C++ Primer Chapter 3">
+                  C++ Primer Chapter 3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

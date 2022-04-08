@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="C++ Primer 13章笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer Chapter 13">
+<meta property="og:url" content="http://example.com/2022/02/19/C++-Primer-Chapter-13/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="C++ Primer 13章笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-19T06:34:11.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.850Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/02/19/C++-Primer-Chapter-13/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/02/19/C++-Primer-Chapter-13/","path":"2022/02/19/C++-Primer-Chapter-13/","title":"C++ Primer Chapter 13"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ Primer Chapter 13 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC13%E7%AB%A0-%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6"><span class="nav-text">第13章 拷贝控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC%E4%B8%8E%E9%94%80%E6%AF%81"><span class="nav-text">13.1 拷贝、赋值与销毁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">拷贝构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">合成拷贝构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">拷贝初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%92%8C%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-text">参数和返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E5%8F%AF%E4%BB%A5%E7%BB%95%E8%BF%87%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">编译器可以绕过拷贝构造函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">拷贝赋值运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">重载赋值运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">合成拷贝赋值运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-text">析构函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%AE%8C%E6%88%90%E4%BB%80%E4%B9%88%E5%B7%A5%E4%BD%9C"><span class="nav-text">析构函数完成什么工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%B0%83%E7%94%A8%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-text">什么时候调用析构函数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-text">合成析构函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%BA%94%E6%B3%95%E5%88%99"><span class="nav-text">三&#x2F;五法则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E7%9A%84%E7%B1%BB%E4%B9%9F%E9%9C%80%E8%A6%81%E6%8B%B7%E8%B4%9D%E5%92%8C%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C"><span class="nav-text">需要析构函数的类也需要拷贝和赋值操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%8B%B7%E8%B4%9D%E6%93%8D%E4%BD%9C%E7%9A%84%E7%B1%BB%E4%B9%9F%E9%9C%80%E8%A6%81%E8%B5%8B%E5%80%BC%E6%93%8D%E4%BD%9C%E5%8F%8D%E4%B9%8B%E4%BA%A6%E7%84%B6"><span class="nav-text">需要拷贝操作的类也需要赋值操作，反之亦然</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8default"><span class="nav-text">使用&#x3D;default</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E6%AD%A2%E6%8B%B7%E8%B4%9D"><span class="nav-text">阻止拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%88%A0%E9%99%A4%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-text">定义删除的函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%8D%E8%83%BD%E6%98%AF%E5%88%A0%E9%99%A4%E7%9A%84%E6%88%90%E5%91%98"><span class="nav-text">析构函数不能是删除的成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90%E7%9A%84%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E6%88%90%E5%91%98%E5%8F%AF%E8%83%BD%E6%98%AF%E5%88%A0%E9%99%A4%E7%9A%84"><span class="nav-text">合成的拷贝控制成员可能是删除的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#private%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6"><span class="nav-text">private拷贝控制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E5%92%8C%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86"><span class="nav-text">13.2 拷贝控制和资源管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E5%83%8F%E5%80%BC%E7%9A%84%E7%B1%BB"><span class="nav-text">行为像值的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%80%BC%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">类值拷贝赋值运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E5%83%8F%E6%8C%87%E9%92%88%E7%9A%84%E7%B1%BB"><span class="nav-text">行为像指针的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-text">引用计数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%93%8D%E4%BD%9C"><span class="nav-text">13.3 交换操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#swap%E5%87%BD%E6%95%B0%E5%BA%94%E8%AF%A5%E8%B0%83%E7%94%A8swap%E8%80%8C%E4%B8%8D%E6%98%AFstdswap"><span class="nav-text">swap函数应该调用swap，而不是std::swap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E4%B8%AD%E4%BD%BF%E7%94%A8swap"><span class="nav-text">在赋值运算符中使用swap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E7%A4%BA%E4%BE%8B"><span class="nav-text">13.4 拷贝控制示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%B1%BB"><span class="nav-text">13.5 动态内存管理类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0strvec%E7%B1%BB"><span class="nav-text">实现StrVec类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%A7%BB%E5%8A%A8"><span class="nav-text">13.6 对象移动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-text">右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E6%8C%81%E4%B9%85%E5%8F%B3%E5%80%BC%E7%9F%AD%E6%9A%82"><span class="nav-text">左值持久，右值短暂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E6%98%AF%E5%B7%A6%E5%80%BC"><span class="nav-text">变量是左值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%BA%93move%E5%87%BD%E6%95%B0"><span class="nav-text">标准库move函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E7%A7%BB%E5%8A%A8%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">移动构造函数和移动赋值运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%93%8D%E4%BD%9C%E6%A0%87%E5%87%86%E5%BA%93%E5%AE%B9%E5%99%A8%E5%92%8C%E5%BC%82%E5%B8%B8"><span class="nav-text">移动操作、标准库容器和异常</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%8C%87%E6%98%8Enoexcept"><span class="nav-text">为什么需要指明noexcept</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">移动赋值运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%90%8E%E6%BA%90%E5%AF%B9%E8%B1%A1%E5%BF%85%E9%A1%BB%E5%8F%AF%E6%9E%90%E6%9E%84"><span class="nav-text">移后源对象必须可析构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90%E7%9A%84%E7%A7%BB%E5%8A%A8%E6%93%8D%E4%BD%9C"><span class="nav-text">合成的移动操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E5%8F%B3%E5%80%BC%E6%8B%B7%E8%B4%9D%E5%B7%A6%E5%80%BC"><span class="nav-text">移动右值、拷贝左值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%B3%E5%80%BC%E4%B9%9F%E8%A2%AB%E6%8B%B7%E8%B4%9D"><span class="nav-text">如果没有移动构造函数，右值也被拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%B9%B6%E4%BA%A4%E6%8D%A2%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8C%E7%A7%BB%E5%8A%A8%E6%93%8D%E4%BD%9C"><span class="nav-text">拷贝并交换赋值运算符和移动操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E4%BA%94%E6%B3%95%E5%88%99-1"><span class="nav-text">三&#x2F;五法则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-text">移动迭代器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E9%9A%8F%E6%84%8F%E4%BD%BF%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%93%8D%E4%BD%9C"><span class="nav-text">不要随意使用移动操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E5%92%8C%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-text">右值引用和成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%90%E5%88%B6this%E6%8C%87%E5%90%91%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%BF%85%E9%A1%BB%E6%98%AF%E5%B7%A6%E5%80%BC"><span class="nav-text">限制this指向的对象必须是左值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E5%92%8C%E5%BC%95%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-text">重载和引用函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A0%E9%A2%98"><span class="nav-text">习题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/C++-Primer-Chapter-13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer Chapter 13
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-19 14:34:11" itemprop="dateCreated datePublished" datetime="2022-02-19T14:34:11+08:00">2022-02-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>C++ Primer 13章笔记</strong></p>
+<span id="more"></span>
+<h1 id="第13章-拷贝控制">第13章 拷贝控制</h1>
+<ul>
+<li><p>构造函数控制在创建此类型对象时做什么</p></li>
+<li><p>类似地，我们可以控制该类型对象<strong>拷贝、赋值、移动或销毁</strong>时做什么，这是通过<strong>拷贝构造函数、移动构造函数、拷贝赋值运算符、移动赋值运算符、析构函数</strong>实现的</p></li>
+<li><p>以上五种特殊成员函数，其中</p>
+<ul>
+<li><strong>拷贝和移动构造函数</strong>定义当用同类型的另一个对象<strong>初始化</strong>本对象时做什么</li>
+<li><strong>拷贝和移动赋值运算符</strong>定义了当将一个对象<strong>赋予</strong>同类型的另一个对象时做什么</li>
+<li><strong>析构函数</strong>定义了当此类型对象<strong>销毁</strong>时做什么</li>
+</ul></li>
+<li><p>如果一个类没有定义以上拷贝控制成员，编译器会自动为它定义缺失的操作，但有时候我们必须自定义</p></li>
+</ul>
+<h2 id="拷贝赋值与销毁">13.1 拷贝、赋值与销毁</h2>
+<h3 id="拷贝构造函数">拷贝构造函数</h3>
+<ul>
+<li>如果一个构造函数的<strong>第一个参数是自身类类型的引用</strong>，且任何额外参数都有默认值，则它是拷贝构造函数</li>
+<li>第一个参数<strong>必须是一个引用类型</strong>，且几乎总是一个<strong>const引用</strong></li>
+<li>拷贝构造函数通常<strong>不应该是<code>explicit</code>的</strong></li>
+</ul>
+<h4 id="合成拷贝构造函数">合成拷贝构造函数</h4>
+<ul>
+<li><p>如果我们没有定义拷贝构造函数，编译器会为我们定义一个，称为<strong>合成拷贝构造函数</strong></p></li>
+<li><p>一般情况，合成拷贝构造函数会<strong>依次将每个非<code>static</code>成员拷贝到正在创建的对象中</strong></p></li>
+<li><p>成员类型决定了如何拷贝</p>
+<ul>
+<li><strong>内置类型</strong>直接拷贝</li>
+<li><strong>类类型</strong>则使用该类的拷贝构造函数进行拷贝</li>
+<li>特别地，对于<strong>数组类型</strong>将<strong>逐个元素地进行拷贝</strong></li>
+</ul></li>
+</ul>
+<h4 id="拷贝初始化">拷贝初始化</h4>
+<ul>
+<li>直接初始化与拷贝初始化的区别
+<ul>
+<li>使用<strong>直接初始化</strong>时，实际上要求编译器使用普通的<strong>函数匹配</strong>来选择与我们提供的参数最匹配的<strong>构造函数</strong></li>
+<li>使用<strong>拷贝初始化</strong>时，是依靠<strong>拷贝构造函数</strong>或<strong>移动构造函数</strong>完成的</li>
+</ul></li>
+<li>拷贝初始化在何时发生
+<ul>
+<li>使用<code>=</code><strong>定义变量</strong></li>
+<li>将对象作为实参传给<strong>非引用类型的形参</strong></li>
+<li>从<strong>返回类型为非引用类型</strong>的函数中返回一个对象</li>
+<li>用<strong>花括号列表初始化</strong>数组元素或聚合类中的成员</li>
+<li>某些类类型会对它们所分配的对象使用拷贝初始化，如<strong>初始化标准库容器，或调用<code>insert</code>或<code>push</code>成员时</strong>（使用<code>emplace</code>则为直接初始化）</li>
+</ul></li>
+</ul>
+<h4 id="参数和返回值">参数和返回值</h4>
+<ul>
+<li>将对象作为实参传给<strong>非引用类型的形参</strong>，从<strong>返回类型为非引用类型</strong>的函数中返回一个对象时，会进行拷贝初始化</li>
+<li>这解释了<strong>为什么拷贝构造函数必须接受引用类型</strong>。如果并非引用类型，则为了调用构造拷贝函数，我们必须拷贝实参，而为了拷贝实参又必须调用构造拷贝函数，形成无限循环</li>
+</ul>
+<h4 id="编译器可以绕过拷贝构造函数">编译器可以绕过拷贝构造函数</h4>
+<ul>
+<li><p>编译器<strong>可能跳过拷贝/移动构造函数</strong>，采用<strong>直接初始化</strong>的形式创建对象</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string book = <span class="string">&quot;111&quot;</span>;</span><br><span class="line"><span class="function">string <span class="title">book</span><span class="params">(<span class="string">&quot;111&quot;</span>)</span></span>;		</span><br><span class="line"><span class="comment">// 编译器可能略过拷贝构造函数, 采用直接初始化, 即上式被改写为下式</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="拷贝赋值运算符">拷贝赋值运算符</h3>
+<ul>
+<li>控制对象如何<strong>赋值</strong></li>
+<li>若类未定义拷贝赋值运算符，编译器会合成一个</li>
+</ul>
+<h4 id="重载赋值运算符">重载赋值运算符</h4>
+<ul>
+<li><strong>重载运算符</strong>本质上是<strong>函数</strong>，也有返回类型和形参列表</li>
+<li>重载运算符的<strong>名字</strong>是<code>operator</code>关键字后接要定义的运算符符号，如重载赋值运算符的名字为<code>operator=</code></li>
+<li>重载运算符的<strong>参数</strong>表示运算符的<strong>运算对象</strong>，赋值运算符必须定义为成员函数，其<strong>左侧运算对象</strong>隐式地绑定在隐式的<code>this</code>参数中，<strong>右侧运算对象</strong>作为显式参数传递</li>
+<li>重载赋值运算符一般<strong>返回指向左侧运算对象的引用</strong></li>
+</ul>
+<h4 id="合成拷贝赋值运算符">合成拷贝赋值运算符</h4>
+<ul>
+<li>若类未定义自己的拷贝赋值运算符，编译器会生成一个<strong>合成的拷贝赋值运算符</strong></li>
+<li>一般地，它会将右侧运算对象的每个<strong>非<code>static</code>成员</strong>赋予左侧运算对象的对应成员
+<ul>
+<li>对于<strong>内置类型</strong>直接赋值</li>
+<li>对于<strong>类类型</strong>调用该类的拷贝赋值运算符进行赋值</li>
+<li>对于<strong>数组类型</strong>，将<strong>逐个元素地进行赋值</strong></li>
+</ul></li>
+<li>类似重载赋值运算符，合成拷贝赋值运算符也<strong>返回指向左侧运算对象的引用</strong></li>
+</ul>
+<h3 id="析构函数">析构函数</h3>
+<ul>
+<li><p>析构函数<strong>释放</strong>对象使用的资源，并<strong>销毁</strong>对象的非<code>static</code>数据成员</p></li>
+<li><p>析构函数的<strong>名字</strong>由<code>~</code>接类名构成，不接受<strong>参数</strong>，没有<strong>返回值</strong></p></li>
+<li><p>一个类只有<strong>唯一</strong>一个析构函数</p></li>
+</ul>
+<h4 id="析构函数完成什么工作">析构函数完成什么工作</h4>
+<ul>
+<li><p>析构函数由一个<strong>函数体</strong>和一个<strong>析构部分</strong>，析构函数首先执行函数体，然后执行析构部分</p></li>
+<li><p>析构部分是<strong>隐式</strong>的，它会按成员初始化顺序的<strong>逆序销毁成员</strong>，成员销毁完全依赖于成员类型</p>
+<ul>
+<li>销毁<strong>类类型</strong>的成员将执行成员自己的析构函数</li>
+<li>销毁<strong>内置类型</strong>不需要操作</li>
+</ul></li>
+<li><p>特别地，<strong>隐式销毁一个内置指针类型，不会<code>delete</code>它所指向的对象</strong></p></li>
+<li><p><strong>智能指针</strong>是类类型，具有析构函数，对于<code>unique_ptr</code>销毁时会<strong>销毁所指对象</strong>，对于<code>shared_ptr</code>销毁时若引用计数为0也会销毁所指对象</p></li>
+</ul>
+<h4 id="什么时候调用析构函数">什么时候调用析构函数？</h4>
+<ul>
+<li>只要<strong>对象销毁</strong>，就会执行析构函数，包括
+<ul>
+<li>变量在<strong>离开其作用域</strong>时被销毁</li>
+<li>一个对象被销毁时，其<strong>成员被销毁</strong></li>
+<li><strong>容器</strong>（标注库容器或数组）被销毁时，其元素被销毁</li>
+<li><strong>动态分配的对象</strong>，指向它的指针被<code>delete</code>时</li>
+<li><strong>l临时对象</strong>在创建它的完整表达式结束时</li>
+</ul></li>
+<li>当一个对象的<strong>引用或指针</strong>离开其作用域时，析构函数不会执行</li>
+</ul>
+<h4 id="合成析构函数">合成析构函数</h4>
+<ul>
+<li>类未定义自己的析构函数，则编译器会为它定义一个<strong>合成析构函数</strong></li>
+<li>一般地，<strong>合成析构函数的函数体为空</strong>（其数据成员在析构部分被销毁）</li>
+</ul>
+<h3 id="三五法则">三/五法则</h3>
+<ul>
+<li>对于类的<strong>五个拷贝控制成员</strong>，通常被看作一个<strong>整体</strong>，只需要其中一个操作而不需要定义所有操作的情况很罕见，即“要么都不用定义，要么都要定义”</li>
+</ul>
+<h4 id="需要析构函数的类也需要拷贝和赋值操作">需要析构函数的类也需要拷贝和赋值操作</h4>
+<ul>
+<li>首先确定类是否需要自定义析构函数，<strong>如果需要析构函数，那么这个类几乎肯定也需要一个拷贝构造函数和一个拷贝赋值运算符</strong></li>
+</ul>
+<h4 id="需要拷贝操作的类也需要赋值操作反之亦然">需要拷贝操作的类也需要赋值操作，反之亦然</h4>
+<ul>
+<li>某些类只需要拷贝或赋值操作，不需要析构函数</li>
+</ul>
+<h3 id="使用default">使用<code>=default</code></h3>
+<ul>
+<li><p>可以通过将<strong>拷贝控制成员</strong>定义为<code>=default</code>来<strong>显式</strong>地要求编译器<strong>生成合成的版本</strong></p></li>
+<li><p>只能对具有合成版本的成员函数使用<code>=default</code>，包括<strong>默认构造函数</strong>，和五个<strong>拷贝控制成员</strong></p></li>
+</ul>
+<h3 id="阻止拷贝">阻止拷贝</h3>
+<ul>
+<li>对某些类来说，拷贝或赋值操作是无意义的，需要采取某种机制阻止拷贝或赋值，如<code>iostream</code>类阻止了拷贝</li>
+</ul>
+<h4 id="定义删除的函数">定义删除的函数</h4>
+<ul>
+<li>将拷贝构造函数和拷贝赋值运算符定义为<strong>删除的函数（deleted
+function）</strong></li>
+<li>deleted
+function指<strong>声明了</strong>，<strong>但不能以任何方式调用</strong>它们的函数，通过在<strong>形参列表后加上<code>=delete</code></strong>指明</li>
+<li><code>=default</code>与<code>=delete</code>的区别
+<ul>
+<li><code>=delete</code>必须出现在函数第一次声明的时候</li>
+<li>可以对任何函数指定<code>=delete</code></li>
+</ul></li>
+</ul>
+<h4 id="析构函数不能是删除的成员">析构函数不能是删除的成员</h4>
+<ul>
+<li><strong>不能删除析构函数</strong></li>
+<li>如果析构函数被删除，则<strong>不允许定义该类型的变量</strong>或<strong>创建该类的临时对象</strong></li>
+<li>如果一个类的<strong>某个成员的类型删除了析构函数</strong>，也不能定义该类的变量或临时对象</li>
+<li>特别地，我们<strong>可以动态分配这种类型的对象</strong>，但无法销毁对象，不能<code>delete</code>指向该对象的指针，因为没有析构函数，</li>
+</ul>
+<h4 id="合成的拷贝控制成员可能是删除的">合成的拷贝控制成员可能是删除的</h4>
+<ul>
+<li><p>如果类的<strong>某个成员</strong>的<strong>析构函数</strong>是<strong>删除的或不可访问</strong>的，则它的<strong>合成析构函数、默认构造函数、合成拷贝构造函数</strong>是删除的</p>
+<blockquote>
+<p>这样的目的是为了<strong>防止创建无法销毁的对象</strong></p>
+</blockquote></li>
+<li><p>如果类的某个成员的<strong>合成拷贝构造函数</strong>是删除的或不可访问的，则类的<strong>合成拷贝构造函数</strong>是删除的</p>
+<blockquote>
+<p>无法拷贝该成员</p>
+</blockquote></li>
+<li><p>如果类的某个成员的<strong>合成拷贝赋值运算符</strong>是删除的，或类有一个<strong>const成员</strong>，或一个<strong>引用成员</strong>，则类的合成拷贝赋值运算符是删除的</p>
+<blockquote>
+<p>我们不能对const成员赋值；我们虽然可以对引用成员赋值，但是这种行为使得两个类的引用成员指向同一个对象，大多数情况下这种行为并非所期望的</p>
+</blockquote></li>
+<li><p>如果类有一个<strong>引用成员且没有类内初始化器</strong>，或类有一个<strong>const成员且没有类内初始化器</strong>且其<strong>类型未显式定义默认构造函数</strong>，则类的<strong>默认构造函数</strong>是删除的</p>
+<blockquote>
+<p>因为我们必须初始化const成员，引用成员</p>
+</blockquote></li>
+<li><p>总之，如果一个类有数据成员<strong>不能默认构造、拷贝、复制、销毁</strong>，则<strong>对应的成员函数被定义为删除的</strong></p></li>
+</ul>
+<h4 id="private拷贝控制"><code>private</code>拷贝控制</h4>
+<ul>
+<li><p>被删除的函数是新标准添加的，此前使用将拷贝构造函数和拷贝赋值运算符<strong>声明为<code>private</code>的方式来阻止拷贝</strong></p></li>
+<li><p>特别地，友元和成员函数仍可以拷贝对象，为此，我们将拷贝成员<strong>声明为<code>private</code>的</strong>，同时<strong>不定义它们</strong></p></li>
+<li><p>试图<strong>访问一个未定义的成员</strong>将导致<strong>链接时错误</strong></p></li>
+<li><p>因此，试图拷贝对象的<strong>用户代码</strong>将导致<strong>编译错误</strong>，试图拷贝对象的<strong>成员函数或友元</strong>将导致<strong>链接时错误</strong>，从而阻止了拷贝</p></li>
+</ul>
+<h2 id="拷贝控制和资源管理">13.2 拷贝控制和资源管理</h2>
+<ul>
+<li>通常，
+<strong>管理类外资源的类</strong>必须定义拷贝控制成员。因为需要析构函数来释放对象所分配的资源，而需要析构函数的类也需要拷贝构造函数和拷贝赋值运算符</li>
+<li><strong>拷贝语义</strong>：我们可以定义拷贝操作，使类的行为看起来<strong>像一个值</strong>，或<strong>像一个指针</strong></li>
+</ul>
+<h3 id="行为像值的类">行为像值的类</h3>
+<ul>
+<li>类的行为像一个值，意味着它有自己的状态，当我们拷贝对象时，<strong>副本和原对象时完全独立的</strong></li>
+</ul>
+<h4 id="类值拷贝赋值运算符">类值拷贝赋值运算符</h4>
+<ul>
+<li><p>编写赋值运算符时，必须保证</p>
+<ul>
+<li>如果将一个<strong>对象赋予它自身</strong>，赋值运算符必须能正确工作</li>
+<li>大多数赋值运算符<strong>组合了析构函数和拷贝构造函数</strong>的工作</li>
+</ul></li>
+<li><p>编写赋值运算符时，好的方式是<strong>先将右侧运算对象拷贝到局部对象</strong>中，然后<strong>销毁左侧运算对象的现有成员</strong>，最后<strong>将数据从局部对象拷贝到左侧运算对象中</strong></p></li>
+<li><p>下面赋值运算符存在什么问题？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HasPtr&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> HasPtr &amp;rhs) &#123;</span><br><span class="line">    <span class="keyword">delete</span> ps;</span><br><span class="line">    ps = <span class="keyword">new</span> <span class="built_in">string</span>(*(rhs.ps));</span><br><span class="line">    i = rhs.i;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假如<code>rhs</code>和<code>*this</code>指向同一个对象，则执行<code>delete ps</code>后<code>rhs.ps</code>是一个<strong>空悬指针</strong>，对其解引用的<strong>行为和结果是未定义的</strong></p></li>
+</ul>
+<h3 id="行为像指针的类">行为像指针的类</h3>
+<ul>
+<li>类的行为像指针，则它们<strong>共享状态</strong>，副本和原对象使用相同的底层数据，改变副本也会改变原对象</li>
+</ul>
+<h4 id="引用计数">引用计数</h4>
+<ul>
+<li><strong>构造函数</strong>创建一个引用计数，初始化为1</li>
+<li><strong>拷贝构造函数</strong>共享计数器，递增该计数器</li>
+<li><strong>析构函数</strong>递减计数器，若计数值为0则销毁状态</li>
+<li><strong>赋值运算符</strong>递减左侧运算对象的计数器，若计数值为0则销毁状态，然后递增右侧运算对象的计数器，并拷贝成员</li>
+<li>我们不能将计数器作为对象的成员，解决方法是<strong>将计数器保存在动态内存中</strong></li>
+</ul>
+<h2 id="交换操作">13.3 交换操作</h2>
+<ul>
+<li>重排元素顺序的算法要交换两个元素时，会调用<code>swap</code>，如果类<strong>定义了自己的</strong><code>swap</code>则算法将使用类自定义的版本，否则使用<strong>标准库定义的</strong><code>swap</code></li>
+<li><strong>管理资源的类</strong>通常自定义一个名为<code>swap</code>的函数，<strong>避免不必要的拷贝</strong>，这可能是一种很重要的优化手段</li>
+</ul>
+<h3 id="swap函数应该调用swap而不是stdswap"><code>swap</code>函数应该调用<code>swap</code>，而不是<code>std::swap</code></h3>
+<ul>
+<li><p>调用<code>swap</code>时，如果交换的对象的类型存在特定的<code>swap</code>版本，则调用<strong>该类型自定义的</strong><code>swap</code></p></li>
+<li><p>如果该类型<strong>没有自定义</strong><code>swap</code>才调用<strong>标准库的</strong><code>std::swap</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> std::swap;</span><br><span class="line"><span class="built_in">swap</span>(lhs.ps, rhs.ps);</span><br><span class="line"><span class="built_in">swap</span>(lhs.i, rhs.i);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="在赋值运算符中使用swap">在赋值运算符中使用<code>swap</code></h3>
+<ul>
+<li><p>定义<code>swap</code>的类常用<code>swap</code>定义其赋值运算符，这种赋值运算符运用了<strong>copy
+and
+swap技术</strong>，将<strong>左侧运算对象</strong>与<strong>右侧运算对象的一个副本</strong>进行交换</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HasPtr&amp; <span class="keyword">operator</span>=(HasPtr rhs) &#123;</span><br><span class="line">    <span class="built_in">swap</span>(*<span class="keyword">this</span>, rhs);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>右侧运算对象<strong>以传值方式</strong>传递给赋值运算符（之前的版本使用传引用方式），因此<code>rhs</code>是<strong>右侧运算对象的一个副本</strong></p></li>
+<li><p>使用<strong>copy and
+swap</strong>的赋值运算符自动就是<strong>异常安全</strong>的，且能够<strong>正确处理自赋值</strong></p></li>
+</ul>
+<h2 id="拷贝控制示例">13.4 拷贝控制示例</h2>
+<ul>
+<li>略</li>
+</ul>
+<h2 id="动态内存管理类">13.5 动态内存管理类</h2>
+<ul>
+<li>某些类需要在运行时分配可变大小的内存空间，这种类通常可以（如果可以，一般应该）使用<strong>标准库容器</strong>来保存它们的数据</li>
+<li>某些<strong>类需要自己进行内存分配</strong>，必须定义自己的拷贝控制成员来管理所分配的内存</li>
+</ul>
+<h3 id="实现strvec类">实现<code>StrVec</code>类</h3>
+<h2 id="对象移动">13.6 对象移动</h2>
+<ul>
+<li>在某些情况下，对象拷贝后就立即被销毁了，此时<strong>移动而非拷贝</strong>对象会<strong>大幅度提升性能</strong></li>
+<li>例子
+<ul>
+<li>如<code>StrVec</code>类重新分配内存的过程中，更好的方式是移动元素，而非元素从旧内存拷贝到新内存</li>
+<li><code>IO</code>类或<code>unique_ptr</code>类的对象不能拷贝但可以移动</li>
+</ul></li>
+</ul>
+<h3 id="右值引用">右值引用</h3>
+<ul>
+<li>新标准引入了新的引用类型“<strong>右值引用</strong>”，它必须绑定到<strong>右值</strong></li>
+<li>右值引用的重要性质是，<strong>只能绑定到一个将要销毁的对象上</strong></li>
+<li>普通引用称为左值引用，它不能被绑定到<strong>要求转换的表达式</strong>、<strong>字面值常量</strong>、或<strong>返回右值的表达式</strong></li>
+<li>返回<strong>左值</strong>的表达式，只有<strong>左值引用</strong>可以绑定到返回左值的表达式
+<ul>
+<li>返回左值引用的函数</li>
+<li><strong>赋值</strong>运算符</li>
+<li><strong>下标</strong>运算符</li>
+<li><strong>解引用</strong>运算符</li>
+<li><strong>前置递增/递减</strong>运算符</li>
+</ul></li>
+<li>返回<strong>右值</strong>的表达式，只有<strong>const左值引用</strong>、<strong>右值引用</strong>可以绑定到返回右值的表达式
+<ul>
+<li>返回非引用类型的函数</li>
+<li><strong>算术</strong>运算符</li>
+<li><strong>关系</strong>运算符</li>
+<li><strong>位</strong>运算符</li>
+<li><strong>后置递增/递减</strong>运算符</li>
+</ul></li>
+</ul>
+<h4 id="左值持久右值短暂">左值持久，右值短暂</h4>
+<ul>
+<li><strong>左值</strong>有<strong>持久的状态</strong></li>
+<li><strong>右值</strong>要么是<strong>字面值常量</strong>，要么是在表达式求值过程中创建的<strong>临时对象</strong></li>
+<li>右值引用只能绑定到临时对象，所以
+<ul>
+<li>该引用的<strong>对象将要被销毁</strong></li>
+<li>该对象<strong>没有其他用户</strong></li>
+<li>因此，右值引用可以<strong>自由地接管所引用的对象的资源</strong></li>
+</ul></li>
+</ul>
+<h4 id="变量是左值">变量是左值</h4>
+<ul>
+<li><p><strong>变量是左值</strong>，不能将一个右值引用绑定到变量上</p></li>
+<li><p>变量可能是右值引用类型，即使如此，我们也不能将右值引用绑定到该变量上</p></li>
+</ul>
+<h4 id="标准库move函数">标准库<code>move</code>函数</h4>
+<ul>
+<li><p><code>std::move</code>可以<strong>获得绑定到左值上的右值引用类型</strong></p></li>
+<li><p><code>move</code>定义在头文件<code>utility</code>中</p></li>
+<li><p>调用<code>move</code>意味着，我们可以<strong>销毁</strong>移后源对象，也可以<strong>赋予它新值</strong>，但<strong>不能使用它的值</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;&amp;p = std::<span class="built_in">move</span>(i);</span><br><span class="line"><span class="comment">// 除了对i赋值或销毁它外, 我们不应再使用它</span></span><br></pre></td></tr></table></figure></li>
+<li><p>我们应该直接调用<code>std::move</code>，而不是<code>move</code>（这与<code>swap</code>不同，交换时我们优先调用类类型自定义的版本，若没有再调用标准库中的<code>std::swap</code>）</p></li>
+</ul>
+<h4 id="总结">总结</h4>
+<ul>
+<li>解释右值引用和左值引用的区别？
+<ul>
+<li>可以绑定的对象不同（举例说明左值表达式、右值表达式）</li>
+<li>左值持久，右值短暂（我们可以自由地接管右值引用所指对象的资源）</li>
+</ul></li>
+</ul>
+<h3 id="移动构造函数和移动赋值运算符">移动构造函数和移动赋值运算符</h3>
+<ul>
+<li><strong>移动构造函数</strong>的<strong>第一个参数</strong>是该类型的<strong>右值引用</strong>，其他参数必须有默认实参（<strong>拷贝构造函数</strong>的<strong>第一个参数</strong>是该类型的<strong>左值引用</strong>，其他参数必须有默认实参）</li>
+<li>移动构造函数必须确保<strong>移后源对象</strong>满足，<strong>销毁它是无害的</strong>，即移后源对象<strong>不再指向被移动的资源</strong></li>
+</ul>
+<h4 id="移动操作标准库容器和异常">移动操作、标准库容器和异常</h4>
+<ul>
+<li><strong>不抛出异常的</strong>移动构造函数、移动赋值运算符必须标<strong>记为<code>noexcept</code></strong></li>
+<li>在移动构造函数中指明<code>noexcept</code>，应该在<strong>形参列表后、冒号之前</strong>添加<code>noexcept</code></li>
+<li>除非标准库知道移动构造函数不会抛出异常，否则它会做一些<strong>额外的操作</strong></li>
+</ul>
+<h5 id="为什么需要指明noexcept">为什么需要指明<code>noexcept</code></h5>
+<ul>
+<li>移动操作通常不抛出异常，但抛出异常也是允许的</li>
+<li><strong>标准库容器能对异常发生时其自身的行为提供保障</strong>，如<code>vector</code>保证调用<code>push_back</code>时发生异常，<code>vector</code>自身不会发生改变</li>
+<li>具体来说，除非<code>vector</code>知道元素类型的移动构造函数不会抛出异常，否则在<strong>重新分配内存</strong>的过程中，它就必须<strong>使用拷贝构造函数而非移动构造函数</strong></li>
+</ul>
+<h4 id="移动赋值运算符">移动赋值运算符</h4>
+<ul>
+<li><strong>移动赋值运算符</strong>如果不抛出异常必须标记为<code>noexcept</code></li>
+<li>必须正确处理<strong>自赋值</strong></li>
+<li>移动赋值运算符的名字为<code>operator=</code>，参数是<strong>右值引用</strong>类型</li>
+<li>移动赋值运算符所做的操作
+<ul>
+<li><strong>释放左侧</strong>运算对象所使用的<strong>内存</strong></li>
+<li><strong>接管</strong>给定对象的<strong>内存</strong></li>
+<li>将<code>rhs</code>的<strong>指针置为</strong><code>nullptr</code></li>
+<li>必须检查两个运算对象是否相同</li>
+</ul></li>
+</ul>
+<h4 id="移后源对象必须可析构">移后源对象必须可析构</h4>
+<ul>
+<li>移后源对象必须进入<strong>可析构</strong>的状态，因此其指针不应再指向资源</li>
+<li>移后源对象必须保持<strong>有效</strong>，指可以安全地为其赋予新值</li>
+<li>但是，移后源对象留下的值没有任何要求，因此程序不能依赖于移后源对象中的数据</li>
+<li>总之，移后源对象必须保持<strong>有效的、可析构的</strong>状态，但用户<strong>不能对其值进行任何假设</strong></li>
+</ul>
+<h4 id="合成的移动操作">合成的移动操作</h4>
+<ul>
+<li>只有当一个类<strong>没有定义任何自己版本的拷贝控制成员</strong>，且<strong>所有</strong>非<code>static</code>数据成员都能<strong>移动构造或移动赋值</strong>时（内置类型，或有移动操作的类类型），编译器<strong>才</strong>会为它<strong>合成移动构造函数或移动赋值运算符</strong></li>
+<li>如果一个类<strong>没有移动操作</strong>，通过正常的函数匹配，类会<strong>使用对应的拷贝操作代替移动操作</strong></li>
+<li>什么时候将<strong>合成的移动操作</strong>定义为<strong>删除的</strong>？
+<ul>
+<li>有<strong>类成员定义了自己的拷贝构造函数</strong>但<strong>未定义移动构造函数</strong>，或类成员<strong>未定义自己的拷贝构造函数</strong>且<strong>编译器不能为其合成移动构造函数</strong>，则类的移动构造函数被定义为删除的</li>
+<li>有<strong>类成员</strong>的<strong>移动构造函数或移动赋值运算符</strong>被定义<strong>为删除的或是不可访问的</strong>，则类的移动构造函数或移动赋值运算符被定义为删除的</li>
+<li>类的<strong>析构函数</strong>被定义为<strong>删除的或不可访问的</strong>，则类的<strong>移动构造函数定义为删除的</strong></li>
+<li>如果类成员是<strong>const的或是引用类型，</strong>则类的<strong>移动赋值运算符定义为删除的</strong></li>
+</ul></li>
+<li>如果类<strong>定义了一个移动构造函数或一个移动赋值运算符</strong>，则类的<strong>合成拷贝构造函数和拷贝赋值运算符被定义为删除的</strong></li>
+</ul>
+<h4 id="移动右值拷贝左值">移动右值、拷贝左值</h4>
+<ul>
+<li>如果一个类<strong>既有移动构造函数</strong>，<strong>也有拷贝构造函数</strong>，则编译器根据<strong>普通的函数匹配规则</strong>确定使用哪个构造函数</li>
+<li>若<strong>赋值时右侧运算对象</strong>是一个<strong>右值</strong>，则两个赋值运算符都是可行的，调用<strong>拷贝赋值运算符</strong>需要进行一次<strong>到<code>const</code>的转换</strong>，而调用<strong>移动赋值运算符</strong>则是<strong>精确匹配</strong></li>
+</ul>
+<h4 id="如果没有移动构造函数右值也被拷贝">如果没有移动构造函数，右值也被拷贝</h4>
+<ul>
+<li>如果类<strong>定义了拷贝构造函数</strong>，但<strong>未定义移动构造函数</strong>，则<strong>不会合成移动构造函数</strong></li>
+<li>此时函数匹配规则保证该类型的对象会被<strong>拷贝</strong>，即使我们试图调用<code>move</code>来移动它们也是如此</li>
+<li>用<strong>拷贝</strong>构造函数<strong>代替移动</strong>构造函数几乎<strong>肯定是安全的</strong></li>
+</ul>
+<h4 id="拷贝并交换赋值运算符和移动操作">拷贝并交换赋值运算符和移动操作</h4>
+<ul>
+<li><p>如果类定义了一个<strong>拷贝并交换赋值运算符</strong>，且定义了<strong>移动构造函数，</strong>那么实际上会<strong>获得一个移动赋值运算符</strong></p></li>
+<li><p>代码示例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 移动构造函数</span></span><br><span class="line"><span class="built_in">HasPtr</span>(HasPtr&amp;&amp; obj) <span class="keyword">noexcept</span>: <span class="built_in">ps</span>(obj.ps), <span class="built_in">i</span>(obj.i) &#123;</span><br><span class="line">    obj.ps = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拷贝赋值运算符(copy and swap)</span></span><br><span class="line">HasPtr&amp; <span class="keyword">operator</span>= (HasPtr rhs) &#123;</span><br><span class="line">    <span class="built_in">swap</span>(*<span class="keyword">this</span>, rhs);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>HasPtr</code>类定义了copy and
+swap版本的拷贝赋值运算符，移动构造函数</li>
+<li>由于赋值运算符接受非引用类型，因此会执行<strong>拷贝初始化</strong>，拷贝初始化将根据<strong>实参类型</strong>调用<strong>拷贝构造函数或移动构造函数</strong>，<strong>左值拷贝、右值移动</strong></li>
+<li>因此，单一的赋值运算符<strong>同时实现</strong>了<strong>拷贝赋值运算符</strong>和<strong>移动赋值运算符</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hp, hp2都是HasPtr对象</span></span><br><span class="line">hp = hp2;</span><br><span class="line">hp = std::<span class="built_in">move</span>(hp2);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一行的赋值语句中,
+<code>hp2</code>是<strong>左值</strong>，调用<strong>拷贝构造函数</strong></li>
+<li>第二行的赋值语句中，<code>std::move(hp2)</code>是<strong>右值</strong>，调用<strong>移动构造函数</strong></li>
+</ul></li>
+</ul>
+<h4 id="三五法则-1">三/五法则</h4>
+<ul>
+<li>所有<strong>五个拷贝控制成员应该看作一个整体</strong>，如果定义了其中的任意一个，则应该定义所有五个操作</li>
+</ul>
+<h4 id="移动迭代器">移动迭代器</h4>
+<ul>
+<li><p>移动迭代器通过改变给定迭代器的解引用运算符的行为来适配此迭代器</p></li>
+<li><p>一般迭代器解引用运算符返回指向元素的左值引用，而移动迭代器返回指向元素的右值引用</p></li>
+<li><p>通过标准库的<code>make_move_iterator</code>将一个普通迭代器转换为一个移动迭代器，它接受一个普通迭代器，返回一个移动迭代器</p></li>
+<li><p>将移动迭代器应用于<code>uinitialized_copy</code></p>
+<ul>
+<li><code>unitialized_copy</code>对输入序列中的每个元素调用<code>construct</code>来将元素<strong>“拷贝”</strong>到目的位置，<strong>移动迭代器</strong>解引用将得到<strong>右值引用</strong>类型，因此<code>construct</code>会使用<strong>移动构造函数</strong>去构造元素</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// StrVec</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reallocate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> new_capacity = <span class="built_in">size</span>()? <span class="number">2</span> * <span class="built_in">size</span>(): <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">auto</span> first = alloc.<span class="built_in">allocate</span>(new_capacity);</span><br><span class="line">    <span class="keyword">auto</span> last = <span class="built_in">uninitialized_copy</span>(<span class="built_in">make_move_iterator</span>(<span class="built_in">begin</span>()), <span class="built_in">make_move_iterator</span>(<span class="built_in">end</span>()), first);</span><br><span class="line">    <span class="built_in">free</span>();</span><br><span class="line">    elements = first;</span><br><span class="line">    first_free = last;</span><br><span class="line">    cap = elements + new_capacity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="不要随意使用移动操作">不要随意使用移动操作</h4>
+<ul>
+<li>当我们调用<code>move</code>时，必须确认移后源对象没有其他用户</li>
+<li>在移动构造函数或移动赋值运算符实现代码外的地方，只有确保需要进行移动操作且移动操作是安全的时候，才使用<code>std::move</code></li>
+</ul>
+<h3 id="右值引用和成员函数">右值引用和成员函数</h3>
+<ul>
+<li>如果一个<strong>成员函数</strong>同时提供了<strong>拷贝和移动版本</strong>，也是有益的。其中一个版本接受一个<strong>指向<code>const</code>的左值引用</strong>，另一个版本接受一个<strong>非<code>const</code>的右值引用</strong></li>
+<li>一般来说，我们<strong>不需要</strong>未函数操作<strong>定义接受<code>const T&amp;&amp;</code>或<code>T&amp;</code>的版本</strong>，因为如果希望移动则应该传入右值引用，如果希望拷贝则应该传入<code>const T&amp;</code></li>
+</ul>
+<h4 id="限制this指向的对象必须是左值">限制<code>this</code>指向的对象必须是左值</h4>
+<ul>
+<li><p>我们在对象上调用成员函数时，不管该对象是左值还是右值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string s1 = <span class="string">&quot;hello&quot;</span>, s2 = <span class="string">&quot;world&quot;</span>;</span><br><span class="line">s1 + s2 = <span class="string">&quot;wow&quot;</span>;</span><br><span class="line"><span class="comment">// s1 + s2表达式的结果是右值, 我们可以对其进行赋值</span></span><br></pre></td></tr></table></figure></li>
+<li><p>这是为了<strong>向后兼容性</strong>，但我们可以在类定义中<strong>阻止这种用法</strong>，即<strong>强制<code>this</code>必须指向左值</strong>，这是通过在参数列表后放置一个<strong>引用限定符</strong>实现的</p></li>
+<li><p><strong>引用限定符</strong>可以是<code>&amp;</code>或<code>&amp;&amp;</code>，分别指出<code>this</code><strong>必须指向左值</strong>，或<strong>必须指向右值</strong></p></li>
+<li><p>如果一个成员函数同时用<code>const</code>和引用限定，则<strong>引用限定符必须跟在<code>const</code>限定符之后</strong></p></li>
+</ul>
+<h4 id="重载和引用函数">重载和引用函数</h4>
+<ul>
+<li>引用限定符也可以区分重载版本</li>
+<li><strong>如果一个成员函数有引用限定符，则具有相同参数列表的所有版本都必须有引用限定符</strong></li>
+</ul>
+<h2 id="习题">习题</h2>
+<ul>
+<li><p>什么类型的引用可以绑定到下面的初始化器上</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">vi</span><span class="params">(<span class="number">100</span>)</span></span>;</span><br><span class="line"><span class="keyword">int</span>? r1 = <span class="built_in">f</span>();				<span class="comment">// 右值</span></span><br><span class="line"><span class="keyword">int</span>? r2 = vi[<span class="number">0</span>];			<span class="comment">// 左值</span></span><br><span class="line"><span class="keyword">int</span>? r3 = r1;				<span class="comment">// 左值</span></span><br><span class="line"><span class="keyword">int</span>? r4 = vi[<span class="number">0</span>] * <span class="built_in">f</span>();		<span class="comment">// 右值</span></span><br></pre></td></tr></table></figure></li>
+<li><p>已知<code>Foo</code>类包含如下<code>sorted</code>函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Foo <span class="title">Foo::sorted</span><span class="params">()</span> &amp;&amp; </span>&#123;</span><br><span class="line">    <span class="built_in">sorted</span>(data.<span class="built_in">begin</span>(), data.<span class="built_in">end</span>());</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果<code>sorted</code>定义如下，会发生什么</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Foo <span class="title">Foo::sorted</span><span class="params">()</span> <span class="keyword">const</span> &amp; </span>&#123;</span><br><span class="line">    <span class="function">Foo <span class="title">ret</span><span class="params">(*<span class="keyword">this</span>)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> ret.<span class="built_in">sorted</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ret是左值, 循环调用</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果<code>sorted</code>定义如下，会发生什么</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Foo <span class="title">Foo::sorted</span><span class="params">()</span> <span class="keyword">const</span> &amp; </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Foo</span>(*<span class="keyword">this</span>).<span class="built_in">sorted</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 正确, Foo(*this)临时对象是右值, 将调用Foo类sorted的右值版本</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/02/19/C++-Primer-Chapter-13/" title="C++ Primer Chapter 13">http://example.com/2022/02/19/C++-Primer-Chapter-13/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/18/%E6%95%B0%E6%8D%AE%E5%BA%93-%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="数据库-面试题">
+                  <i class="fa fa-chevron-left"></i> 数据库-面试题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/20/C++-Primer-Chapter-14/" rel="next" title="C++ Primer Chapter 14">
+                  C++ Primer Chapter 14 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1 基本概念  什么是分布式系统？ 为什么要搭建分布式系统？ 通过并发提高容量 通过复制提供容错性 通过隔离实现安全性 为什么说分布式系统的容错性、一致性、性能之间存在冲突？ 为了保证分布式系统的容错性、数据需要在多台服务器上复制；为了保证分布式系统的一致性，需要在多台服务器上进行通信；但数据的复制和大量通信都会影响分布式系统的性能  2 谷歌文件系统 谷歌文件系统的需求  节点故障是常态：面对大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式系统-6.824知识总结">
+<meta property="og:url" content="http://example.com/2022/03/10/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-6-824%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="1 基本概念  什么是分布式系统？ 为什么要搭建分布式系统？ 通过并发提高容量 通过复制提供容错性 通过隔离实现安全性 为什么说分布式系统的容错性、一致性、性能之间存在冲突？ 为了保证分布式系统的容错性、数据需要在多台服务器上复制；为了保证分布式系统的一致性，需要在多台服务器上进行通信；但数据的复制和大量通信都会影响分布式系统的性能  2 谷歌文件系统 谷歌文件系统的需求  节点故障是常态：面对大">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-10T08:22:25.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.863Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="Distributed System">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/10/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-6-824%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/10/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-6-824%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/","path":"2022/03/10/分布式系统-6-824知识总结/","title":"分布式系统-6.824知识总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>分布式系统-6.824知识总结 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%B7%E6%AD%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">2 谷歌文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%B7%E6%AD%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%9C%80%E6%B1%82"><span class="nav-text">谷歌文件系统的需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gfs%E9%9B%86%E7%BE%A4%E7%BB%84%E6%88%90"><span class="nav-text">GFS集群组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gfs%E7%9A%84%E5%85%83%E6%95%B0%E6%8D%AE"><span class="nav-text">GFS的元数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gfs%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6"><span class="nav-text">GFS读写文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="nav-text">读文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E6%96%87%E4%BB%B6"><span class="nav-text">写文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-text">数据一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#master%E6%97%A0%E6%B3%95%E8%81%94%E7%B3%BBprimary%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">Master无法联系primary服务器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%93%8D%E4%BD%9C"><span class="nav-text">系统操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BF%BD%E5%8A%A0"><span class="nav-text">文件追加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%BF%AB%E7%85%A7"><span class="nav-text">文件快照</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mapreduce"><span class="nav-text">3 MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%8C%BA%E5%87%BD%E6%95%B0"><span class="nav-text">分区函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E6%8B%93%E5%B1%95%E6%80%A7"><span class="nav-text">可拓展性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="nav-text">数据存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapreduce%E9%9C%80%E8%A6%81%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E6%95%B0%E6%8D%AE"><span class="nav-text">MapReduce需要通过网络传输数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapreduce%E6%A1%86%E6%9E%B6"><span class="nav-text">MapReduce框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mr%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E7%BD%91%E7%BB%9C%E4%BD%BF%E7%94%A8"><span class="nav-text">MR如何减少网络使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%97%AE%E9%A2%98"><span class="nav-text">负载均衡问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E9%94%99%E9%97%AE%E9%A2%98"><span class="nav-text">容错问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-text">其他问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rpc%E5%92%8C%E7%BA%BF%E7%A8%8B"><span class="nav-text">4 RPC和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B"><span class="nav-text">线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%BF%87%E7%A8%8B%E8%B0%83%E7%94%A8rpc"><span class="nav-text">远程过程调用RPC</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#raft%E7%AE%97%E6%B3%95"><span class="nav-text">5 Raft算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#primary%E7%BB%93%E6%9E%84%E5%8F%8A%E5%85%B6split-brain%E9%97%AE%E9%A2%98"><span class="nav-text">Primary结构及其Split
+brain问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#leader%E9%80%89%E4%B8%BE"><span class="nav-text">Leader选举</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E9%80%89%E4%B8%BE%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-text">新选举的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E4%B8%BE%E8%AE%A1%E6%97%B6%E5%99%A8"><span class="nav-text">选举计时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%97%A7leader%E8%A1%8C%E4%B8%BA%E6%AD%A3%E7%A1%AE"><span class="nav-text">如何确保旧leader行为正确</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E4%B8%BE%E7%BA%A6%E6%9D%9F"><span class="nav-text">选举约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%A4%8D%E5%88%B6"><span class="nav-text">日志复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%81%A2%E5%A4%8D"><span class="nav-text">日志恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D"><span class="nav-text">快速恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%BF%AB%E7%85%A7%E6%8A%80%E6%9C%AF"><span class="nav-text">日志快照技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%B8%80%E8%87%B4"><span class="nav-text">线性一致</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-6-824%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分布式系统-6.824知识总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-10 16:22:25" itemprop="dateCreated datePublished" datetime="2022-03-10T16:22:25+08:00">2022-03-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基本概念">1 基本概念</h1>
+<ul>
+<li><p>什么是分布式系统？</p></li>
+<li><p>为什么要搭建分布式系统？</p>
+<p>通过并发提高<strong>容量</strong></p>
+<p>通过复制提供<strong>容错性</strong></p>
+<p>通过隔离实现<strong>安全性</strong></p></li>
+<li><p>为什么说分布式系统的<strong>容错性</strong>、<strong>一致性</strong>、<strong>性能</strong>之间存在冲突？</p>
+<p>为了保证分布式系统的容错性、数据需要在多台服务器上复制；为了保证分布式系统的一致性，需要在多台服务器上进行通信；但数据的复制和大量通信都会影响分布式系统的性能</p></li>
+</ul>
+<h1 id="谷歌文件系统">2 谷歌文件系统</h1>
+<h2 id="谷歌文件系统的需求">谷歌文件系统的需求</h2>
+<ul>
+<li><strong>节点故障是常态</strong>：面对大概率发生的节点故障问题，因为分布式系统构建在大量普通机器上，因此所有机器都不失效的几率较低。这要求GFS必须具有容错性，且必须具有使故障节点快速恢复的机制</li>
+<li><strong>以大文件为主</strong>：所存储的文件通常是几GB级别的</li>
+<li><strong>主要负载</strong>：大容量连续读、小容量随机读、大容量追加写（几乎没有随机写，数据一旦写入便不再修改）</li>
+<li>支持高效且原子性的<strong>文件追加操作</strong></li>
+<li><strong>高吞吐量</strong>比<strong>低延时</strong>更重要</li>
+</ul>
+<h2 id="gfs集群组成">GFS集群组成</h2>
+<ul>
+<li><p><strong>1 Master + x Chunk servers</strong></p>
+<p>GFS集群包括一个<strong>Master节点</strong>和若干个<strong>Chunk
+Server</strong>（Chunk=块），作为用户及进程运行在普通的Linux机器上</p></li>
+<li><p><strong>文件切分为chunk，replica存储在多台chunk
+server</strong></p>
+<p>存储文件时，GFS会把文件切分成若干个拥有固定长度的chunk并存储。Master在创建chunk时会为它们赋予一个唯一的64位Handle，并把它分配给Chunk
+Server。Chunk
+server以普通文件的形式将每个Chunk存储在自己的本地硬盘上，位确保Chunk的可用性，GFS会把每个Chunk备份成若干个Replica，分配到Chunk
+Server上</p></li>
+<li><p><strong>Master的工作</strong></p>
+<ul>
+<li><strong>维护文件系统元数据</strong>：元信息包括命名空间、访问控制、从文件到chunks的映射，每个chunk的位置</li>
+<li><strong>通过心跳信号定期与Chunk
+servers通信</strong>：向其发送指令，并获取chunk
+servers当前的状态信息</li>
+</ul></li>
+</ul>
+<h2 id="gfs的元数据">GFS的元数据</h2>
+<ul>
+<li><p>GFS集群的<strong>元数据</strong></p>
+<ul>
+<li><p>文件与Chunk的命名空间</p></li>
+<li><p>文件与Chunk的映射关系</p></li>
+<li><p>每个Chunk replica所在的位置</p></li>
+</ul></li>
+<li><p><strong>先写日志</strong></p>
+<ul>
+<li>Master对元数据做任何操作前会用<strong>先写日志</strong>的形式将操作进行记录，日志写入完成后再进行实际操作</li>
+<li>日志也被备份到多个机器上保存</li>
+</ul></li>
+</ul>
+<h2 id="gfs读写文件">GFS读写文件</h2>
+<h3 id="读文件">读文件</h3>
+<ul>
+<li><strong>客户发送文件名和偏移量</strong>：客户得到文件名和偏移量，发送请求给master</li>
+<li><strong>master返回chunk对应的服务器列表</strong>：master根据文件名确定chunk
+ID array，根据offset确定为那个元素，得到chunk
+ID后可查询到存储chunk的server list，并将其返回client</li>
+<li><strong>客户向其中一个服务器发送chunk
+ID和偏移量</strong>：client从server
+list中选取一个server（从最近的开始），将chunk
+ID和offset发送给chunk-server</li>
+<li><strong>server返回数据</strong>：服务器收到请求后，从磁盘读取数据并返回给client</li>
+</ul>
+<h3 id="写文件">写文件</h3>
+<ul>
+<li><strong>客户向master查询文件最后一个chunk</strong>：客户向master发送文件名，查询该文件的最后一个chunk
+(追加操作)</li>
+<li><strong>master更新primary chunk</strong>:
+master查看该文件是否指定primary chunk，没有则：
+<ul>
+<li><strong>选择primary
+chunk</strong>：从各个replica选取最新的一个作为primary
+replica，其余作为secondary replica</li>
+<li><strong>更新chunk版本号</strong>：master更新chunk的版本号并写入disk</li>
+<li><strong>告知各个server其身份</strong>：master向各个server发送消息告知其primary/secondary身份及新版本号</li>
+<li><strong>租约</strong>：对primary赋予一个租约</li>
+</ul></li>
+<li><strong>master告知客户chunk server</strong>:
+master向server返回primary和secondary chunk所在的server</li>
+<li><strong>客户向所有server发送数据</strong>：这些数据放入临时位置，不会直接追加到文件中</li>
+<li><strong>客户向primary服务器发送消息</strong>：告知primary所有该chunk的服务器都有了需要追加的数据</li>
+<li><strong>primary服务器发送追加通知</strong>：若primary
+chunk所在server有足够空间，则向所有secondary
+server发送通知让其追加数据</li>
+<li><strong>secondary服务器告知追加结果</strong>：secondary服务器告知primary服务器是否写入成功</li>
+<li><strong>primary服务器告知客户追加结果</strong>：若所有secondary服务器都写入成功，则告知客户写入成功</li>
+</ul>
+<h2 id="数据一致性">数据一致性</h2>
+<ul>
+<li><p><strong>命名空间的数据一致性</strong>：命名空间由单节点Master管理在其内存中，通过<strong>互斥锁</strong>解决并发修改问题</p></li>
+<li><p><strong>不保证强一致性</strong>：GFS不保证强一致性，从同一个chunk的不同replicas读取到不同数据是正常的</p></li>
+<li><p><strong>GFS对写失败的处理</strong>：此时各个replicas的状态可能不一致，GFS允许这种情况发生</p></li>
+</ul>
+<h3 id="master无法联系primary服务器">Master无法联系primary服务器</h3>
+<ul>
+<li><strong>Ping primary</strong>:
+Master向primary服务器发送租约后，定期Ping primary</li>
+<li><strong>无法收到回复</strong>：可能是primary故障，也可能是master与primary之间的通信问题，如<strong>网络分区</strong>等</li>
+<li><strong>等待租约时间过期</strong>：若master直接分配下一个primary，则可能同时出现两个primary（网络分区），因此它会等待该primary的租约时间过期后再分配primary</li>
+</ul>
+<h2 id="系统操作">系统操作</h2>
+<h3 id="文件追加">文件追加</h3>
+<ul>
+<li><strong>至少一次</strong>：GFS保证Append至少成功执行一次</li>
+<li><strong>客户失败后重新执行</strong>：客户收到Master通知的写失败后，将再次发起Append操作直至写入成功，因此不同的chunk
+server可能包含不同次数的该Append数据</li>
+</ul>
+<h3 id="文件快照">文件快照</h3>
+<ul>
+<li><p>作用：为指定的文件或目录创建副本</p></li>
+<li><p><strong>COW技术</strong></p>
+<blockquote>
+<p>copy-on-write
+fork技术：当父进程使用fork()创建子进程时，先不给子进程分配物理页面，而是让子进程页表中的指针指向父进程对应的物理页面，即父子进程共享同一个页面。当父子进程中的任意一个写入该页面时，会引发page
+fault，并陷入内核中，内核为该进程分配一个物理页面，并复制数据，修改其页表的相应项使其指向该新分配页面，并置相关标志位，此后父子进程便可以正常对各自的页面进行读写</p>
+</blockquote>
+<ul>
+<li><strong>撤回租约</strong>：Master收到快照请求后，撤回这些chunk的租约，因此该文件的chunk不存在primary服务器</li>
+<li><strong>master复制</strong>：租约撤回后，master写日志，对自己管理的命名空间进行复制操作，产生的新纪录指向原本的chunk</li>
+<li><strong>客户写入</strong>：此后客户写入该文件的chunk，必须先向master发送请求获取primary服务器的位置</li>
+<li><strong>写时复制</strong>：master注意到该chunk的引用计数大于1，因此master会通知所有持有该chunk的chunk
+server在本地复制一个新的chunk，并应用新的handle，返回给客户端</li>
+</ul></li>
+</ul>
+<h1 id="mapreduce">3 MapReduce</h1>
+<h2 id="基本概念-1">基本概念</h2>
+<ul>
+<li><strong>输入划分</strong>：将输入划分为多份，对于每份输入调用一个<code>Map()</code>，产生中间值</li>
+<li><strong>收集中间值</strong>：将每个key及其对应的值传入一个<code>Reduce()</code></li>
+<li><strong>输出结果</strong>：从多个<code>Reduce()</code>返回的是输出结果</li>
+</ul>
+<h2 id="分区函数">分区函数</h2>
+<ul>
+<li><strong>Map per input file</strong>:
+MapReduce通常为每个输入文件执行一个Map</li>
+<li><strong>R output files</strong>:
+MapReduce使用者一般指定Reduce任务输出文件的数量R</li>
+<li><strong>R Reduces</strong>: 常用方法是使用<span class="math inline">\(hash(key)\%R\)</span>将Reduce任务划分为R份</li>
+</ul>
+<h2 id="可拓展性">可拓展性</h2>
+<ul>
+<li><strong>并发</strong>：<code>Map()</code>和<code>Reduce()</code>都可以并发，不同worker上的<code>Map()</code>和<code>Reduce()</code>不会相互影响</li>
+<li>N workers意味着N倍吞吐量</li>
+</ul>
+<h2 id="数据存储">数据存储</h2>
+<ul>
+<li><strong>GFS</strong>：输入和输出都放在<strong>谷歌文件系统</strong></li>
+</ul>
+<h2 id="mapreduce需要通过网络传输数据">MapReduce需要通过网络传输数据</h2>
+<ul>
+<li><strong>Map读取数据</strong>：从GFS读取数据传入<code>Map()</code></li>
+<li><strong>Map发送中间值给Reduce</strong>：从<code>Map()</code>读取中间值送入<code>Reduce()</code></li>
+<li><strong>Reduce结果写回GFS</strong>：<code>Reduce()</code>产生的结果写回GFS</li>
+</ul>
+<h2 id="mapreduce框架">MapReduce框架</h2>
+<ul>
+<li><strong>1 coordinator</strong>：负责将map tasks发送给workers</li>
+<li><strong>中间值的存储</strong>：Map输出的中间数据写入本地磁盘，并按hash值划分，每个hash值写入一个disk</li>
+<li><strong>输出文件</strong>：一个Reduce
+worker从本地磁盘获取具有具有某个hash值的所有中间数据，处理后将输出存放在一个output
+file，并将该file写回到GFS</li>
+</ul>
+<h2 id="mr如何减少网络使用">MR如何减少网络使用</h2>
+<ul>
+<li><strong>server同时担任多角色</strong>：每个server同时运行GFS和Map
+worker、Reduce worker</li>
+<li><strong>就地Map</strong>：尽量在存放输入文件的GFS
+server上执行Map</li>
+</ul>
+<h2 id="负载均衡问题">负载均衡问题</h2>
+<ul>
+<li><strong>增加tasks数量</strong>：让tasks数量远多于workers，减小每个任务的大小</li>
+<li><strong>coordinator分配任务</strong>：将任务交给已经完成先前任务的空闲worker</li>
+</ul>
+<h2 id="容错问题">容错问题</h2>
+<ul>
+<li><strong>重新执行</strong>：某个worker故障后，重新执行其上的Map或Reduce任务即可，对其他任务无影响</li>
+<li><strong>Map和Reduce是完全确定函数</strong>：如果某个Map任务执行了两次，部分Reduce
+worker获取了第一次的结果，部分获取了第二次的结果，则完全确定函数保证两次的结果是一致的</li>
+<li><strong>故障恢复</strong>：coordinator发现故障worker，获取其任务，并将它分配给其他worker重新执行</li>
+</ul>
+<h2 id="其他问题">其他问题</h2>
+<ul>
+<li><p>为什么Map会执行多次？</p>
+<p>Coordinator由于网络通信问题无法联系某个Map
+worker，并把其任务分配给其他Map worker，但实际上该Map
+worker并未故障且成功执行任务，从而导致了Map执行了两次</p></li>
+<li><p><strong>Map执行多次</strong>会出现问题吗？</p>
+<p>不会，Map的确定函数性质保证了多次的执行结果是一致的，且Coordinator保证只会给每个Reduce
+worker分配至多一次的Map结果</p></li>
+<li><p><strong>Reduce执行多次</strong>会出现问题吗？</p>
+<p>Reduce的确定函数性质保证了输出结果的一致性，Reduce
+worker尝试将相同的输出文件写入GFS，而GFS机制保证最终只有一个文件存在(命名机制，相同的Reduce任务的输出文件名是相同的)</p></li>
+<li><p>如果某个worker<strong>速度特别慢</strong>会怎样？</p>
+<ul>
+<li><strong>分配未完成部分给空闲worker</strong>:
+coordinator将该worker最后的进行中任务分配给其他空闲worker执行，但原来的worker也继续执行</li>
+<li><strong>两者之一完成即可</strong>：当原来worker或新分配的worker中的任意一个执行完成，该任务即执行完成</li>
+</ul></li>
+</ul>
+<h1 id="rpc和线程">4 RPC和线程</h1>
+<h2 id="线程">线程</h2>
+<ul>
+<li><p>线程的特点</p>
+<p><strong>共享内存</strong>：线程之间共享内存</p>
+<p><strong>独立状态</strong>：每个线程拥有一些独立状态，包括程序计数器、栈、寄存器内容</p>
+<p><strong>协程</strong>：Go中的线程称为协程goroutines</p></li>
+<li><p>为什么需要线程</p>
+<p><strong>I/O并发</strong>：客户可能同时向许多服务器发送多个请求，一个服务器可能接收到多个不同客户的请求，当客户A的请求需要从磁盘读取数据时，服务器CPU可以无需一直等待，而是切换到另一线程以执行客户B的请求</p>
+<p><strong>多核-并行</strong>：如果机器的CPU是多核的，则通过将不同线程分配在不同核上运行，实现并行执行任务</p>
+<p><strong>检查worker是否存活的后台线程</strong>：增加一个线程，专门用于定时向各个worker发送ping信号，检查其是否处于工作状态</p></li>
+</ul>
+<h2 id="远程过程调用rpc">远程过程调用RPC</h2>
+<ul>
+<li><p>基本概念</p>
+<p><strong>客户</strong>：请求服务的进程</p>
+<p><strong>服务器</strong>：提供服务的进程</p>
+<p><strong>RPC处理函数</strong>：服务器对于不同类型的请求，需要用不同的RPC处理函数进行响应，各个RPC处理函数的参数和返回值是不同的</p></li>
+<li><p>RPC handler的并发性</p>
+<p><strong>goroutine per
+request</strong>：对于每个请求，服务器可以创建一个goroutine进行处理</p>
+<p><strong>共享数据的修改</strong>：RPC处理函数修改共享数据时必须先获取互斥锁</p></li>
+<li><p>RPC如何<strong>处理failure</strong></p>
+<ul>
+<li><p><strong>best effort模型</strong></p>
+<p>设置<strong>最大等待时间</strong><span class="math inline">\(t\)</span>，与<strong>最多重新发送次数</strong><span class="math inline">\(c\)</span></p>
+<p>调用<code>Call()</code>发送请求后，若等待<span class="math inline">\(t\)</span>则重新发送request，并且重传次数加1</p>
+<p>若重传次数达到<span class="math inline">\(c\)</span>，则返回error</p></li>
+<li><p><strong>at most once模型</strong></p>
+<p>如果从服务端到客户端的网络通信故障，则服务端可能收到来自客户端的多个相同请求，此时不应该重复执行RPC处理函数</p>
+<p><strong>client ID +
+XID</strong>：为了标识客户及其请求，每个客户有一个唯一的client
+ID，其每个请求有一个唯一的XID，通过client
+ID与XID组成的远二元组能够标识客户的请求</p></li>
+</ul></li>
+<li><p>GO中的RPC模型</p>
+<p><strong>只发送一次请求</strong>：若固定时间没收到Reply后，则直接返回error</p></li>
+</ul>
+<h1 id="raft算法">5 Raft算法</h1>
+<h2 id="primary结构及其split-brain问题">Primary结构及其Split
+brain问题</h2>
+<ul>
+<li><p><strong>Primary结构</strong>：即系统中存在Primary节点，而其他节点为Secondary节点，Primary节点具有维护系统状态、控制任务执行的职责</p></li>
+<li><p><strong>Split
+brain问题</strong>：考虑互为replica的两台客户主机C1、C2的情况，两个服务器S1、S2提供Test-And-Set服务保证了某个时刻只有一个主机能成为primary。如果C1与S1同属一个分区，C2与S2同属一个分区，而他们之间的通信网络故障，则要么两个客户同时上线（Split
+brain），要么两个客户都无法上线（没有容错性）</p></li>
+<li><p><strong>Split brain问题的解决</strong></p>
+<p>无故障网络：通过维护专用网络保证无故障</p>
+<p>人工维护：若客户无法与S1、S2任意一个通信时，则与机房人员联系并将该服务器关闭，保证不会有split
+brain问题</p></li>
+<li><p><strong>更好的解决方案Majority Vote</strong></p>
+<p>primary的决策得到过半数的投票即可执行，无需得到全部服务器投票，从而实现容错</p>
+<p>若系统有2F+1台服务器，则可接受F台服务器故障</p></li>
+</ul>
+<h2 id="leader选举">Leader选举</h2>
+<h3 id="新选举的原因">新选举的原因</h3>
+<ul>
+<li><strong>leader故障</strong>：leader故障因而不发送心跳信号</li>
+<li><strong>网络延迟</strong>：由于网络延迟导致节点长时间没收到leader的心跳信号</li>
+</ul>
+<h3 id="选举计时器">选举计时器</h3>
+<ul>
+<li><p><strong>超时发起选举</strong>：如果当前节点长时间没收到leader的心跳信号，且定时中断，则当前节点发起选举</p></li>
+<li><p><strong>重启计时器</strong>：节点收到当前leader的心跳信号时，重启计时器</p></li>
+<li><p><strong>Split
+Vote问题及解决</strong>：如果大多数节点总是同时开始选举，则它们都会先给自己投票，然后再向其他节点获取选票，这样则没有任何节点能够得到过半数选票，并导致选举计时器超时。如果重启计时器，并再次开始选举，则会再次进入同样的情况。为了防止无限的开始选举，Raft在重启计时器时总是<strong>随机选择超时时间</strong></p></li>
+<li><p><strong>何时发生超时</strong></p>
+<p>follower长期没有收到leader的心跳信号，超时后开始选举</p>
+<p>candidate长期没有收到过半数选票，也没有收到其他节点成为leader的指令，超时后重新开始选举</p></li>
+<li><p><strong>超时时间的合理取值</strong></p>
+<p><strong>随机选择</strong>：以上两个超时发生后，总是随机选择一个超时时间，并重启计时器</p>
+<p><strong>超时时间</strong>：应该是leader发送心跳信号间隔的几倍，并小于server的平均故障时间</p>
+<blockquote>
+<ul>
+<li>下限：如果超时时间设置为小于leader发送心跳时间的间隔，则会在leader正常工作的情况下开启新的选举，显然是错误的</li>
+<li>上限：假如leader故障则系统会在一段时间内陷入瘫痪，直至有节点开启新的选举。因此如果故障间隔时间越短，则选举间隔时间也应该越短，以尽量减少系统瘫痪的时间</li>
+</ul>
+</blockquote></li>
+</ul>
+<h3 id="如何确保旧leader行为正确">如何确保旧leader行为正确</h3>
+<ul>
+<li><strong>网络分区</strong>：若因为网络分区等原因，在旧leader仍未故障的情况下，产生了新的leader，则旧leader可能无法获知新leader的产生</li>
+<li><strong>Majority
+Vote</strong>：由于新leader产生必定获得了过半数节点的投票，因此旧leader的任何指令都无法收到过半数的投票，从而在新leader产生后旧leader无法再执行任何指令</li>
+</ul>
+<h2 id="选举约束">选举约束</h2>
+<ul>
+<li><p><strong>投票</strong>：当candidate向其他节点发送请求投票RPC时，只有当candidate的日志记录至少和自己一样up-to-date时，节点才会给它投票</p></li>
+<li><p><strong>up-to-date的定义</strong></p>
+<p>如果候选人的last term大于自己的last term</p>
+<p>如果两者的last term一样大，但候选人的last index大于等于自己的last
+index</p></li>
+</ul>
+<h2 id="日志复制">日志复制</h2>
+<ul>
+<li><p><strong>日志复制</strong>：Raft通过log同步时序，因此当leader节点决定接收客户请求并执行某操作时，需要添加日志，并在其他节点也复制该日志，等待超过半数节点确认后，再提交日志并在state
+machine上执行操作</p></li>
+<li><p><strong>添加日志指令</strong>：client向leader发送请求，leader先在本节点添加日志，同时向其他服务器发送添加日志指令</p></li>
+<li><p><strong>leader提交日志、执行、返回结果</strong>：若过半数的服务器确认该指令，则leader提交日志，并让状态机执行该日志的命令，同时将执行结果返回client</p></li>
+<li><p><strong>提交日志指令</strong>：leader还需要向其他服务器发送提交日志指令，一般将“提交日志”指令附在下一次的“添加日志”指令发送</p></li>
+</ul>
+<h2 id="日志恢复">日志恢复</h2>
+<ul>
+<li><strong><code>NextIndex</code>变量</strong>：leader对于每个follower，都维护了一个<code>NextIndex</code>变量，代表该follower下一个应该匹配的日志记录位置</li>
+<li><strong>follower拒绝添加日志RPC</strong>：当leader向follower发送添加日志RPC时，让follower复制从<code>NextIndex</code>位置到当前日志结尾之间的日志记录，follower则对比<code>prevLogIndex</code>上的自己的日志记录与leader的日志记录是否一致，如果不一致则拒绝该请求</li>
+<li><strong>递减<code>NextIndex</code></strong>：leader若收到follower的拒绝，则代表该follower的<code>NextIndex</code>位置之前的日志记录不匹配，因此leader会递减其<code>NextIndex</code>，并对比更前面的位置是否匹配，直到遇到匹配的位置</li>
+<li><strong>匹配成功并添加</strong>：该过程持续直到follower成功匹配<code>prevLogIndex</code>上的日志记录，此后接收leader的添加日志指令，并将日志记录添加至自己的日志中</li>
+</ul>
+<h2 id="快速恢复">快速恢复</h2>
+<ul>
+<li><p><strong>日志恢复机制太慢</strong>：上述日志恢复机制每次<code>NextIndex</code>减一，对实际场景太慢</p></li>
+<li><p><strong>额外信息</strong>：若follower因为日志不一致而拒绝leader的添加日志指令，可携带额外信息加速日志恢复</p>
+<p><strong>ConflictTerm</strong>:
+follower与leader冲突的日志记录的term，如果follower在对应位置没有log则设为-1</p>
+<p><strong>ConflictIndex</strong>:
+follower的日志记录中任期号为ConflictTerm的第一条log的index，当follower在对应位置没有log时则返回log的长度</p></li>
+<li><p><strong>leader快速恢复</strong></p>
+<p>找到term等于ConflictTerm的log，若找到则将nextIndex设为该term的最后一个日志记录之后的位置；若没有找到则将nextIndex设为ConflictIndex</p></li>
+</ul>
+<h2 id="持久化">持久化</h2>
+<ul>
+<li><p><strong>故障恢复机制</strong>：当某些节点shutdown后，可通过启动另外一些服务器以替换shutdown的节点继续工作的方式，实现故障恢复</p></li>
+<li><p><strong>持久化存储状态信息</strong>：但必须将某些状态信息持久化存储，从而可以恢复新启动的服务器的状态</p></li>
+<li><p><strong>需要持久化的状态信息</strong>：votedFor、currentTerm、log</p>
+<p>持久化votedFor和currentTerm确保每个节点在某个任期内只给一个candidate投票，保证了任何时候只有一个leader</p>
+<p>持久化log是因为这是进行快速恢复状态的唯一信息</p></li>
+</ul>
+<h2 id="日志快照技术">日志快照技术</h2>
+<ul>
+<li><p><strong>日志占用空间</strong>：如果任由日志持续增长，最终会导致磁盘空间被占满</p></li>
+<li><p><strong>根据日志恢复耗费时间</strong>：如果每次重启服务器，都要从日志的第一条记录开始重新执行，则将耗费大量时间</p></li>
+<li><p><strong>日志快照</strong></p>
+<p><strong>snapshot条目</strong>：应用程序将其状态的拷贝作为一种特殊的log条目（snapshot）存储下来</p>
+<p><strong>snapshot与log的大小</strong>：大多数应用程序的状态大小远小于log的大小，因此将状态保存在快照中能节约空间</p>
+<p><strong>丢弃之前的日志记录</strong>：当进行快照后，该快照之前的快照，以及该快照对应的最后一个index前的日志记录都可以被丢弃。恢复时只需要加载该快照的状态变量即可，无需从头开始执行各个日志记录</p></li>
+<li><p><strong>装载快照RPC</strong></p>
+<p><strong>follower落后过多</strong>：当某些follower远落后于leader，以至于其nextIndex对应的日志记录已被leader丢弃</p>
+<p><strong>leader发送快照</strong>：此时leader会发送装载快照RPC，并携带相应快照</p>
+<p><strong>follower装载快照</strong>：follower收到该装载快照RPC则将其发送给状态机，并让他加载该快照中的状态，从而跟上leader当前状态</p></li>
+</ul>
+<h2 id="线性一致">线性一致</h2>
+<ul>
+<li>如果一个服务表现得像只有一个服务器，且服务器没有故障，每次只执行一个客户端请求并正确返回，则认为该服务是线性一致的</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/10/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F-6-824%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="分布式系统-6.824知识总结">http://example.com/2022/03/10/分布式系统-6-824知识总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/Distributed-System/" rel="tag"># Distributed System</a>
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/10/%E9%A1%B9%E7%9B%AE-6-824%E6%80%BB%E7%BB%93/" rel="prev" title="项目-6.824总结">
+                  <i class="fa fa-chevron-left"></i> 项目-6.824总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/10/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8E%9F%E7%90%86-%E7%B4%A2%E5%BC%95/" rel="next" title="数据库原理-索引">
+                  数据库原理-索引 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

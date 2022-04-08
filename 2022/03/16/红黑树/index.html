@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="应用  STL中的map和set的底层数据结构均为红黑树  特点 颜色：每个节点要么是红色，要么是黑色 根节点和叶节点：根节点和叶节点（nil node）都是黑色 红色节点的子节点：红色节点的子节点必定为黑色 路径黑色节点数相等：任意节点到其子树的叶节点的所有路径上，都具有相同数量的黑色节点 补充 额外存储空间：每个节点都需要一个比特存储其颜色信息 最长路径与最短路径的关系：最长路径长度不超过最短">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树">
+<meta property="og:url" content="http://example.com/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="应用  STL中的map和set的底层数据结构均为红黑树  特点 颜色：每个节点要么是红色，要么是黑色 根节点和叶节点：根节点和叶节点（nil node）都是黑色 红色节点的子节点：红色节点的子节点必定为黑色 路径黑色节点数相等：任意节点到其子树的叶节点的所有路径上，都具有相同数量的黑色节点 补充 额外存储空间：每个节点都需要一个比特存储其颜色信息 最长路径与最短路径的关系：最长路径长度不超过最短">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/.com//RBTree.png">
+<meta property="article:published_time" content="2022-03-16T08:25:25.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.864Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="Algorithm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/.com//RBTree.png">
+
+
+<link rel="canonical" href="http://example.com/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/","path":"2022/03/16/红黑树/","title":"红黑树"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>红黑树 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-text">应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-text">特点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC"><span class="nav-text">旋转</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E5%85%A5"><span class="nav-text">插入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%96%E7%95%A5"><span class="nav-text">策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%8D%E6%83%85%E5%86%B5"><span class="nav-text">4种情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">示例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          红黑树
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-16 16:25:25" itemprop="dateCreated datePublished" datetime="2022-03-16T16:25:25+08:00">2022-03-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="应用">应用</h1>
+<ul>
+<li>STL中的map和set的底层数据结构均为红黑树</li>
+</ul>
+<h1 id="特点">特点</h1>
+<p><strong>颜色</strong>：每个节点要么是红色，要么是黑色</p>
+<p><strong>根节点和叶节点</strong>：根节点和叶节点（nil
+node）都是黑色</p>
+<p><strong>红色节点的子节点</strong>：红色节点的子节点必定为黑色</p>
+<p><strong>路径黑色节点数相等</strong>：任意节点到其子树的叶节点的所有路径上，都具有相同数量的黑色节点</p>
+<h2 id="补充">补充</h2>
+<p><strong>额外存储空间</strong>：每个节点都需要一个比特存储其颜色信息</p>
+<p><strong>最长路径与最短路径的关系</strong>：最长路径长度不超过最短路径长度的两倍</p>
+<ul>
+<li>最长路径：从根节点到nil节点上总是黑红相间</li>
+<li>最短路径：从根节点到nil节点上全为黑色节点</li>
+</ul>
+<h1 id="时间复杂度">时间复杂度</h1>
+<p>插入、删除、查找：<span class="math inline">\(O(logN)\)</span></p>
+<h1 id="旋转">旋转</h1>
+<ul>
+<li><p>旋转不会破坏节点的有序性，时间复杂度<span class="math inline">\(O(1)\)</span></p></li>
+<li><p>左旋</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">LeftRotate</span>(Tree T, Node x) &#123;</span><br><span class="line">    <span class="comment">// set y</span></span><br><span class="line">	Node y = x.right;</span><br><span class="line">	x.right = y.left;</span><br><span class="line">    <span class="comment">// trun y&#x27;s left subtree into x&#x27;s right subtree</span></span><br><span class="line">	<span class="keyword">if</span> (y.left != T.nil)</span><br><span class="line">		y.left.p = x;</span><br><span class="line">    <span class="comment">// link x&#x27;s parent to y</span></span><br><span class="line">	y.p = x.p			</span><br><span class="line">	<span class="keyword">if</span> x.p == T.nil</span><br><span class="line">		T.root = y</span><br><span class="line">	elseif x == x.p.left</span><br><span class="line">		x.p.left = y</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		x.p.right = y</span><br><span class="line">    <span class="comment">// put x on y&#x27;s left</span></span><br><span class="line">	y.left = x;</span><br><span class="line">	x.p = y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>右旋</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">RightRotate</span>()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="插入">插入</h1>
+<h2 id="策略">策略</h2>
+<ul>
+<li><strong>总是插入红色节点</strong>：插入节点并将其涂为红色，如果其<strong>父节点为黑色，则无需其他操作</strong></li>
+<li><strong>recolor和rotate</strong>：通过recolor和rotate各个节点以满足红黑树约束</li>
+</ul>
+<h2 id="种情况">4种情况</h2>
+<ul>
+<li><p><strong>插入的是根节点</strong>：直接将其recolor为黑色</p></li>
+<li><p><strong>插入节点的uncle是红色</strong></p>
+<p><strong>recolor</strong>:
+parent和uncle改为黑色，grandparent为红色</p></li>
+<li><p><strong>插入节点的uncle是黑色（三角形）</strong></p>
+<p><strong>三角形</strong>：三角形指parent是left child，新节点是right
+child；或parent是right child，新节点是left child的情况</p>
+<p><strong>在parent上旋转</strong>：通过旋转使得三角形转化为直线的情况</p></li>
+<li><p><strong>插入节点的uncle是黑色（直线）</strong></p>
+<p><strong>直线</strong>：parent是left child，新节点也是left
+child；或parent是right child，新节点也是right child</p>
+<p><strong>在grandparent节点上进行旋转后recolor</strong></p></li>
+</ul>
+<h2 id="示例">示例</h2>
+<p><img src="/.com//RBTree.png"></p>
+<ul>
+<li><strong>插入</strong>：插入红色节点10，其父节点为红色节点9，因此需要调整</li>
+<li><strong>情况2，uncle是红色，recolor</strong>:
+uncle是红色时，将uncle和parent调整为黑色，并将grandparent调整为红色。此时grandparent12为红色，
+其parent15为红色， 因此需要继续调整</li>
+<li><strong>情况3，uncle是黑色的triangle情况，rotate on
+parent</strong>：节点12的uncle是黑色，且与parent形成三角形，则在parent上进行右旋，12变为15的parent</li>
+<li><strong>情况4，uncle是黑色的line情况，rotate on
+grandparent</strong>：节点15的uncle是黑色，且与parent12形成直线，则在grandparent上进行左旋，12变为8的parent</li>
+<li><strong>recolor</strong>：此时将12涂为黑色，将8涂为红色，即可满足要求</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/" title="红黑树">http://example.com/2022/03/16/红黑树/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/16/Modern-C++/" rel="prev" title="Modern C++">
+                  <i class="fa fa-chevron-left"></i> Modern C++
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/18/%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83/" rel="next" title="编程规范">
+                  编程规范 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="第二章 变量和基本类型 2.1 基本内置类型  char, int, bool, long long, double  无符号类型赋值  赋给无符号类型一个超出其表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数 如，将-1赋给8 bit的unsigned char，结果为255  不要混用带符号类型和无符号类型  当算术表达式既有无符号数又有int时，会将int值转换为无符号数 如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer Chapter 2">
+<meta property="og:url" content="http://example.com/2022/02/11/C++-Primer-Chapter-2/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="第二章 变量和基本类型 2.1 基本内置类型  char, int, bool, long long, double  无符号类型赋值  赋给无符号类型一个超出其表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数 如，将-1赋给8 bit的unsigned char，结果为255  不要混用带符号类型和无符号类型  当算术表达式既有无符号数又有int时，会将int值转换为无符号数 如">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-11T07:27:12.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.852Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/02/11/C++-Primer-Chapter-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/02/11/C++-Primer-Chapter-2/","path":"2022/02/11/C++-Primer-Chapter-2/","title":"C++ Primer Chapter 2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ Primer Chapter 2 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%8F%98%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-text">第二章 变量和基本类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">2.1 基本内置类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%B1%BB%E5%9E%8B%E8%B5%8B%E5%80%BC"><span class="nav-text">无符号类型赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E6%B7%B7%E7%94%A8%E5%B8%A6%E7%AC%A6%E5%8F%B7%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%97%A0%E7%AC%A6%E5%8F%B7%E7%B1%BB%E5%9E%8B"><span class="nav-text">不要混用带符号类型和无符号类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E5%AD%97%E9%9D%A2%E5%80%BC%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">指定字面值的类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-text">2.2 变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%8E%E8%B5%8B%E5%80%BC"><span class="nav-text">初始化与赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">列表初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">默认初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">内置类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B1%BB"><span class="nav-text">类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="nav-text">变量声明与定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-text">静态类型语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AF%86%E7%AC%A6"><span class="nav-text">标识符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="nav-text">2.3 复合类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">声明的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-text">引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E8%83%BD%E7%94%A8%E5%AD%97%E9%9D%A2%E5%80%BC%E5%B8%B8%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E9%9D%9Econst%E5%BC%95%E7%94%A8"><span class="nav-text">不能用字面值常量初始化非const引用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88"><span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-text">获取对象的地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%8C%87%E9%92%88%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1"><span class="nav-text">利用指针访问对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E6%8C%87%E9%92%88"><span class="nav-text">空指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#void-%E6%8C%87%E9%92%88"><span class="nav-text">void* 指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%BA0"><span class="nav-text">指针初始化为0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%A7%A3%E5%A4%8D%E5%90%88%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-text">理解复合类型的声明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E5%90%91%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-text">指向指针的引用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="nav-text">2.4 const限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E5%AF%B9%E8%B1%A1%E5%BF%85%E9%A1%BB%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">const对象必须初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E7%8A%B6%E6%80%81%E4%B8%8Bconst%E5%AF%B9%E8%B1%A1%E4%BB%85%E5%9C%A8%E6%96%87%E4%BB%B6%E5%86%85%E6%9C%89%E6%95%88"><span class="nav-text">默认状态下，const对象仅在文件内有效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-text">const的引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E5%B0%86const%E5%BC%95%E7%94%A8%E7%BB%91%E5%AE%9A%E5%88%B0%E9%9D%9Econst%E5%AF%B9%E8%B1%A1%E4%B8%8A"><span class="nav-text">可以将const引用绑定到非const对象上</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E6%8C%87%E9%92%88"><span class="nav-text">const指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B6%E5%B1%82const%E5%92%8C%E5%BA%95%E5%B1%82const"><span class="nav-text">顶层const和底层const</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#constexpr"><span class="nav-text">constexpr</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">常量表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constexpr%E5%8F%98%E9%87%8F"><span class="nav-text">constexpr变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constexpr%E5%92%8C%E6%8C%87%E9%92%88"><span class="nav-text">constexpr和指针</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%B1%BB%E5%9E%8B"><span class="nav-text">2.5 处理类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="nav-text">类型别名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%88%AB%E5%90%8D%E5%90%8E%E5%9C%A8%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B%E6%97%B6%E5%AE%B9%E6%98%93%E5%BC%95%E8%B5%B7%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="nav-text">使用别名后在定义类型时容易引起的混淆</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#auto%E7%B1%BB%E5%9E%8B%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="nav-text">auto类型说明符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%BC%95%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%9A%E4%BB%A5%E5%BC%95%E7%94%A8%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%B1%BB%E5%9E%8B%E4%BD%9C%E4%B8%BAauto%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">通过引用初始化，编译器会以引用对象的类型作为auto的类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#auto%E4%B8%80%E8%88%AC%E4%BC%9A%E5%BF%BD%E7%95%A5%E9%A1%B6%E5%B1%82const%E4%BF%9D%E7%95%99%E5%BA%95%E5%B1%82const"><span class="nav-text">auto一般会忽略顶层const，保留底层const</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E9%A1%B6%E5%B1%82const%E5%8F%AF%E9%80%9A%E8%BF%87const%E6%98%8E%E7%A1%AE%E6%8C%87%E5%87%BA"><span class="nav-text">如果顶层const，可通过const明确指出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decltype%E7%B1%BB%E5%9E%8B%E6%8C%87%E7%A4%BA%E7%AC%A6"><span class="nav-text">decltype类型指示符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#decltype%E8%BF%94%E5%9B%9E%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%8C%85%E5%90%AB%E9%A1%B6%E5%B1%82const%E5%92%8C%E5%BC%95%E7%94%A8"><span class="nav-text">decltype返回的类型包含顶层const和引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#decltype%E5%92%8C%E5%BC%95%E7%94%A8"><span class="nav-text">decltype和引用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E7%B1%BB%E5%9E%8B%E6%98%AF%E5%BC%95%E7%94%A8"><span class="nav-text">赋值表达式的类型是引用</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">2.6 自定义数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%AE%9A%E4%B9%89"><span class="nav-text">类定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-text">预处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BF%9D%E6%8A%A4%E7%AC%A6"><span class="nav-text">头文件保护符</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/11/C++-Primer-Chapter-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer Chapter 2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-11 15:27:12" itemprop="dateCreated datePublished" datetime="2022-02-11T15:27:12+08:00">2022-02-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="第二章-变量和基本类型">第二章 变量和基本类型</h1>
+<h2 id="基本内置类型">2.1 基本内置类型</h2>
+<ul>
+<li>char, int, bool, long long, double</li>
+</ul>
+<h3 id="无符号类型赋值">无符号类型赋值</h3>
+<ul>
+<li>赋给无符号类型一个超出其表示范围的值时，结果是初始值对无符号类型表示数值总数取模后的余数</li>
+<li>如，将<code>-1</code>赋给8 bit的unsigned
+char，结果为<code>255</code></li>
+</ul>
+<h3 id="不要混用带符号类型和无符号类型">不要混用带符号类型和无符号类型</h3>
+<ul>
+<li><p>当算术表达式既有无符号数又有int时，会<strong>将int值转换为无符号数</strong></p></li>
+<li><p>如，下列代码产生的结果为<code>4294967264</code></p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> u = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line">cout &lt;&lt; i - u &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="指定字面值的类型">指定字面值的类型</h3>
+<ul>
+<li><code>42ULL</code>指定类型为unsigned long
+long，<code>1E-3F</code>指定类型为float，<code>3.14159L</code>指定类型为long
+double，<code>3LL</code>指定类型为long long</li>
+</ul>
+<span id="more"></span>
+<h2 id="变量">2.2 变量</h2>
+<h3 id="初始化与赋值">初始化与赋值</h3>
+<ul>
+<li>初始化与赋值不同，初始化是在创建变量的时候赋予其一个初始值；赋值是将变量当前值擦除，并以一个新值代替</li>
+</ul>
+<h4 id="列表初始化">列表初始化</h4>
+<ul>
+<li><p>通过花括号初始化变量，称为列表初始化</p></li>
+<li><p>如果使用列表初始化且存在丢失信息的风险时，编译器将报错</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> <span class="keyword">double</span> ld = <span class="number">3.1415926536</span>;</span><br><span class="line"><span class="keyword">int</span> a&#123;b&#125;;	<span class="comment">// 错误, 存在丢失信息的危险</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="默认初始化">默认初始化</h4>
+<ul>
+<li>若定义变量时没有指定初值，则变量被默认初始化。默认值由变量类型决定，且定义变量的位置也会影响</li>
+</ul>
+<h5 id="内置类型">内置类型</h5>
+<ul>
+<li>若在函数体外，则默认初始化为0</li>
+<li>若在函数体内，则不被初始化，其值是未定义的</li>
+</ul>
+<h5 id="类">类</h5>
+<ul>
+<li><strong>类决定了其初始化对象的方式</strong>，<strong>若允许</strong>不被初始化就定义对象，则类将决定对象的初始值是什么，这样的类一般提供一个合适的默认值</li>
+<li>若类要求每个对象都显式初始化，则创建该类的对象而未初始化，将引发错误</li>
+</ul>
+<h3 id="变量声明与定义">变量声明与定义</h3>
+<ul>
+<li><p>声明使得名字为程序所知，定义负责创建与名字关联的实体</p></li>
+<li><p>声明变量的方法：使用extern关键字，且不要初始化。如果初始化，则会变为定义（相当于extern不起作用）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> i;</span><br></pre></td></tr></table></figure></li>
+<li><p>在函数体内部，试图初始化一个由extern关键字标记的变量，将引发错误</p></li>
+</ul>
+<h3 id="静态类型语言">静态类型语言</h3>
+<ul>
+<li>C++是一种<strong>静态类型语言</strong>，<strong>在编译阶段检查类型</strong>（该过程称为类型检查）</li>
+</ul>
+<h3 id="标识符">标识符</h3>
+<ul>
+<li>标识符由字母、数字、下划线组成，必须以字母或下划线开头</li>
+<li><strong>不能连续使用两个下划线</strong></li>
+<li><strong>不能以下划线加大写字母开头</strong></li>
+<li><strong>函数体外的标识符不能以下划线开头</strong></li>
+</ul>
+<h2 id="复合类型">2.3 复合类型</h2>
+<h3 id="声明的定义">声明的定义</h3>
+<ul>
+<li>一条声明语句，由一个基本数据类型和紧随其后的一个声明符列表组成，每个声明符命名了一个变量并指定该变量为与基本数据类型有关的某种类型</li>
+</ul>
+<h3 id="引用">引用</h3>
+<ul>
+<li>引用<strong>为对象起了另外一个名字</strong>，引用类型<strong>引用
+(refers to)</strong>
+另外一种类型，通过将声明符写成<code>&amp;d</code>的形式定义引用类型，其中<code>d</code>是声明的变量名</li>
+<li>定义引用时，程序将引用和它的初始值绑定在一起，<strong>引用必须初始化</strong>，引用无法赋值</li>
+<li><strong>引用并非对象</strong>，它只是为一个已存在的对象所起的另一个名字</li>
+<li>引用本身不是对象，<strong>无法定义引用的引用</strong></li>
+<li>一般地，引用的类型要和与之绑定的对象严格匹配</li>
+</ul>
+<h4 id="不能用字面值常量初始化非const引用">不能用字面值常量初始化非const引用</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> &amp;r = <span class="number">1</span>;</span><br><span class="line"><span class="comment">// 非法</span></span><br></pre></td></tr></table></figure>
+<h3 id="指针">指针</h3>
+<ul>
+<li>指针是<strong>指向（points to）</strong>另外一种类型的复合类型</li>
+<li>指针本身是一个对象，允许对指针赋值和拷贝，且在其生命周期内指针可先后指向几个不同的对象；指针不必在定义时赋初值</li>
+</ul>
+<h4 id="获取对象的地址">获取对象的地址</h4>
+<ul>
+<li>指针存放某个对象的地址</li>
+<li>对象的地址可通过取地址符<code>&amp;</code>获取</li>
+<li>一般地，指针的类型要和与之绑定的对象严格匹配</li>
+</ul>
+<h4 id="利用指针访问对象">利用指针访问对象</h4>
+<ul>
+<li>如果指针指向一个对象，可利用解引用符<code>*</code>来访问该对象，如给解引用符的结果赋值实际上是给指针指向的对象赋值</li>
+</ul>
+<h4 id="空指针">空指针</h4>
+<ul>
+<li>不指向任何对象的指针，可以用字面值<code>nullptr</code>初始化指针</li>
+<li>最好初始化所有指针，使用未经初始化的指针是引发运行错误的一大原因</li>
+</ul>
+<h4 id="void-指针">void* 指针</h4>
+<ul>
+<li>一种特殊的指针，可存放任意对象的地址</li>
+<li><code>void*</code>指针可用于与其他指针比较、作为函数的输入或输出、赋值给另一个<code>void*</code>指针，但不能直接操作其所指的对象</li>
+</ul>
+<h4 id="指针初始化为0">指针初始化为0</h4>
+<ul>
+<li><p>可以把指针初始化为0，代表它为空指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p = <span class="number">0</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>但不能用int型变量给指针初始化/赋值，即使该int型变量为0</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> v = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *p = v;</span><br><span class="line"><span class="comment">// 错误</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="理解复合类型的声明">理解复合类型的声明</h3>
+<ul>
+<li><p>一条定义语句中，基本类型只有一个，但声明符的形式可以不同，从而定义出不同类型的变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1024</span>, *p = &amp;i, &amp;r = i;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="指向指针的引用">指向指针的引用</h4>
+<ul>
+<li><p>引用不是对象，不可以定义指向引用的指针，但可以定义指向指针的引用</p></li>
+<li><p>定义指向指针的引用，此后给该引用赋值相当于给其绑定的指针赋值，解该引用相当于解该引用绑定的指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> v = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> *p = &amp;v;</span><br><span class="line"><span class="keyword">int</span> *&amp;r = p;</span><br></pre></td></tr></table></figure></li>
+<li><p>对于复杂的复合类型定义，可以从右到左阅读，离变量名最近的修饰符对其类型的影响最为直接。如，上述对<code>r</code>的定义，最近的符号<code>&amp;</code>表明它是一个引用，绑定的类型是指向int的指针</p></li>
+</ul>
+<h2 id="const限定符">2.4 const限定符</h2>
+<h3 id="const对象必须初始化">const对象必须初始化</h3>
+<ul>
+<li><p>const对象一旦创建后其值就不能再改变</p></li>
+<li><p>若利用一个对象初始化另一个对象，则其是否const无关紧要</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> j = i;		<span class="comment">// 合法</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="默认状态下const对象仅在文件内有效">默认状态下，const对象仅在文件内有效</h3>
+<ul>
+<li>若程序包含多个文件，则每个用了const对象的文件都需要定义一次</li>
+<li>特别地，若想在多个文件内共享const对象，则可以在声明和定义语句中都加上extern</li>
+</ul>
+<h3 id="const的引用">const的引用</h3>
+<ul>
+<li><p>将引用绑定到const对象上，成为reference to const</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i;</span><br></pre></td></tr></table></figure></li>
+<li><p>无法利用const引用为对象赋值，因为该对象是const的</p></li>
+<li><p><strong>不能将非const引用绑定到const对象上</strong>，否则就可能通过该引用修改const对象的值，导致错误</p></li>
+</ul>
+<h4 id="可以将const引用绑定到非const对象上">可以将const引用绑定到非const对象上</h4>
+<ul>
+<li><p>允许为一个常量引用绑定非常量的对象、字面值，甚至是一般表达式，只要类型符合</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i;	<span class="comment">// 合法</span></span><br></pre></td></tr></table></figure></li>
+<li><p>绑定后，不能通过该const引用修改对象的值；但可以通过其他途径修改对象的值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r1 = i;</span><br><span class="line"><span class="keyword">int</span> &amp;r2 = i;</span><br><span class="line">r1 = <span class="number">10</span>;		<span class="comment">// 非法, 不能通过const引用修改对象的值</span></span><br><span class="line">r2 = <span class="number">10</span>;		<span class="comment">// 合法</span></span><br><span class="line">cout &lt;&lt; r1 &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;	<span class="comment">// 结果将输出10</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>const指针或const引用，可理解为指针或引用”自以为是“地觉得自己指向了const对象，从而自觉地不去改变所指对象的值</p>
+</blockquote>
+<h3 id="const指针">const指针</h3>
+<ul>
+<li><p>把指针定义为常量，则必须初始化，且初始化完成后其值就不再改变</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span> p = i;		<span class="comment">// p是一个指向int的const指针</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> j = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p2 = j;	<span class="comment">// p2是一个指向const int的const指针</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="顶层const和底层const">顶层const和底层const</h3>
+<ul>
+<li><p>指针本身是一个对象，又指向另一个对象，指针本身为常量称为<strong>顶层const</strong>，其所指的对象是常量称为<strong>底层const</strong></p></li>
+<li><p>执行对象拷贝时，底层const不能忽视，拷入和拷出的对象必须具有相同的底层const，或者底层const将非常量转换为常量</p></li>
+</ul>
+<h3 id="constexpr">constexpr</h3>
+<h4 id="常量表达式">常量表达式</h4>
+<ul>
+<li><p>常量表达式指值不会改变且编译过程就能得到计算结果的表达式</p></li>
+<li><p>字面值是常量表达式</p></li>
+<li><p>用常量表达式初始化的const对象是常量表达式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_v = <span class="number">20</span>;			<span class="comment">// 常量表达式</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> limit = max_v + <span class="number">1</span>;	<span class="comment">// 常量表达式</span></span><br></pre></td></tr></table></figure></li>
+<li><p>若const对象的初始值要在 运行时才确定，则也不是常量表达式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> sz = <span class="built_in">get_size</span>();		<span class="comment">// sz不是常量表达式</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="constexpr变量">constexpr变量</h4>
+<ul>
+<li>将变量声明为constexpr类型，编译器会验证变量的值是否常量表达式。声明为constexpr的变量是一个常量，且必须用常量表达式初始化</li>
+</ul>
+<h4 id="constexpr和指针">constexpr和指针</h4>
+<ul>
+<li>使用constexpr定义指针，会将指针定义为<strong>常量指针（顶层const）</strong>，但不代表它所指的对象是个常量<strong>（非底层const）</strong></li>
+</ul>
+<h2 id="处理类型">2.5 处理类型</h2>
+<h3 id="类型别名">类型别名</h3>
+<ul>
+<li><p>让复杂的类型名字更简单、易于理解</p>
+<ul>
+<li>方法一：<code>typedef</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>方法二：别名声明</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> ll = <span class="keyword">long</span> <span class="keyword">long</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="使用别名后在定义类型时容易引起的混淆">使用别名后在定义类型时容易引起的混淆</h4>
+<ul>
+<li>如下例子，变量<code>cstr</code>是一个<strong>指向char类型的常量指针</strong>，而不是一个指向常量char的指针</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span>* pstring;</span><br><span class="line"><span class="keyword">const</span> pstring cstr = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="auto类型说明符">auto类型说明符</h3>
+<ul>
+<li>auto类型说明符，让编译器通过初始值推算变量的类型</li>
+<li>可以在auto语句声明多个变量，但是一条声明语句只能有1个基本数据类型，因此多个变量必须拥有相同的基本数据类型</li>
+</ul>
+<h4 id="通过引用初始化编译器会以引用对象的类型作为auto的类型">通过引用初始化，编译器会以引用对象的类型作为auto的类型</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>, &amp;r = i;</span><br><span class="line"><span class="keyword">auto</span> a = r;</span><br><span class="line"><span class="comment">// 编译器会将a定义为int类型</span></span><br></pre></td></tr></table></figure>
+<h4 id="auto一般会忽略顶层const保留底层const">auto一般会忽略顶层const，保留底层const</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">1</span>, &amp;r = i;</span><br><span class="line"><span class="keyword">auto</span> b = i;		<span class="comment">// b是int类型(顶层const被忽略)</span></span><br><span class="line"><span class="keyword">auto</span> c = &amp;i;	<span class="comment">// c是指向const int的引用(底层const被保留)</span></span><br></pre></td></tr></table></figure>
+<h4 id="如果顶层const可通过const明确指出">如果顶层const，可通过const明确指出</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> f = i;	<span class="comment">// f是const int</span></span><br></pre></td></tr></table></figure>
+<h3 id="decltype类型指示符">decltype类型指示符</h3>
+<ul>
+<li><p>分析并返回表达式的类型，不计算表达式的值，并将该类型用于声明/定义变量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(<span class="built_in">f</span>()) sum = x;</span><br><span class="line"><span class="comment">// 将sum定义为f()函数返回值的类型, 编译器并不实际调用函数f</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="decltype返回的类型包含顶层const和引用">decltype返回的类型包含顶层const和引用</h4>
+<ul>
+<li><p>decltype使用的表达式为一个变量时，将返回该变量的类型（包括顶层const和引用在内）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">0</span>, &amp;j = i;</span><br><span class="line"><span class="keyword">decltype</span>(i) x = <span class="number">0</span>;		<span class="comment">// x的类型是const int</span></span><br><span class="line"><span class="keyword">decltype</span>(j) y = x;		<span class="comment">// y的类型是const int&amp;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="decltype和引用">decltype和引用</h4>
+<ul>
+<li><p>解引用指针可以得到指针指向的对象，<code>decltype(*p)</code>将得到该指针指向对象的引用类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">42</span>, *p = &amp;i;</span><br><span class="line"><span class="keyword">decltype</span>(*p) c = i;</span><br><span class="line"><span class="comment">// 变量c的类型为int&amp;, 而非int</span></span><br></pre></td></tr></table></figure></li>
+<li><p>若decltype使用加上括号的变量，将得到引用类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">decltype</span>(i) d = i;		<span class="comment">// d的类型为int</span></span><br><span class="line"><span class="keyword">decltype</span>((i)) e = i;    <span class="comment">// e的类型为int&amp;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="赋值表达式的类型是引用">赋值表达式的类型是引用</h5>
+<ul>
+<li>赋值表达式是一种会产生引用的表达式，引用的类型为左值的类型</li>
+</ul>
+<h2 id="自定义数据结构">2.6 自定义数据结构</h2>
+<ul>
+<li><p>类定义最后加上分号</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Sales_data</span> &#123;</span></span><br><span class="line">  	std::string book_no;</span><br><span class="line">    <span class="keyword">unsigned</span> units_sold = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">double</span> revenue = <span class="number">0.0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 此处的分号记得加上</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="类定义">类定义</h3>
+<ul>
+<li>通常定义在与类名相同的头文件中，如<code>Sales_item</code>类可以放在<code>Sales_item.h</code>头文件中，</li>
+</ul>
+<h3 id="预处理器">预处理器</h3>
+<ul>
+<li>确保头文件多次包含仍能安全工作的常用技术是<strong>预处理器</strong></li>
+<li>遇到<code>#include</code>会用指定的头文件内容代替<code>#include</code></li>
+</ul>
+<h4 id="头文件保护符">头文件保护符</h4>
+<ul>
+<li><code>#define</code>指令把一个名字设定为预处理变量，用作头文件保护时，<strong>一般以头文件名字构建保护符，且预处理变量名字全部大写</strong></li>
+<li><code>#ifdef</code>当且仅当变量
+已定义时为真，<code>#ifndef</code>当且仅当变量未定义时为真，一旦为真代码将继续执行直至遇到<code>#endif</code>指令为止</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> SALES_DATA_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SALES_DATA_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Sales_data</span> &#123;</span></span><br><span class="line">    std::string book_no;</span><br><span class="line">    <span class="keyword">unsigned</span> units_sold = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">double</span> revenue = <span class="number">0.0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="comment">// 预处理变量SALES_DATA_H保证了该头文件仅被包含一次</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/02/11/C++-Primer-Chapter-2/" title="C++ Primer Chapter 2">http://example.com/2022/02/11/C++-Primer-Chapter-2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/10/CF-Global-17/" rel="prev" title="CF Global 17">
+                  <i class="fa fa-chevron-left"></i> CF Global 17
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/11/CS-144-Summary/" rel="next" title="CS-144 Summary">
+                  CS-144 Summary <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="A Construct a Rectangle  标签：math 分析：有两种可能的情况，一种是两个边分别为邻边（长、宽），第三条边可以切割为长、宽；一种是两个边为对边，第三条边可以切割为两条相等的边 代码 12345678for _ in range(int(input())):    arr &#x3D; list(map(int, input().split()))    arr.sort()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CF Edu 120">
+<meta property="og:url" content="http://example.com/2021/12/28/CF-Edu-120/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="A Construct a Rectangle  标签：math 分析：有两种可能的情况，一种是两个边分别为邻边（长、宽），第三条边可以切割为长、宽；一种是两个边为对边，第三条边可以切割为两条相等的边 代码 12345678for _ in range(int(input())):    arr &#x3D; list(map(int, input().split()))    arr.sort()">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-28T08:42:43.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.856Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Codeforces">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/28/CF-Edu-120/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/28/CF-Edu-120/","path":"2021/12/28/CF-Edu-120/","title":"CF Edu 120"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CF Edu 120 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#a-construct-a-rectangle"><span class="nav-text">A Construct a Rectangle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#b-berland-music"><span class="nav-text">B Berland Music</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c-set-or-decrease"><span class="nav-text">C Set or Decrease</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#d-shuffle"><span class="nav-text">D Shuffle</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/28/CF-Edu-120/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CF Edu 120
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-28 16:42:43" itemprop="dateCreated datePublished" datetime="2021-12-28T16:42:43+08:00">2021-12-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="a-construct-a-rectangle">A Construct a Rectangle</h1>
+<ul>
+<li><p>标签：<code>math</code></p></li>
+<li><p>分析：有两种可能的情况，一种是两个边分别为邻边（长、宽），第三条边可以切割为长、宽；一种是两个边为对边，第三条边可以切割为两条相等的边</p></li>
+<li><p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    arr = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split()))</span><br><span class="line">    arr.sort()</span><br><span class="line">    a, b, c = arr</span><br><span class="line">    <span class="keyword">if</span> a + b == c <span class="keyword">or</span> (a == b <span class="keyword">and</span> c % <span class="number">2</span> == <span class="number">0</span>) <span class="keyword">or</span> (b == c <span class="keyword">and</span> a % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;YES&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;NO&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<span id="more"></span>
+<h1 id="b-berland-music">B Berland Music</h1>
+<ul>
+<li><p>标签：<code>greedy</code></p></li>
+<li><p>分析：like总是比dislike高分，假设有m首dislike，则其占据的分数为1<sub>m，like占据的分数为m+1</sub>n。为此分别将其按从小到大排序，然后赋分即可</p></li>
+<li><p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    n = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">    arr = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split()))</span><br><span class="line">    res = arr.copy()</span><br><span class="line">    s = <span class="built_in">input</span>()</span><br><span class="line">    like = []</span><br><span class="line">    dislike = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> s[i] == <span class="string">&#x27;1&#x27;</span>:</span><br><span class="line">            like.append((arr[i], i))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dislike.append((arr[i], i))</span><br><span class="line">    like.sort()</span><br><span class="line">    dislike.sort()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(dislike)):</span><br><span class="line">        res[dislike[i][<span class="number">1</span>]] = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(like)):</span><br><span class="line">        res[like[i][<span class="number">1</span>]] = i + <span class="number">1</span> + <span class="built_in">len</span>(dislike)</span><br><span class="line">    <span class="built_in">print</span>(*res)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="c-set-or-decrease">C Set or Decrease</h1>
+<ul>
+<li><p>标签：<code>math</code></p></li>
+<li><p>分析：一开始想到的是令最小值降到恰好满足等式的值x，然后其他数都赋值x，从而保证<span class="math inline">\(x \times n \leq
+k\)</span>，这种方法忽略了可以让最小值降到比x更小，从而不用将所有其他值都赋值x的情况</p></li>
+<li><p>正确思路：首先将数组排序，考虑除了最小值外，将最大的m个数都进行赋值，此时为了满足该等式最小值所要达到的值target，即满足<span class="math inline">\(target \times (m+1) + sum((n - m - 1)numbers) \leq
+k\)</span>的最大值target，该值可以通过数学方式求得，然后考虑m从0到n-1变化的过程，即可求得最小操作次数</p></li>
+<li><p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    n, k = <span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split())</span><br><span class="line">    arr = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split()))</span><br><span class="line">    arr.sort()</span><br><span class="line">    minVal = arr[<span class="number">0</span>]</span><br><span class="line">    s = <span class="built_in">sum</span>(arr) - minVal</span><br><span class="line">    </span><br><span class="line">    res = <span class="built_in">max</span>(<span class="number">0</span>, minVal + s - k)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">        s -= arr[i]</span><br><span class="line">        </span><br><span class="line">        target = (k - s) // (<span class="number">1</span> + n - i)</span><br><span class="line">        <span class="keyword">if</span> target &gt;= minVal:</span><br><span class="line">            tmp = n - i</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp = n - i + minVal - target</span><br><span class="line">        res = <span class="built_in">min</span>(res, tmp)</span><br><span class="line">    <span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="d-shuffle">D Shuffle</h1>
+<ul>
+<li><p>标签：<code>排列组合数</code>、<code>sliding windows</code></p></li>
+<li><p>分析：此题的解法是通过对测试用例的观察、找规律得到的，首先通过滑动窗口求得每一个包含k个1的子串。当滑动窗口移动时，假设找到的字串长度为y，包含x个1</p>
+<ul>
+<li>若最右边的字符为0，则打乱后其必为1才能与前面的不同，因此有<code>C(y-1, x-1)</code>种情况</li>
+<li>若最右边的字符为1，则打乱后其必为0才能与前面的不同，因此有<code>C(y-1, x)</code>种情况</li>
+<li>特别地，对于第一个字符，由于不用考虑和前面的重复情况，因此有<code>C(y, x)</code>种情况</li>
+</ul></li>
+<li><p>坑点：由于本题需要对MOD取余，当结果恰好是其倍数时则答案为0。开始时我忽略了这个情况，认为答案至少为1，在答案为0时（若完全没有包含k个1的子串）直接返回1，从而出错并被Hack了。</p>
+<ul>
+<li>正确做法：增加flag判断，若出现了包含k个1的子串，则答案原始值必不为0（因此出现了0必定为取余导致，直接返回0；否则，说明答案原始值就是0，返回1）</li>
+</ul></li>
+<li><p>代码：本题涉及在某一个取余值下，快速求大数的阶乘以及排列组合数，涉及<strong>费马小定理</strong>等基础知识</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="meta">@lru_cache(<span class="params"><span class="literal">None</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fac</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> x * fac(x - <span class="number">1</span>) % MOD</span><br><span class="line">        </span><br><span class="line"><span class="meta">@lru_cache(<span class="params"><span class="literal">None</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ifac</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">pow</span>(fac(x), MOD - <span class="number">2</span>, MOD)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">C</span>(<span class="params">x, y</span>):</span></span><br><span class="line">    <span class="keyword">if</span> x &lt; y:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> fac(x) * ifac(y) * ifac(x - y) % MOD</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">MOD = <span class="number">998244353</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5000</span>):</span><br><span class="line">    fac(i)</span><br><span class="line">n, k = <span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split())</span><br><span class="line">s = <span class="built_in">input</span>()</span><br><span class="line"><span class="keyword">if</span> k == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    left = <span class="number">0</span></span><br><span class="line">    cnt = <span class="number">0</span></span><br><span class="line">    res = <span class="number">0</span></span><br><span class="line">    start = <span class="literal">False</span></span><br><span class="line">    flag = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)): </span><br><span class="line">        <span class="keyword">if</span> s[i] == <span class="string">&#x27;1&#x27;</span>:</span><br><span class="line">            cnt += <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> cnt &gt; k:</span><br><span class="line">            <span class="keyword">if</span> s[left] == <span class="string">&#x27;1&#x27;</span>:</span><br><span class="line">                cnt -= <span class="number">1</span></span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> cnt == k:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> start:</span><br><span class="line">                res += C(i - left + <span class="number">1</span>, k)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> s[i] == <span class="string">&#x27;1&#x27;</span>:</span><br><span class="line">                    res += C(i - left, k)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    res += C(i - left, k - <span class="number">1</span>)</span><br><span class="line">            start = <span class="literal">True</span></span><br><span class="line">            flag = <span class="literal">True</span></span><br><span class="line">            res %= MOD</span><br><span class="line">    <span class="keyword">if</span> res == <span class="number">0</span> <span class="keyword">and</span> <span class="keyword">not</span> flag:</span><br><span class="line">        res = <span class="number">1</span></span><br><span class="line">    <span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/12/28/CF-Edu-120/" title="CF Edu 120">http://example.com/2021/12/28/CF-Edu-120/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Codeforces/" rel="tag"># Codeforces</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/26/Leetcode-Bi-Week-Contest-68/" rel="prev" title="Leetcode Bi-Week Contest 68">
+                  <i class="fa fa-chevron-left"></i> Leetcode Bi-Week Contest 68
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/29/CF-763/" rel="next" title="CF 763">
+                  CF 763 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

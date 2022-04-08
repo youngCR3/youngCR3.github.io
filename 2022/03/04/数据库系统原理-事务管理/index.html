@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="数据库事务管理知识总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库系统原理-事务管理">
+<meta property="og:url" content="http://example.com/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="数据库事务管理知识总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-04T09:00:45.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.864Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/","path":"2022/03/04/数据库系统原理-事务管理/","title":"数据库系统原理-事务管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据库系统原理-事务管理 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-text">1 事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-text">事务的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-text">事务的状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E6%80%A7"><span class="nav-text">事务的隔离性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E4%B8%B2%E8%A1%8C%E5%8C%96"><span class="nav-text">可串行化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E6%80%A7%E5%92%8C%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-text">事务的隔离性和原子性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E6%80%A7%E7%BA%A7%E5%88%AB"><span class="nav-text">事务的隔离性级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%94%E7%A6%BB%E6%80%A7%E7%BA%A7%E5%88%AB%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">隔离性级别的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81"><span class="nav-text">锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="nav-text">时间戳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%89%88%E6%9C%AC%E5%92%8C%E5%BF%AB%E7%85%A7%E9%9A%94%E7%A6%BB"><span class="nav-text">多版本和快照隔离</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-text">2 并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E9%94%81%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-text">2.1 基于锁的协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81-1"><span class="nav-text">锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E7%9A%84%E6%8E%88%E4%BA%88"><span class="nav-text">锁的授予</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-text">两阶段封锁协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E9%94%81%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">封锁的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-text">基于图的协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E5%A4%84%E7%90%86"><span class="nav-text">2.2 死锁处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E9%A2%84%E9%98%B2"><span class="nav-text">死锁预防</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-text">死锁检测与恢复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%B2%92%E5%BA%A6"><span class="nav-text">2.3 多粒度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%8F%E5%90%91%E9%94%81%E6%A8%A1%E5%BC%8F"><span class="nav-text">意向锁模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E4%B8%8E%E8%B0%93%E8%AF%8D%E8%AF%BB"><span class="nav-text">2.4 插入、删除操作与谓词读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5"><span class="nav-text">插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%93%E8%AF%8D%E8%AF%BB%E5%92%8C%E5%B9%BB%E8%B1%A1"><span class="nav-text">谓词读和幻象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-text">2.5 基于时间戳的协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3-1"><span class="nav-text">时间戳</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3%E6%8E%92%E5%BA%8F%E5%8D%8F%E8%AE%AE"><span class="nav-text">时间戳排序协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#thomas%E5%86%99%E8%A7%84%E5%88%99"><span class="nav-text">Thomas写规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%9C%89%E6%95%88%E6%80%A7%E6%A3%80%E6%9F%A5%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-text">2.6 基于有效性检查的协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81"><span class="nav-text">乐观锁与悲观锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%89%88%E6%9C%AC%E6%9C%BA%E5%88%B6mvcc"><span class="nav-text">2.7 多版本机制MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%89%88%E6%9C%AC%E6%97%B6%E9%97%B4%E6%88%B3%E6%8E%92%E5%BA%8F"><span class="nav-text">多版本时间戳排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%89%88%E6%9C%AC%E4%B8%A4%E9%98%B6%E6%AE%B5%E5%B0%81%E9%94%81"><span class="nav-text">多版本两阶段封锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E7%85%A7%E9%9A%94%E7%A6%BB"><span class="nav-text">2.8 快照隔离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E7%85%A7%E9%9A%94%E7%A6%BB%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%89%88%E6%9C%AC"><span class="nav-text">快照隔离中的多版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%9C%89%E6%95%88%E6%80%A7%E6%A3%80%E6%9F%A5%E6%AD%A5%E9%AA%A4"><span class="nav-text">更新事务的有效性检查步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B2%E8%A1%8C%E5%8C%96%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">串行化问题和解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85-%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-text">补充 并发一致性问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A2%E5%A4%B1%E6%9B%B4%E6%96%B0"><span class="nav-text">丢失更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E8%84%8F%E6%95%B0%E6%8D%AE"><span class="nav-text">读脏数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB"><span class="nav-text">不可重复读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BB%E5%BD%B1%E8%AF%BB"><span class="nav-text">幻影读</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D%E7%B3%BB%E7%BB%9F"><span class="nav-text">3 恢复系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE-xv6%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D%E6%9C%BA%E5%88%B6"><span class="nav-text">回顾:
+xv6文件系统的故障恢复机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-text">3.3 恢复与原子性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95"><span class="nav-text">日志记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BF%AE%E6%94%B9"><span class="nav-text">数据库修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-text">并发控制和恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%8F%90%E4%BA%A4"><span class="nav-text">事务提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%97%A5%E5%BF%97%E6%9D%A5%E9%87%8D%E5%81%9A%E5%92%8C%E6%92%A4%E9%94%80%E4%BA%8B%E5%8A%A1"><span class="nav-text">使用日志来重做和撤销事务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checkpoint"><span class="nav-text">checkpoint</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D%E7%AE%97%E6%B3%95"><span class="nav-text">3.4 恢复算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%9B%9E%E6%BB%9A"><span class="nav-text">事务回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%B4%A9%E6%BA%83%E5%90%8E%E7%9A%84%E6%81%A2%E5%A4%8D%E7%AE%97%E6%B3%95"><span class="nav-text">系统崩溃后的恢复算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E5%A4%84%E7%90%86%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-text">提交处理的优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E5%8C%BA%E7%AE%A1%E7%90%86"><span class="nav-text">3.5 缓冲区管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E7%BC%93%E5%86%B2"><span class="nav-text">日志记录缓冲</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%93%E5%86%B2"><span class="nav-text">数据库缓冲</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9C%A8%E7%BC%93%E5%86%B2%E5%8C%BA%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">操作系统在缓冲区管理中的作用</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库系统原理-事务管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-04 17:00:45" itemprop="dateCreated datePublished" datetime="2022-03-04T17:00:45+08:00">2022-03-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OS/" itemprop="url" rel="index"><span itemprop="name">OS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>数据库事务管理知识总结</strong></p>
+<span id="more"></span>
+<h1 id="事务">1 事务</h1>
+<h2 id="事务的概念">事务的概念</h2>
+<ul>
+<li><p><strong>事务</strong>是访问并可能更新各种数据项的一个<strong>程序执行单元</strong></p></li>
+<li><p>事务的<strong>四个特性ACID</strong></p>
+<ul>
+<li><strong>原子性</strong>，事务的所有操作在数据要么全部正确地反映出来，要么完全不反应</li>
+<li><strong>一致性</strong>，当事务完成时，事务必须处于一致状态</li>
+<li><strong>隔离性</strong>，多个事务并发执行，但每个事务都感觉不到系统中有其他事务在并发地执行</li>
+<li><strong>持久性</strong>，如果事务成功完成后，对数据库的改变是永久的，即使出现系统也是如此</li>
+</ul></li>
+</ul>
+<h2 id="事务的状态">事务的状态</h2>
+<ul>
+<li>活跃、部分提交、失效、中止、提交
+<ul>
+<li><strong>活跃状态</strong>（初始状态），事务执行时就处于此状态</li>
+<li><strong>部分提交状态</strong>，最后一条语句被执行之后，所做的更改仍然在内存的缓冲区中</li>
+<li><strong>失效状态</strong>，正常执行不能继续</li>
+<li><strong>中止状态</strong>，事务已回滚并且数据库恢复到它在事务开始前的状态</li>
+<li><strong>提交状态</strong>，所有操作成功完成后，从部分提交状态进入提交状态</li>
+</ul></li>
+<li>事务进入中止状态后，系统有两种选择
+<ul>
+<li><strong>重启事务</strong>，事务中止的原因是硬件错误或并非内部逻辑错误的软件错误，则重新执行该事务</li>
+<li><strong>杀死事务</strong>，事务中止的原因是内部逻辑错误</li>
+</ul></li>
+</ul>
+<h2 id="事务的隔离性">事务的隔离性</h2>
+<ul>
+<li><p>事务并发执行的好处</p>
+<ul>
+<li>提高<strong>吞吐量</strong>和<strong>资源利用率</strong></li>
+<li>减少<strong>等待时间</strong></li>
+</ul></li>
+<li><p>事务的执行顺序称为<strong>调度</strong>，表示<strong>指令在系统中执行的时间顺序</strong>。一组事务的一个调度必须包含这些事务的<strong>全部指令</strong></p></li>
+<li><p>调度是<strong>串行</strong>的，指一个单独事务的指令在该调度中是一起出现的</p></li>
+<li><p>并发执行</p>
+<ul>
+<li>数据库系统并发执行多个事务，则相应的调度不再是串行的，两个事务的各种指令可能是交叉的</li>
+<li>如果并发执行的控制完全由操作系统负责，则可能出现不一致状态。保证所执行的任何调度都能使数据库处于一致性状态是数据库系统的任务</li>
+<li>数据库系统负责完成此任务的是<strong>并发控制部件</strong></li>
+</ul></li>
+</ul>
+<h2 id="可串行化">可串行化</h2>
+<blockquote>
+<p>前提条件：只考虑对数据的read与write指令</p>
+</blockquote>
+<ul>
+<li><p>考虑调度S，含有分别属于<span class="math inline">\(T_i\)</span>和<span class="math inline">\(T_j\)</span>的两条连续指令<span class="math inline">\(I\)</span>与<span class="math inline">\(J\)</span>，如果I与J引用不同的数据项，则交换I与J不会影响调度中任何指令的结果</p></li>
+<li><p>如果I与J引用相同的数据项<span class="math inline">\(Q\)</span>，则两个指令的次序可能是重要的，可能情况包括</p>
+<ul>
+<li><span class="math inline">\(I=read(Q)\)</span>，<span class="math inline">\(J=read(Q)\)</span>，I与J的次序不重要</li>
+<li><span class="math inline">\(I=read(Q)\)</span>，<span class="math inline">\(J=write(Q)\)</span>，I与J的次序重要，如果<span class="math inline">\(I\)</span>先执行则<span class="math inline">\(T_i\)</span>不会读入<span class="math inline">\(T_j\)</span>写入的值，如果<span class="math inline">\(J\)</span>先执行则<span class="math inline">\(T_j\)</span>不会读入<span class="math inline">\(T_i\)</span>写入的值</li>
+<li><span class="math inline">\(I=write(Q)\)</span>，<span class="math inline">\(J=read(Q)\)</span>，I与J的次序重要，同上</li>
+<li><span class="math inline">\(I=write(Q)\)</span>，<span class="math inline">\(J=write(Q)\)</span>，I与J的次序重要，直接影响调度<span class="math inline">\(S\)</span>所产生的数据库状态中<span class="math inline">\(Q\)</span>的最终值</li>
+</ul></li>
+<li><p><strong>冲突指令</strong>：如果<span class="math inline">\(I\)</span>与<span class="math inline">\(J\)</span>是不同事务在相同数据项中执行的操作，且至少其中一条指令是write操作，则说<span class="math inline">\(I\)</span>与<span class="math inline">\(J\)</span>是<strong>冲突</strong>的</p></li>
+<li><p><strong>非冲突指令</strong>：<span class="math inline">\(I\)</span>和<span class="math inline">\(J\)</span>是调度<span class="math inline">\(S\)</span>的连续指令，若<span class="math inline">\(I\)</span>和<span class="math inline">\(J\)</span>是属于不同事务的指令，且<span class="math inline">\(I\)</span>和<span class="math inline">\(J\)</span>不冲突，则可以交换<span class="math inline">\(I\)</span>与<span class="math inline">\(J\)</span>的次序以产生一个新的调度<span class="math inline">\(S&#39;\)</span></p></li>
+<li><p><strong>冲突等价</strong>：如果调度<span class="math inline">\(S\)</span>经一系列的非冲突指令的交换而转换成调度<span class="math inline">\(S&#39;\)</span>，则<span class="math inline">\(S\)</span>和<span class="math inline">\(S&#39;\)</span>是冲突等价的</p></li>
+<li><p><strong>冲突可串行化</strong>：如果调度<span class="math inline">\(S\)</span>与一个串行调度是冲突等价的，则调度<span class="math inline">\(S\)</span>是冲突可串行化的</p></li>
+<li><p>确定一个调度是否冲突可串行化（<strong>优先图+拓扑排序</strong>）</p>
+<ul>
+<li>调度的<strong>优先图</strong><span class="math inline">\(G=(V,E)\)</span>，其中<span class="math inline">\(V\)</span>是顶点集，表示参与调度的所有事务，#E#是边集，由满足下列三个条件之一的所有<span class="math inline">\(T_i \rightarrow T_j\)</span>组成
+<ul>
+<li><span class="math inline">\(T_j\)</span>执行read(Q)前，<span class="math inline">\(T_i\)</span>执行write(Q)</li>
+<li><span class="math inline">\(T_j\)</span>执行write(Q)前，<span class="math inline">\(T_i\)</span>执行read(Q)</li>
+<li><span class="math inline">\(T_j\)</span>执行write(Q)前，<span class="math inline">\(T_i\)</span>执行write(Q)</li>
+</ul></li>
+<li>优先图存在边<span class="math inline">\(T_i \rightarrow
+T_j\)</span>，等价于任何串行调度中事务<span class="math inline">\(T_i\)</span>必须先于<span class="math inline">\(T_j\)</span>进行</li>
+<li>如果一个调度<span class="math inline">\(S\)</span>的优先图是<strong>无环</strong>的，则调度<span class="math inline">\(S\)</span>是<strong>冲突可串行化</strong>的</li>
+<li>通过<strong>拓扑排序</strong>，可以得到事务的<strong>可串行化次序</strong></li>
+</ul></li>
+</ul>
+<h2 id="事务的隔离性和原子性">事务的隔离性和原子性</h2>
+<ul>
+<li><p>如果事务<span class="math inline">\(T_i\)</span>失效了，撤销该事务的影响以确保事务的原子性，任何依赖于<span class="math inline">\(T_i\)</span>的事务<span class="math inline">\(T_j\)</span>（即<span class="math inline">\(T_j\)</span>读取了<span class="math inline">\(T_i\)</span>写的数据）也要中止</p></li>
+<li><p><strong>可恢复调度</strong>：如果<span class="math inline">\(T_j\)</span>读取了事务<span class="math inline">\(T_i\)</span>写过的数据，则<strong><span class="math inline">\(T_i\)</span>的提交操作</strong>应该在事务<strong><span class="math inline">\(T_j\)</span>的提交操作之前</strong></p></li>
+<li><p><strong>级联回滚</strong>：因单个事务失效而导致一系列事务回滚的现象称为级联回滚，需要撤销大量的工作</p></li>
+<li><p><strong>无级联调度</strong>：如果<span class="math inline">\(T_j\)</span>读取了先前由<span class="math inline">\(T_i\)</span>所写的一个数据项，则<strong><span class="math inline">\(T_i\)</span>的提交操作</strong>必须在<strong><span class="math inline">\(T_j\)</span>的读操作之前</strong></p></li>
+</ul>
+<h2 id="事务的隔离性级别">事务的隔离性级别</h2>
+<ul>
+<li><strong>可串行化</strong>，保证可串行化的执行</li>
+<li><strong>可重复读</strong>，只允许读取已提交的数据，而且一个事务两次读取一个数据项期间，其他事务不能更新该数据项</li>
+<li><strong>已提交读</strong>，只允许读取已提交的数据</li>
+<li><strong>未提交读</strong>，允许读取未提交数据</li>
+<li>不允许<strong>脏写</strong>，如果一个数据项已被其他尚未提交或中止的事务写过，则不允许对该数据项再执行写操作</li>
+</ul>
+<h2 id="隔离性级别的实现">隔离性级别的实现</h2>
+<ul>
+<li><strong>并发控制策略</strong>，保证多个事务并发执行时，不管操作系统在事务之间如何分配分时资源，都<strong>只产生可接受的调度</strong>。其目标是提供<strong>高度并发性</strong>的同时，保证所产生的所有调度都是<strong>冲突可串行化</strong>的或<strong>视图可串行化的</strong>、<strong>可恢复</strong>并且<strong>无级联</strong>的</li>
+</ul>
+<h3 id="锁">锁</h3>
+<ul>
+<li>事务可以<strong>只封锁其访问的数据项</strong>，这个时间要足够长以保证可串行化，又不能过长以保证一定的性能</li>
+<li>通过<strong>共享锁、排他锁</strong>可进一步改进。共享锁用于事务<strong>读取</strong>的数据，排他锁用于事务<strong>写</strong>的数据
+<ul>
+<li>许多事务可以<strong>同时持有</strong>同一数据项的<strong>共享锁</strong></li>
+<li>但只有当其他任何事务在一个数据项上<strong>不持有任何锁</strong>，才能持有该数据项的<strong>排他锁</strong></li>
+</ul></li>
+</ul>
+<h3 id="时间戳">时间戳</h3>
+<h3 id="多版本和快照隔离">多版本和快照隔离</h3>
+<ul>
+<li>通过维护数据项的多个版本，允许一个事务读取一个数据项的旧版本</li>
+<li><strong>快照隔离技术</strong>
+<ul>
+<li>每个事务开始时有其<strong>自己的数据库版本或快照</strong></li>
+<li>如果事务更新数据库，<strong>更新</strong>只出现在其<strong>私有版本</strong></li>
+<li>事务提交，则和这些更新相关的信息被保存，这些更新才被应用到真正的数据库中</li>
+<li>事务T进入部分提交状态时，只有<strong>其他并发事务没有修改其想要更新的数据项</strong>时，T才能进入提交状态，否则该事务被<strong>中止</strong></li>
+</ul></li>
+<li>快照隔离特点
+<ul>
+<li>事务读数据时无需等待</li>
+<li><strong>只读</strong>事务<strong>不会被中止</strong>，修改数据的事务可能被中止</li>
+<li><strong>大部分</strong>事务是<strong>只读</strong>的，且大多事务<strong>读数据的情况多于更新</strong>，因此快照隔离相比于锁能<strong>改善性能</strong></li>
+</ul></li>
+</ul>
+<h1 id="并发控制">2 并发控制</h1>
+<h2 id="基于锁的协议">2.1 基于锁的协议</h2>
+<h3 id="锁-1">锁</h3>
+<ul>
+<li><p><strong>共享锁S</strong>、<strong>排他锁X</strong></p></li>
+<li><p><strong>相容函数</strong>，A、B代表任意锁模式，假设事务<span class="math inline">\(T_i\)</span>请求数据项<span class="math inline">\(Q\)</span>上的A模式锁，而事务<span class="math inline">\(T_j\)</span>当前已持有数据项<span class="math inline">\(Q\)</span>上的B模式锁，若事务<span class="math inline">\(T_i\)</span>可以立即获得<span class="math inline">\(Q\)</span>的A模式锁，则称A模式锁与B模式锁是相容的，即<span class="math inline">\(comp(A,B)\)</span>具有true值</p></li>
+<li><p>共享锁与共享锁是相容的，共享锁与排他锁是不相容的</p></li>
+<li><p>锁的申请，事务通过<code>lock-S(Q)</code>指令<strong>申请</strong>数据项Q上的<strong>共享锁</strong>，通过<code>lock-X(Q)</code>指令<strong>申请</strong>数据项Q上的<strong>排他锁</strong>，通过指令<code>unlock(Q)</code>指令对数据项Q<strong>解锁</strong></p></li>
+<li><p>当事务<span class="math inline">\(T\)</span>向<strong>并发控制管理器</strong>申请锁时，在其他事务所持有的该数据项的所有不相容模式的锁被释放前，并发控制管理器不会<strong>授予</strong>该锁，<span class="math inline">\(T\)</span>必须<strong>等待</strong></p></li>
+<li><p><strong>死锁</strong>发生时，系统必须<strong>回滚</strong>两个事务中的一个</p></li>
+<li><p><strong>封锁协议</strong>：规定事务何时可以对每个数据项进行加锁和解锁</p></li>
+</ul>
+<h3 id="锁的授予">锁的授予</h3>
+<ul>
+<li>饿死现象</li>
+<li>通过以下方式授予锁来避免事务饿死，当事务<span class="math inline">\(T_i\)</span>申请对数据项<span class="math inline">\(Q\)</span>加模式锁<span class="math inline">\(M\)</span>时，并发控制管理器授予该锁的条件是
+<ul>
+<li>其他事务在数据项<span class="math inline">\(Q\)</span>上<strong>没有</strong>持有与模式锁<strong><span class="math inline">\(M\)</span>不相容的锁</strong></li>
+<li><strong>不存在</strong>正在等待对<span class="math inline">\(Q\)</span>加锁而且<strong>先于<span class="math inline">\(T_i\)</span>提出锁申请</strong>的事务（FCFS）</li>
+</ul></li>
+</ul>
+<h3 id="两阶段封锁协议">两阶段封锁协议</h3>
+<ul>
+<li><p><strong>两阶段封锁协议</strong>是一种保证<strong>可串行化</strong>的封锁协议，每个事务分两个阶段提出加锁和解锁申请</p>
+<ul>
+<li><strong>增长阶段</strong>，一个事务可以获得锁，但不可以释放锁</li>
+<li><strong>缩减阶段</strong>，一个事务可以释放锁，但不可以申请锁</li>
+</ul></li>
+<li><p><strong>封锁点</strong>，两阶段封锁协议中，事务获取最后一个锁的位置</p></li>
+<li><p>两阶段封锁协议<strong>保证可串行化</strong>、保证<strong>不发生死锁</strong>，但<strong>可能发生级联回滚</strong></p></li>
+<li><p><strong>两阶段严格封锁协议</strong>，在两阶段封锁协议基础上，要求事务所持有的<strong>所有排他锁</strong>，必须在事务<strong>提交后方可释放</strong></p></li>
+<li><p><strong>强两阶段封锁协议</strong>，要求事务<strong>提交前保留所有的锁</strong>，事务可以按提交的次序串行化</p></li>
+<li><p><strong>锁转换</strong></p>
+<ul>
+<li><strong>升级</strong>，表示共享锁到排他锁的转换，<code>upgrade(Q)</code>，只发生在<strong>增长阶段</strong></li>
+<li><strong>降级</strong>，表示排他锁到共享锁的转换，<code>downgrade(Q)</code>，只发生在<strong>缩减阶段</strong></li>
+</ul></li>
+</ul>
+<h3 id="封锁的实现">封锁的实现</h3>
+<ul>
+<li><p><strong>锁管理器</strong>可视为一个进程，从事务处<strong>接受消息</strong>，以<strong>应答</strong>的形式<strong>发送消息</strong></p></li>
+<li><p><strong>锁表</strong></p>
+<ul>
+<li>以数据项名称为索引的<strong>散列表</strong></li>
+<li>每个<strong>数据项</strong>维护一个<strong>记录的链表</strong>，每个<strong>请求</strong>对应链表的<strong>一个记录</strong>，按请求<strong>到达顺序</strong>排列</li>
+<li>记录中保存<strong>哪个事务</strong>提出请求、请求<strong>什么模式</strong>的锁、该请求<strong>是否被授予</strong>等信息</li>
+</ul></li>
+<li><p>锁管理器<strong>处理请求</strong>的机制</p>
+<ul>
+<li>一条请求消息到来时，若相应数据项的链表存在，则在该<strong>链表末尾增加</strong>一条记录，否则创建一个仅包含对于该请求的记录的<strong>新链表</strong></li>
+<li>对当前没被封锁的数据项的锁请求总是被授予；对已被封锁的数据项的请求，只有当该请求与该数据项持有的锁<strong>相容</strong>，且先前的锁请求都被授予<strong>（FCFS）</strong>的条件下，才<strong>对该请求授予</strong></li>
+<li>锁管理器收到来自一个事务的<strong>解锁</strong>消息时，讲对应于该事务的数据项链表中的<strong>记录删除</strong>，并检查之后的记录<strong>是否授予锁</strong></li>
+<li>如果事务<strong>中止</strong>，则<strong>删除</strong>该事务产生的任何<strong>等待请求</strong>，如果数据库管理系统<strong>撤销</strong>该事务则<strong>持有的锁将被释放</strong></li>
+</ul></li>
+</ul>
+<h3 id="基于图的协议">基于图的协议</h3>
+<h2 id="死锁处理">2.2 死锁处理</h2>
+<h3 id="死锁预防">死锁预防</h3>
+<ul>
+<li><strong>防止循环等待</strong>
+<ul>
+<li>每个事务在<strong>开始执行前封锁它所有</strong>的数据项，要么全部封锁、要么全不封锁，缺点是很难预知要使用的所有数据项</li>
+<li>或者，增加一种次序，要求事务<strong>只能按次序规定的顺序</strong>来封锁数据项，要求它访问的数据项集合是已知的</li>
+</ul></li>
+<li>抢占与事务回滚
+<ul>
+<li>如果事务<span class="math inline">\(T_j\)</span>申请的锁被事务<span class="math inline">\(T_i\)</span>所占有，则授予<span class="math inline">\(T_i\)</span>的锁可能通过回滚<span class="math inline">\(T_i\)</span>而被抢占</li>
+<li>使用<strong>时间戳</strong>决定事务是应该等待还是回滚，若事务回滚，应该保持其原来的时间戳</li>
+<li><strong>等待-死亡机制</strong>是<strong>非抢占</strong>式的，若<span class="math inline">\(T_i\)</span>申请的数据项被<span class="math inline">\(T_j\)</span>持有时，仅当<span class="math inline">\(T_i\)</span>比<span class="math inline">\(T_j\)</span>更老才等待，否则<strong><span class="math inline">\(T_i\)</span>回滚（死亡）</strong></li>
+<li><strong>伤害-等待机制</strong>是<strong>抢占</strong>式的，若<span class="math inline">\(T_i\)</span>申请的数据项被<span class="math inline">\(T_j\)</span>持有时，仅当<span class="math inline">\(T_i\)</span>比<span class="math inline">\(T_j\)</span>更年轻时才等待，否则<strong><span class="math inline">\(T_j\)</span>回滚（<span class="math inline">\(T_j\)</span>被<span class="math inline">\(T_i\)</span>伤害）</strong></li>
+</ul></li>
+<li><strong>锁超时</strong>
+<ul>
+<li>若事务等待超过一定时间，则事务超时，<strong>自己回滚并重启</strong></li>
+</ul></li>
+</ul>
+<h3 id="死锁检测与恢复">死锁检测与恢复</h3>
+<ul>
+<li>死锁检测，<strong>等待图</strong>包含<strong>环路</strong>时则系统存在<strong>死锁</strong></li>
+<li>等待图的顶点集V由事务组成，边集E中的某条有向边<span class="math inline">\(T_i \rightarrow T_j\)</span>表示<span class="math inline">\(T_i\)</span>正在等待事务<span class="math inline">\(T_j\)</span>释放<span class="math inline">\(T_i\)</span>所需要的数据项</li>
+<li>从死锁中恢复，需要<strong>回滚一个或多个事务</strong>，包括的动作有
+<ul>
+<li><strong>选择牺牲者</strong>，可根据代价选择</li>
+<li><strong>回滚</strong>：部分回滚或完全回滚</li>
+<li><strong>饿死</strong>：如果根据代价因素，则可能存在某个事务总是被选为牺牲者而永远得不到执行，因此可在代价中引入回滚次数</li>
+</ul></li>
+</ul>
+<h2 id="多粒度">2.3 多粒度</h2>
+<ul>
+<li><strong>多级粒度机制</strong>是一种数据粒度的层次结构，小粒度数据嵌套在大粒度数据项中，如<strong>多粒度树</strong>
+<ul>
+<li><strong>根节点</strong>表示整个<strong>数据库</strong></li>
+<li><strong>area类型</strong>节点表示数据库的<strong>域</strong></li>
+<li>每个域包含的<strong>文件</strong>用<strong>file类型</strong>节点表示</li>
+<li>每个文件包含的<strong>记录</strong>用<strong>record类型</strong>节点表示</li>
+</ul></li>
+<li>多粒度树中，每个节点可以单独加锁（共享锁和排他锁），当给某个节点加锁时，<strong>隐含</strong>地<strong>封锁这个节点的所有后裔节点</strong></li>
+</ul>
+<h3 id="意向锁模式">意向锁模式</h3>
+<ul>
+<li><strong>意向锁</strong>模式
+<ul>
+<li>如果
+一个节点加上了意向锁，代表<strong>要在树的较低层进行显式加锁</strong></li>
+<li>给某个节点进行<strong>显式加锁</strong>前，会给它的<strong>所有祖先节点加上意向锁</strong></li>
+<li>与共享模式关联的意向锁称为IS，与排他模式关联的意向锁称为IX</li>
+</ul></li>
+<li>意向锁的相容函数
+<ul>
+<li><strong>意向锁之间相互兼容</strong></li>
+<li>IX锁与X、S不兼容</li>
+<li>IS锁与S兼容，与X不兼容</li>
+</ul></li>
+<li>以<strong>MySQL InnoDB</strong>为例
+<ul>
+<li>MySQL
+InnoDB设置<strong>表锁</strong>（IS、IX、S、X）、<strong>行锁</strong>（S、X）</li>
+<li>当想读取某一行时，先给表加上IS锁，再给行加上S锁</li>
+<li>当想写入某一行时，先给表加上IX锁，再给行加上X锁</li>
+<li>如果事务<span class="math inline">\(T_i\)</span>需要读整个数据库，即获取了表锁S，此后事务<span class="math inline">\(T_j\)</span>想要写入某一行，先获取表锁IX，由于IX与S不相容，因此<span class="math inline">\(T_j\)</span>必须等待<span class="math inline">\(T_i\)</span>释放表锁S后，才能获取表锁IX并获取行锁X</li>
+<li>此处的<strong>相容与不相容</strong>都是<strong>针对同一个节点</strong>讨论的，表锁IS/IX不会与行锁S/X不相容</li>
+</ul></li>
+<li>多粒度协议要求<strong>封锁按自顶向下</strong>的次序获得，<strong>解锁按自底向上</strong>的次序释放</li>
+</ul>
+<h2 id="插入删除操作与谓词读">2.4 插入、删除操作与谓词读</h2>
+<ul>
+<li>delete(Q)从数据库删除数据项Q</li>
+<li>insert(Q)将一个新的数据项Q插入数据库中并赋予Q一个初值</li>
+</ul>
+<h3 id="删除">删除</h3>
+<ul>
+<li>delete(Q)与read、write、delete和insert都冲突</li>
+<li>两阶段封锁协议下，一个数据项可以被删除前，需要<strong>获得</strong>该数据项的<strong>排他锁</strong></li>
+</ul>
+<h3 id="插入">插入</h3>
+<ul>
+<li>insert(Q)与read、write、delete冲突</li>
+<li>两阶段封锁协议下，如果<span class="math inline">\(T_i\)</span>执行insert(Q)操作，将在新创建的数据项Q上被<strong>赋予排他锁</strong></li>
+</ul>
+<h3 id="谓词读和幻象">谓词读和幻象</h3>
+<ul>
+<li><p>幻象现象的原因是<strong>谓词读</strong>与<strong>插入或更新</strong>相冲突，导致<strong>新/更新的元组满足谓词</strong></p></li>
+<li><p>如<strong>谓词读</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">from</span> instructor</span><br><span class="line"><span class="keyword">where</span> dept_name <span class="operator">=</span> <span class="string">&#x27;Physics&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>与<strong>插入操作</strong>是冲突的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> instructor</span><br><span class="line">	<span class="keyword">values</span>(<span class="number">11111</span>, <span class="string">&#x27;Feynman&#x27;</span>, <span class="string">&#x27;Physics&#x27;</span>, <span class="number">94000</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="基于时间戳的协议">2.5 基于时间戳的协议</h2>
+<h3 id="时间戳-1">时间戳</h3>
+<ul>
+<li>封锁协议：一对冲突事务的执行时次序，由这对事务都申请且不相容的第一个锁的时间来决定</li>
+<li>时间戳协议：实现决定事务的次序，如采用时间戳排序</li>
+<li>对每个事务<span class="math inline">\(T_i\)</span>，把唯一、固定的时间戳与其关联，时间戳<span class="math inline">\(TS(T_i)\)</span>是事务开始前由DBMS给定的</li>
+<li>实现时间戳的两种方法
+<ul>
+<li>采用系统时间</li>
+<li>采用逻辑计数器</li>
+</ul></li>
+<li>每个<strong>数据项Q</strong>也与两个时间戳值相关联
+<ul>
+<li><strong>W-timestamp(Q)</strong>，<strong>成功执行write(Q)</strong>的任意事务的<strong>最大时间戳</strong></li>
+<li><strong>R-timestamp(Q)</strong>，<strong>成功执行read(Q)</strong>的任意事务的<strong>最大时间戳</strong></li>
+<li>每当有新的read(Q)或write(Q)指令时，就会更新上述时间戳</li>
+</ul></li>
+</ul>
+<h3 id="时间戳排序协议">时间戳排序协议</h3>
+<ul>
+<li>如果事务<span class="math inline">\(T_i\)</span>请求read(Q)
+<ul>
+<li><span class="math inline">\(TS(T_i)\lt
+W\_timestamp(Q)\)</span>，则<span class="math inline">\(T_i\)</span>试图读取一个已被覆盖的数据，数据库系统拒绝该请求并回滚<span class="math inline">\(T_i\)</span></li>
+<li><span class="math inline">\(TS(T_i)\geq
+W\_timestamp(Q)\)</span>，系统执行read操作，并更新<span class="math inline">\(R\_timestamp(Q)\)</span></li>
+</ul></li>
+<li>如果事务<span class="math inline">\(T_i\)</span>请求write(Q)
+<ul>
+<li><span class="math inline">\(TS(T_i)\lt
+R\_timestamp(Q)\)</span>，则<span class="math inline">\(T_i\)</span>写入的Q值是之前所需要的，系统回滚<span class="math inline">\(T_i\)</span></li>
+<li><span class="math inline">\(TS(T_i)\lt
+W\_timestamp(Q)\)</span>，则<span class="math inline">\(T_i\)</span>写入的Q值是过时的，系统回滚<span class="math inline">\(T_i\)</span></li>
+<li>否则，系统执行write操作，更新<span class="math inline">\(W\_timestamp(Q)\)</span></li>
+</ul></li>
+<li>当事务触发时间戳协议的并发控制并被<strong>回滚</strong>时，系统会<strong>分配一个新的时间戳</strong>并<strong>重启事务</strong></li>
+</ul>
+<h3 id="thomas写规则">Thomas写规则</h3>
+<ul>
+<li>如果事务<span class="math inline">\(T_i\)</span>请求write(Q)，而<span class="math inline">\(TS(T_i)\lt
+W\_timestamp(Q)\)</span>，则系统<strong>忽略该write操作</strong>，因为其写入的值已过时</li>
+<li>Thomas写规则使得调度是<strong>非冲突可串行化</strong>的，但是保证了<strong>视图可串行化</strong></li>
+<li>其他规则不变</li>
+</ul>
+<h2 id="基于有效性检查的协议">2.6 基于有效性检查的协议</h2>
+<ul>
+<li><strong>有效性检查协议</strong>将事务分为两或三个阶段执行
+<ul>
+<li>读阶段，读取各数据项的值并保存在<span class="math inline">\(T_i\)</span>的局部变量，write操作只对局部变量进行，不对数据库进行真正的更新</li>
+<li>有效性检查阶段，进行有效性检查测试，若测试失败则终止事务</li>
+<li>写阶段，若通过有效性检查，则将write操作的局部变量结果考入数据库（只读事务没有写阶段）</li>
+</ul></li>
+<li>事务<span class="math inline">\(T_i\)</span>具有三个时间戳
+<ul>
+<li><span class="math inline">\(StartTS(T_i)\)</span>表示事务开始执行的时间</li>
+<li><span class="math inline">\(ValidationTS(T_i)\)</span>表示完成读阶段并开始有效性检查阶段的时间</li>
+<li><span class="math inline">\(FinishTS(T_i)\)</span>表示完成其写阶段的时间</li>
+</ul></li>
+<li>通过<span class="math inline">\(ValidationTS(T_i)\)</span>时间戳决定可串行化的次序，<span class="math inline">\(TS(Ti)=ValidationTS(Ti)\)</span>，如果<span class="math inline">\(TS(Tj)&lt;TS(Ti)\)</span>，则产生的调度必须等价于事务<span class="math inline">\(Tj\)</span>出现在<span class="math inline">\(Ti\)</span>之前的一个穿行调度</li>
+<li><strong>有效性检查</strong>，事务<span class="math inline">\(T_i\)</span>的有效性检查要求所有满足<span class="math inline">\(TS(T_k)\lt TS(T_i)\)</span>的事务<span class="math inline">\(T_k\)</span>都必须满足以下两个条件的任意一个
+<ul>
+<li><span class="math inline">\(FinishTS(T_k) \lt
+StartTS(T_i)\)</span></li>
+<li><span class="math inline">\(T_k\)</span><strong>所写</strong>的数据项集合与<span class="math inline">\(T_i\)</span><strong>所读</strong>的数据项集合<strong>不相交</strong>，且<span class="math inline">\(StartTS(T_i) \lt Finish(T_k) \lt
+ValidationTS(T_i)\)</span></li>
+</ul></li>
+</ul>
+<h3 id="乐观锁与悲观锁">乐观锁与悲观锁</h3>
+<ul>
+<li><strong>基于有效性检查</strong>的协议是<strong>乐观</strong>的并发控制，<strong>封锁协议</strong>和基于<strong>时间戳</strong>的协议是<strong>悲观</strong>的并发控制</li>
+</ul>
+<h2 id="多版本机制mvcc">2.7 多版本机制MVCC</h2>
+<ul>
+<li>上述并发控制机制通过<strong>延迟</strong>一项操作，或<strong>中止</strong>发出操作的事务保证<strong>可串行化</strong></li>
+<li><strong>多版本并发控制机制</strong>中，每个<code>write(Q)</code>操作<strong>创建Q的一个新版本</strong>，事务发出一个<code>read(Q)</code>操作时，并发控制管理器<strong>选择Q的一个版本</strong>进行读取</li>
+<li>对于读取版本的<strong>选择</strong>能以<strong>保证可串行化</strong>的方式进行，且事务应该<strong>尽可能快速</strong>地判定应该读取数据项的哪个版本（性能）</li>
+</ul>
+<h3 id="多版本时间戳排序">多版本时间戳排序</h3>
+<h3 id="多版本两阶段封锁">多版本两阶段封锁</h3>
+<h2 id="快照隔离">2.8 快照隔离</h2>
+<h3 id="快照隔离中的多版本">快照隔离中的多版本</h3>
+<ul>
+<li>事务的时间戳</li>
+<li>版本的时间戳</li>
+</ul>
+<h3 id="更新事务的有效性检查步骤">更新事务的有效性检查步骤</h3>
+<ul>
+<li><strong>更新丢失</strong>，两个并发执行的事务潜在地更新同一个数据项，由于它们以隔离的方式操作并使用各自的私有快照，因此两个事务都看不到对方的更新，则第一个更新的写操作被第二个覆盖</li>
+<li><strong>先提交者胜</strong>，当事务<span class="math inline">\(T_i\)</span>开始有效性检查时
+<ul>
+<li>检查是否存在于<span class="math inline">\(T_i\)</span>并发的任何事务，对于<span class="math inline">\(T_i\)</span>打算写的某些数据项，该事务已将更新写入数据库。即检查<span class="math inline">\(T_i\)</span>打算写的每个数据项<span class="math inline">\(d\)</span>，是否存在一个版本的时间戳介于<span class="math inline">\(StartTS(T_i)\)</span>和<span class="math inline">\(CommitTS(T_i)\)</span>之间</li>
+<li>如果发现了，则中止<span class="math inline">\(T_i\)</span></li>
+<li>如果没发现，则<span class="math inline">\(T_i\)</span><strong>提交并将更新</strong>写到数据库</li>
+</ul></li>
+<li><strong>先更新者胜</strong>（读操作不受次影响）
+<ul>
+<li><span class="math inline">\(T_i\)</span>更新数据项时，请求数据项的一个写锁，如果没有并发事务持有该锁，则获得锁后
+<ul>
+<li>如果这个数据项已被并发事务更新，<span class="math inline">\(T_i\)</span>中止</li>
+<li>否则<span class="math inline">\(T_i\)</span>继续执行操作，包括可以提交</li>
+</ul></li>
+<li>如果有其他并发事务<span class="math inline">\(T_j\)</span>持有该锁，则等待直至<span class="math inline">\(T_j\)</span>中止或提交
+<ul>
+<li>如果<span class="math inline">\(T_j\)</span>提交，则<span class="math inline">\(T_i\)</span>中止</li>
+<li>如果<span class="math inline">\(T_j\)</span>中止，则<span class="math inline">\(T_i\)</span>获得锁后执行上述检查</li>
+</ul></li>
+</ul></li>
+<li>先提交者胜与先更新者胜的对比
+<ul>
+<li><strong>先提交者胜</strong>，如果事务冲突则<strong>第一个进行检查</strong>的事务将成功写出更新，随后的事务被迫中止</li>
+<li><strong>先更新者胜</strong>，则<strong>第一个获得锁</strong>的事务被允许提交并执行更新，随后试图更新的事务被中止</li>
+</ul></li>
+</ul>
+<h3 id="串行化问题和解决方案">串行化问题和解决方案</h3>
+<ul>
+<li><p>快照隔离并<strong>不能保证可串行化</strong></p></li>
+<li><p><strong>写偏斜</strong>：一对事务中的每一个都<strong>读取对方所写的一个数据项</strong>，但两个事务所<strong>写</strong>的数据项<strong>集合不存在任何共同的数据项</strong>，这种情况称为写偏斜</p></li>
+<li><p><strong>可串行化快照隔离</strong>，跟踪事务之间的所有冲突，如在事务优先图中寻找环路，并在找到环时回滚事务</p></li>
+</ul>
+<h2 id="补充-并发一致性问题">补充 并发一致性问题</h2>
+<h3 id="丢失更新">丢失更新</h3>
+<ul>
+<li>两个事务都同一个数据进行写入，先提交的事务的写操作被后提交事务的写操作覆盖</li>
+</ul>
+<h3 id="读脏数据">读脏数据</h3>
+<ul>
+<li><span class="math inline">\(T_i\)</span>读到未提交事务<span class="math inline">\(T_j\)</span>写入的数据，若随后<span class="math inline">\(T_j\)</span>撤回，则<span class="math inline">\(T_i\)</span>读到的是脏数据</li>
+</ul>
+<h3 id="不可重复读">不可重复读</h3>
+<ul>
+<li>事务<span class="math inline">\(T_i\)</span>对数据项Q进行了多次读取，而事务<span class="math inline">\(T_j\)</span>在<span class="math inline">\(T_i\)</span>的两次读取之间修改了数据项Q，导致<span class="math inline">\(T_i\)</span>前后的读取结果不一致</li>
+</ul>
+<h3 id="幻影读">幻影读</h3>
+<ul>
+<li>事务<span class="math inline">\(T_i\)</span>执行谓词读，而事务<span class="math inline">\(T_j\)</span>进行的insert或update导致某个元组满足了谓词，则<span class="math inline">\(T_i\)</span>再次进行相同谓词读的结果不一致</li>
+</ul>
+<h1 id="恢复系统">3 恢复系统</h1>
+<h2 id="回顾-xv6文件系统的故障恢复机制">回顾:
+xv6文件系统的故障恢复机制</h2>
+<ul>
+<li><p>故障导致文件系统不一致问题</p>
+<p>文件系统的操作一般包含多个步骤，若在多个步骤的某个中间位置发生故障，导致存储在磁盘上的文件系统处于不一致状态</p></li>
+<li><p>文件系统的目标</p>
+<ul>
+<li><strong>原子性</strong>：关于文件系统的系统调用确保原子性，如create/write系统调用，其效果要么完全出现，要么完全不出现</li>
+<li><strong>快速恢复</strong>：故障重启后，文件系统的修复只需要较小的工作量</li>
+</ul></li>
+<li><p>日志</p>
+<ul>
+<li>磁盘分割为两部分，一部分是<strong>日志系统</strong>（较小），一部分是<strong>文件系统</strong></li>
+</ul></li>
+<li><p>更新文件系统的<strong>四步骤</strong></p>
+<ul>
+<li><strong>log
+write</strong>，更新文件系统并不直接更新其本身，而是将数据写入到log，记录这个更新的数据及写入的磁盘位置</li>
+<li><strong>commit
+op</strong>，当文件系统操作结束后，所有操作都存在log中，则提交对文件系统的操作，并在log中将更新对文件系统的commit计数值</li>
+<li><strong>install
+log</strong>，log中存储了写入文件系统的所有内容，因此执行操作时将log中的数据写入磁盘块</li>
+<li><strong>clean
+log</strong>，若所有操作都成功执行，则清除log，同时将日志系统中相应的操作次数设置为0</li>
+</ul></li>
+<li><p>故障恢复</p>
+<ul>
+<li>若由于故障导致重启，则文件系统执行恢复过程</li>
+<li>文件系统查看日志的commit记录值，如果为0则无需操作并清除log；如果大于0，则说明log包含了完整的操作，则将log中存储的数据写入文件系统中</li>
+</ul></li>
+<li><p>故障场景分析</p>
+<ul>
+<li><strong>在log write和commit
+log之间故障</strong>，由于没有commit，因此操作次数为0，恢复阶段文件系统忽略该操作并清除log，相当于<strong>故障在文件系统调用前发生</strong></li>
+<li><strong>在commit log和install
+log之间故障</strong>，由于commit计数值非0，代表log包含完整的操作，因此将log写入到文件系统相应位置，相当于<strong>故障在文件系统调用后发生</strong></li>
+<li><strong>在install log和clean
+log之间故障</strong>，由于commit计数值非0，因此恢复阶段将log写入到文件系统相应位置，由于<strong>写入操作的幂等性</strong>，因此再次写入数据不会造成影响</li>
+</ul></li>
+</ul>
+<h2 id="恢复与原子性">3.3 恢复与原子性</h2>
+<h3 id="日志记录">日志记录</h3>
+<ul>
+<li><strong>日志</strong>是日志记录的序列</li>
+<li><strong>更新日志记录</strong>描述一次数据库的写操作，包括以下字段
+<ul>
+<li><strong>事务标识</strong>，执行write操作的事务的唯一标识</li>
+<li><strong>数据项标识</strong>，数据项在<strong>磁盘上的位置</strong>，包括该数据项所驻留的<strong>块的块标识</strong>和<strong>块内偏移量</strong></li>
+<li><strong>旧值</strong>，数据项的<strong>写前值</strong></li>
+<li><strong>新值</strong>，数据项<strong>写后应取的值</strong></li>
+<li>更新日志记录标识为<span class="math inline">\(&lt;T_i,X_j,V_1,V_2&gt;\)</span></li>
+</ul></li>
+<li>其他日志记录，包括<strong>开始、提交、中止</strong>
+<ul>
+<li>&lt;<span class="math inline">\(T_i\)</span> start&gt;，事务<span class="math inline">\(T_i\)</span>开始</li>
+<li>&lt;<span class="math inline">\(T_i\)</span> commit&gt;，事务<span class="math inline">\(T_i\)</span>提交</li>
+<li>&lt;<span class="math inline">\(T_i\)</span> abort&gt;，事务<span class="math inline">\(T_i\)</span>中止</li>
+</ul></li>
+<li>事务执行写操作时，数据库被修改前创建该写操作的日志记录并加到日志中</li>
+<li><strong>日志</strong>存储在<strong>稳定存储器</strong>中，<strong>日志记录</strong>创建后立即写入稳定存储器上<strong>日志的尾部</strong></li>
+</ul>
+<h3 id="数据库修改">数据库修改</h3>
+<ul>
+<li><p>事务在对数据库修改前创建日志记录，日志记录使得系统</p>
+<ul>
+<li>在事务必须<strong>中止</strong>的情况下能够对事务所做的修改进行<strong>撤销</strong></li>
+<li>在事务已经提交但在修改被存到磁盘上的数据库前<strong>系统崩溃</strong>的情况下，对事务所做的修改进行<strong>重做</strong></li>
+</ul></li>
+<li><p>事务在进行<strong>数据项修改</strong>时所采取的步骤</p>
+<ul>
+<li>事务在<strong>主存中私有的部分空间</strong>执行某些计算</li>
+<li>事务<strong>修改主存的磁盘缓冲区</strong>包含数据项的数据块</li>
+<li>数据库系统执行<strong>output操作</strong>，将数据块写到<strong>磁盘</strong>中</li>
+</ul></li>
+<li><p>如果一个事务执行了对<strong>磁盘缓冲块</strong>或<strong>磁盘本身</strong>的更新，则说这个<strong>事务修改了数据库</strong>，而事务在主存中私有部分的更新不算数据库修改</p></li>
+<li><p>如果事务直至<strong>提交时都没有修改数据库</strong>，则它采用了<strong>延迟修改</strong>技术</p></li>
+<li><p>如果事务<strong>活跃时就发生数据库修改</strong>，则它采用了<strong>立即修改</strong>技术</p></li>
+<li><p>撤销和重做操作</p>
+<ul>
+<li><strong>撤销操作</strong>使用一条<strong>日志记录</strong>，将该日志记录中指定数据项置为日志记录中包含的<strong>旧值</strong></li>
+<li><strong>重做操作</strong>使用一条日志记录，将该日志记录中指定数据项置为日志记录中包含的<strong>新值</strong></li>
+</ul></li>
+</ul>
+<h3 id="并发控制和恢复">并发控制和恢复</h3>
+<ul>
+<li>如果事务<span class="math inline">\(T_1\)</span>修改的数据项在提交前又被另一事务<span class="math inline">\(T_2\)</span>修改，则撤销<span class="math inline">\(T_1\)</span>会导致<span class="math inline">\(T_2\)</span>也被撤销。为了避免该情况，恢复算法通常要求如果数据项被一个事务修改了则该事务提交或中止前不允许被其他事务修改该数据项。该要求通过对<strong>更新的任意数据项获取排他锁</strong>，并<strong>持有</strong>该排他锁<strong>直至事务提交</strong>来保证</li>
+</ul>
+<h3 id="事务提交">事务提交</h3>
+<ul>
+<li>当事务的<strong>commit日志记录被输出到稳定存储器</strong>后，就说这个事务<strong>提交</strong>了</li>
+<li>此时日志中有足够的信息保证，即使发生<strong>系统崩溃</strong>，事务所做的<strong>更新也可以被重做</strong></li>
+<li>事务提交时<strong>并非</strong>必须将所修改的数据项<strong>立即输出到稳定存储器</strong>，而是可以在<strong>之后的某个时候</strong>再输出</li>
+</ul>
+<h3 id="使用日志来重做和撤销事务">使用日志来重做和撤销事务</h3>
+<ul>
+<li><p><strong>恢复机制</strong>使用两个恢复过程，利用<strong>日志</strong>找到每个被事务<span class="math inline">\(T_i\)</span><strong>更新过的数据项的集合</strong>，以及它们相应的<strong>新值和旧值</strong></p></li>
+<li><p><span class="math inline">\(redo(T_i)\)</span>，将事务<span class="math inline">\(T_i\)</span>更新过的所有数据项的值都<strong>置成新值</strong>。通过<strong>重做</strong>来执行更新的顺序非常重要，通常<strong>对日志进行一次扫描</strong>，并对扫描过程中遇到的<strong>每条日志记录执行重做动作</strong>，确保更新顺序被保持</p></li>
+<li><p><span class="math inline">\(undo(T_i)\)</span>，将事务<span class="math inline">\(T_i\)</span>更新过的所有数据项的值<strong>恢复成旧值</strong></p>
+<ul>
+<li>撤销操作不仅将数据项恢复成旧值，而且作为撤销过程的一部分，<strong>写日志记录以记下所执行的更新</strong>，称为<strong>redo-only日志记录</strong>。它们不需要包含所更新数据项的旧值（旧值实际上是正在回滚的事务所写入的值，新值是恢复该数据项的原始值）</li>
+<li>对事务<span class="math inline">\(T_i\)</span>的<strong>撤销操作完成后</strong>，<strong>写一条&lt;<span class="math inline">\(T_i\)</span>
+abort&gt;日志记录</strong>，表明undo完成了</li>
+</ul></li>
+<li><p>如果事务在正常的处理中被回滚，或在恢复过程中没发现事务的commit记录或abort记录，都将执行<span class="math inline">\(undo(T_i)\)</span>以撤销该操作</p></li>
+<li><p>每个事务的日志<strong>最终</strong>都会有<strong>一条commit记录或abort记录</strong></p></li>
+<li><p>系统崩溃后的<strong>恢复过程</strong></p>
+<ul>
+<li>如果日志中<strong>包含事务的start记录</strong>，以及<strong>commit记录或abort记录中的一个</strong>，事务将被<strong>重做</strong>（重做包含abort记录的事务将导致该事务被撤销）</li>
+<li>如果日志中<strong>包含事务的start记录</strong>，但<strong>不包含</strong>事务的<strong>commit或abort记录</strong>，则事务将被<strong>撤销</strong></li>
+</ul></li>
+</ul>
+<h3 id="checkpoint">checkpoint</h3>
+<ul>
+<li><p>恢复过程原则上需要搜索整个日志并决定事务是否重做或撤销，问题在于</p>
+<ul>
+<li>搜索过程太<strong>耗时</strong></li>
+<li>大多数需要重做的事务已将其更新写入数据库中，因此重做会使恢复过程变得更长</li>
+</ul></li>
+<li><p><strong>检查点执行过程</strong></p>
+<ul>
+<li>检查点执行过程中<strong>不允许任何更新</strong></li>
+<li>将当前位于主存的<strong>所有日志记录</strong>输出到<strong>稳定存储器</strong></li>
+<li>将所有<strong>修改过的缓冲块输出到磁盘</strong></li>
+<li>将一条<strong>检查点日志记录 &lt;checkpoint <span class="math inline">\(L\)</span>&gt;</strong>输出到稳定存储器，其中<strong><span class="math inline">\(L\)</span>是执行检查点时正在活跃的事务列表</strong></li>
+</ul></li>
+<li><p>考虑在<strong>检查点前已完成的事务</strong><span class="math inline">\(T_i\)</span>，该事务的<strong>commit记录或abort记录出现在checkpoint记录前</strong>，因此<span class="math inline">\(T_i\)</span>所做的任何数据库修改都必然已在检查点前或作为检查点的一部分被写入数据库，恢复时就<strong>不必对<span class="math inline">\(T_i\)</span>执行redo操作了</strong></p></li>
+<li><p>对于执行检查点时<strong>活跃的事务列表L</strong>中的事务<span class="math inline">\(T_i\)</span>，如果其没有提交，则为了<strong>撤销</strong>该事务可能用到<strong>检查点日志记录前的该事务的所有日志记录</strong></p></li>
+<li><p>引入检查点机制后的<strong>恢复过程</strong></p>
+<ul>
+<li>首先反向搜索系统日志并找到最后一条checkpoint记录</li>
+<li>从此处开始扫描日志记录，只需对<strong>活跃事务列表L中的事务</strong>，以及<strong>检查点checkpoint后开始执行的事务</strong>进行redo或undo操作</li>
+<li>如果该事务的日志记录包含commit或abort则<strong>重做</strong></li>
+<li>如果既不包含commit也不包含abort则<strong>撤销</strong>该事务</li>
+</ul></li>
+<li><p>引入检查点机制后的<strong>日志记录清理</strong></p>
+<ul>
+<li>由于只需要对检查点执行时活跃的事务以及检查点后开始执行的事务进行重做或撤销，因此检查点前完成执行事务的日志记录可以清理</li>
+<li>具体来说，系统在日志中搜索<strong>最后一个检查点</strong>，并找到其活跃事务<strong>列表L中最早开始的事务</strong>的开始日志记录&lt;<span class="math inline">\(T_i\)</span>
+start&gt;，该记录前的日志记录可以<strong>清理</strong></li>
+</ul></li>
+</ul>
+<h2 id="恢复算法">3.4 恢复算法</h2>
+<h3 id="事务回滚">事务回滚</h3>
+<ul>
+<li><p>从后往前扫描日志，对于找到的<span class="math inline">\(T_i\)</span>的每条更新日志记录<span class="math inline">\(&lt;T_i,X_j,V_1,V_2&gt;\)</span>:</p>
+<ul>
+<li>将<span class="math inline">\(V_1\)</span>写入数据项<span class="math inline">\(X_j\)</span></li>
+<li>往日志写入一条redo-only日志记录<span class="math inline">\(&lt;T_i,X_j,V_1&gt;\)</span>，<span class="math inline">\(V_1\)</span>表示回滚时数据项<span class="math inline">\(X_j\)</span>被恢复的值，该日志记录也称为<strong>补偿日志记录</strong></li>
+</ul></li>
+<li><p>一旦发现该事务的<strong>开始日志记录</strong><span class="math inline">\(&lt;T_i \
+start&gt;\)</span>，则<strong>停止</strong>反向扫描，并写入<span class="math inline">\(&lt;T_i \
+abort&gt;\)</span><strong>中止日志记录</strong></p></li>
+<li><p>现在，事务所做的或我们为事务所做的（redo-only日志记录）每个更新动作，都已被记录到日志中</p></li>
+</ul>
+<h3 id="系统崩溃后的恢复算法">系统崩溃后的恢复算法</h3>
+<ul>
+<li>恢复动作分为两阶段进行</li>
+<li><strong>重做阶段</strong>
+<ul>
+<li>反向扫描日志记录找到<strong>最后一个checkpoint</strong></li>
+<li>此阶段还需要确定在崩溃发生时未完成，因而要回滚的事务，<strong>回滚事务列表undo-list初始化</strong>为该checkpoint的<strong>活跃事务列表L</strong></li>
+<li>从该checkpoint开始<strong>正向扫描</strong>并重新执行所有日志记录（包括系统崩溃前已被回滚，或系统崩溃前还未提交的事务的是日志记录），具体地
+<ul>
+<li>遇到<strong>更新</strong>日志记录<span class="math inline">\(&lt;T_i,X_j,V_1,V_2&gt;\)</span>则将<span class="math inline">\(V_2\)</span>的值<strong>写入</strong>数据项<span class="math inline">\(X_j\)</span></li>
+<li>遇到<strong>redo-only</strong>日志记录<span class="math inline">\(&lt;T_i,X_j,V_1&gt;\)</span>则将<span class="math inline">\(V_1\)</span>的值<strong>写入</strong>数据项<span class="math inline">\(X_j\)</span></li>
+<li>遇到<strong>开始</strong>日志记录<span class="math inline">\(&lt;T_j
+\ start&gt;\)</span>则将<span class="math inline">\(T_j\)</span><strong>加入undo-list</strong></li>
+<li>遇到<strong>提交、中止</strong>日志记录则将<strong>事务从undo-list移除</strong></li>
+</ul></li>
+</ul></li>
+<li><strong>撤销阶段</strong>，利用我们在重做阶段得到的undo-list撤销相应的事务
+<ul>
+<li><strong>反向扫描</strong>日志记录，若发现undo-list事务的日志记录，则执行<strong>撤销</strong>操作，并<strong>写一个redo-only日志记录</strong></li>
+<li>若发现undo-list事务的<strong>开始日志记录</strong>，则该事务已回滚完成，<strong>写入abort日志记录</strong>，并将其<strong>从undo-list移除</strong></li>
+<li>扫描直至<strong>undo-list为空</strong>，则<strong>撤销阶段结束</strong></li>
+</ul></li>
+</ul>
+<h3 id="提交处理的优化">提交处理的优化</h3>
+<ul>
+<li>组提交，事务完成后等待一段时间，然后同一提交正在等待的一组事务，<strong>减小写日志开销</strong></li>
+</ul>
+<h2 id="缓冲区管理">3.5 缓冲区管理</h2>
+<h3 id="日志记录缓冲">日志记录缓冲</h3>
+<ul>
+<li><p>输出一个块到稳定存储器的<strong>代价较大</strong>，最好一次输出多条日志记录</p></li>
+<li><p>将日志记录写道<strong>主存的日志缓冲区</strong>，并集中<strong>多条</strong>日志记录，再用<strong>一次输出操作</strong>输出到<strong>稳定存储器</strong>中</p></li>
+<li><p><strong>先写日志规则</strong></p>
+<ul>
+<li><p>事务的<strong>提交日志记录</strong><span class="math inline">\(&lt;T_i \
+commit&gt;\)</span><strong>输出到稳定存储器后</strong>，事务<span class="math inline">\(T_i\)</span>进入<strong>提交状态</strong></p></li>
+<li><p>提交日志记录<span class="math inline">\(&lt;T_i \
+commit&gt;\)</span>输出到稳定存储器<strong>前</strong>，与事务<span class="math inline">\(T_i\)</span>有关的<strong>所有日志记录必须已经输出到稳定存储器</strong></p></li>
+<li><p>主存中的<strong>数据块</strong>输出到<strong>数据库（非易失性存储器）</strong>前，与该<strong>块中数据有关的所有日志记录</strong>必须已经输出到<strong>稳定存储器</strong></p></li>
+</ul></li>
+</ul>
+<h3 id="数据库缓冲">数据库缓冲</h3>
+<ul>
+<li><p><strong>强制策略</strong>：事务<strong>提交时</strong>必须将其<strong>修改过的块都输出到磁盘</strong></p></li>
+<li><p><strong>非强制策略</strong>：事务修改过的<strong>某些块还没写回</strong>磁盘，也<strong>允许他提交</strong></p></li>
+<li><p><strong>非抢占策略</strong>：活跃事务修改过的块都不应该写出到磁盘</p></li>
+<li><p><strong>抢占策略</strong>：允许系统将修改过的块写到磁盘，即使这些修改的事务还未提交</p></li>
+<li><p>只要<strong>遵循先写日志规则</strong>，可以<strong>使用抢占策略</strong></p></li>
+<li><p><strong>非抢占策略不适合执行大量更新的事务</strong>，因为缓冲区可能已更新过但又不能被移出到磁盘的块所占满，导致事务不能继续进行</p></li>
+<li><p><strong>缓冲块上的锁</strong></p>
+<ul>
+<li>事务对一个<strong>数据项执行写操作</strong>前，要获得<strong>数据项所在块上的排他锁</strong>，该锁在更新执行完后立即<strong>释放</strong></li>
+<li>当一个<strong>块要被输出到磁盘</strong>时
+<ul>
+<li>获得该块上的<strong>排他锁</strong>，以确保没有任何事务正在对该块执行写操作</li>
+<li>将日志记录输出到<strong>稳定存储器</strong>，直至<strong>块相关的所有日志记录都输出</strong>完成</li>
+<li>将该<strong>块输出到磁盘</strong></li>
+<li>块输出完成，则<strong>释放</strong>该锁</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="操作系统在缓冲区管理中的作用">操作系统在缓冲区管理中的作用</h3>
+<ul>
+<li>数据库系统<strong>保留一部分主存作为缓冲区</strong>，并对它进行管理，而<strong>不是让操作系统管理</strong>
+<ul>
+<li>限制了主存的灵活性，缓冲区必须足够小</li>
+</ul></li>
+<li>数据库系统<strong>在操作系统提供的虚拟内存中实现缓冲区</strong>
+<ul>
+<li>不应由操作系统自己写数据库缓冲块，而是由数据库系统强制输出缓冲块</li>
+<li>但实际上几乎所有操作系统都完全控制虚拟内存，操作系统保留了磁盘空间用于存储当前不在主存的虚拟内存页，该磁盘空间称为<strong>交换区</strong></li>
+</ul></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" title="数据库系统原理-事务管理">http://example.com/2022/03/04/数据库系统原理-事务管理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" rel="prev" title="OS-文件管理">
+                  <i class="fa fa-chevron-left"></i> OS-文件管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/05/%E9%A1%B9%E7%9B%AE-15-445%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/" rel="next" title="15-445 数据库项目总结">
+                  15-445 数据库项目总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

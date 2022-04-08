@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Split brain问题 Primary结构  MapReduce、GFS、FT-VM都采用了primary结构  Split brain in FT-VM   S1和S2通过网络形式提供Test and Set服务，C1和C2相当于FT-VM中的primary和backup 假设网络故障，C1和C2无法通信，则它们会尝试go live 本来C1应该同时与S1和S2通信，并进行Test and">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.824 Lec5 Raft-I">
+<meta property="og:url" content="http://example.com/2021/12/12/6-824-Lec5-Raft-I/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="Split brain问题 Primary结构  MapReduce、GFS、FT-VM都采用了primary结构  Split brain in FT-VM   S1和S2通过网络形式提供Test and Set服务，C1和C2相当于FT-VM中的primary和backup 假设网络故障，C1和C2无法通信，则它们会尝试go live 本来C1应该同时与S1和S2通信，并进行Test and">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/.com//split%20brain.png">
+<meta property="article:published_time" content="2021-12-12T09:00:30.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.849Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="6.824">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/.com//split%20brain.png">
+
+
+<link rel="canonical" href="http://example.com/2021/12/12/6-824-Lec5-Raft-I/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/12/6-824-Lec5-Raft-I/","path":"2021/12/12/6-824-Lec5-Raft-I/","title":"6.824 Lec5 Raft-I"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>6.824 Lec5 Raft-I | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#split-brain%E9%97%AE%E9%A2%98"><span class="nav-text">Split brain问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#primary%E7%BB%93%E6%9E%84"><span class="nav-text">Primary结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#split-brain-in-ft-vm"><span class="nav-text">Split brain in FT-VM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#solution"><span class="nav-text">Solution</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#majority-vote"><span class="nav-text">Majority Vote</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#raft%E5%88%9D%E6%8E%A2"><span class="nav-text">Raft初探</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#log%E5%90%8C%E6%AD%A5%E6%97%B6%E5%BA%8F"><span class="nav-text">log同步时序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#leader-election"><span class="nav-text">Leader election</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#election-timer"><span class="nav-text">Election timer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#election%E7%9A%84%E4%BA%A7%E7%94%9F"><span class="nav-text">Election的产生</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E6%97%A7leader%E7%9A%84%E8%A1%8C%E4%B8%BA%E6%AD%A3%E7%A1%AE"><span class="nav-text">如何确保旧leader的行为正确</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#election-timer-1"><span class="nav-text">Election timer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#reset"><span class="nav-text">reset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#randomized-timeout"><span class="nav-text">Randomized timeout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#timeout%E7%9A%84%E5%90%88%E7%90%86%E5%8F%96%E5%80%BC"><span class="nav-text">timeout的合理取值</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/6-824-Lec5-Raft-I/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6.824 Lec5 Raft-I
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-12 17:00:30" itemprop="dateCreated datePublished" datetime="2021-12-12T17:00:30+08:00">2021-12-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="split-brain问题">Split brain问题</h1>
+<h2 id="primary结构">Primary结构</h2>
+<ul>
+<li>MapReduce、GFS、FT-VM都采用了primary结构</li>
+</ul>
+<h2 id="split-brain-in-ft-vm">Split brain in FT-VM</h2>
+<p><img src="/.com//split%20brain.png"></p>
+<ul>
+<li>S1和S2通过网络形式提供Test and
+Set服务，C1和C2相当于FT-VM中的primary和backup</li>
+<li>假设网络故障，C1和C2无法通信，则它们会尝试go live</li>
+<li>本来C1应该同时与S1和S2通信，并进行Test and
+Set，但是C1现在只能与S1通信，同理C2只能与S2通信</li>
+<li>若允许client只与一台服务器通信执行Test and
+Set便上线，则上述情况可能导致C1和C2同时go live，<strong>造成split
+brain问题</strong>；若必须与两台服务器通信，则Test and
+Set<strong>无法容错</strong>，且两台replica反而使得可靠性下降</li>
+</ul>
+<h2 id="solution">Solution</h2>
+<p>上述问题主要通过两种方式解决</p>
+<ul>
+<li><strong>无故障网络</strong>：保证网络可靠无故障，需要大量资金</li>
+<li><strong>人工维护</strong>：当C无法与其中一台服务器联系时，则联系机房人员，将该服务器关闭，从而避免了Split
+brain</li>
+</ul>
+<span id="more"></span>
+<h1 id="majority-vote">Majority Vote</h1>
+<ul>
+<li>primary的决策只需得到过半数投票即可执行，无需得到全部服务器投票，从而实现容错</li>
+<li>若系统有2F+1台服务器，则最多可接受F台服务器故障</li>
+</ul>
+<h1 id="raft初探">Raft初探</h1>
+<ul>
+<li>Raft以库的形式存在于服务中，其上层是应用程序</li>
+<li>对于客户端来说，多个Raft节点是透明的，它们只会认为其在向一个应用程序请求服务</li>
+</ul>
+<h1 id="log同步时序">log同步时序</h1>
+<ul>
+<li>client向leader发送请求，leader在add
+log之后，同时向其他服务器发送AE</li>
+<li>得到过半数服务器的确认后，则leader commit log，让state
+machine执行相应的command并将结果返回client</li>
+<li>leader还会通知其他所有server也commit
+log，但是Raft不会发送额外消息，它会将该信息附在下一次AE中</li>
+</ul>
+<h1 id="leader-election">Leader election</h1>
+<h2 id="election-timer">Election timer</h2>
+<ul>
+<li>若当前节点长时间没收到leader的心跳信号，计时器time
+out时，会开始选举</li>
+</ul>
+<h2 id="election的产生">Election的产生</h2>
+<ul>
+<li>leader故障，会导致新的选举</li>
+<li>即使leader不故障，由于网络延迟导致follower超时没收到leader的心跳信号，也会开始新的选举</li>
+</ul>
+<h2 id="如何确保旧leader的行为正确">如何确保旧leader的行为正确</h2>
+<ul>
+<li>如果是由于网络分区等原因导致的新选举，则可能旧leader无法得知新leader的产生</li>
+<li>但由于Raft的思想是leader的决策必须得到过半数投票，因此新leader的产生意味着它得到了过半数投票，此时旧leader的任何行为都无法得到过半数投票（这很有可能是由于网络分区，且旧leader所在的网络分区节点数较少，而新leader所在的网络分区节点数过半导致的）</li>
+</ul>
+<h1 id="election-timer-1">Election timer</h1>
+<h2 id="reset">reset</h2>
+<ul>
+<li>每次follower收到AppendEntriesRPC便会重设timer</li>
+</ul>
+<h2 id="randomized-timeout">Randomized timeout</h2>
+<ul>
+<li>为了避免Split vote，被刺reset时都会随机选择time out</li>
+</ul>
+<h2 id="timeout的合理取值">timeout的合理取值</h2>
+<ul>
+<li>大于心跳信号间隔，一般选择为心跳信号间隔的几倍</li>
+<li>小于server的平均故障时间间隔</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/12/12/6-824-Lec5-Raft-I/" title="6.824 Lec5 Raft-I">http://example.com/2021/12/12/6-824-Lec5-Raft-I/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/6-824/" rel="tag"># 6.824</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/11/Raft/" rel="prev" title="Raft">
+                  <i class="fa fa-chevron-left"></i> Raft
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/14/6-824-Lab-2/" rel="next" title="6.824 Lab 2">
+                  6.824 Lab 2 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

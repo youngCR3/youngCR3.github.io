@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="鸡蛋掉落问题 1884. 鸡蛋掉落-两枚鸡蛋  分析：令\(dp(i,j)\)代表拥有\(i\)枚鸡蛋，且楼层数为\(j\)时所需的最小操作次数，则可以找到以下规律  当\(j&#x3D;0\)时，\(dp(i,0)&#x3D;0\) 当\(i&#x3D;1\)时，由于只有一枚鸡蛋，必须一层一层地试，因此\(dp(1,j)&#x3D;j\) 对于其他情况，我们假设从第\(k\)层往下投一枚鸡蛋  如果没碎，则我们需要考虑比\(k\)更高">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode Dynamic Programming 3">
+<meta property="og:url" content="http://example.com/2022/01/05/Leetcode-Dynamic-Programming-3/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="鸡蛋掉落问题 1884. 鸡蛋掉落-两枚鸡蛋  分析：令\(dp(i,j)\)代表拥有\(i\)枚鸡蛋，且楼层数为\(j\)时所需的最小操作次数，则可以找到以下规律  当\(j&#x3D;0\)时，\(dp(i,0)&#x3D;0\) 当\(i&#x3D;1\)时，由于只有一枚鸡蛋，必须一层一层地试，因此\(dp(1,j)&#x3D;j\) 对于其他情况，我们假设从第\(k\)层往下投一枚鸡蛋  如果没碎，则我们需要考虑比\(k\)更高">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/.com//function.png">
+<meta property="article:published_time" content="2022-01-05T05:34:09.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.858Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Leetcode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/.com//function.png">
+
+
+<link rel="canonical" href="http://example.com/2022/01/05/Leetcode-Dynamic-Programming-3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/01/05/Leetcode-Dynamic-Programming-3/","path":"2022/01/05/Leetcode-Dynamic-Programming-3/","title":"Leetcode Dynamic Programming 3"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Leetcode Dynamic Programming 3 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%B8%A1%E8%9B%8B%E6%8E%89%E8%90%BD%E9%97%AE%E9%A2%98"><span class="nav-text">鸡蛋掉落问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%B8%A1%E8%9B%8B%E6%8E%89%E8%90%BD-%E4%B8%A4%E6%9E%9A%E9%B8%A1%E8%9B%8B"><span class="nav-text">1884.
+鸡蛋掉落-两枚鸡蛋</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%B8%A1%E8%9B%8B%E6%8E%89%E8%90%BD"><span class="nav-text">887.
+鸡蛋掉落</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6on2k"><span class="nav-text">时间复杂度\(O(n^2k)\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6ok-cdot-nlogn"><span class="nav-text">二分搜索优化，时间复杂度\(O(k \cdot nlogn )\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2%E4%BB%A3%E6%9B%BFdp%E5%B8%B8%E6%95%B0%E4%BC%98%E5%8C%96"><span class="nav-text">记忆化搜索代替dp，常数优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%A7%A3%E6%B3%95"><span class="nav-text">其他解法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98"><span class="nav-text">股票问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA-iii"><span class="nav-text">123.
+买卖股票的最佳时机 III</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA-iv"><span class="nav-text">188.
+买卖股票的最佳时机 IV</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-text">二分查找 + 动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%9A%E5%8F%AF%E4%BB%A5%E5%8F%82%E5%8A%A0%E7%9A%84%E4%BC%9A%E8%AE%AE%E6%95%B0%E7%9B%AE-ii"><span class="nav-text">1751.
+最多可以参加的会议数目 II</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E7%A7%8D%E9%94%99%E8%AF%AF%E6%80%9D%E8%B7%AF"><span class="nav-text">一种错误思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%84%E5%88%92%E5%85%BC%E8%81%8C%E5%B7%A5%E4%BD%9C"><span class="nav-text">1235.
+规划兼职工作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-text">数学推导 + 动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E7%9B%B8%E4%BA%A4%E7%9A%84%E6%8F%A1%E6%89%8B"><span class="nav-text">1259.
+不相交的握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%8E%92%E9%82%AE%E7%AD%92"><span class="nav-text">1478.
+安排邮筒</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97"><span class="nav-text">最长上升子序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4"><span class="nav-text">435.
+无重叠区间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E5%BA%8F%E5%88%97%E5%8F%8A%E5%85%B6%E5%8F%98%E5%BC%8F"><span class="nav-text">最长回文子序列及其变式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E5%BA%8F%E5%88%97-ii"><span class="nav-text">1682.
+最长回文子序列 II</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E5%9B%9E%E6%96%87%E5%AD%97%E7%AC%A6%E4%B8%B2-iii"><span class="nav-text">1216.
+验证回文字符串 III</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E5%8F%8A%E5%85%B6%E5%8F%98%E5%BC%8F"><span class="nav-text">最长公共子序列及其变式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%9F%AD%E5%85%AC%E5%85%B1%E8%B6%85%E5%BA%8F%E5%88%97"><span class="nav-text">1092.
+最短公共超序列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rabin-karp"><span class="nav-text">Rabin-Karp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%90%E4%B8%B2"><span class="nav-text">1062.
+最长重复子串</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84next%E6%95%B0%E7%BB%84%E6%9C%89%E9%99%90%E7%A1%AE%E5%AE%9A%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="nav-text">字符串的Next数组（有限确定状态机）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E7%AA%97%E5%8F%A3%E5%AD%90%E5%BA%8F%E5%88%97"><span class="nav-text">727.
+最小窗口子序列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E5%85%B8%E6%A0%91"><span class="nav-text">字典树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E8%AF%8D%E6%8B%86%E5%88%86-ii"><span class="nav-text">140. 单词拆分
+II</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dp%E4%B8%AD%E7%8A%B6%E6%80%81%E7%9F%A9%E9%98%B5%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-text">DP中状态矩阵的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E6%A8%B1%E6%A1%83-ii"><span class="nav-text">1463. 摘樱桃
+II</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E6%A8%B1%E6%A1%83"><span class="nav-text">741.
+摘樱桃</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D"><span class="nav-text">字符串匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="nav-text">10.
+正则表达式匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E9%85%8D%E7%AC%A6%E5%8C%B9%E9%85%8D"><span class="nav-text">44.
+通配符匹配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="nav-text">其他问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%9A%84%E5%AD%90%E5%BA%8F%E5%88%97"><span class="nav-text">115.
+不同的子序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%9C%80%E5%B0%91%E6%95%B0%E9%87%8F%E7%9A%84%E7%AE%AD%E5%BC%95%E7%88%86%E6%B0%94%E7%90%83"><span class="nav-text">452.
+用最少数量的箭引爆气球</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E8%B7%9D%E7%A6%BB"><span class="nav-text">72.
+编辑距离</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%83%E5%A4%8D%E6%9D%82%E7%9A%84%E6%A8%A1%E6%8B%9F%E9%97%AE%E9%A2%98"><span class="nav-text">较复杂的模拟问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E5%8F%AF%E6%98%BE%E7%A4%BA%E5%8F%A5%E5%AD%90%E7%9A%84%E6%95%B0%E9%87%8F"><span class="nav-text">418.
+屏幕可显示句子的数量</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/05/Leetcode-Dynamic-Programming-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Leetcode Dynamic Programming 3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-05 13:34:09" itemprop="dateCreated datePublished" datetime="2022-01-05T13:34:09+08:00">2022-01-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="鸡蛋掉落问题">鸡蛋掉落问题</h1>
+<h2 id="鸡蛋掉落-两枚鸡蛋"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/egg-drop-with-2-eggs-and-n-floors/">1884.
+鸡蛋掉落-两枚鸡蛋</a></h2>
+<ul>
+<li><p>分析：令<span class="math inline">\(dp(i,j)\)</span>代表拥有<span class="math inline">\(i\)</span>枚鸡蛋，且楼层数为<span class="math inline">\(j\)</span>时所需的最小操作次数，则可以找到以下规律</p>
+<ul>
+<li><p>当<span class="math inline">\(j=0\)</span>时，<span class="math inline">\(dp(i,0)=0\)</span></p></li>
+<li><p>当<span class="math inline">\(i=1\)</span>时，由于只有一枚鸡蛋，必须一层一层地试，因此<span class="math inline">\(dp(1,j)=j\)</span></p></li>
+<li><p>对于其他情况，我们假设从第<span class="math inline">\(k\)</span>层往下投一枚鸡蛋</p>
+<ul>
+<li>如果没碎，则我们需要考虑比<span class="math inline">\(k\)</span>更高的楼层，操作数为<span class="math inline">\(dp(i,j-k)\)</span></li>
+<li>如果碎了，则我们需要考虑比<span class="math inline">\(k\)</span>更低的楼层，注意此时我们的鸡蛋数目变为<span class="math inline">\(i-1\)</span>，操作数为<span class="math inline">\(dp(i-1,k-1)\)</span></li>
+</ul></li>
+<li><p>由此可得状态转移方程为</p></li>
+</ul>
+<p><span class="math display">\[
+dp(i,j)=min\{1+max(dp(i-1,k-1),dp(i,j-k))\} \quad k=1,2,...,j
+\]</span></p></li>
+<li><p>简化：由于只有两枚鸡蛋，且当<span class="math inline">\(i=1\)</span>时，<span class="math inline">\(dp(i,j)=j\)</span>，因此可以简化为一维dp（时间复杂度仍然是<span class="math inline">\(O(n^2)\)</span>）</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twoEggDrop</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, i + <span class="number">1</span>):</span><br><span class="line">                dp[i] = <span class="built_in">min</span>(dp[i], <span class="number">1</span> + <span class="built_in">max</span>(j - <span class="number">1</span>, dp[i - j]))</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="鸡蛋掉落"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/super-egg-drop/">887.
+鸡蛋掉落</a></h2>
+<h3 id="时间复杂度on2k">时间复杂度<span class="math inline">\(O(n^2k)\)</span></h3>
+<ul>
+<li>分析：动态规划，基本原理和上题一致</li>
+<li>数据范围：<span class="math inline">\(1 \leq k \leq
+100\)</span>，<span class="math inline">\(1 \leq n \leq
+10^4\)</span></li>
+<li>时间复杂度：<span class="math inline">\(O(n^2k)\)</span>，无法通过</li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">superEggDrop</span>(<span class="params">self, k: <span class="built_in">int</span>, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [[i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(k + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> i == <span class="number">1</span>:</span><br><span class="line">                    dp[i][j] = j</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, j + <span class="number">1</span>):</span><br><span class="line">                        dp[i][j] = <span class="built_in">min</span>(dp[i][j], <span class="number">1</span> + <span class="built_in">max</span>(dp[i - <span class="number">1</span>][x - <span class="number">1</span>], dp[i][j - x]))</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="二分搜索优化时间复杂度ok-cdot-nlogn">二分搜索优化，时间复杂度<span class="math inline">\(O(k \cdot nlogn )\)</span></h3>
+<ul>
+<li>分析：由于上述方法时间复杂度过高，需要考虑优化的方法，再次对动态转移方程进行分析</li>
+</ul>
+<p><span class="math display">\[
+dp(i,j)=min\{1+max(dp(i-1,k-1),dp(i,j-k))\} \quad k=1,2,...,j
+\]</span></p>
+<ul>
+<li><span class="math inline">\(max\)</span>函数中的两项，第一项<span class="math inline">\(dp(i-1,k-1)\)</span>是关于<span class="math inline">\(k\)</span>的单调递增函数，第二项<span class="math inline">\(dp(i,j-k)\)</span>是关于<span class="math inline">\(k\)</span>的单调递减函数，两者最大值的最小值<strong>在函数交点处</strong>取得。但由于本题的<span class="math inline">\(dp\)</span>是离散函数，仅在整数处有定义，如果交点<span class="math inline">\(k_{opt}\)</span>并非整数，则需要分别考虑<span class="math inline">\(k_1=ceil(k_{opt})\)</span>和<span class="math inline">\(k_2=floor(k_{opt})\)</span>，并取两点中函数值较小的一点</li>
+<li>时间复杂度：<span class="math inline">\(O(k \cdot
+nlogn)\)</span></li>
+<li>图示分析如下，图源自力扣官方题解</li>
+</ul>
+<p><img src="/.com//function.png"></p>
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">superEggDrop</span>(<span class="params">self, k: <span class="built_in">int</span>, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [[i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(k + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> i == <span class="number">1</span>:</span><br><span class="line">                    dp[i][j] = j</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    L = <span class="number">1</span></span><br><span class="line">                    R = j</span><br><span class="line">                    <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">                        mid = (L + R) // <span class="number">2</span></span><br><span class="line">                        <span class="keyword">if</span> mid == <span class="number">1</span>:</span><br><span class="line">                            L = mid + <span class="number">1</span></span><br><span class="line">                        <span class="keyword">elif</span> mid == j:</span><br><span class="line">                            R = mid - <span class="number">1</span></span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            <span class="keyword">if</span> dp[i - <span class="number">1</span>][mid - <span class="number">1</span>] &lt;= dp[i][j - mid]:</span><br><span class="line">                                L = mid + <span class="number">1</span></span><br><span class="line">                            <span class="keyword">else</span>:</span><br><span class="line">                                R = mid - <span class="number">1</span></span><br><span class="line">                    <span class="keyword">if</span> R &lt; <span class="number">1</span>:</span><br><span class="line">                        dp[i][j] = <span class="number">1</span> + dp[i - <span class="number">1</span>][(R + <span class="number">1</span>) - <span class="number">1</span>]</span><br><span class="line">                    <span class="keyword">elif</span> R + <span class="number">1</span> &gt; j:</span><br><span class="line">                        dp[i][j] = <span class="number">1</span> + dp[i][j - R]</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[i][j] = <span class="number">1</span> + <span class="built_in">min</span>(dp[i][j - R], dp[i - <span class="number">1</span>][(R + <span class="number">1</span>) - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="记忆化搜索代替dp常数优化">记忆化搜索代替dp，常数优化</h3>
+<ul>
+<li>分析：上述代码仍然无法通过，总时间超时，推测是力扣卡常，可以使用记忆化搜索代替dp，减少对无效状态的求解，从而优化常数</li>
+<li>时间复杂度仍为<span class="math inline">\(O(k \cdot
+nlogn)\)</span></li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">superEggDrop</span>(<span class="params">self, k: <span class="built_in">int</span>, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line"><span class="meta">        @lru_cache(<span class="params"><span class="literal">None</span></span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dp</span>(<span class="params">k, n</span>):</span></span><br><span class="line">            <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">elif</span> k == <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> n</span><br><span class="line">            L = <span class="number">1</span></span><br><span class="line">            R = n</span><br><span class="line">            <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">                m = (L + R) // <span class="number">2</span></span><br><span class="line">                <span class="keyword">if</span> dp(k - <span class="number">1</span>, m - <span class="number">1</span>) &gt;= dp(k, n - m):</span><br><span class="line">                    R = m - <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    L = m + <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> R &lt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span> + dp(k - <span class="number">1</span>, R + <span class="number">1</span> - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">elif</span> R + <span class="number">1</span> &gt; n:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span> + dp(k, n - R)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span> + <span class="built_in">min</span>(dp(k - <span class="number">1</span>, R + <span class="number">1</span> - <span class="number">1</span>), dp(k, n - R))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp(k, n)</span><br></pre></td></tr></table></figure>
+<h3 id="其他解法">其他解法</h3>
+<ul>
+<li>本题还有时间复杂度更低的解法，涉及竞赛知识，可参考力扣 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/super-egg-drop/solution/ji-dan-diao-luo-by-leetcode-solution-2/">官方题解</a></li>
+</ul>
+<h1 id="股票问题">股票问题</h1>
+<h2 id="买卖股票的最佳时机-iii"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">123.
+买卖股票的最佳时机 III</a></h2>
+<ul>
+<li>分析：考虑当前的状态可以是以下五种
+<ul>
+<li>0：未进行任何交易</li>
+<li>1：购买了第一笔股票，持有中</li>
+<li>2：购买并售出了第一笔股票</li>
+<li>3：购买了第二笔股票，持有中</li>
+<li>4：购买并售出了第二笔股票</li>
+</ul></li>
+<li>令<span class="math inline">\(dp(i,j)\)</span>表示第<span class="math inline">\(i\)</span>天位于状态<span class="math inline">\(j\)</span>时所能获得的最大利润，状态转移方程可简写为下式</li>
+</ul>
+<p><span class="math display">\[
+dp(i,j) =\left\{
+\begin{aligned}
+&amp;0 &amp;\quad j=0\\
+&amp;max\{dp(i-1,j),dp(i-1,j-1)+sign \cdot prices[i]\} &amp;\quad 1 \leq
+j \leq 4
+\end{aligned}
+\right.
+\]</span></p>
+<ul>
+<li>其中<span class="math inline">\(sign\)</span>是正负变量，由下式求得</li>
+</ul>
+<p><span class="math display">\[
+sign=\left\{
+\begin{aligned}
+&amp;1 \quad &amp;j \ mod \ 2 = 0 \\
+&amp;-1 \quad &amp;j \ mod \ 2 = 1 \\
+\end{aligned}
+\right.
+\]</span></p>
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [[<span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>)] * <span class="number">5</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(prices))]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(prices)):</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                dp[i][<span class="number">1</span>] = -prices[i]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">5</span>):</span><br><span class="line">                    val1 = dp[i - <span class="number">1</span>][j]</span><br><span class="line">                    val2 = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + (prices[i] <span class="keyword">if</span> j % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">else</span> -prices[i])</span><br><span class="line">                    dp[i][j] = <span class="built_in">max</span>(val1, val2)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp[-<span class="number">1</span>][<span class="number">0</span>], dp[-<span class="number">1</span>][<span class="number">2</span>], dp[-<span class="number">1</span>][<span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="买卖股票的最佳时机-iv"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">188.
+买卖股票的最佳时机 IV</a></h2>
+<ul>
+<li>分析：基本原理与上题类似，<span class="math inline">\(dp(i,j,k)\)</span>表示第<span class="math inline">\(i\)</span>天，完成了<span class="math inline">\(j\)</span>笔交易，且当前持有股票状态为<span class="math inline">\(k\)</span>时的最大利润，<span class="math inline">\(k=1\)</span>代表当前已经购买第<span class="math inline">\(j+1\)</span>笔交易但未卖出，<span class="math inline">\(k=0\)</span>代表完成<span class="math inline">\(j\)</span>笔交易后没有进行其他交易，状态转移方程为</li>
+</ul>
+<p><span class="math display">\[
+\left\{
+\begin{aligned}
+dp(i,j,0)&amp;=max\{dp(i-1,j,0),\ dp(i-1,j-1,1)+prices[i]\} \\
+dp(i,j,1)&amp;=max\{dp(i-1,j,1),\ dp(i-1,j,0)-prices[i]\}
+\end{aligned}
+\right.
+\]</span></p>
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, m: <span class="built_in">int</span>, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(prices)</span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">or</span> m == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        dp = [[[<span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>)] * <span class="number">2</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        res = <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> j == <span class="number">0</span>:</span><br><span class="line">                    dp[i][j][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">                    <span class="keyword">if</span> i &gt; <span class="number">0</span>:</span><br><span class="line">                        dp[i][j][<span class="number">1</span>] = <span class="built_in">max</span>(-prices[i], dp[i - <span class="number">1</span>][j][<span class="number">1</span>])</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[i][j][<span class="number">1</span>] = -prices[i]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[i][j][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j][<span class="number">0</span>], dp[i - <span class="number">1</span>][j - <span class="number">1</span>][<span class="number">1</span>] + prices[i])</span><br><span class="line">                    <span class="keyword">if</span> j &lt;= m:</span><br><span class="line">                        dp[i][j][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j][<span class="number">1</span>], dp[i - <span class="number">1</span>][j][<span class="number">0</span>] - prices[i])</span><br><span class="line">                res = <span class="built_in">max</span>(res, dp[i][j][<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h1 id="二分查找-动态规划">二分查找 + 动态规划</h1>
+<h2 id="最多可以参加的会议数目-ii"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-number-of-events-that-can-be-attended-ii/">1751.
+最多可以参加的会议数目 II</a></h2>
+<ul>
+<li><p>标签：二分查找 + 动态规划</p></li>
+<li><p>分析：首先将所有会议按起始时间排序，令<span class="math inline">\(dp(i,j)\)</span>为遍历到第<span class="math inline">\(i\)</span>个会议且已经开了<span class="math inline">\(j\)</span>个会议（此时可选择开或不开第<span class="math inline">\(i\)</span>个会议）时能获得的最大价值，接下来</p>
+<ul>
+<li>如果不开第<span class="math inline">\(i\)</span>个会议，则可以转移到第<span class="math inline">\(i+1\)</span>个会议，即</li>
+</ul>
+<p><span class="math display">\[
+dp(i+1,j)=max\{dp(i+1,j),dp(i,j)\}
+\]</span></p>
+<ul>
+<li>如果开第<span class="math inline">\(i\)</span>个会议，则可以转移到下一个起始时间大于当前结束时间的工作，通过二分查找可以找到其下标<span class="math inline">\(k\)</span>，则有</li>
+</ul>
+<p><span class="math display">\[
+dp(k,j+1)=max\{dp(k,j+1), \ dp(i,j)+value[i]\}
+\]</span></p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxValue</span>(<span class="params">self, events: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        events.sort()</span><br><span class="line">        dp = [[-<span class="number">1</span>] * <span class="built_in">len</span>(events) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(k + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(events)):</span><br><span class="line">            dp[<span class="number">0</span>][j] = <span class="number">0</span></span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(events)):</span><br><span class="line">                <span class="keyword">if</span> dp[i][j] &gt;= <span class="number">0</span>:</span><br><span class="line">                    res = <span class="built_in">max</span>(res, dp[i][j])</span><br><span class="line">                    <span class="comment"># 不完成事件j</span></span><br><span class="line">                    <span class="keyword">if</span> j + <span class="number">1</span> &lt; <span class="built_in">len</span>(events):</span><br><span class="line">                        dp[i][j + <span class="number">1</span>] = <span class="built_in">max</span>(dp[i][j + <span class="number">1</span>], dp[i][j])</span><br><span class="line">                    <span class="comment"># 选择完成事件j</span></span><br><span class="line">                    <span class="keyword">if</span> i + <span class="number">1</span> &lt; k + <span class="number">1</span>:</span><br><span class="line">                        L = j + <span class="number">1</span></span><br><span class="line">                        R = <span class="built_in">len</span>(events) - <span class="number">1</span></span><br><span class="line">                        <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">                            mid = (L + R) // <span class="number">2</span></span><br><span class="line">                            <span class="keyword">if</span> events[mid][<span class="number">0</span>] &lt;= events[j][<span class="number">1</span>]:</span><br><span class="line">                                L = mid + <span class="number">1</span></span><br><span class="line">                            <span class="keyword">else</span>:</span><br><span class="line">                                R = mid - <span class="number">1</span></span><br><span class="line">                        <span class="keyword">if</span> R + <span class="number">1</span> &lt; <span class="built_in">len</span>(events):</span><br><span class="line">                            dp[i + <span class="number">1</span>][R + <span class="number">1</span>] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][R + <span class="number">1</span>], dp[i][j] + events[j][<span class="number">2</span>]) </span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            res = <span class="built_in">max</span>(res, dp[i][j] + events[j][<span class="number">2</span>])</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h3 id="一种错误思路">一种错误思路</h3>
+<ul>
+<li>开始时误以为当<span class="math inline">\(i\)</span>确定时，<span class="math inline">\(dp(i,j)\)</span>是关于<span class="math inline">\(j\)</span>的单调递增函数，于是采用单调栈找到每个会议的上一个能参加的会议，设为<span class="math inline">\(last1\)</span>，则状态转移方程为<span class="math inline">\(dp(i,j)=max\{dp(k,j-1)+value[i],dp(i-1,j)\}\)</span>。这种思路的错误之处在于<strong>当<span class="math inline">\(i\)</span>确定时，<span class="math inline">\(dp(i,j)\)</span>并非关于<span class="math inline">\(j\)</span>的单调递增函数</strong></li>
+</ul>
+<h2 id="规划兼职工作"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-profit-in-job-scheduling/">1235.
+规划兼职工作</a></h2>
+<ul>
+<li><p>标签：二分查找 + 动态规划</p></li>
+<li><p>分析：首先将所有工作按起始时间<code>startTime</code>排序，令<span class="math inline">\(dp(i)\)</span>为遍历到第<span class="math inline">\(i\)</span>个工作（此时可选择做或不做第<span class="math inline">\(i\)</span>个工作）时能获得的最大报酬，接下来</p>
+<ul>
+<li>如果不做第<span class="math inline">\(i\)</span>个工作，则可以转移到第<span class="math inline">\(i+1\)</span>个工作，即</li>
+</ul>
+<p><span class="math display">\[
+dp(i+1)=max\{dp(i+1),dp(i)\}
+\]</span></p>
+<ul>
+<li>如果做第<span class="math inline">\(i\)</span>个工作，则可以转移到下一个<code>startTime</code>大于<code>endTime[i]</code>的工作，通过二分查找可以找到其下标<span class="math inline">\(j\)</span>，则有</li>
+</ul>
+<p><span class="math display">\[
+dp(j)=max\{dp(j), dp(i)+profit[i]\}
+\]</span></p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">jobScheduling</span>(<span class="params">self, startTime: <span class="type">List</span>[<span class="built_in">int</span>], endTime: <span class="type">List</span>[<span class="built_in">int</span>], profit: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        arr = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(startTime)):</span><br><span class="line">            arr.append([startTime[i], endTime[i], profit[i]])</span><br><span class="line">        arr.sort()</span><br><span class="line">        dp = [<span class="number">0</span>] * <span class="built_in">len</span>(arr)</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(arr)):</span><br><span class="line">            <span class="keyword">if</span> i + <span class="number">1</span> &lt; <span class="built_in">len</span>(arr):</span><br><span class="line">                dp[i + <span class="number">1</span>] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>], dp[i])</span><br><span class="line">            </span><br><span class="line">            L = i + <span class="number">1</span></span><br><span class="line">            R = <span class="built_in">len</span>(arr) - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">                mid = (L + R) // <span class="number">2</span></span><br><span class="line">                <span class="keyword">if</span> arr[mid][<span class="number">0</span>] &lt; arr[i][<span class="number">1</span>]:</span><br><span class="line">                    L = mid + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    R = mid - <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> R + <span class="number">1</span> &lt; <span class="built_in">len</span>(arr):</span><br><span class="line">                dp[R + <span class="number">1</span>] = <span class="built_in">max</span>(dp[R + <span class="number">1</span>], dp[i] + arr[i][<span class="number">2</span>])</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                res = <span class="built_in">max</span>(res, dp[i] + arr[i][<span class="number">2</span>])</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h1 id="数学推导-动态规划">数学推导 + 动态规划</h1>
+<h2 id="不相交的握手"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/handshakes-that-dont-cross/">1259.
+不相交的握手</a></h2>
+<ul>
+<li>标签：数学，有Codeforces的味道了</li>
+<li>分析：可以从第一对握手人入手，假设<span class="math inline">\(1\)</span>与<span class="math inline">\(i\)</span>握手，则其左侧有<span class="math inline">\(n-i\)</span>个人，右侧有<span class="math inline">\(i-2\)</span>个人，假设<span class="math inline">\(dp(i)\)</span>表示<span class="math inline">\(i\)</span>个人相互握手不相交的方案数，则这种情况共有<span class="math inline">\(dp(n-i) \times
+dp(i-2)\)</span>种方案，而事实上<span class="math inline">\(1\)</span>可以和所有编号为奇数的人握手</li>
+<li>状态转移方程</li>
+</ul>
+<p><span class="math display">\[
+dp(i)=\sum_{j=1}^{i/2} dp(2j-2) \cdot dp(i-2j)
+\]</span></p>
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numberOfWays</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [<span class="number">0</span>] * (n + <span class="number">1</span>)</span><br><span class="line">        MOD = <span class="number">10</span> ** <span class="number">9</span> + <span class="number">7</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, n + <span class="number">1</span>, <span class="number">2</span>):</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">                dp[i] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, i - <span class="number">2</span> + <span class="number">1</span>, <span class="number">2</span>):</span><br><span class="line">                    dp[i] += dp[j] * dp[i - j - <span class="number">2</span>]</span><br><span class="line">                    dp[i] %= MOD</span><br><span class="line">        <span class="keyword">return</span> dp[n]</span><br></pre></td></tr></table></figure>
+<h2 id="安排邮筒"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/allocate-mailboxes/">1478.
+安排邮筒</a></h2>
+<ul>
+<li>分析：<span class="math inline">\(dp(i,j)\)</span>代表前<span class="math inline">\(i\)</span>个房子可以安装<span class="math inline">\(j\)</span>个邮筒时的最小距离和。状态转移时，考虑前<span class="math inline">\(x\)</span>个房子由<span class="math inline">\(j-1\)</span>个邮筒覆盖，最右边的<span class="math inline">\(i-x\)</span>个房子
+由新装设的邮筒覆盖，则状态转移方程为</li>
+</ul>
+<p><span class="math display">\[
+dp(i,j)=min_{x}\{dp(x,j-1)+get(x+1,i)\}
+\]</span></p>
+<ul>
+<li><p>其中<span class="math inline">\(get(l,r)\)</span>表示当第<span class="math inline">\(l\)</span>到第<span class="math inline">\(r\)</span>个房子由一个邮筒覆盖时的最小距离和，此时邮筒必定安装在<strong>中心房子所在的位置</strong>，若房子总数为偶数，则安装在两间中心房子的任意一个都可以</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDistance</span>(<span class="params">self, houses: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        houses.sort()</span><br><span class="line"></span><br><span class="line"><span class="meta">        @lru_cache(<span class="params"><span class="literal">None</span></span>)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">get</span>(<span class="params">left, right</span>):</span></span><br><span class="line">            <span class="comment"># find median</span></span><br><span class="line">            pos = houses[(left + right) // <span class="number">2</span>]</span><br><span class="line">            r = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(left, right + <span class="number">1</span>):</span><br><span class="line">                r += <span class="built_in">abs</span>(houses[i] - pos)</span><br><span class="line">            <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(houses)</span><br><span class="line">        dp = [[-<span class="number">1</span>] * (k + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> j == <span class="number">1</span>:</span><br><span class="line">                    dp[i][j] = get(<span class="number">0</span>, i)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line">                        val = dp[x][j - <span class="number">1</span>] + get(x + <span class="number">1</span>, i)</span><br><span class="line">                        <span class="keyword">if</span> dp[i][j] == -<span class="number">1</span> <span class="keyword">or</span> val &lt; dp[i][j]:</span><br><span class="line">                            dp[i][j] = val</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="最长上升子序列">最长上升子序列</h1>
+<h2 id="无重叠区间"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/non-overlapping-intervals/">435.
+无重叠区间</a></h2>
+<ul>
+<li>标签：最长上升子序列</li>
+<li>分析：本题可视为最长递增子序列的变种,
+dp[i]表示包含i个区间的最小右端点值</li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span>(<span class="params">self, intervals: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)] * (<span class="built_in">len</span>(intervals) + <span class="number">1</span>)</span><br><span class="line">        intervals.sort()</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(intervals)):</span><br><span class="line">            L = <span class="number">0</span></span><br><span class="line">            R = <span class="built_in">len</span>(intervals) - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">                mid = (L + R) // <span class="number">2</span></span><br><span class="line">                <span class="keyword">if</span> dp[mid] &gt; intervals[i][<span class="number">0</span>]:</span><br><span class="line">                    R = mid - <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    L = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> dp[R + <span class="number">1</span>] &gt; intervals[i][<span class="number">1</span>]:</span><br><span class="line">                dp[R + <span class="number">1</span>] = intervals[i][<span class="number">1</span>]</span><br><span class="line">            res = <span class="built_in">max</span>(res, R + <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(intervals) - res</span><br></pre></td></tr></table></figure>
+<h1 id="最长回文子序列及其变式">最长回文子序列及其变式</h1>
+<h2 id="最长回文子序列-ii"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-palindromic-subsequence-ii/">1682.
+最长回文子序列 II</a></h2>
+<ul>
+<li><p>分析：<span class="math inline">\(dp(i,j,k)\)</span>表示<code>s[i-j]</code>中两端字符为k的最长回文子序列</p></li>
+<li><p>时间复杂度：<span class="math inline">\(O(n^2k^2)\)</span>，其中<span class="math inline">\(k=26\)</span>代表字母数量</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestPalindromeSubseq</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(s)</span><br><span class="line">        dp = [[[<span class="number">0</span>] * <span class="number">26</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> r <span class="keyword">in</span> <span class="built_in">range</span>(l + <span class="number">1</span>, n):</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">26</span>):</span><br><span class="line">                    <span class="keyword">if</span> s[l] == s[r] <span class="keyword">and</span> l != r <span class="keyword">and</span> <span class="built_in">ord</span>(s[l]) - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>) == k:</span><br><span class="line">                        <span class="keyword">if</span> l + <span class="number">1</span> == r:</span><br><span class="line">                            dp[l][r][k] = <span class="number">2</span></span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">26</span>):</span><br><span class="line">                                <span class="keyword">if</span> x != k:</span><br><span class="line">                                    dp[l][r][k] = <span class="built_in">max</span>(dp[l][r][k], <span class="number">2</span> + dp[l + <span class="number">1</span>][r - <span class="number">1</span>][x])</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[l][r][k] = <span class="built_in">max</span>(dp[l + <span class="number">1</span>][r][k], dp[l][r - <span class="number">1</span>][k])</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp[<span class="number">0</span>][-<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="验证回文字符串-iii"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/valid-palindrome-iii/">1216.
+验证回文字符串 III</a></h2>
+<ul>
+<li>标签：最长回文子序列</li>
+<li>分析：求出最长回文子序列，若其长度大于<span class="math inline">\(n-k\)</span>则返回true</li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValidPalindrome</span>(<span class="params">self, s: <span class="built_in">str</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(s)</span><br><span class="line">        dp = [[<span class="number">0</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> r <span class="keyword">in</span> <span class="built_in">range</span>(l, n):</span><br><span class="line">                <span class="keyword">if</span> s[l] == s[r]:</span><br><span class="line">                    <span class="keyword">if</span> l == r:</span><br><span class="line">                        dp[l][r] = <span class="number">1</span></span><br><span class="line">                    <span class="keyword">elif</span> l + <span class="number">1</span> == r:</span><br><span class="line">                        dp[l][r] = <span class="number">2</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[l][r] = dp[l + <span class="number">1</span>][r - <span class="number">1</span>] + <span class="number">2</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[l][r] = <span class="built_in">max</span>(dp[l][r - <span class="number">1</span>], dp[l + <span class="number">1</span>][r])</span><br><span class="line">        <span class="keyword">return</span> n - dp[<span class="number">0</span>][-<span class="number">1</span>] &lt;= k</span><br></pre></td></tr></table></figure>
+<h1 id="最长公共子序列及其变式">最长公共子序列及其变式</h1>
+<h2 id="最短公共超序列"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-common-supersequence/">1092.
+最短公共超序列</a></h2>
+<ul>
+<li><p>标签：最长公共子序列</p></li>
+<li><p>分析：找到最长公共子序列，然后双指针遍历两个字符串，若当前字符不等于公共子序列当前字符，则将其加入<span class="math inline">\(r\)</span>并将相应指针前移，直至两个字符串的当前字符都等于公共子序列的当前字符，此时将公共子序列当前字符加入<span class="math inline">\(r\)</span>，双指针都前移</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shortestCommonSupersequence</span>(<span class="params">self, str1: <span class="built_in">str</span>, str2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">        </span><br><span class="line">        m = <span class="built_in">len</span>(str1)</span><br><span class="line">        n = <span class="built_in">len</span>(str2)</span><br><span class="line">        dp = [[<span class="string">&#x27;&#x27;</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                <span class="keyword">if</span> str1[i] == str2[j]:</span><br><span class="line">                    <span class="keyword">if</span> i &gt; <span class="number">0</span> <span class="keyword">and</span> j &gt; <span class="number">0</span>:</span><br><span class="line">                        dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + str1[i]</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[i][j] = str1[i]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">and</span> j == <span class="number">0</span>:</span><br><span class="line">                        dp[i][j] = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">elif</span> i == <span class="number">0</span>:</span><br><span class="line">                        dp[i][j] = dp[i][j - <span class="number">1</span>]</span><br><span class="line">                    <span class="keyword">elif</span> j == <span class="number">0</span>:</span><br><span class="line">                        dp[i][j] = dp[i - <span class="number">1</span>][j]</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        <span class="keyword">if</span> <span class="built_in">len</span>(dp[i][j - <span class="number">1</span>]) &gt;= <span class="built_in">len</span>(dp[i - <span class="number">1</span>][j]):</span><br><span class="line">                            dp[i][j] = dp[i][j - <span class="number">1</span>]</span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            dp[i][j] = dp[i - <span class="number">1</span>][j]</span><br><span class="line"></span><br><span class="line">        i = j = <span class="number">0</span></span><br><span class="line">        r = <span class="string">&#x27;&#x27;</span></span><br><span class="line">        s = dp[-<span class="number">1</span>][-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(str1) <span class="keyword">and</span> str1[i] != s[k]:</span><br><span class="line">                r += str1[i]</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> j &lt; <span class="built_in">len</span>(str2) <span class="keyword">and</span> str2[j] != s[k]:</span><br><span class="line">                r += str2[j]</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">            r += s[k]</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(str1):</span><br><span class="line">            r += str1[i]</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; <span class="built_in">len</span>(str2):</span><br><span class="line">            r += str2[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+<h1 id="rabin-karp">Rabin-Karp</h1>
+<h2 id="最长重复子串"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-repeating-substring/">1062.
+最长重复子串</a></h2>
+<ul>
+<li>标签：二分查找 + 滚动哈希</li>
+<li>时间复杂度：<span class="math inline">\(O(NlogN)\)</span></li>
+<li>分析：最长重复子串的长度满足<strong>单调性</strong>规律，假设存在长度为<span class="math inline">\(L\)</span>的重复子串，则必定存在长度为<span class="math inline">\(0 \leq l \leq
+L\)</span>的重复子串，因此可以使用二分查找</li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestRepeatingSubstring</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">L</span>):</span></span><br><span class="line">            data = &#123;&#125;</span><br><span class="line">            base = <span class="number">31</span></span><br><span class="line">            mod = <span class="number">10</span> ** <span class="number">9</span> + <span class="number">7</span></span><br><span class="line">            H = <span class="built_in">pow</span>(base, L, mod)</span><br><span class="line">            val = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">                val = val * base + <span class="built_in">ord</span>(s[i]) - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">                <span class="keyword">if</span> i &gt;= L:</span><br><span class="line">                    val -= H * (<span class="built_in">ord</span>(s[i - L]) - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>))</span><br><span class="line">                    val %= mod</span><br><span class="line">                <span class="keyword">if</span> val <span class="keyword">in</span> data:</span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> data[val]:</span><br><span class="line">                        <span class="keyword">if</span> s[j - L + <span class="number">1</span>: j + <span class="number">1</span>] == s[i - L + <span class="number">1</span>: i + <span class="number">1</span>]:</span><br><span class="line">                            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">                <span class="keyword">if</span> i - L + <span class="number">1</span> &gt;= <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">if</span> val <span class="keyword">in</span> data:</span><br><span class="line">                        data[val].add(i)</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        data[val] = &#123;i&#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        L = <span class="number">0</span></span><br><span class="line">        R = <span class="built_in">len</span>(s) - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> L &lt;= R:</span><br><span class="line">            mid = (L + R) // <span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> check(mid):</span><br><span class="line">                L = mid + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                R = mid - <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> R </span><br></pre></td></tr></table></figure>
+<h1 id="字符串的next数组有限确定状态机">字符串的Next数组（有限确定状态机）</h1>
+<h2 id="最小窗口子序列"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-window-subsequence/">727.
+最小窗口子序列</a></h2>
+<ul>
+<li>时间复杂度：<span class="math inline">\(O(nk +
+nc)\)</span>，其中<span class="math inline">\(c=26\)</span>是小写字母的数量</li>
+<li>分析
+<ul>
+<li>Next数组的构建</li>
+<li>基于Next数组的状态转移</li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minWindow</span>(<span class="params">self, s1: <span class="built_in">str</span>, s2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span>        </span><br><span class="line">        n = <span class="built_in">len</span>(s1)</span><br><span class="line">        dp = [[-<span class="number">1</span>] * <span class="number">26</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> i == n - <span class="number">1</span>:</span><br><span class="line">                dp[i][<span class="built_in">ord</span>(s1[i]) - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)] = i</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">26</span>):</span><br><span class="line">                    <span class="keyword">if</span> <span class="built_in">ord</span>(s1[i]) - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>) == j:</span><br><span class="line">                        dp[i][j] = i</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[i][j] = dp[i + <span class="number">1</span>][j]</span><br><span class="line"></span><br><span class="line">        start = i = <span class="number">0</span></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        r = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(s1):</span><br><span class="line">            i = dp[i][<span class="built_in">ord</span>(s2[j]) - <span class="built_in">ord</span>(<span class="string">&#x27;a&#x27;</span>)]</span><br><span class="line">            <span class="keyword">if</span> i == -<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">if</span> j == <span class="number">0</span>:</span><br><span class="line">                start = i</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> j == <span class="built_in">len</span>(s2):</span><br><span class="line">                <span class="keyword">if</span> r == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> i - start + <span class="number">1</span> &lt; <span class="built_in">len</span>(r):</span><br><span class="line">                    r = s1[start: i + <span class="number">1</span>]</span><br><span class="line">                i = start + <span class="number">1</span></span><br><span class="line">                j = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+<h1 id="字典树">字典树</h1>
+<h2 id="单词拆分-ii"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-break-ii/">140. 单词拆分
+II</a></h2>
+<ul>
+<li><p>标签：字典树</p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wordBreak</span>(<span class="params">self, s: <span class="built_in">str</span>, wordDict: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">str</span>]:</span></span><br><span class="line">        <span class="comment"># build up the dict tree with words in wordDict</span></span><br><span class="line">        tree = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> wordDict:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> w:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            t = tree</span><br><span class="line">            <span class="keyword">for</span> c <span class="keyword">in</span> w:</span><br><span class="line">                <span class="keyword">if</span> c <span class="keyword">not</span> <span class="keyword">in</span> t:</span><br><span class="line">                    t[c] = &#123;&#125;</span><br><span class="line">                t = t[c]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                t[<span class="string">&#x27;.&#x27;</span>] = <span class="string">&#x27;.&#x27;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># develop DFS on the dict tree</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">i, t, path</span>):</span></span><br><span class="line">            <span class="keyword">if</span> i == <span class="built_in">len</span>(s):</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&#x27;.&#x27;</span> <span class="keyword">in</span> t:</span><br><span class="line">                    self.res.append(path)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&#x27;.&#x27;</span> <span class="keyword">in</span> t:    </span><br><span class="line">                dfs(i, tree, path + <span class="string">&quot; &quot;</span>)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> s[i] <span class="keyword">in</span> t:</span><br><span class="line">                dfs(i + <span class="number">1</span>, t[s[i]], path + s[i])</span><br><span class="line">            </span><br><span class="line">        </span><br><span class="line">        self.res = []</span><br><span class="line">        dfs(<span class="number">0</span>, tree, <span class="string">&quot;&quot;</span>)    </span><br><span class="line">        <span class="keyword">return</span> self.res</span><br></pre></td></tr></table></figure>
+<h1 id="dp中状态矩阵的定义">DP中状态矩阵的定义</h1>
+<h2 id="摘樱桃-ii"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/cherry-pickup-ii/">1463. 摘樱桃
+II</a></h2>
+<ul>
+<li><p>分析：由于两个机器人所处的行始终是相同的，因此<span class="math inline">\(dp(i,j,k)\)</span>定义为机器人均位于第<span class="math inline">\(i\)</span>行，且机器人1位于第<span class="math inline">\(j\)</span>列、机器人2位于第<span class="math inline">\(k\)</span>列时所能摘得的最多樱桃数量</p></li>
+<li><p>时间复杂度：<span class="math inline">\(O(rc^2)\)</span></p></li>
+<li><p>代码</p></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cherryPickup</span>(<span class="params">self, grid: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        r = <span class="built_in">len</span>(grid)</span><br><span class="line">        c = <span class="built_in">len</span>(grid[<span class="number">0</span>])</span><br><span class="line">        dp = [[[-<span class="number">1</span>] * c <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(c)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(r)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>][c - <span class="number">1</span>] = grid[<span class="number">0</span>][<span class="number">0</span>] + grid[<span class="number">0</span>][c - <span class="number">1</span>]</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(r):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(c):</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(c):</span><br><span class="line">                    <span class="keyword">if</span> dp[i][j][k] &gt;= <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">if</span> i + <span class="number">1</span> &lt; r:</span><br><span class="line">                            <span class="keyword">for</span> j1 <span class="keyword">in</span> [j-<span class="number">1</span>, j, j+<span class="number">1</span>]:</span><br><span class="line">                                <span class="comment"># 提早退出, 可以大幅减少运行时间</span></span><br><span class="line">                                <span class="keyword">if</span> j1 &lt; <span class="number">0</span> <span class="keyword">or</span> j1 &gt;= c:</span><br><span class="line">                                    <span class="keyword">continue</span></span><br><span class="line">                                <span class="keyword">for</span> k1 <span class="keyword">in</span> [k-<span class="number">1</span>, k, k+<span class="number">1</span>]:</span><br><span class="line">                                    <span class="keyword">if</span> k1 &lt; <span class="number">0</span> <span class="keyword">or</span> k1 &gt;= c:</span><br><span class="line">                                        <span class="keyword">continue</span></span><br><span class="line">                                    <span class="keyword">if</span> j1 == k1:</span><br><span class="line">                                        dp[i + <span class="number">1</span>][j1][k1] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][j1][k1], dp[i][j][k] + grid[i + <span class="number">1</span>][k1])</span><br><span class="line">                                    <span class="keyword">else</span>:</span><br><span class="line">                                        dp[i + <span class="number">1</span>][j1][k1] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][j1][k1], dp[i][j][k] + grid[i + <span class="number">1</span>][j1] + grid[i + <span class="number">1</span>][k1])</span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            res = <span class="built_in">max</span>(res, dp[i][j][k])</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h2 id="摘樱桃"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/cherry-pickup/">741.
+摘樱桃</a></h2>
+<ul>
+<li>分析：这道题能否做出取决于能否想到这个巧妙的状态定义方法。先完成<code>摘樱桃II</code>能够帮助思考
+<ul>
+<li>将<strong>一来一回</strong>，视作<strong>两个人</strong>同时从<span class="math inline">\((0,0)\)</span>出发并走向<span class="math inline">\((N-1,N-1)\)</span>，两个人每次同时行动，其与<span class="math inline">\((0,0)\)</span>的哈明顿距离必定相等</li>
+<li><span class="math inline">\(dp(i,r_1,r_2)\)</span>视作第<span class="math inline">\(i\)</span>次行动时，第一个人处于第<span class="math inline">\(r_1\)</span>行、第二个人处于第<span class="math inline">\(r_2\)</span>行时能摘得的最多樱桃数量，由于此时两人的行动位移都为<span class="math inline">\(i\)</span>，因此第一人所处列为<span class="math inline">\(i-r_1\)</span>，第二人所处列为<span class="math inline">\(i-r_2\)</span></li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cherryPickup</span>(<span class="params">self, grid: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(grid)</span><br><span class="line">        dp = [[[-<span class="number">1</span>] * n <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span> * n - <span class="number">1</span>)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>] = grid[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span> * n - <span class="number">2</span>): </span><br><span class="line">            <span class="keyword">for</span> r1 <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                <span class="keyword">for</span> r2 <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                    <span class="keyword">if</span> dp[i][r1][r2] &gt;= <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">for</span> r1_ <span class="keyword">in</span> [r1, r1 + <span class="number">1</span>]:</span><br><span class="line">                            c1_ = i + <span class="number">1</span> - r1_</span><br><span class="line">                            <span class="keyword">if</span> <span class="keyword">not</span> (<span class="number">0</span> &lt;= r1_ &lt; n <span class="keyword">and</span> <span class="number">0</span> &lt;= c1_ &lt; n) <span class="keyword">or</span> grid[r1_][c1_] &lt; <span class="number">0</span>:</span><br><span class="line">                                <span class="keyword">continue</span></span><br><span class="line">                            <span class="keyword">for</span> r2_ <span class="keyword">in</span> [r2, r2 + <span class="number">1</span>]:</span><br><span class="line">                                c2_ = i + <span class="number">1</span> - r2_</span><br><span class="line">                                <span class="keyword">if</span> <span class="keyword">not</span> (<span class="number">0</span> &lt;= r2_ &lt; n <span class="keyword">and</span> <span class="number">0</span> &lt;= c2_ &lt; n) <span class="keyword">or</span> grid[r2_][c2_] &lt; <span class="number">0</span>:</span><br><span class="line">                                    <span class="keyword">continue</span></span><br><span class="line">                                <span class="keyword">if</span> r1_ == r2_:</span><br><span class="line">                                    dp[i + <span class="number">1</span>][r1_][r2_] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][r1_][r2_], dp[i][r1][r2] + grid[r1_][c1_])</span><br><span class="line">                                <span class="keyword">else</span>:</span><br><span class="line">                                    dp[i + <span class="number">1</span>][r1_][r2_] = <span class="built_in">max</span>(dp[i + <span class="number">1</span>][r1_][r2_], dp[i][r1][r2] + grid[r1_][c1_] + grid[r2_][c2_])</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(<span class="number">0</span>, dp[-<span class="number">1</span>][-<span class="number">1</span>][-<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h1 id="字符串匹配">字符串匹配</h1>
+<h2 id="正则表达式匹配"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/regular-expression-matching/">10.
+正则表达式匹配</a></h2>
+<ul>
+<li>分析：关键在于特殊字符（<code>.</code>和<code>*</code>）的处理</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isMatch</span>(<span class="params">self, s: <span class="built_in">str</span>, p: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        dp = [[<span class="number">0</span>] * (<span class="built_in">len</span>(s) + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p) + <span class="number">1</span>)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p)):</span><br><span class="line">            <span class="keyword">if</span> p[i] == <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">elif</span> p[i] == <span class="string">&#x27;.&#x27;</span>:</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">                    <span class="keyword">if</span> dp[i][j]:</span><br><span class="line">                        dp[i + <span class="number">1</span>][j + <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> i + <span class="number">1</span> &lt; <span class="built_in">len</span>(p) <span class="keyword">and</span> p[i + <span class="number">1</span>] == <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">                        <span class="keyword">if</span> dp[i][j]:</span><br><span class="line">                            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(j, <span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">                                dp[i + <span class="number">2</span>][k] = <span class="number">1</span></span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="string">&#x27;a&#x27;</span> &lt;= p[i] &lt;= <span class="string">&#x27;z&#x27;</span>:</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">                    <span class="keyword">if</span> dp[i][j]:</span><br><span class="line">                        <span class="keyword">if</span> p[i] == s[j]:</span><br><span class="line">                            dp[i + <span class="number">1</span>][j + <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> i + <span class="number">1</span> &lt; <span class="built_in">len</span>(p) <span class="keyword">and</span> p[i + <span class="number">1</span>] == <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">                    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">                        <span class="keyword">if</span> dp[i][j]:</span><br><span class="line">                            dp[i + <span class="number">2</span>][j] = <span class="number">1</span></span><br><span class="line">                            <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(j, <span class="built_in">len</span>(s)):</span><br><span class="line">                                <span class="keyword">if</span> p[i] == s[k]:</span><br><span class="line">                                    dp[i + <span class="number">2</span>][k + <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">                                <span class="keyword">else</span>:</span><br><span class="line">                                    <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>] == <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h2 id="通配符匹配"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/wildcard-matching/">44.
+通配符匹配</a></h2>
+<ul>
+<li>分析：关键在于特殊字符（<code>?</code>和<code>*</code>）的处理</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isMatch</span>(<span class="params">self, s: <span class="built_in">str</span>, p: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        dp = [[<span class="number">0</span>] * (<span class="built_in">len</span>(s) + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p) + <span class="number">1</span>)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(p)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> dp[i][j]:</span><br><span class="line">                    <span class="keyword">if</span> p[i] == <span class="string">&#x27;?&#x27;</span>:</span><br><span class="line">                        <span class="keyword">if</span> j + <span class="number">1</span> &lt; <span class="built_in">len</span>(s) + <span class="number">1</span>:</span><br><span class="line">                            dp[i + <span class="number">1</span>][j + <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">                    <span class="keyword">elif</span> p[i] == <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">                        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(j, <span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">                            dp[i + <span class="number">1</span>][k] = <span class="number">1</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        <span class="keyword">if</span> j &lt; <span class="built_in">len</span>(s) <span class="keyword">and</span> p[i] == s[j]:</span><br><span class="line">                            dp[i + <span class="number">1</span>][j + <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>] == <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h1 id="其他问题">其他问题</h1>
+<h2 id="不同的子序列"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/distinct-subsequences/">115.
+不同的子序列</a></h2>
+<ul>
+<li>分析：<span class="math inline">\(dp(i,j)\)</span>表示<code>s[: i]</code>中<code>t[: j]</code>出现的次数，状态转移时，<span class="math inline">\(dp(i-1,j)\)</span>代表<code>s[: i-1]</code>中<code>t[: j]</code>出现的次数，必定也包含在<span class="math inline">\(dp(i,j)\)</span>中。此外，当<code>s[i]==t[j]</code>时，则<span class="math inline">\(dp(i-1,j-1)\)</span>也包含在其中，因此</li>
+</ul>
+<p><span class="math display">\[
+dp(i,j)=\left\{
+\begin{aligned}
+&amp;dp(i-1,j-1)+dp(i-1,j) \quad &amp;s[i]==t[j] \\
+&amp;dp(i-1,j) \quad &amp;s[i]!= t[j]
+\end{aligned}
+\right.
+\]</span></p>
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numDistinct</span>(<span class="params">self, s: <span class="built_in">str</span>, t: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [[<span class="number">0</span>] * (<span class="built_in">len</span>(t) + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s) + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(t)):</span><br><span class="line">                <span class="keyword">if</span> s[i] == t[j]:</span><br><span class="line">                    dp[i + <span class="number">1</span>][j + <span class="number">1</span>] += dp[i][j]</span><br><span class="line">                dp[i + <span class="number">1</span>][j + <span class="number">1</span>] += dp[i][j + <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>] </span><br></pre></td></tr></table></figure>
+<h2 id="用最少数量的箭引爆气球"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-number-of-arrows-to-burst-balloons/">452.
+用最少数量的箭引爆气球</a></h2>
+<ul>
+<li>标签：贪心</li>
+<li>分析：将气球按起点排序，从左到右遍历并记录当前的射箭位置<span class="math inline">\(pos\)</span>
+<ul>
+<li>若气球的起点<span class="math inline">\(l_i\)</span>大于当前射箭位置<span class="math inline">\(pos\)</span>，则需要增加一支箭，初始位置定在该气球的右端点<span class="math inline">\(r_i\)</span></li>
+<li>若气球的起点<span class="math inline">\(l_j\)</span>小于等于射箭位置<span class="math inline">\(pos\)</span>，但终点<span class="math inline">\(r_j\)</span>小于射箭位置，则需要调整射箭位置至其终点<span class="math inline">\(r_j\)</span><strong>（该调整不会影响之前的气球，即之前的气球仍然能被击中）</strong></li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findMinArrowShots</span>(<span class="params">self, points: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="comment"># greedy</span></span><br><span class="line">        points.sort()</span><br><span class="line">        res = <span class="number">0</span></span><br><span class="line">        right = <span class="built_in">float</span>(<span class="string">&#x27;-inf&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> points:</span><br><span class="line">            <span class="keyword">if</span> x &gt; right:</span><br><span class="line">                res += <span class="number">1</span></span><br><span class="line">                right = y</span><br><span class="line">            <span class="keyword">elif</span> y &lt; right:</span><br><span class="line">                right = y</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h2 id="编辑距离"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/edit-distance/">72.
+编辑距离</a></h2>
+<ul>
+<li><p>分析：<span class="math inline">\(dp(i,
+j)\)</span>表示将<code>word1[: i]</code>变为与<code>word2[: j]</code>相等所需要的最小操作次数，当<code>word1[i] == word2[j]</code>时，可直接退化为<span class="math inline">\(dp(i-1,j-1)\)</span>的情况；不相等时，则考虑以下三种情况</p>
+<ul>
+<li>修改使得<code>word1[i] == word2[j]</code>，对应<span class="math inline">\(dp(i-1,j-1)+1\)</span></li>
+<li>删除<code>word1[i]</code>，对应<span class="math inline">\(dp(i-1,j)+1\)</span></li>
+<li>删除<code>word2[j]</code>，对应<span class="math inline">\(dp(i,j-1)+1\)</span></li>
+</ul>
+<p>状态转移方程如下</p></li>
+</ul>
+<p><span class="math display">\[
+dp(i,j)=\left\{
+\begin{aligned}
+&amp;dp(i-1,j-1) \quad &amp;word1[i]=word2[j] \\
+&amp;min\{dp(i-1,j-1), \ dp(i-1,j), \ dp(i, j-1) \}+1 \quad
+&amp;word1[i] \neq word2[j]
+\end{aligned}
+\right.
+\]</span></p>
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDistance</span>(<span class="params">self, word1: <span class="built_in">str</span>, word2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        dp = [[<span class="number">0</span>] * (<span class="built_in">len</span>(word2) + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word1) + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word1) + <span class="number">1</span>):</span><br><span class="line">            dp[i][<span class="number">0</span>] = i</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word2) + <span class="number">1</span>):</span><br><span class="line">            dp[<span class="number">0</span>][j] = j</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word1)):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(word2)):</span><br><span class="line">                <span class="keyword">if</span> word1[i] == word2[j]:</span><br><span class="line">                    dp[i + <span class="number">1</span>][j + <span class="number">1</span>] = dp[i][j]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[i + <span class="number">1</span>][j + <span class="number">1</span>] = <span class="built_in">min</span>(dp[i + <span class="number">1</span>][j], dp[i][j + <span class="number">1</span>], dp[i][j]) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>][-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="较复杂的模拟问题">较复杂的模拟问题</h1>
+<h2 id="屏幕可显示句子的数量"><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sentence-screen-fitting/">418.
+屏幕可显示句子的数量</a></h2>
+<ul>
+<li>标签：模拟、预处理</li>
+<li>分析：本题的<span class="math inline">\(rows\)</span>和<span class="math inline">\(cols\)</span>变量数据范围较大，若直接模拟会超时，可先预处理两个数组
+<ul>
+<li><span class="math inline">\(next(i)\)</span>表示当本行是从<code>sentence[i]</code>开始显示的，下一行显示的第一个单词的索引</li>
+<li><span class="math inline">\(cnt(i)\)</span>表示当本行是从<code>sentence[i]</code>开始显示的，这一行显示的句子数量（这里的数量等同于<strong>显示句子最后一个单词的次数</strong>）</li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">wordsTyping</span><span class="params">(vector&lt;string&gt;&amp; sentence, <span class="keyword">int</span> rows, <span class="keyword">int</span> cols)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = (<span class="keyword">int</span>)sentence.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">next</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">cnt</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="keyword">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">            l += (<span class="keyword">int</span>)sentence[i].<span class="built_in">size</span>();</span><br><span class="line">        l += n - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> w = cols;</span><br><span class="line">        cnt[<span class="number">0</span>] += w / (l + <span class="number">1</span>);</span><br><span class="line">        w %= l + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (w &gt;= (<span class="keyword">int</span>)sentence[i].<span class="built_in">size</span>())</span><br><span class="line">                w -= (<span class="keyword">int</span>)sentence[i].<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                next[<span class="number">0</span>] = i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (i == n - <span class="number">1</span>)</span><br><span class="line">                cnt[<span class="number">0</span>] += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; sentence.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            cnt[i] = cnt[i - <span class="number">1</span>];</span><br><span class="line">            w += (<span class="keyword">int</span>)sentence[i - <span class="number">1</span>].<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">int</span> j = next[i - <span class="number">1</span>];</span><br><span class="line">            <span class="keyword">while</span> (w &gt;= (<span class="keyword">int</span>)sentence[j].<span class="built_in">size</span>()) &#123;</span><br><span class="line">                w -= (<span class="keyword">int</span>)sentence[j].<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">                j += <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">if</span> (j == n) &#123;</span><br><span class="line">                    cnt[i] += <span class="number">1</span>;</span><br><span class="line">                    j = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            next[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> right = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++) &#123;</span><br><span class="line">            r += cnt[right];</span><br><span class="line">            right = next[right];</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/01/05/Leetcode-Dynamic-Programming-3/" title="Leetcode Dynamic Programming 3">http://example.com/2022/01/05/Leetcode-Dynamic-Programming-3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/04/CF-756/" rel="prev" title="CF 756">
+                  <i class="fa fa-chevron-left"></i> CF 756
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/06/CF-Edu-119/" rel="next" title="CF Edu 119">
+                  CF Edu 119 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

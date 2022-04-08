@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="15-445项目要点总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="15-445 数据库项目总结">
+<meta property="og:url" content="http://example.com/2022/03/05/%E9%A1%B9%E7%9B%AE-15-445%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="15-445项目要点总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-05T13:02:09.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.869Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Database System">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/05/%E9%A1%B9%E7%9B%AE-15-445%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/05/%E9%A1%B9%E7%9B%AE-15-445%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/","path":"2022/03/05/项目-15-445数据库系统/","title":"15-445 数据库项目总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>15-445 数据库项目总结 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#project-1-buffer-pool"><span class="nav-text">Project 1 Buffer Pool</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-text">整体功能需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task1-lru%E6%9B%BF%E6%8D%A2%E7%AD%96%E7%95%A5"><span class="nav-text">Task1 LRU替换策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1"><span class="nav-text">数据结构与算法设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1"><span class="nav-text">成员函数设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="nav-text">关键问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug%E8%BF%87%E7%A8%8B"><span class="nav-text">Debug过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task2-buffer-pool%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-text">Task2 Buffer Pool管理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-1"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-1"><span class="nav-text">数据结构与算法设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1-1"><span class="nav-text">成员函数设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90-1"><span class="nav-text">关键问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-1"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug%E8%BF%87%E7%A8%8B-1"><span class="nav-text">Debug过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task3-parallel-buffer-pool%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-text">Task3 Parallel Buffer
+Pool管理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-2"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-2"><span class="nav-text">数据结构与算法设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1-2"><span class="nav-text">成员函数设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90-2"><span class="nav-text">关键问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug%E8%BF%87%E7%A8%8B-2"><span class="nav-text">Debug过程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#project-2-extendible-hash-index"><span class="nav-text">Project 2 Extendible Hash
+Index</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BEhash-table%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">回顾：Hash Table基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#data-structures"><span class="nav-text">1 Data Structures</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash-table"><span class="nav-text">2 Hash Table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash-functions"><span class="nav-text">3 Hash Functions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%93%88%E5%B8%8C%E6%96%B9%E6%A1%88"><span class="nav-text">4 静态哈希方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%A0%B7%E6%9C%AC%E5%93%88%E5%B8%8Clinear-probe-hashing"><span class="nav-text">4.1 线性样本哈希Linear Probe
+Hashing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%97%E5%AE%BE%E6%B1%89%E6%95%A3%E5%88%97robin-hood-hashing"><span class="nav-text">4.2 罗宾汉散列Robin Hood
+Hashing</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%93%88%E5%B8%8C%E6%96%B9%E6%A1%88"><span class="nav-text">5 动态哈希方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#chained-hashing"><span class="nav-text">5.1 Chained Hashing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#extendible-hashing"><span class="nav-text">5.2 Extendible Hashing</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task1-page-layouts"><span class="nav-text">Task1 Page Layouts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%88%90%E5%91%98%E8%AE%BE%E8%AE%A1"><span class="nav-text">数据成员设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90-3"><span class="nav-text">关键问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1-3"><span class="nav-text">成员函数设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-table-bucket-page"><span class="nav-text">Hash Table Bucket Page</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-table-directory-page"><span class="nav-text">Hash Table Directory Page</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task2-hash-table-implemention"><span class="nav-text">Task2 Hash Table
+Implemention</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-3"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0"><span class="nav-text">辅助函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1-4"><span class="nav-text">成员函数设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-text">查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E5%85%A5-%E6%A1%B6%E5%88%86%E8%A3%82"><span class="nav-text">插入 + 桶分裂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4-%E6%A1%B6%E5%90%88%E5%B9%B6"><span class="nav-text">删除 + 桶合并</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task3-concurrency-control"><span class="nav-text">Task3 Concurrency Control</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-4"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90-4"><span class="nav-text">关键问题分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#project-3-query-execution"><span class="nav-text">Project 3 Query Execution</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9E%E9%A1%BE%E6%9F%A5%E8%AF%A2%E5%A4%84%E7%90%86"><span class="nav-text">回顾：查询处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="nav-text">1 查询执行计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%A8%A1%E5%9E%8B"><span class="nav-text">2 处理模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%9E%8Bvolcano%E6%A8%A1%E5%9E%8B"><span class="nav-text">迭代器模型（Volcano模型）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-1"><span class="nav-text">整体功能需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task1-executors"><span class="nav-text">Task1 Executors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-5"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E7%B1%BB%E5%8F%8A%E5%85%B6%E5%85%B3%E9%94%AE%E6%8E%A5%E5%8F%A3"><span class="nav-text">辅助类及其关键接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#value"><span class="nav-text">Value</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tuple"><span class="nav-text">Tuple</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-page"><span class="nav-text">Table Page</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-heap"><span class="nav-text">Table Heap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table-iterator"><span class="nav-text">Table Iterator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rid"><span class="nav-text">RID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#column"><span class="nav-text">Column</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#schema"><span class="nav-text">Schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#index"><span class="nav-text">Index</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#catalog"><span class="nav-text">Catalog</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential-scan"><span class="nav-text">SEQUENTIAL SCAN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-text">INSERT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update"><span class="nav-text">UPDATE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-text">DELETE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nested-loop-join"><span class="nav-text">NESTED LOOP JOIN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash-join"><span class="nav-text">HASH JOIN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#aggregation"><span class="nav-text">AGGREGATION</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#limit"><span class="nav-text">LIMIT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#distinct"><span class="nav-text">DISTINCT</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#project-4-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-text">Project 4 并发控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-2"><span class="nav-text">整体功能需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task1-%E5%AE%9E%E7%8E%B0%E9%94%81%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-text">Task1 实现锁管理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82-6"><span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90-5"><span class="nav-text">关键问题分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1-3"><span class="nav-text">数据结构与算法设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1-5"><span class="nav-text">成员函数设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%85%E5%8A%A9%E6%88%90%E5%91%98"><span class="nav-text">辅助成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E5%85%B1%E6%8E%A5%E5%8F%A3"><span class="nav-text">公共接口</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-3"><span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debug%E8%BF%87%E7%A8%8B-3"><span class="nav-text">Debug过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task2-%E4%BF%AE%E6%94%B9executor"><span class="nav-text">Task2 修改Executor</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#debug%E8%BF%87%E7%A8%8B-4"><span class="nav-text">Debug过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90-6"><span class="nav-text">关键问题分析</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/05/%E9%A1%B9%E7%9B%AE-15-445%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          15-445 数据库项目总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-05 21:02:09" itemprop="dateCreated datePublished" datetime="2022-03-05T21:02:09+08:00">2022-03-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>15-445项目要点总结</strong></p>
+<span id="more"></span>
+<h1 id="project-1-buffer-pool">Project 1 Buffer Pool</h1>
+<h2 id="整体功能需求">整体功能需求</h2>
+<ul>
+<li><strong>内存管理</strong>：实现Buffer
+Pool，正确处理创建页面、获取页面、释放页面、删除页面、将页面写回磁盘等请求操作</li>
+<li><strong>页面置换</strong>：当线程请求页面，而内存中页面已用完（<code>free_list</code>为空），则应该使用LRU策略将一个当前未被任何线程使用的页面写回磁盘，并释放其空间用于保存新页面</li>
+<li>保证Buffer
+Pool的<strong>线程安全</strong>：当多个线程同时请求访问Buffer
+Pool时，一次只有一个线程能获得其访问权，采用锁进行保护</li>
+<li><strong>提高Buffer
+Pool的并发度</strong>：单个<code>BufferPoolManagerInstance</code>一次只能请求一个线程的页面请求，为了提高并发度，使用多个<code>BufferPoolManagerInstance</code>组成buffer
+pool，每个都管理着一段独立的内存空间，从而可以同时处理多个线程的页面请求</li>
+</ul>
+<h2 id="task1-lru替换策略">Task1 LRU替换策略</h2>
+<h3 id="功能需求">功能需求</h3>
+<ul>
+<li>实现一个基于LRU算法的LRU_replacer，即在需要进行页面置换时候，决定将内存中哪个页面置换到外存的replacer</li>
+</ul>
+<h3 id="数据结构与算法设计">数据结构与算法设计</h3>
+<ul>
+<li>LRU算法的实现，若要实现<code>O(1)</code>时间内的读写，可使用<strong>双向链表
++ 哈希表</strong>的形式</li>
+<li>使用<strong>双向链表</strong><code>buffer_</code>保存当前的空闲页面，刚加入的页面将放在链表末尾，因此越靠近首端的页面则越久未被使用，当调用<code>Victim</code>置换页面时，位于链表首段的页面将被替换</li>
+<li>使用<strong>哈希表</strong><code>f_</code>保存当前LRUReplacer中页面<strong>在链表的迭代器</strong>，因此当Buffer
+Pool管理器调用<code>Pin</code>获取某个页面时，可以在<code>O(1)</code>时间内将该页面从链表中移除</li>
+</ul>
+<h3 id="成员函数设计">成员函数设计</h3>
+<ul>
+<li><p><code>LRUReplacer(size_t num_pages)</code></p>
+<p>创建一个大小为<code>num_pages</code>的LRUReplacer，<code>num_pages</code>代表Buffer
+Pool的页面总数</p></li>
+<li><p><code>Victim(frame_id_t *frame_id)</code></p>
+<ul>
+<li>根据LRU策略从当前的可替换页面中选取一个，并将其从LRUreplacer中移除，将其页号存入指针<code>*frame_id</code>指向的位置，并返回true</li>
+<li>若当前LRUReplacer中没有可用的页面，则返回false</li>
+</ul></li>
+<li><p><code>Pin(frame_id)</code></p>
+<p>某个线程需要<strong>读写该页面</strong>，因此将其<strong>从LRUReplacer中移除</strong></p></li>
+<li><p><code>Unpin(frame_id)</code></p>
+<p>当Buffer
+pool中某个页面的计数值为0，意味着当前<strong>没有线程正在使用该页面</strong>，因此它是可置换的，则调用<code>Unpin</code>将其<strong>加入LRUReplacer中</strong></p></li>
+<li><p><code>Size()</code></p>
+<p>返回当前LRUReplacer中的<strong>可置换页面数</strong></p></li>
+</ul>
+<h3 id="关键问题分析">关键问题分析</h3>
+<ul>
+<li><code>Pin</code>和<code>Unpin</code>的含义？
+<ul>
+<li><code>Pin</code>代表<strong>某个线程需要使用某页面</strong>，因此Buffer
+Pool向LRUReplacer获取该页面，此时需要将该页面从LRUReplacer中移除</li>
+<li><code>Unpin</code>代表当前<strong>没有任何线程使用该页面</strong>，因此Buffer
+Pool中该页面的计数值为0，它会调用<code>Unpin</code>将页面<strong>加入LRUReplacer中</strong></li>
+</ul></li>
+<li>LRU策略的实现，运用了什么数据结构，为什么要使用？
+<ul>
+<li>双向链表 + 哈希表，详见上述数据结构与算法分析</li>
+<li>使用<strong>双向链表</strong>是因为当<strong>加入</strong>某个页面时，将其<strong>放在末尾</strong>，则首端的页面自然就是最久未被使用的页面，从而在<strong>页面置换时</strong>候直接<strong>移除链表首端的页面</strong>即可，因此插入和删除的时间复杂度都是<code>O(1)</code></li>
+<li>使用哈希表是因为除了上述情况，还可能<strong>Buffer
+Pool调用<code>Pin</code>获取某个页面</strong>，此时该页面可能位于链表中间，<strong>为了避免从头遍历链表</strong>，我们将页号到链表迭代器的映射存放在哈希表，从而Buffer
+Pool获取某个页面时，可以在<code>O(1)</code>时间内<strong>取得其迭代器</strong>，并在<code>O(1)</code>时间内<strong>将其从链表中移除</strong></li>
+</ul></li>
+</ul>
+<h3 id="实现">实现</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">LRUReplacer::Victim</span><span class="params">(<span class="keyword">frame_id_t</span> *frame_id)</span> </span>&#123;</span><br><span class="line">  <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">guard</span><span class="params">(mtx_)</span></span>;</span><br><span class="line">  <span class="keyword">if</span> (f_.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  *frame_id = *buffer_.<span class="built_in">begin</span>();</span><br><span class="line">  f_.<span class="built_in">erase</span>(*buffer_.<span class="built_in">begin</span>());</span><br><span class="line">  buffer_.<span class="built_in">pop_front</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LRUReplacer::Pin</span><span class="params">(<span class="keyword">frame_id_t</span> frame_id)</span> </span>&#123;</span><br><span class="line">  <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">guard</span><span class="params">(mtx_)</span></span>;</span><br><span class="line">  <span class="keyword">if</span> (f_.<span class="built_in">count</span>(frame_id)) &#123;</span><br><span class="line">    buffer_.<span class="built_in">erase</span>(f_[frame_id]);</span><br><span class="line">    f_.<span class="built_in">erase</span>(frame_id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LRUReplacer::Unpin</span><span class="params">(<span class="keyword">frame_id_t</span> frame_id)</span> </span>&#123;</span><br><span class="line">  <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">guard</span><span class="params">(mtx_)</span></span>;</span><br><span class="line">  <span class="keyword">if</span> (f_.<span class="built_in">count</span>(frame_id)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  buffer_.<span class="built_in">emplace_back</span>(frame_id);</span><br><span class="line">  f_[frame_id] = --buffer_.<span class="built_in">end</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">LRUReplacer::Size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">guard</span><span class="params">(mtx_)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> buffer_.<span class="built_in">size</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="debug过程">Debug过程</h3>
+<ul>
+<li>略</li>
+</ul>
+<h2 id="task2-buffer-pool管理器">Task2 Buffer Pool管理器</h2>
+<h3 id="功能需求-1">功能需求</h3>
+<ul>
+<li><strong>从磁盘读取页面</strong>：从<code>DiskManager</code>读取某个页面并存入内存</li>
+<li><strong>将页面写回磁盘</strong>：当进行LRU页面置换，或数据库系统显式地要求将页面写回磁盘时，将dirty页面写回磁盘</li>
+<li><strong>页面状态</strong>：维护内存中各个页面的以下信息</li>
+<li><strong>dirty标志位</strong>，表明该页面是否被修改</li>
+<li><strong>使用线程数</strong>，表明该页面被多少个线程所使用</li>
+<li><strong>执行LRU页面置换</strong>：如果线程向Buffer Pool
+Manager请求某个页面，而此时已没有空闲页，则它通过LRUReplacer选择一个Victim，并将该页面写回磁盘，从而得到一个空闲页</li>
+</ul>
+<h3 id="数据结构与算法设计-1">数据结构与算法设计</h3>
+<ul>
+<li><strong>页表</strong>：负责将内存中的页号映射到物理帧号</li>
+</ul>
+<h3 id="成员函数设计-1">成员函数设计</h3>
+<ul>
+<li><p><code>FetchPgImp(page_id)</code>，<strong>获取</strong>某个页面</p>
+<ul>
+<li><strong>查找页表</strong>：在页表中查找该页面（P）
+<ul>
+<li>如果P<strong>存在</strong>页表中，<strong>Pin并返回其指针</strong></li>
+<li>如果P<strong>不存在</strong>，选择<strong>受害页（R）</strong>进行页面置换</li>
+</ul></li>
+<li><strong>写磁盘</strong>：如果R是dirty的，将其<strong>写回磁盘</strong></li>
+<li><strong>更新页表</strong>：将<strong>R从页表删除</strong>，并将<strong>P加入页表</strong></li>
+<li><strong>更新P的metadata</strong>：更新page_id、pin_count，从磁盘中读入其数据，</li>
+<li><strong>返回</strong>：指向P的指针</li>
+</ul></li>
+<li><p><code>NewPgImp(page_id)</code>，<strong>创建</strong>一个页面</p>
+<ul>
+<li><strong>没有空闲frame</strong>：如果Buffer
+pool中所有页面都非空闲（即freelist和LRUReplacer都没有空闲页面），则返回<code>nullptr</code></li>
+<li><strong>获取空闲frame</strong>：否则从free
+list或LRUReplacer获取一个frame
+<ul>
+<li>若<code>free_list</code>非空则从<code>free_list</code>获取</li>
+<li>否则，调用LRUReplacer的<code>Victim</code>获取一个<code>frame_id</code>，调用<code>Pin</code>将其从LRUReplacer移除</li>
+</ul></li>
+<li><strong>写磁盘</strong>：检查该frame之前存放的页面是否dirty，若dirty则应先将其写回磁盘，将该frame存储的页对应的<strong>表项从页表中移除</strong></li>
+<li><strong>更新新页面的metadata</strong>：调用<code>AllocatePage()</code>得到<strong>新的页号</strong>，将该页号到<code>frame_id</code>的映射<strong>加入页表</strong>，设置新页面的<code>pin_count=1</code>、并调用<code>ResetMemory()</code>初始化其数据</li>
+<li><strong>返回</strong>：返回新的<strong>页号</strong>、指向该新页面的<strong>指针</strong></li>
+</ul></li>
+<li><p><code>UnpinPgImp(page_id, is_dirty)</code>，线程调用该方法告知Buffer
+Pool自己不再使用该页面</p>
+<ul>
+<li><strong>查找页表</strong>：在页表中查找该页码，若不存在则返回true</li>
+<li><strong>置脏位</strong>：<code>is_dirty</code>代表调用该方法的线程是否修改了该页，注意不能直接将该值赋给页面的dirty位，只有当<code>is_dirty</code><strong>为true时才进行赋值</strong></li>
+</ul>
+<blockquote>
+<p>这是因为如果直接赋值，那么本来为脏的页面，会被没修改过该页的线程清除掉dirty标志，导致错误</p>
+</blockquote>
+<ul>
+<li><strong>更新pin count</strong>：将该页面的pin
+count减1，若变为0说明没有任何线程正使用该页面，则调用LRUReplacer的Unpin方法将其加入其中</li>
+<li>特别地，如果减1后pin count小于0，说明发生了错误，返回false</li>
+</ul></li>
+<li><p><code>DeletePgImp(page_id)</code>，删除该页面</p>
+<ul>
+<li><p><strong>查找</strong>：查找页表，若没找到则返回true</p></li>
+<li><p><strong>检查pin count</strong>：如果找到了P，但是pin
+count非0，说明有线程正使用该页面，无法删除，返回false</p></li>
+<li><p><strong>删除</strong>：若pin count为0，则可以删除</p>
+<ul>
+<li><p>调用<code>DeallocatePage</code>将页号归还</p></li>
+<li><p>将P从页表中移除</p></li>
+<li><p>将P从LRUReplacer移除（如在）</p></li>
+<li><p>重置其metadata，并将其重新加入<code>free_list</code></p></li>
+</ul></li>
+</ul></li>
+<li><p><code>FlushPgImp(page_id)</code>，将该页面写回磁盘</p>
+<ul>
+<li><strong>查找页表</strong>：从页表中获取该页面的frame_id，若没找到则返回false</li>
+<li><strong>写磁盘</strong>：检查该页是否dirty，若是则将其写入磁盘，返回true</li>
+</ul></li>
+<li><p><code>FlushAllPagesImpl()</code>，将所有页面写回磁盘</p>
+<ul>
+<li>对<strong>页表中的每个页</strong>都调用<code>FlushPgImp</code>即可</li>
+</ul></li>
+</ul>
+<h3 id="关键问题分析-1">关键问题分析</h3>
+<ul>
+<li><code>Pin</code>和<code>Unpin</code>的含义
+<ul>
+<li>此处的Pin指有线程想要使用该页面，因此pin
+count计数加1，并将该页面加入Buffer
+pool中；Unpin指有线程完成对该页面的使用，因此pin
+count减1，如果计数值为0还需要将其移出Buffer pool，加入LRUReplacer</li>
+<li>因此<code>Unpin</code>对LRUReplacer意味着加入页面，对Buffer
+pool可能意味着移除页面</li>
+</ul></li>
+</ul>
+<h3 id="实现-1">实现</h3>
+<ul>
+<li>略</li>
+</ul>
+<h3 id="debug过程-1">Debug过程</h3>
+<ul>
+<li><code>DeletePgImp(page_id)</code>中应该调用LRUReplacer的<code>Unpin</code>成员将P从LRUReplacer移除（如在）</li>
+<li><code>UnpinPgImp(page_id, is_dirty)</code>中的<code>is_dirty</code>只代表该线程是否修改过页面，不能直接将该值赋给页面的dirty位，只有当<code>is_dirty</code><strong>为true时才进行赋值</strong></li>
+</ul>
+<h2 id="task3-parallel-buffer-pool管理器">Task3 Parallel Buffer
+Pool管理器</h2>
+<h3 id="功能需求-2">功能需求</h3>
+<ul>
+<li>每个<code>BufferPoolManagerInstance</code>进行页面管理时都需要先获取互斥锁，因此同一时间一个<code>BufferPoolManagerInstance</code>只能处理一个线程的页面请求</li>
+<li>为了提高并发度，可以在系统中设置多个<code>BufferPoolManagerInstance</code>，每个管理着一段内存空间，并拥有自己的互斥锁，假如Buffer
+pools的数量为m，则同时可以处理m个线程的页面管理请求</li>
+<li>当线程请求分配或释放页面时，Buffer
+pool管理器会选择一个<code>BufferPoolManagerInstance</code>以处理该请求，对于页号为<code>page_id</code>的页面请求，交由<code>page_id % m</code>个<code>BufferPoolManagerInstance</code>进行处理</li>
+</ul>
+<h3 id="数据结构与算法设计-2">数据结构与算法设计</h3>
+<ul>
+<li><strong>Round robin manner</strong>
+<ul>
+<li>当创建页面时（此时还未分配页号，因而理论上可以随意选取其中一个buffer
+pool），为了使得多个buffer
+pools的<strong>内存使用尽量均衡</strong>，根据<strong>Round
+robin算法</strong>选取其中一个buffer pools</li>
+<li>具体地，我们维护一个<code>start_index_</code>变量，作为每次执行<code>NewPgImp</code>的起始Buffer
+pool</li>
+<li>从该Buffer
+pool开始（即<code>bpms_[start_index]</code>），遍历每个buffer
+pool并尝试创建页面，如果该buffer
+pool有空闲页面则创建成功并返回页号、指向该页的指针</li>
+<li>如果该buffer
+pool没有空闲页面则返回<code>nullptr</code>此时我们循环遍历下一个buffer
+pool</li>
+<li>该过程持续直至回到开始的<code>bpms_[start_index]</code>，则说明此时整个buffer
+pool manager都没有空闲空间了，返回nullptr</li>
+<li>每次执行完该函数，都递增<code>start_index_</code>，因此下次创建页面将优先从下一个buffer
+pool开始分配页面</li>
+</ul></li>
+<li><code>dynamic_cast</code>
+<ul>
+<li>特别地，本题接口设计要求<code>GetBufferPoolManager</code>返回<code>BufferPoolManager*</code>，而我们实际上使用的是派生类指针<code>BufferPoolManagerInstance*</code></li>
+<li>这里使用了C++11的类类型转换特性，可以通过<code>dynamic_cast</code><strong>将指向基类引用或指针强制转换为派生类引用或指针</strong>，转换失败则返回0（指针类型）或抛出<code>bad_cast</code>异常（引用类型）</li>
+</ul></li>
+</ul>
+<h3 id="成员函数设计-2">成员函数设计</h3>
+<ul>
+<li><p><code>BufferPoolManager* GetBufferPoolManager(page_id)</code></p>
+<p>获取保存该页面的buffer
+pool，根据我们的分配策略，返回<code>bpms_[page_id % m]</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BufferPoolManager *<span class="title">ParallelBufferPoolManager::GetBufferPoolManager</span><span class="params">(<span class="keyword">page_id_t</span> page_id)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Get BufferPoolManager responsible for handling given page id. You can use this method in your other methods.</span></span><br><span class="line">  <span class="keyword">return</span> bpms_[page_id % num_instances_];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>Page* NewPgImp(page_id_t *page_id)</code></p>
+<p>根据“数据结构与算法设计”中的Round robin逻辑进行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Page *<span class="title">ParallelBufferPoolManager::NewPgImp</span><span class="params">(<span class="keyword">page_id_t</span> *page_id)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// create new page. We will request page allocation in a round robin manner from the underlying</span></span><br><span class="line">  <span class="comment">// BufferPoolManagerInstances</span></span><br><span class="line">  <span class="comment">// 1.   From a starting index of the BPMIs, call NewPageImpl until either 1) success and return 2) looped around to</span></span><br><span class="line">  <span class="comment">// starting index and return nullptr</span></span><br><span class="line">  <span class="comment">// 2.   Bump the starting index (mod number of instances) to start search at a different BPMI each time this function</span></span><br><span class="line">  <span class="comment">// is called</span></span><br><span class="line">  <span class="keyword">if</span> (num_instances_ == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">guard</span><span class="params">(mtx_)</span></span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; num_instances_; i++) &#123;</span><br><span class="line">    <span class="keyword">size_t</span> index = (start_index_ + i) % num_instances_;</span><br><span class="line">    Page *p = <span class="keyword">dynamic_cast</span>&lt;BufferPoolManagerInstance *&gt;(bpms_[index])-&gt;<span class="built_in">NewPage</span>(page_id);</span><br><span class="line">    <span class="keyword">if</span> (p) &#123;</span><br><span class="line">      start_index_ = (start_index_ + <span class="number">1</span>) % num_instances_;</span><br><span class="line">      <span class="keyword">return</span> p;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  start_index_ = (start_index_ + <span class="number">1</span>) % num_instances_;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>对于其他成员，直接<strong>调用</strong><code>BufferPoolManagerInstance</code><strong>的相应成员完成操作</strong>即可</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Page *<span class="title">ParallelBufferPoolManager::FetchPgImp</span><span class="params">(<span class="keyword">page_id_t</span> page_id)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Fetch page for page_id from responsible BufferPoolManagerInstance</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">dynamic_cast</span>&lt;BufferPoolManagerInstance *&gt;(<span class="built_in">GetBufferPoolManager</span>(page_id))-&gt;<span class="built_in">FetchPage</span>(page_id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ParallelBufferPoolManager::UnpinPgImp</span><span class="params">(<span class="keyword">page_id_t</span> page_id, <span class="keyword">bool</span> is_dirty)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Unpin page_id from responsible BufferPoolManagerInstance</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">dynamic_cast</span>&lt;BufferPoolManagerInstance *&gt;(<span class="built_in">GetBufferPoolManager</span>(page_id))-&gt;<span class="built_in">UnpinPage</span>(page_id, is_dirty);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ParallelBufferPoolManager::FlushPgImp</span><span class="params">(<span class="keyword">page_id_t</span> page_id)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Flush page_id from responsible BufferPoolManagerInstance</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">dynamic_cast</span>&lt;BufferPoolManagerInstance *&gt;(<span class="built_in">GetBufferPoolManager</span>(page_id))-&gt;<span class="built_in">FlushPage</span>(page_id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">ParallelBufferPoolManager::DeletePgImp</span><span class="params">(<span class="keyword">page_id_t</span> page_id)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Delete page_id from responsible BufferPoolManagerInstance</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">dynamic_cast</span>&lt;BufferPoolManagerInstance *&gt;(<span class="built_in">GetBufferPoolManager</span>(page_id))-&gt;<span class="built_in">DeletePage</span>(page_id);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ParallelBufferPoolManager::FlushAllPgsImp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// flush all pages from all BufferPoolManagerInstances</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;p : bpms_) &#123;</span><br><span class="line">    <span class="keyword">dynamic_cast</span>&lt;BufferPoolManagerInstance *&gt;(p)-&gt;<span class="built_in">FlushAllPages</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="关键问题分析-2">关键问题分析</h3>
+<ul>
+<li>无</li>
+</ul>
+<h3 id="实现-2">实现</h3>
+<ul>
+<li>见成员函数设计</li>
+</ul>
+<h3 id="debug过程-2">Debug过程</h3>
+<ul>
+<li><strong>正确模拟Round
+robin的行为</strong>，仔细参考文档表述，<code>start_index_</code>只在每次执行<code>NewPgImp</code>的结尾加1，而不会随着遍历<code>bpm_</code>的过程变化</li>
+</ul>
+<h1 id="project-2-extendible-hash-index">Project 2 Extendible Hash
+Index</h1>
+<h2 id="回顾hash-table基础知识">回顾：Hash Table基础知识</h2>
+<h3 id="data-structures">1 Data Structures</h3>
+<ul>
+<li>一个数据库管理系统可能使用许多数据结构，包括
+<ul>
+<li>Internal Meta-Data，用于存储数据库自身和系统状态等信息，如page
+table、page directory</li>
+<li>Core Data Storage，用于存储数据库中的元组</li>
+<li>Temporary Data
+Structures，DBMS可能通过临时数据结构以加速查询执行</li>
+<li>Table
+Indices：<strong>表索引</strong>，用于快速查找特定的元组的辅助数据结构</li>
+</ul></li>
+</ul>
+<h3 id="hash-table">2 Hash Table</h3>
+<ul>
+<li>哈希表由以下两部分组成
+<ul>
+<li><strong>哈希函数</strong>：将一个较大的键空间映射为一个较小的域，需要考虑<strong>执行速度</strong>与<strong>碰撞概率</strong>之间的平衡</li>
+<li><strong>哈希结构</strong>：当发生哈希碰撞时如何处理</li>
+</ul></li>
+</ul>
+<h3 id="hash-functions">3 Hash Functions</h3>
+<ul>
+<li><strong>输入</strong>：任意键</li>
+<li><strong>输出</strong>：哈希值，一个整数</li>
+<li><strong>特点</strong>：<strong>确定的函数</strong>，即对于相同的键总是产生相同的哈希值</li>
+<li><strong>评估标准</strong>：通过<strong>计算速度、碰撞概率</strong>评估哈希函数的性能</li>
+</ul>
+<h3 id="静态哈希方案">4 静态哈希方案</h3>
+<ul>
+<li><strong>静态</strong>：哈希表的大小是固定的</li>
+<li><strong>空间耗尽</strong>：如果DBMS耗尽了哈希表的空间，则必须重建一个更大（通常为2倍大小）的哈希表，重建的代价是高昂的</li>
+<li><strong>哈希碰撞</strong>：为了减少哈希碰撞，通常将<strong>哈希槽的数量</strong>设为可能存储的<strong>元素个数的两倍</strong></li>
+<li><strong>缺点</strong>：现实中，难以事先知道需要存储的元素数量</li>
+</ul>
+<h4 id="线性样本哈希linear-probe-hashing">4.1 线性样本哈希Linear Probe
+Hashing</h4>
+<ul>
+<li><strong>插入</strong>：
+<ul>
+<li>散列：使用循环的槽序列，哈希函数将key映射为某个槽</li>
+<li>哈希碰撞：当哈希碰撞发生时，线性扫描相邻的下一个槽，直至找到空的槽</li>
+</ul></li>
+<li><strong>查找</strong>：首先查找key的哈希值对应的槽，若没找到则线性扫描直至找到该项，或者到达一个空的槽（意味着key不在哈希表中），这意味着我们必须把存储的每个键都存储在槽中</li>
+<li><strong>删除</strong>：我们不能直接移除一个项，否则可能使得之后的查询出错（因为查找时遇到空槽就停下并认为key不在哈希表中），解决方法
+<ul>
+<li><strong>方法1，使用“墓碑”</strong>：删除时在槽中放置“墓碑”，查找遇到“墓碑”时不能认为其是空槽而停下，应该继续遍历</li>
+<li><strong>方法2，将相邻的数据移动到空槽中</strong>：我们必须标记哪些项是插入时移动过的，只能移动那些初始移动过的项，且移动是循环进行的</li>
+</ul></li>
+<li><strong>非唯一键</strong>：如果相同的键可能与多个不同的值或元组关联，则
+<ul>
+<li><strong>链表</strong>：槽中不存储值，而是存储一个指向链表的指针，该链表存放与该键关联的所有值</li>
+<li><strong>重复键</strong>：允许重复存储相同的键，仍然按上述单一键的规则进行增删查找</li>
+</ul></li>
+</ul>
+<h4 id="罗宾汉散列robin-hood-hashing">4.2 罗宾汉散列Robin Hood
+Hashing</h4>
+<ul>
+<li><strong>目标</strong>：最小化各个键存储位置与其<strong>最优位置</strong>（根据哈希函数计算得到的槽）的距离</li>
+<li><strong>距离</strong>：每个项不但记录其键、值，还记录其<strong>当前位置与最优位置的距离</strong><span class="math inline">\(d\)</span></li>
+<li><strong>插入</strong>：若当前插入的项<span class="math inline">\(i\)</span>移动到某个槽时，其距离为<span class="math inline">\(d_i\)</span>，而当前槽中项<span class="math inline">\(j\)</span>的距离为<span class="math inline">\(d_j\)</span>，若<span class="math inline">\(d_i
+\gt d_j\)</span>，则将项<span class="math inline">\(i\)</span><strong>替换</strong>项<span class="math inline">\(j\)</span>，项<span class="math inline">\(i\)</span>插入该槽，项<span class="math inline">\(j\)</span>继续线性扫描直到找到可插入的槽</li>
+</ul>
+<h3 id="动态哈希方案">5 动态哈希方案</h3>
+<ul>
+<li><strong>静态</strong>哈希方案扩容时必须<strong>重建整个哈希表</strong>，<strong>动态</strong>哈希表能够<strong>根据需求调整哈希表大小</strong>，而不用重建整个哈希表</li>
+</ul>
+<h4 id="chained-hashing">5.1 Chained Hashing</h4>
+<ul>
+<li>每个槽都对应一个<strong>链表</strong>，映射到相同槽的键将被存储在该槽的链表</li>
+</ul>
+<h4 id="extendible-hashing">5.2 Extendible Hashing</h4>
+<ul>
+<li><strong>散列函数</strong>：将键映射为一个b位二进制数，如<code>b=32</code></li>
+<li><strong>深度</strong>：查找数据时需要使用的散列值位数
+<ul>
+<li>全局深度<span class="math inline">\(i\)</span>，根据散列值的前<span class="math inline">\(i\)</span>位找到某个桶</li>
+<li>局部深度<span class="math inline">\(i_j\)</span>，某个桶的深度，满足<span class="math inline">\(i_j \leq i\)</span></li>
+<li>指向某个桶的槽的数量为<span class="math inline">\(2^{i-i_j}\)</span></li>
+</ul></li>
+<li><strong>桶分裂</strong>
+<ul>
+<li>Chained hashing中链表可能无限增长，Extendible
+hashing会在必要时进行桶分裂</li>
+<li>当桶满了后，进行桶分裂，打乱其数据并放入两个桶中，桶的局部深度递增</li>
+</ul></li>
+</ul>
+<h2 id="task1-page-layouts">Task1 Page Layouts</h2>
+<h3 id="数据成员设计">数据成员设计</h3>
+<ul>
+<li><strong>Hash Table Directory
+Page</strong>，保存了所有哈希表的元数据，包括
+<ul>
+<li><code>page_id_</code>，该目录页本身的page id</li>
+<li><code>lsn_</code>，记录的序列号</li>
+<li><code>global_depth</code>，当前目录的全局深度</li>
+<li><code>local_depths</code>，存放了各个桶的局部深度的数组</li>
+<li><code>bucket_page_ids_</code>，存放了各个桶的页号的数组，<code>bucket_page_ids[i]</code>含义是第
+i个桶页的页号</li>
+</ul></li>
+<li><strong>Hash Table Bucket Page</strong>
+<ul>
+<li><code>occupied_</code>数组，代表该桶的第i个位置是否被占据</li>
+<li><code>readable_</code>数组，代表该桶的第i个位置是否可读</li>
+<li><code>array_</code>数组，存储着键值对</li>
+</ul></li>
+</ul>
+<h3 id="关键问题分析-3">关键问题分析</h3>
+<ul>
+<li><p><code>occupied_</code>与<code>readable_</code>数组的含义区别？</p>
+<ul>
+<li><strong>thumb stone</strong>：根据Linear Probe
+Hash的原理，为了保证查找结果的正确性，我们在移除项时应该放置<strong>thumb
+stone</strong>来进行标记</li>
+<li><code>occupied_</code>代表该项要么拥有一个有效数据项，要么放置了一个thumb
+stone；而<code>readable_</code>代表该项有一个有效数据项</li>
+<li><strong>删除数据</strong>：移除元素时我们应该清除<code>readable_</code>数组的对应位，而<code>occupied_</code>数组无需清除</li>
+<li><strong>查找数据</strong>：只查找<code>readable_</code>位为1的位置</li>
+<li><strong>插入数据</strong>：只要该位的<code>readable_</code>位为0，就认为它是空位</li>
+</ul>
+<blockquote>
+<p>事实上，<code>occupied_</code>在本实验中是无用的，因为我们总是遍历整个桶页并查找数据，而不是根据哈希函数得到最佳位置，再往后遍历，故不存在遇到空位停止查找的问题</p>
+</blockquote></li>
+</ul>
+<h3 id="成员函数设计-3">成员函数设计</h3>
+<h4 id="hash-table-bucket-page">Hash Table Bucket Page</h4>
+<ul>
+<li><p><code>bool GetValue(key, cmp, result)</code></p>
+<p>遍历桶中每个数据项，若其键值与目标键值相同，则将其加入结果数组中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HASH_TABLE_BUCKET_TYPE::GetValue</span><span class="params">(KeyType key, KeyComparator cmp, std::vector&lt;ValueType&gt; *result)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; BUCKET_ARRAY_SIZE; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">IsReadable</span>(i) &amp;&amp; <span class="built_in">cmp</span>(key, <span class="built_in">KeyAt</span>(i)) == <span class="number">0</span>) &#123;</span><br><span class="line">      result-&gt;<span class="built_in">push_back</span>(<span class="built_in">ValueAt</span>(i));</span><br><span class="line">      found = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> found;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>bool Insert(key, value, cmp)</code></p>
+<ul>
+<li>找重复：遍历桶中各个槽，如果找到一个槽其键值与要插入的键值完全一致，则返回false</li>
+<li>找空位：将第一个空的槽的位置记录下来，找不到空位也返回false</li>
+<li>插入：若没有重复且有空位，则将数据插入第一个空位，设置相应的<code>readable_</code>标志、<code>occupied_</code>标志，并将键值对存入<code>array_</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HASH_TABLE_BUCKET_TYPE::Insert</span><span class="params">(KeyType key, ValueType value, KeyComparator cmp)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">size_t</span> index = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; BUCKET_ARRAY_SIZE; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">IsReadable</span>(i)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!found) &#123;</span><br><span class="line">        found = <span class="literal">true</span>;</span><br><span class="line">        index = i;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">cmp</span>(array_[i].first, key) == <span class="number">0</span> &amp;&amp; array_[i].second == value) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (found) &#123;</span><br><span class="line">    <span class="built_in">SetOccupied</span>(index);</span><br><span class="line">    <span class="built_in">SetReadable</span>(index);</span><br><span class="line">    array_[index] = std::<span class="built_in">make_pair</span>(key, value);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>bool Remove(key, value, cmp)</code></p>
+<p>遍历桶中每个项，若找到键值对相符的数据，则将其移除，将其<code>readable_</code>设为不可读</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HASH_TABLE_BUCKET_TYPE::Remove</span><span class="params">(KeyType key, ValueType value, KeyComparator cmp)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; BUCKET_ARRAY_SIZE; ++i) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">IsReadable</span>(i) &amp;&amp; <span class="built_in">cmp</span>(array_[i].first, key) == <span class="number">0</span> &amp;&amp; array_[i].second == value) &#123;</span><br><span class="line">      readable_[i / SIZE_CHAR] &amp;= <span class="number">0xff</span> ^ (<span class="number">1</span> &lt;&lt; (i % SIZE_CHAR));</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>bool IsOccupied(bucket_idx)</code></p>
+<p>返回该位置是否被占据</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HASH_TABLE_BUCKET_TYPE::IsOccupied</span><span class="params">(<span class="keyword">uint32_t</span> bucket_idx)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (occupied_[bucket_idx / SIZE_CHAR] &amp; (<span class="number">1</span> &lt;&lt; (bucket_idx % SIZE_CHAR))) != <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>bool IsReadable(bucket_idx)</code></p>
+<p>返回该位置是否可读</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">HASH_TABLE_BUCKET_TYPE::IsReadable</span><span class="params">(<span class="keyword">uint32_t</span> bucket_idx)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (readable_[bucket_idx / SIZE_CHAR] &amp; (<span class="number">1</span> &lt;&lt; (bucket_idx % SIZE_CHAR))) != <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>keyType KeyAt(bucket_index)</code></p>
+<p>返回该位置存储的<strong>数据项的键</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function">KeyType <span class="title">HASH_TABLE_BUCKET_TYPE::KeyAt</span><span class="params">(<span class="keyword">uint32_t</span> bucket_idx)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> array_[bucket_idx].first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>ValueType ValueAt(bucket_index)</code></p>
+<p>返回该位置存储的<strong>数据项的值</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> KeyType, <span class="keyword">typename</span> ValueType, <span class="keyword">typename</span> KeyComparator&gt;</span><br><span class="line"><span class="function">ValueType <span class="title">HASH_TABLE_BUCKET_TYPE::ValueAt</span><span class="params">(<span class="keyword">uint32_t</span> bucket_idx)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> array_[bucket_idx].second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="hash-table-directory-page">Hash Table Directory Page</h4>
+<ul>
+<li><p><code>page_id_t GetBucketPageId(bucket_idx)</code></p>
+<p>获取第bucket_idx个桶对应的页号</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">page_id_t</span> <span class="title">HashTableDirectoryPage::GetBucketPageId</span><span class="params">(<span class="keyword">uint32_t</span> bucket_idx)</span> </span>&#123; <span class="keyword">return</span> bucket_page_ids_[bucket_idx]; &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>void SetBucketPageId(bucket_idx, bucket_page_id)</code></p>
+<p>设置第bucket_idx个桶对应的页号</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HashTableDirectoryPage::SetBucketPageId</span><span class="params">(<span class="keyword">uint32_t</span> bucket_idx, <span class="keyword">page_id_t</span> bucket_page_id)</span> </span>&#123;</span><br><span class="line">  bucket_page_ids_[bucket_idx] = bucket_page_id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="task2-hash-table-implemention">Task2 Hash Table
+Implemention</h2>
+<h3 id="功能需求-3">功能需求</h3>
+<ul>
+<li><p><strong>目录索引</strong></p>
+<p>将数据插入哈希表时，采用低有效位进行索引</p></li>
+<li><p><strong>桶分裂</strong></p>
+<p>当插入会引起桶溢出时，进行分裂</p></li>
+<li><p><strong>桶合并</strong></p>
+<ul>
+<li>桶变为空时，尝试进行合并</li>
+<li>只有当桶和其split image拥有相同的局部深度时，才能合并</li>
+<li>只有当桶的局部深度大于0时，才能合并</li>
+</ul></li>
+<li><p><strong>目录增长</strong></p>
+<p>当某个桶的局部深度超过了全局深度时，将全局深度加1，并进行目录增长</p></li>
+<li><p><strong>目录收缩</strong></p>
+<p>当每个桶的局部深度都严格小于全局深度时，进行目收缩</p></li>
+</ul>
+<h3 id="辅助函数">辅助函数</h3>
+<ul>
+<li><code>Hash(key)</code>，计算key的哈希值</li>
+<li><code>KeyToDirectoryIndex</code>，返回key对应的目录页索引（代表<strong>将key映射到第index个桶</strong>），其计算公式为
+<ul>
+<li><strong>DirectoryIndex = Hash(key) &amp;
+GLOBAL_DEPTH_MASK</strong></li>
+<li>GLOBAL_DEPTH_MASK是根据现有全局深度生成的位掩码，若当前全局深度为<span class="math inline">\(i\)</span>，若数与该位掩码相与，则代表取该数最低的<span class="math inline">\(i\)</span>位</li>
+</ul></li>
+<li><code>KeyToPageId</code>，返回key对应的bucket page的页号
+<ul>
+<li>首先获取该key的目录页索引bucket_index，即该key将<strong>被映射到第<code>bucket_index</code>个桶</strong></li>
+<li>然后根据目录页的页表，<strong>查找第<code>bucket_index</code>个桶对应的页号</strong></li>
+</ul></li>
+<li><code>FetchDirectoryPage()</code>，<strong>获取目录页</strong></li>
+<li><code>FetchBucketPage(bucket_page_id)</code>，根据页号<strong>获取该桶页</strong></li>
+<li><code>UnpinDirectoryPage()</code>，<strong>释放目录页</strong></li>
+<li><code>UnpinBuceketPage(bucket_page_id)</code>，<strong>释放桶页</strong></li>
+</ul>
+<h3 id="成员函数设计-4">成员函数设计</h3>
+<h4 id="查找">查找</h4>
+<ul>
+<li><p><code>bool GetValue(transaction, key, result)</code>，实现<strong>查找</strong>功能</p>
+<ul>
+<li><p>获取哈希表的S锁</p></li>
+<li><p>获取目录页<code>dir_page</code>，在目录页中查找<code>key</code>对应的<code>bucket_page_id</code>，并获取该桶页<code>bucket_page</code></p></li>
+<li><p>获取该桶页的S锁</p></li>
+<li><p>调用该桶页的<code>GetValue</code>方法查找该键对应的值</p></li>
+<li><p>调用<code>UnpinBucketPage</code>释放该桶页</p></li>
+<li><p>调用<code>UnpinDirectoryPage</code>释放目录页</p></li>
+<li><p>释放该桶页、目录页的S锁</p></li>
+</ul></li>
+</ul>
+<h4 id="插入-桶分裂">插入 + 桶分裂</h4>
+<ul>
+<li><p><code>bool Insert(transaction, key, value)</code>，实现<strong>插入功能</strong></p>
+<ul>
+<li><p><strong>直接插入</strong>：获取该键对应的bucket
+page，若未满，则直接插入并返回</p></li>
+<li><p><strong>桶分裂</strong>：若该bucket
+page满了，则需要进行桶分裂</p></li>
+<li><p><strong>桶A的局部深度<span class="math inline">\(i_A\)</span>小于全局深度<span class="math inline">\(i\)</span></strong>：因此桶地址表中不止一个表项指向桶A，系统不需要增加桶地址表的规模也能进行分裂</p>
+<ul>
+<li><strong>分裂</strong>：分配新的桶A' (split
+image)，将其桶A和A'的局部深度<span class="math inline">\(i_A\)</span>和<span class="math inline">\(i_{A&#39;}\)</span>设置为原<span class="math inline">\(i_A\)</span>加1</li>
+<li><strong>调整桶地址表</strong>：对于桶地址表指向A的所有项，若其新增加的位为0则指向桶A，若其新增加的位为1则指向桶A'</li>
+<li><strong>重新散列数据</strong>：对于存储在桶A中的数据项，重新将其散列，要么插入桶A，要么插入桶A'</li>
+</ul></li>
+<li><p><strong>桶A的局部深度<span class="math inline">\(i_A\)</span>等于全局深度<span class="math inline">\(i\)</span></strong>：因此桶地址表中只有1个表项指向桶A，系统需要将桶地址表的规模加倍</p>
+<ul>
+<li><p><strong>桶地址表规模加倍</strong>：全局深度加1，因此表项数量变为原来的两倍</p></li>
+<li><p><strong>调整桶地址表（其他）</strong>：每个旧表项都生成了两个新表项，这两个新表项应指向旧表项所指向的桶，同时其局部深度也等于旧表项的局部深度</p></li>
+<li><p><strong>分裂</strong>：分配新的桶A' (split
+image)，将桶A和A'的局部深度<span class="math inline">\(i_A\)</span>和<span class="math inline">\(i_{A&#39;}\)</span>设置为原<span class="math inline">\(i_A\)</span>加1</p></li>
+<li><p><strong>调整桶地址表（桶A）</strong>：特别地，原来指向桶A的表项生成了两个新表项，它们其中一个指向桶A，另一个则指向新分配的桶A'，且两个新表现的局部深度都应该等于原<span class="math inline">\(i_A\)</span>加1</p></li>
+<li><p><strong>重新散列数据</strong>：对于存储在桶A中的数据项，重新将其散列，要么插入桶A，要么插入桶A'</p></li>
+</ul></li>
+<li><p>进行桶分裂之后，再次尝试插入表项，若成功则返回，否则<strong>循环分裂直至插入成功</strong></p></li>
+</ul></li>
+</ul>
+<h4 id="删除-桶合并">删除 + 桶合并</h4>
+<ul>
+<li><code>bool Remove(transaction, key, value)</code>
+<ul>
+<li><strong>删除数据项</strong>：获取该键对应的桶A，并删除该数据项</li>
+<li><strong>检查桶合并条件</strong>：若该桶A变为空，且局部深度大于0，则查找其split
+image桶A'，若桶A'与桶A的局部深度相等，则进行桶合并</li>
+<li><strong>桶合并</strong>：遍历桶地址表的表项，若表项指向A则修改其指向桶A'，并将其局部深度减1；若表项指向A'则将其局部深度减1</li>
+<li><strong>删除桶</strong>：调用<code>DeletePage</code>删除桶A的页</li>
+<li><strong>桶地址表规模减半</strong>：如果当前所有桶的局部深度都小于全局深度，则全局深度减1（循环的最终结果是，<strong>全局深度</strong>会等于所有桶的<strong>局部深度的最大值</strong>）</li>
+<li><strong>再次检查桶合并</strong>：遍历桶地址表中的每个表项，若其指向的桶为空，且局部深度非0，且split
+image的局部深度与其相等，则进行同合并</li>
+</ul></li>
+</ul>
+<h2 id="task3-concurrency-control">Task3 Concurrency Control</h2>
+<h3 id="功能需求-4">功能需求</h3>
+<ul>
+<li>进行查找、插入、删除时<strong>正确地获取和释放锁</strong></li>
+<li>尽可能地只在需要的时候持有锁，以提高<strong>并发度</strong></li>
+</ul>
+<h3 id="关键问题分析-4">关键问题分析</h3>
+<ul>
+<li><p><strong>查找</strong>需要获取什么锁？</p>
+<p><strong>整个表的S锁</strong>，该键所在的<strong>桶的S锁</strong></p></li>
+<li><p><strong>插入</strong>需要获取什么锁？</p>
+<ul>
+<li>如果只是进行<strong>插入</strong>操作，只需获取<strong>整个表的S锁</strong>、该键所在的<strong>桶的X锁</strong></li>
+<li>如果进行<strong>分裂</strong>，因为要修改桶地址表，需要且只需要获取<strong>整个表的X锁</strong></li>
+</ul></li>
+<li><p><strong>删除</strong>需要获取什么锁？</p>
+<ul>
+<li>如果只是进行<strong>删除</strong>操作，只需获取<strong>整个表的S锁</strong>，该键所在的<strong>桶的X锁</strong></li>
+<li>如果进行<strong>合并</strong>，因为要修改桶地址表，需要且只需要获取<strong>整个表的X锁</strong></li>
+</ul></li>
+</ul>
+<h1 id="project-3-query-execution">Project 3 Query Execution</h1>
+<h2 id="回顾查询处理">回顾：查询处理</h2>
+<h3 id="查询执行计划">1 查询执行计划</h3>
+<ul>
+<li>DBMS将SQL语句转化为一个<strong>查询执行计划</strong>（query
+plan），查询计划中的运算符以<strong>树</strong>的形式进行组织</li>
+<li>数据从树的叶子流向树根，根节点的输出就是查询的结果</li>
+<li>典型的运算符是二元的，因此拥有1或2个子节点</li>
+<li>同一个查询计划可以以不同的方式执行</li>
+</ul>
+<h3 id="处理模型">2 处理模型</h3>
+<ul>
+<li>DBMS<strong>处理模型</strong>定义了系统<strong>如何执行查询计划</strong>，它定义了
+<ul>
+<li>查询计划求值的方向</li>
+<li>运算符之间传递的数据</li>
+</ul></li>
+<li>常用的三种处理模型
+<ul>
+<li><strong>迭代器模型</strong></li>
+<li>Materialization模型</li>
+<li>Vectorized/Batch模型</li>
+</ul></li>
+</ul>
+<h4 id="迭代器模型volcano模型">迭代器模型（Volcano模型）</h4>
+<ul>
+<li>每个运算符都有一个<strong>Next函数</strong></li>
+<li>查询计划中的每个节点都不断地对其<strong>子节点调用Next函数</strong>，直至到达叶节点，然后将元组传递给其父节点进行处理</li>
+<li>Next函数
+<ul>
+<li>Next函数要么<strong>返回一个元组</strong>，要么返回一个<strong>标记指明没有更多的元组</strong></li>
+<li>运算符使用<strong>while循环</strong>对其子节点调用Next，每次调用获取一个元组，并处理它，直至<strong>所有元组都处理完</strong></li>
+</ul></li>
+<li><strong>管道</strong>技术
+<ul>
+<li>DBMS可以将一个元组尽可能在更多的运算符之前传递，而无需等待下一个元组到来</li>
+<li>某些运算符需要获取所有元组后才可以处理，如join、子查询、排序等，它们被称为pipeline
+breakers</li>
+<li>通过pipeline breakers可以实现<strong>输出控制</strong></li>
+</ul></li>
+</ul>
+<h2 id="整体功能需求-1">整体功能需求</h2>
+<ul>
+<li>实现<strong>executors</strong>，负责执行相应的查询plan
+nodes，需要支持的操作包括
+<ul>
+<li>读取：Sequential Scan</li>
+<li>修改：Insert、Update、Delete</li>
+<li>其他：Nexted Loop Join、Hash Join、Aggregation、Limit、Distinct</li>
+</ul></li>
+<li>处理模型使用迭代器模型，也称为<strong>Volcano模型</strong>
+<ul>
+<li>每个查询的executor都包含一个Next函数，调用该函数将会返回一个元组，或一个表示已经没有元组的标记，因此executor可以通过循环地调用Next函数来获取元组并处理它们</li>
+<li>Next函数返回的是元组的RID，能够唯一地标识一个元组</li>
+</ul></li>
+</ul>
+<h2 id="task1-executors">Task1 Executors</h2>
+<h3 id="功能需求-5">功能需求</h3>
+<ul>
+<li><strong>实现Executor类</strong>：提供以实现的Query
+plan类，需要实现Executor类，调用Next函数从子节点获取元组，完成处理，并向父节点传递元组</li>
+<li><strong>运算类型</strong>：需要支持的运算包括Sequential
+scan、Insert、Update、Delete、Nested Loop Join、Hash
+Join、Aggregation、Limit、Distinct，共九种运算</li>
+</ul>
+<h3 id="辅助类及其关键接口">辅助类及其关键接口</h3>
+<h4 id="value">Value</h4>
+<ul>
+<li>用于表示<strong>各种类型的值</strong>，根据值的类型提供了不同的比较运算、算术运算等操作</li>
+</ul>
+<h4 id="tuple">Tuple</h4>
+<ul>
+<li><p>元组，可理解为数据库中的一行，<code>data_</code>字段存储了Value</p></li>
+<li><p><code>Value GetValue(const Schema*, const int32_t column_idx)</code></p>
+<p><strong>获取</strong>该元组<strong>指定列的值</strong></p></li>
+</ul>
+<h4 id="table-page">Table Page</h4>
+<ul>
+<li>继承于Page类，是表的存储单元，一个表可由多个table pages组成</li>
+<li>提供了Tuple的页操作，如<code>InsertTuple</code>、<code>MarkDelete</code>、<code>UpdateTuple</code>等</li>
+</ul>
+<h4 id="table-heap">Table Heap</h4>
+<ul>
+<li>代表磁盘上的一张物理表，使用<strong>双向链表存储多个table
+pages</strong></li>
+<li>提供了将Tuple的表操作，如<code>InsertTuple</code>、<code>MarkDelete</code>、<code>UpdateTuple</code>等，它们将调用该元组所在的Table
+Page的对应方法</li>
+</ul>
+<h4 id="table-iterator">Table Iterator</h4>
+<ul>
+<li>表项的<strong>迭代器</strong>，<strong>指向表中的某个tuple</strong></li>
+<li>支持迭代器的<strong>解引用、箭头运算符、递增运算符</strong>（包括前置、后置版本）等操作</li>
+</ul>
+<h4 id="rid">RID</h4>
+<ul>
+<li>记录一个<strong>tuple的地址</strong>，包括<strong>其所在页的页号page
+id</strong>和<strong>页中槽位slot number</strong></li>
+</ul>
+<h4 id="column">Column</h4>
+<ul>
+<li>表中某一列的列头信息，包括名字、类型等</li>
+</ul>
+<h4 id="schema">Schema</h4>
+<ul>
+<li>记录表的所有列头信息，维护一个columns数组</li>
+<li>提供接口
+<ul>
+<li><code>Column GetColumn(uint32_t) i</code>，获取第<span class="math inline">\(i\)</span>列</li>
+<li><code>uint32_t GetColIdx(const string &amp;col_name)</code>，查找该列名对应列的列号</li>
+</ul></li>
+</ul>
+<h4 id="index">Index</h4>
+<ul>
+<li>表格的索引信息，每个索引提供tuple到RID的对应关系</li>
+</ul>
+<h4 id="catalog">Catalog</h4>
+<ul>
+<li>一个数据库的全部表格信息的索引，提供了对表格的操作。成员变量主要包括：TableInfo的表，每个TableInfo包括一个表格的ID、Schema、TableHeap；IndexInfo的表，即每个表格的索引信息</li>
+</ul>
+<h3 id="sequential-scan">SEQUENTIAL SCAN</h3>
+<ul>
+<li><p><strong>Init函数功能</strong>：将迭代器设置为表的开始位置，从第一个tuple开始扫描</p></li>
+<li><p><strong>Next函数功能</strong>：找到一个符合谓词判断的tuple，并返回true，若找不到则返回false</p></li>
+<li><p><strong>扫描</strong>：通过<strong>Table
+Iterator迭代器</strong>不断获取当前Table的tuple</p></li>
+<li><p><strong>谓词判断</strong>：利用<code>plan_-&gt;GetPredicate()</code>对tuple进行判断，若为真则将该tuple赋给指针并返回true，若为假则继续寻找下一个tuple</p></li>
+<li><p><strong>返回</strong>：若直到结尾也没找到符合predicate的tuple，则返回false</p></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SeqScanExecutor::Init</span><span class="params">()</span> </span>&#123; iter_ = table_info_-&gt;table_-&gt;<span class="built_in">Begin</span>(txn_); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">SeqScanExecutor::Next</span><span class="params">(Tuple *tuple, RID *rid)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// predicate can be nullptr, which means every tuple statisfy the predicate</span></span><br><span class="line">  <span class="keyword">while</span> (iter_ != table_info_-&gt;table_-&gt;<span class="built_in">End</span>()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (plan_-&gt;<span class="built_in">GetPredicate</span>() == <span class="literal">nullptr</span> ||</span><br><span class="line">        plan_-&gt;<span class="built_in">GetPredicate</span>()-&gt;<span class="built_in">Evaluate</span>(&amp;(*iter_), plan_-&gt;<span class="built_in">OutputSchema</span>()).GetAs&lt;<span class="keyword">bool</span>&gt;()) &#123;</span><br><span class="line">      <span class="comment">// re-construct the tuple using output schema</span></span><br><span class="line">      std::vector&lt;Value&gt; data;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;c : plan_-&gt;<span class="built_in">OutputSchema</span>()-&gt;<span class="built_in">GetColumns</span>()) &#123;</span><br><span class="line">        data.<span class="built_in">push_back</span>(iter_-&gt;<span class="built_in">GetValue</span>(&amp;table_info_-&gt;schema_,</span><br><span class="line">                                       <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> ColumnValueExpression *&gt;(c.<span class="built_in">GetExpr</span>())-&gt;<span class="built_in">GetColIdx</span>()));</span><br><span class="line">      &#125;</span><br><span class="line">      *tuple = <span class="built_in">Tuple</span>(data, plan_-&gt;<span class="built_in">OutputSchema</span>());</span><br><span class="line">      *rid = iter_-&gt;<span class="built_in">GetRid</span>();</span><br><span class="line">      ++iter_;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ++iter_;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="insert">INSERT</h3>
+<ul>
+<li>支持两种插入操作
+<ul>
+<li>raw insert：将要插入的值存放在plan node</li>
+<li>child insert：从child executor获取值后插入</li>
+</ul></li>
+<li>插入一个tuple</li>
+<li>更新索引</li>
+<li>返回该tuple及其RID</li>
+</ul>
+<h3 id="update">UPDATE</h3>
+<h3 id="delete">DELETE</h3>
+<h3 id="nested-loop-join">NESTED LOOP JOIN</h3>
+<h3 id="hash-join">HASH JOIN</h3>
+<h3 id="aggregation">AGGREGATION</h3>
+<h3 id="limit">LIMIT</h3>
+<ul>
+<li><strong>Init函数功能</strong>：将迭代器设置为表的开始位置，从第一个tuple开始扫描；并将计数值设为0</li>
+<li><strong>Next函数功能</strong>：获取下一个tuple，若到达表的末尾，或已获取的tuple数量到达limit值，则返回false</li>
+<li><strong>扫描</strong>：通过<code>child_executor_-&gt;Next(tuple, rid)</code>获取下一个tuple，并更新计数值</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LimitExecutor::Init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  child_executor_-&gt;<span class="built_in">Init</span>();</span><br><span class="line">  cnt_ = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">LimitExecutor::Next</span><span class="params">(Tuple *tuple, RID *rid)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!child_executor_-&gt;<span class="built_in">Next</span>(tuple, rid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  cnt_++;</span><br><span class="line">  <span class="keyword">return</span> cnt_ &lt;= plan_-&gt;<span class="built_in">GetLimit</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="distinct">DISTINCT</h3>
+<ul>
+<li></li>
+</ul>
+<h1 id="project-4-并发控制">Project 4 并发控制</h1>
+<h2 id="整体功能需求-2">整体功能需求</h2>
+<ul>
+<li>实现一个<strong>锁管理器</strong>，使得数据库系统支持<strong>并发查询执行</strong></li>
+<li>锁管理器需要<strong>跟踪授予事务的tuple-level锁</strong></li>
+<li>锁管理器需要根据事务的<strong>隔离水平</strong>进行<strong>S锁和X锁的授予、释放</strong></li>
+<li>基于<strong>Wound-Wait算法</strong>实现<strong>死锁预防</strong>机制</li>
+<li>修改Insert、Seq_scan、Delete、Update
+<strong>Execurtor</strong>，使其正确地向锁管理器<strong>请求获取和释放锁</strong></li>
+</ul>
+<h2 id="task1-实现锁管理器">Task1 实现锁管理器</h2>
+<h3 id="功能需求-6">功能需求</h3>
+<ul>
+<li>锁管理器维护一个<strong>锁表</strong>，通过数据结构存储当前哪些事务获取了哪些锁</li>
+<li>锁管理器<strong>接受</strong>事务发出的<strong>加锁请求</strong>，锁管理器判断其是否可以获取锁，最终执行以下三种操作中的一种
+<ul>
+<li>将锁<strong>授予</strong>该事务</li>
+<li><strong>阻塞</strong>该事务</li>
+<li><strong>中止</strong>该事务</li>
+</ul></li>
+<li>整个数据系统锁管理器维护一个全局的锁表
+，当事务需要访问或修改一个tuple时，相应的Executor需要向锁管理器发送某个<code>RID</code>的锁请求。锁管理器根据事务的隔离水平，决定授予或释放锁
+<ul>
+<li>可重复读，遵循两阶段封锁协议（2PL），Growing阶段可以获取或升级锁，Shrinking阶段可以释放或降级锁</li>
+<li>已提交读，S-lock可以在读取后立即释放，X-lock遵循2PL</li>
+<li>未提交读，X-lock可以在修改后立即释放，无需获取S-lock（因此可读取到未提交的数据）</li>
+</ul></li>
+<li>锁管理器需要实现基于Wound-Wait的死锁预防策略，具体地
+<ul>
+<li><strong>伤害-等待机制</strong>是<strong>抢占</strong>式的，若<span class="math inline">\(T_i\)</span>申请的数据项被<span class="math inline">\(T_j\)</span>持有时，仅当<span class="math inline">\(T_i\)</span>比<span class="math inline">\(T_j\)</span>更年轻时才等待，否则<strong><span class="math inline">\(T_j\)</span>回滚（<span class="math inline">\(T_j\)</span>被<span class="math inline">\(T_i\)</span>伤害）</strong></li>
+</ul></li>
+</ul>
+<h3 id="关键问题分析-5">关键问题分析</h3>
+<ul>
+<li><p>WOUND-WAIT算法中，如何判断两个事务younger？</p>
+<p>根据时间戳，在本实验的接口设计中，事务开始前分配的<strong>transaction
+id就是其时间戳</strong>，该值由transaction
+manager管理，每个事务start后递增</p></li>
+<li><p>WOUND-WAIT算法中，遇到更年轻的事务持有锁应该将其中止，若队列中遇到更年轻的事务，但其未获取锁（等待中），是否应该将其中止？</p>
+<p>应该</p></li>
+<li><p>各个<strong>隔离等级</strong>的区别是什么？</p>
+<ul>
+<li>可重复读：遵循2PL</li>
+<li>已提交读：只允许读取已提交的数据，S锁读取后立即释放，X锁遵循2PL</li>
+<li>未提交读：允许读取未提交的数据（无需获取S锁），X锁读取后立即释放</li>
+</ul></li>
+<li><p>WOUND-WAIT算法中如何<strong>中止其他事务</strong>？</p>
+<p>通过SetState将其<strong>状态设为Aborted</strong>（实验文档要求抛出异常，事务管理器的异常处理代码会调用Abort中止相应事务，但实际上测试程序并没有异常处理代码）</p></li>
+<li><p>WOUND-WAIT算法中，如果事务<span class="math inline">\(T_i\)</span>中止了事务<span class="math inline">\(T_j\)</span>后，队列前方没有其他事务请求获取该锁，则事务<span class="math inline">\(T_i\)</span>应该继续等待直至事务管理器Abort事务<span class="math inline">\(T_j\)</span>时执行Unlock释放该锁，还是可以立即获取该锁？</p>
+<p>中止了该事务就可以认为该事务释放了所持有的锁，<span class="math inline">\(T_i\)</span>可以立即获取该锁（需要满足FCFS，队列中没有更早的事务请求获取该锁）</p>
+<blockquote>
+<p>此问题是在测试程序debug中发现的，并不易想到，而且有点反正常逻辑</p>
+</blockquote></li>
+<li><p>假如被中止的事务处于阻塞状态，则它无法发现自己被阻塞了，如何处理该问题？</p>
+<p>在中止事务时，通过其<code>GetSharedLockSet()</code>和<code>GetExclusiveLockSet()</code>接口获取其拥有的每个锁，并调用相应的请求队列的条件变量的<code>notify_all()</code>函数<strong>唤醒阻塞的进程</strong></p></li>
+<li><p>事务请求队列包含一个<code>upgrading_</code>数据成员，记录当前正在升级（如有）的事务id，其作用是什么？</p>
+<ul>
+<li>对于同一个数据项，<strong>一次只允许一个事务升级</strong>，事务升级前必须通过将upgrading_置为自己的事务id获得该权限，如果当前upgrading存储了其他事务的id，则必须阻塞</li>
+<li>一次只允许一个事务升级的原因是，假如该数据项的请求队列中只包含事务<span class="math inline">\(T_i\)</span>和事务<span class="math inline">\(T_j\)</span>,它们都获取了S锁，若允许两个事务升级，则它们都在<strong>等待对方解S锁</strong>，从而导致死锁</li>
+</ul>
+<blockquote>
+<p>事实上，由于引入了死锁预防机制，WOUND-WAIT算法保证了即使两个事务同时升级锁，必定有一个会将另一个中止，因此无需该upgrading_变量了</p>
+</blockquote></li>
+</ul>
+<h3 id="数据结构与算法设计-3">数据结构与算法设计</h3>
+<ul>
+<li>锁表设计
+<ul>
+<li>锁表是一个<strong>散列表</strong>，以数据项的RID作为关键字进行散列</li>
+<li>锁表的每个表项是一个<strong>请求队列</strong><code>LockRequestQueue</code>，代表请求获取该表项的锁的事务请求队列，包含
+<ul>
+<li>该队列本质上是一个<strong>链表</strong>，由<code>std::list</code>实现的<code>request_queue_</code>表示</li>
+<li>用于阻塞和唤醒事务的<strong>条件变量</strong><code>cv_</code></li>
+<li>当前正在<strong>进行升级的事务id</strong><code>upgrading_</code></li>
+</ul></li>
+<li>请求队列中的每个节点代表请求获取该锁的一个事务<code>LockRequest</code>，其中存储了
+<ul>
+<li>该<strong>事务id</strong><code>txn_id_</code></li>
+<li>请求的<strong>锁模式</strong><code>lock_mode_</code></li>
+<li><strong>是否授予</strong><code>granted_</code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="成员函数设计-5">成员函数设计</h3>
+<h4 id="辅助成员">辅助成员</h4>
+<ul>
+<li><p><code>bool CheckAbort(Transaction *txn)</code></p>
+<p>在事务获取/升级锁之前调用，检查事务是否处于<code>GROWING</code>状态，若否则<strong>中止</strong>事务</p></li>
+<li><p><code>bool SetAbort(Transaction *txn, AbortReason reason)</code></p>
+<p>将该事务的状态设置为Aborted，（同时抛出异常<code>TransactionAbortException</code>，包含中止原因<code>reason</code>）</p>
+<blockquote>
+<p>注：括号中为实验文档表述，但实际上gradescope的测试程序并没有异常处理的代码，因此不能抛出异常</p>
+</blockquote></li>
+</ul>
+<p>以下<code>CheckXXXWait</code>函数的作用，均为<strong>扫描队列</strong>检查能否获取锁，若返回true意味着我们<strong>需要等待</strong>，返回false意味着我们<strong>无需等待</strong>。该过程中可能通过wound-wait算法<strong>中止其他事务</strong>。</p>
+<ul>
+<li><p><code>bool CheckSharedWait(Transaction *txn, std::list&lt;LockRequest&gt;* q)</code></p>
+<p>扫描该表项的请求队列，判断事务<strong>能否获取共享锁</strong>，若不能则事务继续等待</p>
+<ul>
+<li><p>初始化等待标志<code>flag</code>为false</p></li>
+<li><p>如果遇到<strong>older（时间戳更小）的事务</strong>，如果其为S锁则<code>flag</code>不变，如果其为<strong>X锁</strong>则将标志<code>flag</code>置为true，意味需要<strong>等待</strong></p></li>
+<li><p>如果遇到<strong>younger的事务</strong>，如果其为S锁则<code>flag</code>不变，如果其为<strong>X锁</strong>则直接将该事务<strong>中止</strong>，此时<code>flag</code><strong>不变</strong>，意味着我们将其状态设为中止后<strong>可以立即获取该锁</strong>（只要没遇到上述的older事务），而<strong>无需等待</strong>事务管理器真正执行Aborted将其中止</p></li>
+<li><p>如果遇到了事务本身的请求，则可以停止扫描并返回<code>flag</code>，因为根据FCFS保证我们无需考虑后面的事务</p></li>
+</ul></li>
+<li><p><code>bool CheckExclusiveWait(Transaction *txn, std::list&lt;LockRequest&gt;* q)</code></p>
+<p>扫描该表项的请求队列，判断事务<strong>能否获取排他锁</strong>，若不能则事务继续等待</p>
+<ul>
+<li>基本原理同上，唯一的区别是<strong>X锁与S锁、X锁都不相容</strong></li>
+<li>初始化等待标志<code>flag</code>为false</li>
+<li>如果遇到older（时间戳更小）的事务，<strong>无论是X锁还是S锁</strong>，都将标志<code>flag</code>置为true，意味需要等待</li>
+<li>如果遇到younger的事务则将该事务<strong>中止</strong>，此时<code>flag</code>不变，意味着我们将其状态设为中止后可以立即获取该锁（只要没遇到上述的older事务），而无需等待事务管理器真正执行Aborted将其中止</li>
+<li>如果遇到了事务本身的请求，则可以停止扫描并返回<code>flag</code>，因为根据FCFS保证我们无需考虑后面的事务</li>
+</ul></li>
+<li><p><code>bool CheckUpgradeWait(Transaction *txn, std::list&lt;LockRequest&gt;* q)</code></p>
+<p>扫描该表项的请求队列，判断事务<strong>能否升级锁</strong>，若不能则事务继续等待</p>
+<ul>
+<li>仅当<strong>队列前方只有该事务的S锁请求</strong>时，才能升级锁</li>
+<li>初始化等待标志<code>flag</code>为false</li>
+<li>如果遇到older（时间戳更小）的事务，<strong>无论是X锁还是S锁</strong>，都将标志<code>flag</code>置为true，意味需要等待</li>
+<li>如果遇到younger的事务则将该事务<strong>中止</strong>，此时<code>flag</code>不变，意味着我们将其状态设为中止后可以立即获取该锁（只要没遇到上述的older事务），而无需等待事务管理器真正执行Aborted将其中止</li>
+<li>如果遇到了事务本身的请求，若为S锁则继续遍历，若为X锁则可以停止扫描并返回<code>flag</code></li>
+</ul></li>
+</ul>
+<h4 id="公共接口">公共接口</h4>
+<ul>
+<li><code>bool LockShared(Transaction *txn, const RID &amp;rid)</code>，事务<strong>请求获取S锁</strong>的接口
+<ul>
+<li>获取<strong>锁表的互斥锁</strong>，不同事务对锁表的访问是互斥的</li>
+<li>如果该事务<strong>处于<code>Shrinking</code>或<code>Aborted</code>状态</strong>，则无法获取锁，<strong>返回false</strong></li>
+<li>如果该事务已经<strong>拥有了同一数据项的X锁</strong>，则<strong>返回false</strong></li>
+<li>如果该事务的隔离水平是<strong>未提交读</strong>，则它无需获取S锁，<strong>将该事务中止，并返回false</strong></li>
+<li>如果该事务已经<strong>拥有了同一数据项的S锁</strong>，则<strong>返回true</strong></li>
+<li>否则，将该事务的请求<strong>加入</strong>锁表中对应项的<strong>链表</strong>中，同时<strong>更新事务的</strong><code>SharedLockSet</code></li>
+<li>运行<code>CheckSharedWait</code>辅助函数查看<strong>是否需要等待</strong>，若需要等待则<strong>阻塞</strong>；若不需要等待则直接<strong>获取锁并返回true</strong></li>
+<li>当被阻塞的事务<strong>被唤醒</strong>时
+<ul>
+<li>先<strong>检查自己的状态是否为<code>ABORTED</code></strong>（因为死锁预防机制使得事务可以中止其他事务，而被中止的事务可能位于阻塞状态，因此被唤醒后应该先检查自己是否处于中止状态），若位于中止状态则返回false</li>
+<li>若仍处于活跃状态则<strong>再次运行</strong><code>CheckSharedWait</code>辅助函数查看是否需要等待（<strong>防止虚假唤醒</strong>）</li>
+</ul></li>
+</ul></li>
+<li><code>bool LockExclusive(Transaction *txn, const RID &amp;rid)</code>，事务<strong>请求获取X锁</strong>的接口
+<ul>
+<li>获取<strong>锁表的互斥锁</strong>，不同事务对锁表的访问是互斥的</li>
+<li>如果该事务<strong>处于<code>Shrinking</code>或<code>Aborted</code>状态</strong>，则无法获取锁，<strong>返回false</strong></li>
+<li>如果该事务已经<strong>拥有了同一数据项的S锁</strong>，则它应该通过Upgrade升级锁，<strong>返回false</strong></li>
+<li>如果该事务已经<strong>拥有了同一数据项的X锁</strong>，则<strong>返回true</strong></li>
+<li>否则，将该事务的请求<strong>加入</strong>锁表中对应项的<strong>链表</strong>中，同时<strong>更新事务的</strong><code>ExclusiveLockSet</code></li>
+<li>运行<code>CheckExclusiveWait</code>辅助函数查看<strong>是否需要等待</strong>，若需要等待则<strong>阻塞</strong>；若不需要等待则直接<strong>获取锁并返回true</strong></li>
+<li>当被阻塞的事务<strong>被唤醒</strong>时
+<ul>
+<li>先<strong>检查自己的状态是否为<code>ABORTED</code></strong>（因为死锁预防机制使得事务可以中止其他事务，而被中止的事务可能位于阻塞状态，因此被唤醒后应该先检查自己是否处于中止状态），若位于中止状态则返回false</li>
+<li>若仍处于活跃状态则<strong>再次运行</strong><code>CheckExclusiveWait</code>辅助函数查看是否需要等待（<strong>防止虚假唤醒</strong>）</li>
+</ul></li>
+</ul></li>
+<li><code>bool LockUpgrade(Transaction *txn, const RID &amp;rid)</code>，事务<strong>请求升级锁</strong>的接口
+<ul>
+<li>获取<strong>锁表的互斥锁</strong>，不同事务对锁表的访问是互斥的</li>
+<li>如果该事务<strong>处于<code>Shrinking</code>或<code>Aborted</code>状态</strong>，则无法获取锁，<strong>返回false</strong></li>
+<li>如果该事务并<strong>不拥有同一数据项的S锁</strong>，则<strong>返回false</strong></li>
+<li>如果该事务已经<strong>拥有了同一数据项的X锁</strong>，则<strong>返回true</strong></li>
+<li>否则，将该事务的请求<strong>加入</strong>锁表中对应项的<strong>链表</strong>中，同时<strong>更新事务的</strong><code>ExclusiveLockSet</code></li>
+<li>运行<code>CheckExclusiveWait</code>辅助函数查看<strong>是否需要等待</strong>，若需要等待则<strong>阻塞</strong>；若不需要等待则<strong>升级锁，从等待队列中移除先前的S锁请求，并返回true</strong></li>
+<li>当被阻塞的事务<strong>被唤醒</strong>时
+<ul>
+<li>先<strong>检查自己的状态是否为<code>ABORTED</code></strong>（因为死锁预防机制使得事务可以中止其他事务，而被中止的事务可能位于阻塞状态，因此被唤醒后应该先检查自己是否处于中止状态），若位于中止状态则返回false</li>
+<li>若仍处于活跃状态则<strong>再次运行</strong><code>CheckExclusiveWait</code>辅助函数查看是否需要等待（<strong>防止虚假唤醒</strong>）</li>
+</ul></li>
+</ul></li>
+<li><code>bool Unlock(Transaction *txn, const RID &amp;rid)</code>，事务<strong>解锁</strong>的接口
+<ul>
+<li>检查该事务的<code>SharedLockedSet</code>和<code>ExclusiveLockedSet</code>，如果不包含<code>rid</code>则直接返回false</li>
+<li>获取<strong>锁表的互斥锁</strong>，不同事务对锁表的访问是互斥的</li>
+<li>扫描该数据项的请求队列，如果遇到该事务的请求，则将其移除，同时将<code>rid</code>从该事务的<code>SharedLockedSet</code>或<code>ExclusiveLockedSet</code>移除</li>
+<li>如果该事务<strong>隔离水平为可重复读</strong>，则它需要<strong>遵循2PL</strong>，因此如果其状态为<code>GROWING</code>，则将其<strong>设为<code>SHRINKING</code></strong></li>
+<li>由于进行了解锁，因此调用该数据项请求队列的条件变量的<code>notify_all()</code>，<strong>唤醒阻塞在该队列的其他事务</strong></li>
+</ul></li>
+</ul>
+<h3 id="实现-3">实现</h3>
+<h3 id="debug过程-3">Debug过程</h3>
+<ul>
+<li><p><strong>问题1</strong>：将WOUND-WAIT算法中的younger与older搞反了</p></li>
+<li><p><strong>问题2</strong>：获取锁请求等待队列时，使用了<code>auto q = ...</code>，从而得到了该队列的拷贝，所有操作都无法反映在系统的请求等待队列中，应修改为<code>auto &amp;q = ...</code></p></li>
+<li><p><strong>问题3</strong>：使用for循环在遍历list的过程中删除元素。解决：利用<code>erase</code>返回的指向被删除元素后一位置的迭代器，使用while循环遍历list</p></li>
+<li><p><strong>问题4</strong>：ABORT时throw exception</p>
+<p>讲义要求中止事务时先修改其状态为<code>ABORTED</code>，然后抛出异常让事务管理器类中止该事务。但实际上测试代码中并没有catch该异常的代码，
+因此<strong>不能主动抛出异常</strong></p></li>
+<li><p><strong>问题5</strong>：提示超时</p>
+<p>修改1：修改获取锁的程序，如果它已持有该锁应该return true</p>
+<p>修改2：对于已提交读，获取S锁并读取后应该立即释放</p>
+<p>修改3：对于已提交读和未提交读，获取X锁并写入后应该立即释放，<strong>只有可重复读需要遵循2PL</strong></p>
+<p>修改4：在UPGRADE中，应该首先检查<code>upgrading_</code>是否为INVALID_TXN_ID，若是则将其设为事务id，否则等待。<strong>将<code>upgrading_</code>设为事务id后，才可以将UPGRADE请求加入队列</strong></p>
+<p>修改5：在将事务的锁请求加入等待队列的同时，将该锁加入其write或read锁集合中</p>
+<p>修改6：如果将进程设为ABORT了之后，应该在对应的RID的等待队列执行一次条件变量的<code>notify_all()</code></p>
+<p><strong>修改7：只要通过WOUND-WAIT算法将其他事务中止（将其state设为Aborted），无需等待事务管理器执行ABORT时执行Unlock，直接就可以释放其上的锁</strong></p>
+<ul>
+<li>比如，时间戳为2的事务A获取了数据项Q的S-lock，此后时间戳为1的事务B请求获取数据项Q的X-lock，此时根据WOUND-WAIT算法事务B将事务A中止。此时即使事务A阻塞而无法检测到自己状态变为Aborted，事务B也可以直接获取X-lock</li>
+</ul></li>
+</ul>
+<h2 id="task2-修改executor">Task2 修改Executor</h2>
+<h3 id="debug过程-4">Debug过程</h3>
+<ul>
+<li><p>问题1：Rollback问题</p>
+<p>修改：应该在INSERT、DELETE、UPDATE时，将索引的改变写入日志，具体地，对于每个索引变化都要事务的<code>AppendTableWriteRecord</code>方法添加一条日志记录，如下所示</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txn_-&gt;<span class="built_in">AppendTableWriteRecord</span>(<span class="built_in">IndexWriteRecord</span>(r, info-&gt;oid_, WType::INSERT, key, index_info-&gt;index_oid_, catalog_));</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="关键问题分析-6">关键问题分析</h3>
+<ul>
+<li><p>不同隔离水平的读写操作的区别</p>
+<ul>
+<li><strong>可重复读</strong>，seq_scan获取S锁，insert、delete、update获取X锁，且要<strong>遵循2PL</strong>，<strong>读写后不能立即释放锁</strong>，而是由事务管理器释放其持有的锁</li>
+<li><strong>已提交读</strong>，seq_scan获取S锁，读完<strong>立即释放S锁</strong>；insert、delete、update获取X锁，<strong>X锁遵循2PL</strong>，不要立即释放，由事务管理器释放其持有的X锁</li>
+<li><strong>未提交读</strong>，seq_scan<strong>无需获取S锁</strong>，insert、delete、update获取X锁，<strong>写完可以立即释放X锁</strong></li>
+</ul></li>
+<li><p>对<strong>索引的修改</strong>需要<strong>写日志记录</strong></p>
+<ul>
+<li>应该在INSERT、DELETE、UPDATE时，将索引的改变写入日志，具体地，对于每个索引变化都要事务的<code>AppendTableWriteRecord</code>方法添加一条日志记录，如下所示</li>
+<li>该日志记录包含数据项的<code>rid</code>、表的<code>oid</code>、写类型（INSERT、DELETE或UPDATE）、tuple项、索引的<code>oid</code>、文件目录<code>catalog_</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">txn_-&gt;<span class="built_in">AppendTableWriteRecord</span>(<span class="built_in">IndexWriteRecord</span>(r, info-&gt;oid_, WType::INSERT, key, index_info-&gt;index_oid_, catalog_));</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>​</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/05/%E9%A1%B9%E7%9B%AE-15-445%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/" title="15-445 数据库项目总结">http://example.com/2022/03/05/项目-15-445数据库系统/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Database-System/" rel="tag"># Database System</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" rel="prev" title="数据库系统原理-事务管理">
+                  <i class="fa fa-chevron-left"></i> 数据库系统原理-事务管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/10/%E9%A1%B9%E7%9B%AE-6-824%E6%80%BB%E7%BB%93/" rel="next" title="项目-6.824总结">
+                  项目-6.824总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

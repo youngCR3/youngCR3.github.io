@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="C++ Primer第16章笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer Chapter 16">
+<meta property="og:url" content="http://example.com/2022/02/22/C++-Primer-Chapter-16/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="C++ Primer第16章笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-22T11:37:42.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.851Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/02/22/C++-Primer-Chapter-16/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/02/22/C++-Primer-Chapter-16/","path":"2022/02/22/C++-Primer-Chapter-16/","title":"C++ Primer Chapter 16"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ Primer Chapter 16 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%A8%A1%E6%9D%BF"><span class="nav-text">16.1 定义模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-text">16.1.1 函数模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-text">实例化函数模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0"><span class="nav-text">模板类型参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%B1%BB%E5%9E%8B%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0"><span class="nav-text">非类型模板参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E7%B1%BB%E5%9E%8B%E6%97%A0%E5%85%B3%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-text">编写类型无关的代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91"><span class="nav-text">模板编译</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E9%94%99%E8%AF%AF%E7%9A%84%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="nav-text">模板编译错误的三个阶段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="nav-text">16.1.2 类模板</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/C++-Primer-Chapter-16/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer Chapter 16
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-22 19:37:42" itemprop="dateCreated datePublished" datetime="2022-02-22T19:37:42+08:00">2022-02-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>C++ Primer第16章笔记</strong></p>
+<span id="more"></span>
+<h2 id="定义模板">16.1 定义模板</h2>
+<h3 id="函数模板">16.1.1 函数模板</h3>
+<ul>
+<li><p>一个<strong>函数模板</strong>就是一个公式，可用来生成<strong>特定类型的函数版本</strong></p></li>
+<li><p>模板定义以<strong>关键字<code>template</code></strong>开始，后跟一个<strong>模板参数列表</strong>，以<strong>逗号</strong>分隔多个<strong>模板参数</strong>，用<code>&lt;&gt;</code>包围起来</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> T&amp; v1, <span class="keyword">const</span> T&amp; v2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (v1 &lt; v2)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (v2 &lt; v1)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>模板参数</strong>表示在类或函数定义中用到的<strong>类型或值</strong>，<strong>使用模板</strong>时需要<strong>指定模板实参</strong>，将其绑定到模板参数上</p></li>
+</ul>
+<h4 id="实例化函数模板">实例化函数模板</h4>
+<ul>
+<li><p>调用<strong>函数模板</strong>时，编译器用<strong>函数实参</strong>来为我们<strong>推断模板实参</strong></p></li>
+<li><p>编译器用推断出的模板参数为我们<strong>实例化</strong>一个<strong>特定版本的函数</strong>，使用<strong>实际的模板实参</strong>代替对应的<strong>模板参数</strong>来创建出模板的一个新“实例”</p></li>
+<li><p>这些编译器生成的版本通常被称为模板的<strong>实例</strong></p></li>
+</ul>
+<h4 id="模板类型参数">模板类型参数</h4>
+<ul>
+<li><code>compare</code>函数有一个<strong>模板类型参数</strong>，类型参数可看作类型说明符，如同内置类型或类类型说明符一样使用</li>
+<li><strong>类型参数</strong>可<strong>指定返回类型</strong>或函数的<strong>参数类型</strong>，以及在函数体内用于<strong>变量声明</strong>或<strong>类型转换</strong></li>
+<li>类型参数前必须使用关键字<code>typename</code>或<code>class</code>，在模板参数列表中这两个关键字含义相同，可互换使用</li>
+</ul>
+<h4 id="非类型模板参数">非类型模板参数</h4>
+<ul>
+<li>在模板中定义<strong>非类型参数</strong>，表示<strong>一个值</strong>，通过<strong>特定的类型名</strong>而非<code>class</code>或<code>typename</code>指定非类型参数</li>
+<li>模板被<strong>实例化</strong>时，非类型参数被一个<strong>用户提供的或编译器推断出的值</strong>所替代，这些值<strong>必须是常量表达式</strong></li>
+<li>非类型参数可以是整型，或指向对象或函数类型的指针，或左值引用
+<ul>
+<li>绑定到非类型<strong>整型参数</strong>的实参必须是<strong>常量表达式</strong></li>
+<li>绑定到<strong>指针或引用</strong>的非类型参数的实参必须具有<strong>静态的生存期</strong>（<strong><code>static</code>对象</strong>），指针参数也可以用<code>nullptr</code>或值为0的常量表达式来实例化</li>
+</ul></li>
+<li>模板定义内，非类型参数是一个<strong>常量值</strong>，在需要<strong>常量表达式</strong>的地方可以<strong>使用非类型参数</strong>，如指定数组大小</li>
+</ul>
+<h4 id="编写类型无关的代码">编写类型无关的代码</h4>
+<ul>
+<li>编写泛型代码的两个重要原则
+<ul>
+<li>模板中的<strong>函数参数是<code>const</code>引用</strong></li>
+<li>函数体中的<strong>条件判断仅使用<code>&lt;</code>比较运算</strong></li>
+</ul></li>
+</ul>
+<blockquote>
+<p>第一点保证了可将函数用于不能拷贝的类型，第二点使得函数只要求类型支持<code>&lt;</code>，不必同时支持<code>&gt;</code>，减少了对实参类型的要求</p>
+</blockquote>
+<ul>
+<li>模板程序应尽量减少对实参类型的要求</li>
+</ul>
+<h4 id="模板编译">模板编译</h4>
+<ul>
+<li>编译器遇到<strong>模板定义时不生成代码</strong></li>
+<li>只有在<strong>实例化</strong>出<strong>模板的一个特定版本</strong>时，编译器才<strong>生成代码</strong></li>
+<li>为了<strong>生成</strong>实例化版本，编译器需要<strong>掌握函数模板或类模板成员函数的定义</strong>，因此模板的<strong>头文件</strong>通常既包含<strong>声明</strong>也包含<strong>定义</strong></li>
+</ul>
+<h4 id="模板编译错误的三个阶段">模板编译错误的三个阶段</h4>
+<ul>
+<li><strong>编译模板本身</strong>时，检查语法错误等</li>
+<li>编译器遇到<strong>模板使用</strong>时，检查实参数量是否正确、参数类型是否匹配等</li>
+<li>编译器进行<strong>模板实例化</strong>时，会发生类型相关的错误，大多数错误在实例化期间报告</li>
+</ul>
+<h3 id="类模板">16.1.2 类模板</h3>
+<ul>
+<li><p><strong>类模板</strong>用于生成类的蓝图，编译器<strong>不能</strong>为类模板<strong>推断模板参数类型</strong>，必须在模板名后的尖括号中提供额外信息</p></li>
+<li><p>类模板的成员函数具有和模板相同的模板参数，<strong>定义在类模板之外</strong>的成员函数必须<strong>以关键字<code>template</code>开始，后接类模板参数列表</strong></p></li>
+<li><p>对于一个实例化了的类，其<strong>成员</strong>只有在<strong>使用时才被实例化</strong>。如果一个成员函数没有被使用，则它不会被实例化</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/02/22/C++-Primer-Chapter-16/" title="C++ Primer Chapter 16">http://example.com/2022/02/22/C++-Primer-Chapter-16/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="C++-面试题">
+                  <i class="fa fa-chevron-left"></i> C++-面试题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/22/C++-Primer-Chapter-17/" rel="next" title="C++ Primer Chapter 17">
+                  C++ Primer Chapter 17 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="操作系统文件管理重要知识总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS-文件管理">
+<meta property="og:url" content="http://example.com/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="操作系统文件管理重要知识总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-04T00:57:15.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.861Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/","path":"2022/03/04/OS-文件管理/","title":"OS-文件管理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OS-文件管理 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-text">4 文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="nav-text">4.1 文件系统基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-text">文件的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-text">文件操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-text">内部文件结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9A%84%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="nav-text">文件的逻辑结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8E%A7%E5%88%B6%E5%9D%97"><span class="nav-text">文件控制块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E8%8A%82%E7%82%B9"><span class="nav-text">索引节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84-1"><span class="nav-text">目录结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB"><span class="nav-text">文件共享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%B4%A2%E5%BC%95%E8%8A%82%E7%82%B9%E7%9A%84%E5%85%B1%E4%BA%AB%E6%96%B9%E5%BC%8F%E7%A1%AC%E9%93%BE%E6%8E%A5"><span class="nav-text">基于索引节点的共享方式（硬链接）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E7%AC%A6%E5%8F%B7%E9%93%BE%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="nav-text">利用符号链实现文件共享（软链接）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BF%9D%E6%8A%A4"><span class="nav-text">文件保护</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0"><span class="nav-text">4.2 文件系统实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-text">文件系统层次结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E5%AE%9E%E7%8E%B0"><span class="nav-text">目录实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E5%88%86%E9%85%8D%E6%96%B9%E5%BC%8F"><span class="nav-text">文件实现——文件分配方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D"><span class="nav-text">文件实现——文件存储空间分配</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E7%BB%84%E7%BB%87%E5%92%8C%E7%AE%A1%E7%90%86"><span class="nav-text">4.3 磁盘组织和管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84"><span class="nav-text">磁盘结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-text">磁盘调度算法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OS-文件管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-04 08:57:15" itemprop="dateCreated datePublished" datetime="2022-03-04T08:57:15+08:00">2022-03-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OS/" itemprop="url" rel="index"><span itemprop="name">OS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>操作系统文件管理重要知识总结</strong></p>
+<span id="more"></span>
+<h1 id="文件管理">4 文件管理</h1>
+<h2 id="文件系统基础">4.1 文件系统基础</h2>
+<h3 id="文件的概念">文件的概念</h3>
+<ul>
+<li><p>文件是以计算机硬盘为载体的存储在计算机上的信息集合</p></li>
+<li><p>在系统运行时，计算机以<strong>进程</strong>为基本单位进行<strong>资源的调度和分配</strong>，在用户进行的<strong>输入、输出</strong>中，则<strong>以文件为基本单位</strong></p></li>
+<li><p>文件的<strong>属性</strong>：名称、标识符、类型、位置、大小、保护、时间</p></li>
+</ul>
+<h4 id="文件操作">文件操作</h4>
+<ul>
+<li>文件的<strong>基本操作</strong>：<strong>创建</strong>文件、<strong>写</strong>文件、<strong>读</strong>文件、文件<strong>重定位</strong>、<strong>删除</strong>文件、<strong>截断</strong>文件</li>
+<li>使用<strong>系统调用</strong><code>open()</code>打开文件，通常<strong>返回一个指针</strong>，以指向<strong>打开文件表的</strong>对应条目</li>
+<li>操作系统通常采用<strong>两级</strong>的内部表：<strong>每个进程表、整个系统表</strong>
+<ul>
+<li>每个进程表存储进程对文件的使用信息，跟踪它打开的所有文件，<strong>进程表的条目指向</strong>相应的整个<strong>系统表的条目</strong></li>
+<li>整个系统表包含与进程无关的信息，为每个文件关联一个<strong>打开计数</strong>，表示打开该文件的进程数，进程调用<code>open()</code>时计数加1，调用<code>close()</code>时计数减1，当<strong>计数为0</strong>时表示不再使用该文件，系统表可以<strong>删除该文件的条目</strong></li>
+</ul></li>
+<li>文件的关联信息
+<ul>
+<li><strong>文件指针</strong>，跟踪当前读写文件的位置，存储在每个进程表</li>
+<li><strong>文件打开计数</strong>，指当前打开文件的进程数，存储在系统表，若计数值为0该条目可从系统表移除</li>
+<li><strong>文件的磁盘位置</strong></li>
+<li><strong>访问权限</strong>，每个进程采用访问模式打开文件，如可读可写或只读，保存在进程表</li>
+</ul></li>
+<li>文件锁
+<ul>
+<li><strong>共享锁</strong>类似于读者锁，多个进程可以并发地获取它</li>
+<li><strong>独占锁</strong>类似于写者锁，一次只有一个进程可以获取该锁</li>
+<li><strong>强制</strong>或<strong>建议</strong>文件锁定机制，<strong>强制</strong>锁定机制下<strong>操作系统将保证</strong>锁定完整性，<strong>建议</strong>锁定机制下<strong>开发人员必须保证</strong>锁定完整性</li>
+</ul></li>
+</ul>
+<h4 id="内部文件结构">内部文件结构</h4>
+<ul>
+<li>磁盘系统通常有明确定义的<strong>块大小</strong>，是由<strong>扇区大小</strong>决定的，所有<strong>磁盘I/O</strong>按<strong>块为单位</strong>执行，所有块的大小相同</li>
+<li>逻辑记录大小、物理块大小和打包技术决定了每个物理块可有多少逻辑记录，所有文件系统都具有<strong>内部碎片</strong>（内存分配也存在碎片问题）</li>
+</ul>
+<h3 id="文件的逻辑结构">文件的逻辑结构</h3>
+<ul>
+<li><p>文件的逻辑结构，指<strong>从用户观点</strong>出发看到的<strong>文件组织形式</strong></p></li>
+<li><p><strong>无结构文件（流式文件）</strong>，数据按<strong>顺序组织</strong>成记录并积累、保存，是有序相关信息项的集合，以<strong>字节为单位</strong></p></li>
+<li><p>有结构文件按记录的组织形式可分为</p>
+<ul>
+<li><strong>顺序文件</strong>，记录按顺序排列，<strong>记录</strong>通常是<strong>定长</strong>的，访问时需要顺序搜索文件，顺序文件有两种结构
+<ul>
+<li><strong>串结构</strong>，由时间决定顺序</li>
+<li><strong>顺序结构</strong>，按关键字顺序排列</li>
+</ul></li>
+<li><strong>索引文件</strong>，对于<strong>变长记录文件</strong>，建立<strong>索引表</strong>加快检索速度，<strong>索引表本身是定长记录的顺序文件</strong>，表项由索引号、长度、指向文件某个记录的指针组成</li>
+<li><strong>索引顺序文件</strong>，顺序文件<strong>分为若干组</strong>，为顺序文件建立索引表，索引表中<strong>每组的第一条记录</strong>建立一个<strong>索引项</strong>。<strong>提高查找效率，但索引表增加了存储空间</strong></li>
+<li><strong>直接文件或散列文件</strong></li>
+</ul></li>
+</ul>
+<h3 id="目录结构">目录结构</h3>
+<h4 id="文件控制块">文件控制块</h4>
+<ul>
+<li><strong>文件控制块FCB</strong>是用来存放控制文件需要的各种信息的数据结构
+<ul>
+<li><strong>基本信息</strong>，文件名、文件物理位置、文件逻辑结构、文件物理结构</li>
+<li><strong>存取控制信息</strong>，文件存取权限</li>
+<li><strong>使用信息</strong>，文件建立时间、修改时间</li>
+</ul></li>
+</ul>
+<h4 id="索引节点">索引节点</h4>
+<ul>
+<li>在<strong>检索目录文件</strong>的过程中只用到了<strong>文件名</strong>，只有当找到匹配的目录项时才需要取出<strong>文件的物理地址</strong>，因此检索目录时不需要文件的其他描述信息</li>
+<li>因此，可以将<strong>目录</strong>和<strong>文件描述信息分开</strong>的方法，<strong>文件描述信息</strong>单独形成一个称为<strong>索引节点</strong>的数据结构，称为inode</li>
+<li><strong>文件目录</strong>中的每个目录项仅由<strong>文件名</strong>和<strong>指向该文件所对应的inode的指针</strong>构成</li>
+</ul>
+<h4 id="目录结构-1">目录结构</h4>
+<ul>
+<li>在目录层次的文件操作
+<ul>
+<li><strong>搜索</strong>，需要搜索目录以找到匹配的目录项</li>
+<li><strong>创建文件</strong>，添加一个新的目录项</li>
+<li><strong>删除文件</strong>，删除对应的目录项</li>
+<li><strong>显示目录</strong></li>
+<li><strong>修改目录</strong></li>
+</ul></li>
+<li><strong>单级</strong>目录结构
+<ul>
+<li>按<strong>文件名</strong>在该目录中查找相应的<strong>FCB</strong></li>
+</ul></li>
+<li><strong>两级</strong>目录结构：<strong>主文件目录、用户文件目录</strong>
+<ul>
+<li><strong>主文件目录项</strong>记录<strong>用户名</strong>及相应用户文件目录所在位置</li>
+<li><strong>用户文件目录项</strong>记录该用户文件的<strong>FCB信息</strong></li>
+</ul></li>
+<li><strong>多级目录</strong>结构（树形目录结构）
+<ul>
+<li>用<strong>文件的路径名</strong>标识文件，需要按路径名逐级访问中间节点，增加了磁盘访问次数</li>
+</ul></li>
+<li><strong>无环图</strong>目录结构
+<ul>
+<li>在树形目录结构基础上，增加指向同一节点的有向边，形成有向无环图，便于<strong>文件共享</strong></li>
+<li>每个<strong>共享节点</strong>都需要设置<strong>共享计数器</strong>，<strong>增加</strong>该节点的共享链时<strong>计数器加1</strong>，用户<strong>删除</strong>该节点时<strong>计数器减1</strong>，仅当共享<strong>计数器为0时</strong>才<strong>真正删除</strong>节点</li>
+</ul></li>
+</ul>
+<h3 id="文件共享">文件共享</h3>
+<h4 id="基于索引节点的共享方式硬链接">基于索引节点的共享方式（硬链接）</h4>
+<ul>
+<li>树形结构目录中，当有两个或多个用户共享一个文件时，将共享文件<strong>链接</strong>到两个或多个<strong>用户的目录</strong>中</li>
+<li><strong>文件目录</strong>中只设置<strong>文件名</strong>及指向相应<strong>索引节点的指针</strong>，索引节点包括一个<strong>链接计数</strong>
+<ul>
+<li><strong>用户</strong>创建文件时，索引节点<strong>链接计数为1</strong></li>
+<li>用户往其目录<strong>添加目录项</strong>，并设置指针指向该索引节点时，<strong>链接计数加1</strong></li>
+<li>用户想要<strong>删除</strong>文件时，如果链接计数为1，说明自己是<strong>唯一的用户</strong>，因此可以<strong>删除该索引节点</strong>；否则，<strong>不能删除索引节点</strong>，只是删除自己文件目录中的表项，该索引节点的<strong>链接计数减1</strong></li>
+</ul></li>
+</ul>
+<h4 id="利用符号链实现文件共享软链接">利用符号链实现文件共享（软链接）</h4>
+<ul>
+<li><p>用户B共享用户A的一个文件F（F1）时，创建一个<strong>LINK类型的新文件</strong>，取名为F（F2），将文件F（F2）<strong>写入用户B的目录</strong>，该文件中只包含被链接文件F（F1）的<strong>路径名</strong>，这样的链接方法称为<strong>符号链接</strong></p></li>
+<li><p>因此<strong>文件拥有者删除文件</strong>后，其他共享该文件的用户通过<strong>符号链</strong>访问时，会<strong>访问失败</strong>，并将符号链删除，<strong>不会出错</strong></p></li>
+<li><p><strong>硬链接</strong>就是<strong>多个指针</strong>指向一个索引节点，<strong>软链接</strong>就是把到达共享文件的路径记录下来，访问文件时根<strong>据路径寻找文件</strong>，因此硬链接的查找速度更快</p></li>
+</ul>
+<h3 id="文件保护">文件保护</h3>
+<ul>
+<li><p>文件保护措施包括<strong>口令保护、加密保护和访问控制</strong></p></li>
+<li><p>文件的访问类型包括：读、写、执行、添加、删除、列表清单</p></li>
+<li><p><strong>访问控制</strong>，根据用户身份进行控制，每个文件和目录都增加一个访问控制列表，规定每个用户名及其所允许的访问类型</p></li>
+<li><p><strong>精简的访问列表</strong>，拥有者、组、其他用户</p>
+<ul>
+<li><strong>拥有者</strong>是创建文件的用户</li>
+<li><strong>组</strong>是需要共享文件且具有类型访问的用户（与创建者位于同组的其他用户都能访问该文件）</li>
+<li><strong>其他</strong>是系统内的所有其他用户</li>
+</ul></li>
+<li><p>口令、密码是另外两种访问控制方法</p>
+<ul>
+<li><strong>口令</strong>指创建者提供一个口令，并把该口令告诉共享文件的其他用户。用户<strong>访问文件</strong>时必须<strong>输入相同的口令</strong></li>
+<li><strong>密码</strong>是用户对文件进行<strong>加密</strong>，文件被访问时需要使用<strong>密钥</strong></li>
+</ul></li>
+</ul>
+<h2 id="文件系统实现">4.2 文件系统实现</h2>
+<h3 id="文件系统层次结构">文件系统层次结构</h3>
+<ul>
+<li>用户调用接口</li>
+<li>文件目录系统</li>
+<li>存取控制验证模块</li>
+<li>逻辑文件系统与文件信息缓冲区</li>
+<li>物理文件系统</li>
+<li>辅助分配模块</li>
+<li>设备管理程序模块</li>
+<li>记忆：<strong>用户请求访问文件时会发生的事</strong>
+<ul>
+<li>通过<strong>系统调用</strong>请求访问文件（用户调用接口），操作系统在<strong>目录中查找</strong>该文件，得到FCB或索引节点（文件目录系统），根据FCB信息判断用户是否具有<strong>访问权限</strong>（存取控制验证模块），获取文件的<strong>逻辑地址</strong>（逻辑文件系统与文件信息缓冲区），将逻辑地址转换为<strong>物理地址</strong>（物理文件系统），完成寻址后我们可以管理该空间，可以<strong>释放空间</strong>（辅助分配模块）或<strong>将其分配给设备用于I/O</strong>（设备管理程序模块）</li>
+</ul></li>
+</ul>
+<h3 id="目录实现">目录实现</h3>
+<ul>
+<li><strong>线性列表</strong>，使用存储文件名和数据块指针的线性表，查找的时间复杂度是<span class="math inline">\(O(N)\)</span></li>
+<li><strong>哈希表</strong>，根据文件名得到一个值，返回一个指向线性列表中元素的指针，查找的平均时间复杂度是<span class="math inline">\(O(1)\)</span></li>
+</ul>
+<h3 id="文件实现文件分配方式">文件实现——文件分配方式</h3>
+<ul>
+<li><p>文件实现是研究文件的<strong>物理结构</strong>，即文件<strong>数据在物理存储设备上如何分布和组织</strong>的问题</p></li>
+<li><p><strong>连续分配</strong>，支持顺序访问、直接访问</p></li>
+<li><p><strong>链接分配</strong></p>
+<ul>
+<li>隐式链接，next指针，只支持顺序访问</li>
+<li>显式链接，每个磁盘维护文件分配表FAT，表项为&lt;块号、文件下一块的块号&gt;，特殊块号（如-1）标记文件末尾，特殊块号（如-2）标记空闲块，支持直接访问，但是FAT占用存储空间</li>
+</ul></li>
+<li><p><strong>索引分配</strong></p>
+<ul>
+<li>每个文件维护一个索引块，文件目录包含索引块的地址</li>
+<li>索引块的第i个条目指向文件的第i块，因此可以实现直接访问</li>
+<li>但是索引块增加了存储空间的开销</li>
+<li>索引块空间有限，<strong>存储大文件</strong>时，可通过将<strong>多个索引块链接</strong>起来、<strong>多层索引</strong>等形式实现</li>
+</ul></li>
+</ul>
+<h3 id="文件实现文件存储空间分配">文件实现——文件存储空间分配</h3>
+<ul>
+<li><strong>文件存储设备管理</strong>实质上是对<strong>空闲块</strong>管理</li>
+<li>略</li>
+</ul>
+<h2 id="磁盘组织和管理">4.3 磁盘组织和管理</h2>
+<h3 id="磁盘结构">磁盘结构</h3>
+<ul>
+<li><strong>磁盘</strong></li>
+<li><strong>磁道</strong>，一组同心圆</li>
+<li><strong>扇区</strong>，磁道划分为若干扇区，每个扇区为一块，扇区是磁盘可寻址的最小存储单元</li>
+<li><strong>磁头</strong></li>
+</ul>
+<h3 id="磁盘调度算法">磁盘调度算法</h3>
+<ul>
+<li><p>读写磁盘块的时间包括</p>
+<ul>
+<li><strong>寻道时间</strong>，制动手臂移动使得<strong>磁头移动到适当的磁道上</strong></li>
+<li><strong>旋转时间</strong>，主轴转动盘面使得<strong>磁头移动到适当的扇区上</strong></li>
+<li>实际的<strong>数据传输时间</strong></li>
+</ul>
+<p><strong>寻道时间最长</strong>，磁盘调度的主要目标是使磁盘的平均寻道时间最短</p></li>
+<li><p><strong>先来先服务</strong>，按照磁盘请求的顺序进行调度，未对寻道时间
+优化</p></li>
+<li><p><strong>最短寻道时间优先</strong>，优先调度<strong>与当前磁头所在磁道距离最近的磁道</strong>，缺点是<strong>不公平</strong>，最外层和最里层的磁道更容易出现<strong>“饥饿”</strong></p></li>
+<li><p><strong>扫描（SCAN）算法</strong>，磁头总是<strong>保持一个方向运行</strong>，直到该方向没有请求位置，然后<strong>改变移动方向</strong></p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="OS-文件管理">http://example.com/2022/03/04/OS-文件管理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/OS/" rel="tag"># OS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/03/OS-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="prev" title="OS-内存管理">
+                  <i class="fa fa-chevron-left"></i> OS-内存管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" rel="next" title="数据库系统原理-事务管理">
+                  数据库系统原理-事务管理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

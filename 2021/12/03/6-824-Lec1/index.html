@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1 基本概念 1.1 为什么需要分布式系统？  to increase capacity via parallelism to tolerate faults via replication to place computing physically close to external entities to achieve security via isolation  1.2 关键问题  容错">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.824 Lec1 Introduction">
+<meta property="og:url" content="http://example.com/2021/12/03/6-824-Lec1/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="1 基本概念 1.1 为什么需要分布式系统？  to increase capacity via parallelism to tolerate faults via replication to place computing physically close to external entities to achieve security via isolation  1.2 关键问题  容错">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-03T13:24:28.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.849Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="6.824">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/03/6-824-Lec1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/03/6-824-Lec1/","path":"2021/12/03/6-824-Lec1/","title":"6.824 Lec1 Introduction"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>6.824 Lec1 Introduction | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">1 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="nav-text">1.1 为什么需要分布式系统？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"><span class="nav-text">1.2 关键问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapreduce"><span class="nav-text">2 MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5-1"><span class="nav-text">2.1 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E6%8B%93%E5%B1%95%E6%80%A7"><span class="nav-text">2.2 可拓展性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mr%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="nav-text">2.3 MR的数据存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mr%E9%9C%80%E8%A6%81%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-text">2.4 MR需要通过网络传输的数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mr%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A1%86%E6%9E%B6"><span class="nav-text">2.5 MR的基本框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mr%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E7%BD%91%E7%BB%9C%E4%BD%BF%E7%94%A8"><span class="nav-text">2.6 MR如何减少网络使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%97%AE%E9%A2%98"><span class="nav-text">2.7 负载均衡问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E9%94%99%E9%97%AE%E9%A2%98"><span class="nav-text">2.8 容错问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98%E5%8F%8A%E5%85%B6%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-text">2.9 其他问题及其解决方法</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/6-824-Lec1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6.824 Lec1 Introduction
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-03 21:24:28" itemprop="dateCreated datePublished" datetime="2021-12-03T21:24:28+08:00">2021-12-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="基本概念">1 基本概念</h2>
+<h3 id="为什么需要分布式系统">1.1 为什么需要分布式系统？</h3>
+<ul>
+<li>to increase capacity via parallelism</li>
+<li>to tolerate faults via replication</li>
+<li>to place computing physically close to external entities</li>
+<li>to achieve security via isolation</li>
+</ul>
+<h3 id="关键问题">1.2 关键问题</h3>
+<ul>
+<li>容错性 fault tolerance</li>
+<li>一致性 consistency</li>
+<li>性能 performance</li>
+</ul>
+<p>三者之间的权衡，尤其是consistency和performance通常是矛盾的</p>
+<h2 id="mapreduce">2 MapReduce</h2>
+<h3 id="基本概念-1">2.1 基本概念</h3>
+<ul>
+<li><p>将输入划分为多份，对于每份输入调用一个Map()，产生中间值</p></li>
+<li><p>收集中间值，将每个key及其对应的值传入一个Reduce()</p></li>
+<li><p>从多个Reduce()返回的是输出结果</p></li>
+</ul>
+<h3 id="可拓展性">2.2 可拓展性</h3>
+<ul>
+<li><p>N workers意味着N倍吞吐量</p></li>
+<li><p>Map()和Reduce()都可以并发，不同worker上的Map()和Reduce()不会相互影响</p></li>
+</ul>
+<span id="more"></span>
+<h3 id="mr的数据存储">2.3 MR的数据存储</h3>
+<p>输入和输出都放在GFS cluster file system</p>
+<h3 id="mr需要通过网络传输的数据">2.4 MR需要通过网络传输的数据</h3>
+<ul>
+<li>从GFS读取数据传入Map()</li>
+<li>从Map()读取中间值送入Reduce()</li>
+<li>Reduce()产生的结果写回GFS</li>
+</ul>
+<h3 id="mr的基本框架">2.5 MR的基本框架</h3>
+<p>（1）<strong>one coordinator</strong>，负责将Map
+tasks分发给workers</p>
+<p>（2）Map()输出的中间数据，写入<strong>local
+disks</strong>，并且按hash值划分，<strong>每个hash值（也是每个Reduce
+worker）一个disk</strong></p>
+<p>（3）Reduce task从所有Map()获取中间数据，<strong>一个Reduce
+worker将处理后的输出存放在一个output
+file</strong>，将该file写回到GFS</p>
+<h3 id="mr如何减少网络使用">2.6 MR如何减少网络使用</h3>
+<p>（1）每个server都同时运行GFS和MR worker</p>
+<p>（2）尽量在存放输入文件的GFS server上执行Map()</p>
+<h3 id="负载均衡问题">2.7 负载均衡问题</h3>
+<p>（1）tasks数量远多于workers，尽量让任务变小</p>
+<p>（2）coordinator将任务交给已经完成先前任务的空闲worker</p>
+<h3 id="容错问题">2.8 容错问题</h3>
+<p>（1）如果某个worker故障，只需要重新执行其上的Map()和Reduce()即可，对其他tasks没有影响</p>
+<p>（2）假设MR运行了某个Map两次，且部分Reduce获得了第一次Map的输出，部分Reduce获得了第二次Map的输出，则两者必须一致，因此<strong>Map和Reduce必须是完全确定函数pure
+deterministic functions</strong></p>
+<p>（3）故障恢复：coordinator发现故障worker，获取其tasks，并将tasks分配给其他workers重新执行</p>
+<h3 id="其他问题及其解决方法">2.9 其他问题及其解决方法</h3>
+<p>（1）coordinator分配给两个workers相同的Map()任务？</p>
+<ul>
+<li>可能是因为coordinator误以为其中一个worker故障了，coordinator只会将一个的输出交给Reduce
+worker</li>
+</ul>
+<p>（2）coordinator分配给两个workers相同的Reduce()任务？</p>
+<ul>
+<li>它们会尝试将相同的输出文件写入GFS，但由于GFS机制最终只有一个文件存在</li>
+</ul>
+<p>（3）如果某个worker特别慢？</p>
+<ul>
+<li>coordinator会重新开始最后的部分任务</li>
+</ul>
+<p>（4）如果一个worker由于软硬件错误导致输出结果错误？</p>
+<ul>
+<li>MR assumes "faile-stop" CPUS and software.</li>
+</ul>
+<p>（5）如果coordinator故障了？</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/12/03/6-824-Lec1/" title="6.824 Lec1 Introduction">http://example.com/2021/12/03/6-824-Lec1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/6-824/" rel="tag"># 6.824</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/03/cmu15-445%20Project#3/" rel="prev" title="cmu15-445 Project#3">
+                  <i class="fa fa-chevron-left"></i> cmu15-445 Project#3
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/04/Map-Reduce-Simplified-Data-Processing-on-Large-Clusters/" rel="next" title="Map Reduce: Simplified Data Processing on Large Clusters">
+                  Map Reduce: Simplified Data Processing on Large Clusters <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

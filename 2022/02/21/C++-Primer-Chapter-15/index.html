@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="C++ Primer第15章笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Primer Chapter 15">
+<meta property="og:url" content="http://example.com/2022/02/21/C++-Primer-Chapter-15/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="C++ Primer第15章笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/.com//1.png">
+<meta property="og:image" content="http://example.com/.com//2.png">
+<meta property="og:image" content="http://example.com/.com//3.png">
+<meta property="article:published_time" content="2022-02-21T04:32:51.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.850Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/.com//1.png">
+
+
+<link rel="canonical" href="http://example.com/2022/02/21/C++-Primer-Chapter-15/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/02/21/C++-Primer-Chapter-15/","path":"2022/02/21/C++-Primer-Chapter-15/","title":"C++ Primer Chapter 15"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++ Primer Chapter 15 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC15%E7%AB%A0-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-text">第15章 面向对象程序设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#oop%E6%A6%82%E8%BF%B0"><span class="nav-text">15.1 OOP概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-text">继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A"><span class="nav-text">动态绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%9F%BA%E7%B1%BB%E5%92%8C%E6%B4%BE%E7%94%9F%E7%B1%BB"><span class="nav-text">15.2 定义基类和派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E5%9F%BA%E7%B1%BB"><span class="nav-text">定义基类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">成员函数与继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E4%B8%8E%E5%9F%BA%E7%B1%BB"><span class="nav-text">访问控制与基类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%B4%BE%E7%94%9F%E7%B1%BB"><span class="nav-text">定义派生类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E4%B8%AD%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">派生类中的虚函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E5%AF%B9%E8%B1%A1%E5%8F%8A%E6%B4%BE%E7%94%9F%E7%B1%BB%E5%90%91%E5%9F%BA%E7%B1%BB%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-text">派生类对象及派生类向基类的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">派生类构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%88%90%E5%91%98"><span class="nav-text">派生类使用基类的成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E4%B8%8E%E9%9D%99%E6%80%81%E6%88%90%E5%91%98"><span class="nav-text">继承与静态成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="nav-text">派生类的声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A2%AB%E7%94%A8%E4%BD%9C%E5%9F%BA%E7%B1%BB%E7%9A%84%E7%B1%BB"><span class="nav-text">被用作基类的类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2%E7%BB%A7%E6%89%BF%E7%9A%84%E5%8F%91%E7%94%9F"><span class="nav-text">防止继承的发生</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">类型转换与继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%B1%BB%E5%9E%8B"><span class="nav-text">静态类型与动态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E5%AD%98%E5%9C%A8%E4%BB%8E%E5%9F%BA%E7%B1%BB%E5%90%91%E6%B4%BE%E7%94%9F%E7%B1%BB%E7%9A%84%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">不存在从基类向派生类的隐式类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-text">对象之间不存在类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E5%AD%98%E5%9C%A8%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E7%9A%84%E7%B1%BB%E5%9E%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2%E8%A7%84%E5%88%99"><span class="nav-text">总结：存在继承关系的类型之间的转换规则</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">15.3 虚函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8%E5%8F%AF%E8%83%BD%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E6%89%8D%E8%A2%AB%E8%A7%A3%E6%9E%90"><span class="nav-text">对虚函数的调用可能在运行时才被解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E4%B8%AD%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0-1"><span class="nav-text">派生类中的虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final%E5%92%8Coverride%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="nav-text">final和override说明符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E9%BB%98%E8%AE%A4%E5%AE%9E%E5%8F%82"><span class="nav-text">虚函数与默认实参</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E9%81%BF%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E6%9C%BA%E5%88%B6"><span class="nav-text">回避虚函数的机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB"><span class="nav-text">15.4 抽象基类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">纯虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AB%E6%9C%89%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E7%B1%BB%E6%98%AF%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB"><span class="nav-text">含有纯虚函数的类是抽象基类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">15.5 访问控制与继承</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E7%B1%BB%E7%94%A8%E6%88%B7"><span class="nav-text">三类用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protected"><span class="nav-text">protected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#publicprivate%E5%92%8Cprotected%E7%BB%A7%E6%89%BF"><span class="nav-text">public、private和protected继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E5%90%91%E5%9F%BA%E7%B1%BB%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7"><span class="nav-text">派生类向基类转换的可访问性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8B%E5%85%83%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">友元与继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E4%B8%AA%E5%88%AB%E6%88%90%E5%91%98%E7%9A%84%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7"><span class="nav-text">改变个别成员的可访问性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E7%9A%84%E7%BB%A7%E6%89%BF%E4%BF%9D%E6%8A%A4%E7%BA%A7%E5%88%AB"><span class="nav-text">默认的继承保护级别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84%E7%B1%BB%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-text">15.6 继承中的类作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E8%BF%9B%E8%A1%8C%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE"><span class="nav-text">编译时进行名字查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8D%E5%AD%97%E5%86%B2%E7%AA%81%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">名字冲突与继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%A7%A3%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="nav-text">继承关系中的函数调用解析过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE%E5%85%88%E4%BA%8E%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5"><span class="nav-text">名字查找先于类型检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-text">虚函数与作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E9%87%8D%E8%BD%BD%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-text">覆盖重载的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%B8%8E%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6"><span class="nav-text">15.7 构造函数与拷贝控制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-text">虚析构函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E6%88%90%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">合成拷贝控制与继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E4%B8%AD%E5%88%A0%E9%99%A4%E7%9A%84%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E6%88%90%E5%91%98%E4%B8%8E%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">派生类中删除的拷贝控制成员与基类的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%93%8D%E4%BD%9C%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">移动操作与继承</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E7%9A%84%E6%8B%B7%E8%B4%9D%E6%8E%A7%E5%88%B6%E6%88%90%E5%91%98"><span class="nav-text">派生类的拷贝控制成员</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%B4%BE%E7%94%9F%E7%B1%BB%E7%9A%84%E6%8B%B7%E8%B4%9D%E6%88%96%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">定义派生类的拷贝或移动构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">派生类赋值运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B4%BE%E7%94%9F%E7%B1%BB%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="nav-text">派生类析构函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%AD%E8%B0%83%E7%94%A8%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-text">在构造函数和析构函数中调用虚函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">继承的构造函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E7%BB%A7%E6%89%BF"><span class="nav-text">15.8 容器与继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85-%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8"><span class="nav-text">补充-虚函数表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E8%99%9A%E8%A1%A8"><span class="nav-text">类的虚表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E8%A1%A8%E6%8C%87%E9%92%88"><span class="nav-text">虚表指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A-1"><span class="nav-text">动态绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-text">虚函数调用的过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A%E7%9A%84%E4%B8%89%E4%B8%AA%E6%9D%A1%E4%BB%B6"><span class="nav-text">动态绑定的三个条件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A0%E9%A2%98"><span class="nav-text">习题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/C++-Primer-Chapter-15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++ Primer Chapter 15
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-21 12:32:51" itemprop="dateCreated datePublished" datetime="2022-02-21T12:32:51+08:00">2022-02-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>C++ Primer第15章笔记</strong></p>
+<span id="more"></span>
+<h1 id="第15章-面向对象程序设计">第15章 面向对象程序设计</h1>
+<h2 id="oop概述">15.1 OOP概述</h2>
+<ul>
+<li><strong>面向对象</strong>程序设计的三个概念：<strong>数据抽象、继承和动态绑定</strong>
+<ul>
+<li>通过<strong>数据抽象</strong>，可以将类的<strong>接口</strong>与<strong>实现</strong>分离</li>
+<li>通过<strong>继承</strong>，可以定义<strong>相似的类型</strong>并对相似关系建模</li>
+<li>通过<strong>动态绑定</strong>，可以在一定程度上<strong>忽略相似类型的区别</strong></li>
+</ul></li>
+</ul>
+<h3 id="继承">继承</h3>
+<ul>
+<li><p>通过继承联系在一起的类形成了<strong>层次关系</strong></p></li>
+<li><p>层次关系的<strong>根部</strong>是一个<strong>基类</strong>（base
+class），其他类<strong>直接或间接地</strong>从基类<strong>继承而来</strong>，继承得到的类称为<strong>派生类</strong>（derived
+class）</p></li>
+<li><p><strong>基类</strong>负责定义层次关系中所有类<strong>共同拥有的成员</strong>，每个<strong>派生类</strong>定义<strong>各自特有的成员</strong></p></li>
+<li><p>基类将<strong>类型相关的函数</strong>与<strong>派生类不做改变直接继承的函数</strong>区分对待。若<strong>基类</strong>希望派生类各自定义适合自身的版本，则将这些函数声明成<strong>虚函数</strong>（virtual
+function）</p></li>
+<li><p>派生类通过<strong>类派生列表</strong>，明确指出它是<strong>从哪些基类继承而来的</strong>，形式是<strong>冒号</strong>后加以<strong>逗号分隔</strong>的<strong>基类列表</strong>，每个基类前可以有<strong>访问说明符</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bulk_quote</span>:</span> <span class="keyword">public</span> Quote &#123;</span><br><span class="line">	<span class="comment">//...  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>派生类</strong>必须在其内部对所有<strong>重新定义的虚函数</strong>进行声明，可以在前面加上<code>virtual</code>关键字，也可以<strong>显式地注明使用哪个成员函数改写基类的虚函数</strong>，即在该函数的<strong>形参列表后增加<code>override</code>关键字</strong></p></li>
+</ul>
+<h3 id="动态绑定">动态绑定</h3>
+<ul>
+<li>通过<strong>动态绑定</strong>，可以用同一段代码<strong>处理不同类的对象</strong></li>
+<li>函数的运行版本<strong>由实参决定</strong>，即在<strong>运行时选择函数的版本</strong>，所以动态绑定也称为<strong>运行时绑定</strong></li>
+<li>C++中，当<strong>使用基类的引用或指针</strong>调用一个<strong>虚函数</strong>时将发生动态绑定</li>
+</ul>
+<h2 id="定义基类和派生类">15.2 定义基类和派生类</h2>
+<h3 id="定义基类">定义基类</h3>
+<ul>
+<li><strong>基类</strong>通常应该定义一个<strong>虚析构函数</strong></li>
+</ul>
+<h4 id="成员函数与继承">成员函数与继承</h4>
+<ul>
+<li><p>基类必须把<strong>派生类直接继承而不要改变的函数</strong>，与希望<strong>派生类进行覆盖的函数</strong>进行区分</p></li>
+<li><p>基类将<strong>希望派生类进行覆盖的函数</strong>定义为<strong>虚函数</strong>，派生类可以对这些函数进行<strong>重新定义</strong>，即提供自己的新定义<strong>覆盖</strong>从基类继承而来的旧定义</p></li>
+<li><p>任何<strong>构造函数以外</strong>的<strong>非静态函数</strong>都可以是虚函数，但<code>virtual</code>只能用于<strong>类内部的声明语句</strong>，不能用于类外部的函数定义</p></li>
+<li><p>如果基类把函数声明为虚函数，则在<strong>派生类</strong>中该函数也<strong>隐式</strong>地是<strong>虚函数</strong></p></li>
+<li><p>当使用<strong>指针</strong>或<strong>引用调用虚函数</strong>时，该调用将被<strong>动态绑定</strong>，该调用可能执行<strong>基类的版本</strong>，也可能执行<strong>某个派生类的版本</strong></p></li>
+<li><p>成员函数如果<strong>没有声明为虚函数</strong>，则其解析过程发生在<strong>编译而非运行</strong>时</p></li>
+</ul>
+<h4 id="访问控制与基类">访问控制与基类</h4>
+<ul>
+<li>派生类可以继承定义在基类中的成员，但其成员函数不一定有权访问基类继承而来的成员</li>
+<li><strong>派生类</strong>能访问基类的<code>public</code>成员，<strong>不能访问基类的<code>private</code>成员</strong></li>
+<li>若基类希望其<strong>派生类有权访问</strong>成员，而<strong>其他用户不能访问</strong>，则<strong>用<code>protected</code>访问运算符</strong>说明这样的成员</li>
+</ul>
+<h3 id="定义派生类">定义派生类</h3>
+<ul>
+<li>派生类通过<strong>类派生列表</strong>指明其从哪个基类继承而来，其形式是冒号加上逗号分隔的基类列表，基类前面可以有<strong>访问说明符</strong>（<code>public</code>、<code>private</code>、<code>protected</code>）</li>
+<li>访问说明符的作用是，控制派生类从基类<strong>继承而来的成员</strong>是否<strong>对派生类的用户可见</strong></li>
+<li>若一个派生是公有的（访问说明符为<code>public</code>），则<strong>基类的公有成员也是派生类接口的组成部分</strong>，能将<strong>公有派生类型的对象</strong>绑定<strong>到基类的引用或指针</strong>上</li>
+</ul>
+<h4 id="派生类中的虚函数">派生类中的虚函数</h4>
+<ul>
+<li><p>派生类通常覆盖它继承的虚函数，<strong>若没有覆盖则派生类会直接继承其在基类中的版本</strong></p></li>
+<li><p>派生类能够显式地注明使用<strong>哪个成员函数覆盖了继承的虚函数</strong>，即在形参列表后面，或<code>const</code>成员函数的<code>const</code>限定符后，或引用成员函数的引用限定符后，<strong>加上<code>override</code>关键字</strong></p></li>
+</ul>
+<h4 id="派生类对象及派生类向基类的转换">派生类对象及派生类向基类的转换</h4>
+<ul>
+<li>派生类对象包含多个<strong>组成部分</strong>，一个<strong>含有派生类自己定义的成员</strong>的<strong>子对象</strong>，该派生类继承的<strong>基类的子对象</strong>（若有多个基类，则有<strong>多个子对象</strong>）</li>
+<li>C++标准没有明确规定派生类的对象在内存中的分布，即继承自基类的部分和类自定义的部分<strong>不一定是连续存储</strong>的</li>
+<li>我们可以把<strong>派生类的对象</strong>当作<strong>基类的对象</strong>使用，也可以将<strong>基类的指针或引用</strong>绑定到<strong>派生类对象</strong>，这是基于<strong>派生类对象中含有与其基类对应的组成部分</strong>这一事实</li>
+<li>这种转换称为<strong>派生类到基类的转换</strong>，编译器会隐式执行这一转换</li>
+</ul>
+<h4 id="派生类构造函数">派生类构造函数</h4>
+<ul>
+<li><p>派生类对象含有从基类继承而来的成员，但不应该直接初始化这些成员，而应该使用<strong>基类的构造函数</strong>初始化<strong>基类部分</strong></p></li>
+<li><p>如果派生类的构造函数没有调用基类的构造函数，则其基类部分将被<strong>默认初始化</strong></p></li>
+<li><p>若派生类的构造函数的<strong>初始化列表</strong>，调用基类的构造函数，则<strong>首先初始化基类部分</strong>，然后<strong>按声明顺序依次初始化派生类的成员</strong></p></li>
+</ul>
+<h4 id="派生类使用基类的成员">派生类使用基类的成员</h4>
+<ul>
+<li>派生类的作用域<strong>嵌套</strong>在基类的作用域内</li>
+<li>派生类可以<strong>访问基类的</strong><code>public</code>和<code>protected</code>成员，直接使用，<strong>无需作用域运算符</strong></li>
+</ul>
+<h4 id="继承与静态成员">继承与静态成员</h4>
+<ul>
+<li><p>如果基类定义了一个<strong>静态成员</strong>，则整个继承体系中<strong>只存在该成员的唯一定义</strong></p></li>
+<li><p>静态成员也遵循<strong>访问控制规则</strong>，若基类的静态成员是<code>private</code>的，则派生类无权访问</p></li>
+<li><p>若基类静态成员是<code>public</code>的，则派生类可<strong>通过基类</strong>使用它或<strong>通过派生类</strong>使用它，且可以通过<strong>类名加作用域运算符</strong>，或者<strong>类对象</strong>的方式访问</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="keyword">static</span> <span class="keyword">int</span> i;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123;&#125;;</span><br><span class="line">Base b;</span><br><span class="line">Derived d;</span><br><span class="line"><span class="comment">// 使用基类的静态成员可通过以下四种方式</span></span><br><span class="line">Base::i</span><br><span class="line">Derived::i</span><br><span class="line">b.i</span><br><span class="line">d.i</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="派生类的声明">派生类的声明</h4>
+<ul>
+<li>派生类的<strong>声明</strong>只包含类名，<strong>不包含类派生列表</strong></li>
+</ul>
+<h4 id="被用作基类的类">被用作基类的类</h4>
+<ul>
+<li><p>若某个类被用作<strong>基类</strong>，则它<strong>必须已经定义</strong>，不能只声明</p></li>
+<li><p>因此<strong>基类不能派生它本身</strong></p></li>
+<li><p>一个类可以是<strong>基类</strong>，<strong>同时也是一个派生类</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D1</span>:</span> <span class="keyword">public</span> Base &#123;&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D2</span>:</span> <span class="keyword">public</span> D1 &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Base</code>是<code>D1</code>的<strong>直接基类</strong>，同时也是<code>D2</code>的<strong>间接基类</strong>，间接基类由派生类通过直接基类继承而来</li>
+</ul></li>
+<li><p>每个类都会继承直接基类的所有成员，对于<strong>最终的派生类</strong>来说，它将包含它的<strong>直接基类的子对象</strong>，以及<strong>每个间接基类的子对象</strong></p></li>
+</ul>
+<h4 id="防止继承的发生">防止继承的发生</h4>
+<ul>
+<li><p>若我们定义一个类时，不希望它被继承，可在<strong>类名后紧跟关键字</strong><code>final</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">final</span> &#123;</span>&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="类型转换与继承">类型转换与继承</h3>
+<ul>
+<li>把<strong>引用</strong>或<strong>指针</strong>绑定到一个对象上的规则
+<ul>
+<li>通常情况，引用或指针的类型必须<strong>与对象类型一致</strong></li>
+<li><strong><code>const</code>类型转换</strong>规则，可以将一个<code>const</code>引用或指针类型绑定到对应类型的非<code>const</code>对象上</li>
+<li>存在继承关系的类，可以将<strong>基类的引用或指针</strong>绑定到<strong>派生类对象</strong>上</li>
+</ul></li>
+<li>和内置指针一样，<strong>智能指针也支持</strong>派生类向基类的类型转换，可以将一个派生类对象的指针存储在基类的智能指针中</li>
+</ul>
+<h4 id="静态类型与动态类型">静态类型与动态类型</h4>
+<ul>
+<li>变量或表达式的静态类型，与该表达式表示对象的动态类型的区别？
+<ul>
+<li>表达式的<strong>静态类型</strong>在<strong>编译时是已知</strong>的，它与变量声明时的类型或表达式生成的类型一致</li>
+<li><strong>动态类型</strong>是变量或表达式表示的<strong>内存中的对象的类型</strong>，直到<strong>运行时才可知</strong></li>
+</ul></li>
+<li>如果表达式既<strong>不是引用也不是指针</strong>，则它的<strong>动态类型</strong>永远与<strong>静态类型</strong>一致</li>
+</ul>
+<h4 id="不存在从基类向派生类的隐式类型转换">不存在从基类向派生类的隐式类型转换</h4>
+<ul>
+<li><p>派生类向基类的转换，是基于派生类对象包含一个基类部分的事实</p></li>
+<li><p>即使一个<strong>基类指针或引用</strong>绑定到一个<strong>派生类对象</strong>上，也不能执行基类向派生类的转换</p></li>
+<li><p>如果我们已知某个<strong>基类向派生类的转换是安全的</strong>，可以通过<code>static_cast</code>进行显式转换</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Bulk_quote bulk;</span><br><span class="line">Quote* p = &amp;bulk;</span><br><span class="line">Bulk_quote *bp = p;		<span class="comment">// 错误, 无法执行基类向派生类的转换</span></span><br><span class="line">Bulk_quote *bp2 = <span class="keyword">static_cast</span>&lt;Bulk_quote*&gt;(p);</span><br><span class="line"><span class="comment">// 编译正确, 但程序员必须确保该基类向派生类的转换是安全的</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="对象之间不存在类型转换">对象之间不存在类型转换</h4>
+<ul>
+<li><p>派生类向基类的转换<strong>只对指针或引用类型有效</strong></p></li>
+<li><p>派生类类型和基类类型之间不存在这样的转换</p></li>
+<li><p>我们可以向<strong>基类的拷贝/移动操作</strong>传递一个派生类的对象，这是因为拷贝/移动构造函数/赋值运算符接受<strong>引用类型</strong>，这时实际运行的<strong>构造函数/赋值运算符</strong>是<strong>基类中定义</strong>的</p></li>
+<li><p>此时，只有派生类对象中的<strong>基类部分会被拷贝、移动或赋值</strong>，而<strong>派生类部分将被忽略</strong></p></li>
+</ul>
+<h4 id="总结存在继承关系的类型之间的转换规则">总结：存在继承关系的类型之间的转换规则</h4>
+<ul>
+<li>从派生类向基类的转换只对<strong>指针或引用类型</strong>有关</li>
+<li><strong>基类向派生类</strong>的转换<strong>不存在</strong>隐式类型转换</li>
+<li>由于继承体系中的大多数类仍然定义了拷贝控制成员，因此通常能将<strong>派生类对象拷贝、移动或赋值给一个基类对象</strong>，此时派生类对象的<strong>基类部分被处理</strong>，而<strong>派生类部分被忽略</strong></li>
+</ul>
+<h2 id="虚函数">15.3 虚函数</h2>
+<h3 id="对虚函数的调用可能在运行时才被解析">对虚函数的调用可能在运行时才被解析</h3>
+<ul>
+<li><p>当某个<strong>虚函数</strong>通过<strong>指针或引用</strong>调用时，编译器产生的代码直到<strong>运行时</strong>才能确定应该调用<strong>哪个版本的函数</strong></p></li>
+<li><p>动态绑定只有当我们<strong>通过指针或引用调用虚函数</strong>时才发生</p></li>
+<li><p>如果通过<strong>普通类型的表达式</strong>调用虚函数时，在<strong>编译时就会确定</strong>调用的版本，如<strong>通过对象进行函数调用</strong></p></li>
+</ul>
+<h3 id="派生类中的虚函数-1">派生类中的虚函数</h3>
+<ul>
+<li>一旦某个函数被声明为虚函数，则其所有派生类中它都是虚函数，可以不用再次通过<code>virtual</code>指明</li>
+<li>如果派生类<strong>覆盖</strong>了某个继承而来的虚函数，则其<strong>形参类型</strong>必须与覆盖的基类虚函数<strong>完全一致</strong>，且<strong>返回类型</strong>也必须与基类函数<strong>匹配</strong>（特别地，如果<strong>返回类型是类本身的指针或引用</strong>，则派生类覆盖虚函数时，可以返回<strong>基类的指针或引用</strong>，也可以返回<strong>派生类的指针或引用</strong>，前提是从派生类向基类的转换是可访问的）</li>
+</ul>
+<h3 id="final和override说明符"><code>final</code>和<code>override</code>说明符</h3>
+<ul>
+<li>如果派生类定义了一个函数，<strong>与基类的虚函数名字相同</strong>，但<strong>形参列表不同</strong>，这是<strong>合法</strong>的，且它们是相互独立的两个函数</li>
+<li>为了防止覆盖虚函数时出错，可通过<code>override</code>关键字说明派生类中的覆盖虚函数，此时如果用<code>override</code>标记了某个函数，但它<strong>没有覆盖已存在的虚函数</strong>，则<strong>编译将出错</strong></li>
+</ul>
+<blockquote>
+<p><code>override</code>是为了防止派生类覆盖基类虚函数时，由于形参列表编写错误导致定义了一个新的函数的错误</p>
+</blockquote>
+<ul>
+<li>把某个函数指定为<code>final</code>，则之后任何试图覆盖该函数的操作都将引发错误</li>
+</ul>
+<h3 id="虚函数与默认实参">虚函数与默认实参</h3>
+<ul>
+<li><p>虚函数也可以有默认实参</p></li>
+<li><p>如果调用虚函数使用了默认实参，则<strong>实参值</strong>将由本次调用的<strong>静态类型</strong>决定</p></li>
+<li><p>因此，如果<strong>通过基类的指针或引用调用虚函数，将使用基类中定义的默认实参</strong>，即使我们运行的是派生类中的函数版本，传入该函数的实参仍然是基类函数定义的默认实参</p></li>
+<li><p>如果虚函数使用了默认实参，<strong>基类和派生类中定义的默认实参最好一致</strong></p></li>
+</ul>
+<h3 id="回避虚函数的机制">回避虚函数的机制</h3>
+<ul>
+<li><p>有时，我们希望对虚函数的调用<strong>不要进行动态绑定</strong>，而是<strong>强迫执行虚函数的某个特定版本</strong>，可以通过<strong>作用域运算符</strong>实现该目的</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> undiscounted = baseP-&gt;Quote::<span class="built_in">net_price</span>(<span class="number">42</span>);</span><br><span class="line"><span class="comment">// 无论baseP实际指向的对象类型到底是什么, 都将执行Quote中的版本</span></span><br></pre></td></tr></table></figure></li>
+<li><p>若使用了回避虚函数的机制，则该<strong>函数调用将在编译时解析</strong></p></li>
+<li><p>当一个<strong>派生类中的虚函数</strong>需要<strong>调用它覆盖的基类的虚函数版本</strong>时，想要回避虚函数的机制</p></li>
+<li><p>若派生类虚函数想要调用基类版本，但却<strong>没有使用作用域运算符</strong>，则调用该派生类虚函数时将导致<strong>无限递归</strong></p></li>
+</ul>
+<h2 id="抽象基类">15.4 抽象基类</h2>
+<h3 id="纯虚函数">纯虚函数</h3>
+<ul>
+<li>如果我们在基类中定义的虚函数是没有实际意义的，它希望每个派生类都覆盖该虚函数，而其自身的版本永远不要被调用，将该函数定义为<strong>纯虚函数</strong>可以实现该目的</li>
+<li><strong>纯虚函数</strong>告诉用户这个函数<strong>没有实际意义</strong>，纯虚函数<strong>无需定义</strong>，而是在<strong>声明语句</strong>的<strong>分号前加上<code>=0</code></strong>进行说明</li>
+<li><code>=0</code>只能出现在类内部的虚函数声明语句中</li>
+<li>可以为纯虚函数提供定义，但是必须在类的外部</li>
+</ul>
+<h3 id="含有纯虚函数的类是抽象基类">含有纯虚函数的类是抽象基类</h3>
+<ul>
+<li><p><strong>含有</strong>纯虚函数的类，或<strong>未经覆盖而直接继承</strong>纯虚函数的类是<strong>抽象基类</strong></p></li>
+<li><p><strong>抽象基类</strong>负责<strong>定义接口</strong>，派生类负责覆盖该接口</p></li>
+<li><p>我们<strong>不能创建</strong>一个<strong>抽象基类的对象</strong></p></li>
+<li><p><strong>重构</strong>负责重新设计类的体系，从而<strong>将操作/数据从一个类移动到另一个类中</strong>，对于面向对象的应用程序，重构很普遍</p></li>
+</ul>
+<h2 id="访问控制与继承">15.5 访问控制与继承</h2>
+<ul>
+<li>每个类分别控制着其成员对于派生类是否可访问</li>
+</ul>
+<h3 id="三类用户">三类用户</h3>
+<ul>
+<li>不考虑继承的话，一个类可以有两种不同的用户：<strong>普通用户</strong>和<strong>类的实现者</strong>
+<ul>
+<li><strong>普通用户</strong>编写代码<strong>使用类的对象</strong>，只能访问类的<code>public</code>成员</li>
+<li><strong>类的实现者</strong>负责编写<strong>类的成员</strong>和<strong>友元</strong>代码，能访问类的所有成员</li>
+</ul></li>
+<li>考虑继承时，则有<strong>第三类用户</strong>，即<strong>派生类</strong>，派生类及派生类的友元可以访问类的<code>protected</code>成员</li>
+</ul>
+<h3 id="protected"><code>protected</code></h3>
+<ul>
+<li><p>受保护的成员对于类的<strong>普通用户</strong>是<strong>不可访问</strong>的，对于<strong>派生类的成员和友元</strong>是<strong>可访问</strong>的</p></li>
+<li><p><code>protected</code>的重要性质，<strong>派生类的成员或友元</strong>只能通过<strong>派生类对象</strong>访问基类的<code>protected</code>成员，<strong>不能通过基类对象</strong>访问基类的<code>protected</code>成员</p></li>
+<li><p><strong>派生类的普通用户</strong>不能访问基类的<code>protected</code>成员</p></li>
+<li><p>对于上述句子的理解可参考<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/37051531/answer/70303204">知乎-晶龙的代码</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="built_in">Base</span>() &#123;</span><br><span class="line">        a = <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> Base &#123;</span><br><span class="line">    Base baseObject;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        a = <span class="number">11</span>;             <span class="comment">// target object is self (kind of Derived)</span></span><br><span class="line">        baseObject.a = <span class="number">12</span>;  <span class="comment">// target object is kind of Base</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Derived</code>类的<code>foo</code>成员第一句是正确的，而第二句是错误的</li>
+<li>这是因为虽然<code>Derived</code>继承了<code>Base</code>，但此处的<code>baseObject</code>是一个普通的<code>Base</code>对象，则此时<strong>并非作为派生类成员</strong>使用该<code>protected</code>成员，而是<strong>作为基类的普通用户</strong>使用该<code>protected</code>成员，所以导致错误</li>
+</ul></li>
+</ul>
+<h3 id="publicprivate和protected继承"><code>public</code>、<code>private</code>和<code>protected</code>继承</h3>
+<ul>
+<li>某个类对其继承而来的成员的访问权限受到两个因素影响，一是<strong>基类中该成员的访问说明符</strong>，二是<strong>派生类的派生列表中的访问说明符</strong></li>
+<li>派生访问说明符对于<strong>派生类的成员及友元</strong>能否访问其直接基类的成员<strong>没有影响</strong></li>
+<li>派生访问说明符用于控制<strong>派生类的普通用户</strong>，以及<strong>派生类的派生类</strong>对基类成员的访问权限</li>
+<li><code>public</code><strong>继承</strong>，成员将<strong>遵循原有</strong>的访问说明符</li>
+<li><code>private</code><strong>继承</strong>，基类的成员是<strong>私有的</strong></li>
+<li><code>protected</code><strong>继承</strong>，<strong>基类的<code>public</code>成员变为<code>protected</code></strong>，因此<strong>派生类的成员和友元可以</strong>使用基类的<code>public</code>和<code>protected</code>成员，而<strong>派生类的普通用户不能</strong>使用</li>
+</ul>
+<h3 id="派生类向基类转换的可访问性">派生类向基类转换的可访问性</h3>
+<ul>
+<li>假定<code>D</code>继承自<code>B</code>
+<ul>
+<li>只有是<strong><code>public</code>继承</strong>时，<strong>用户代码才可以</strong>使用派生类向基类的转换，若为<code>private</code>或<code>protected</code>继承，用户代码不能使用该转换</li>
+<li><code>D</code>的<strong>成员函数和友元总是能够</strong>使用派生类向直接基类的转换</li>
+<li>如果为<strong><code>public</code>继承或<code>protected</code>继承</strong>，则<code>D</code>的<strong>派生类的成员和友元</strong>可以使用<code>D</code>向<code>B</code>的转换</li>
+</ul></li>
+<li>如果<strong>基类的公有成员</strong>是可以访问的，则<strong>派生类向基类的类型转换</strong>也是可以访问的，反之则不行</li>
+</ul>
+<blockquote>
+<p>疑问：对于<code>protected</code>继承类A的类B，其<code>public</code>派生类C的成员，能否访问基类A的<code>public</code>成员？</p>
+<p>回答：类C的成员能否访问，但是类C的用户不可以</p>
+</blockquote>
+<h3 id="友元与继承">友元与继承</h3>
+<ul>
+<li>友元关系不能传递，<strong>友元关系也不能继承</strong></li>
+</ul>
+<h3 id="改变个别成员的可访问性">改变个别成员的可访问性</h3>
+<ul>
+<li><p>派生类可以为那些<strong>它可以访问的名字</strong>提供<code>using</code>声明，以<strong>改变派生类的用户对其的访问</strong></p></li>
+<li><p><code>using</code>声明中<strong>名字的访问权限</strong>由该<code>using</code><strong>声明语句之前的访问说明符决定</strong>，如<code>using</code>位于<code>public</code>部分则该名字能被派生类的普通用户访问</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">  	<span class="keyword">protected</span>:</span><br><span class="line">    	<span class="keyword">int</span> i;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="keyword">using</span> Base::i;		</span><br><span class="line">    	<span class="comment">// i的访问权限变为public, Derived类的普通用户可以使用i成员</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="默认的继承保护级别">默认的继承保护级别</h3>
+<ul>
+<li><strong>默认派生运算符</strong>由定义派生类所用的关键字决定
+<ul>
+<li>使用<code>class</code>定义的派生类是<code>private</code>继承的</li>
+<li>使用<code>struct</code>定义的派生类是<code>public</code>继承的</li>
+</ul></li>
+<li><strong>私有派生</strong>的类最好显式地通过<code>private</code>声明出来</li>
+</ul>
+<h2 id="继承中的类作用域">15.6 继承中的类作用域</h2>
+<ul>
+<li>每个<strong>类</strong>定义自己的<strong>作用域</strong>，在其中我们定义<strong>类的成员</strong></li>
+<li>若存在<strong>继承</strong>关系，<strong>派生类</strong>的作用域<strong>嵌套</strong>在其<strong>基类</strong>的作用域内。如果一个名字在派生类的作用域内无法解析，则编译器将继续在外层的基类作用域中寻找该名字的定义</li>
+</ul>
+<h3 id="编译时进行名字查找">编译时进行名字查找</h3>
+<ul>
+<li><p>一个<strong>对象、引用或指针</strong>的<strong>静态类型</strong>决定了该对象的<strong>哪些成员是可见的</strong></p></li>
+<li><p>即使我们用<strong>基类的指针或引用</strong>指向了<strong>派生类的对象</strong>，我们<strong>无法</strong>通过该指针或引用访问<strong>派生类独有的成员</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设基类为Base, 派生类为Derived, Derived定义了新的数据成员v</span></span><br><span class="line">Derived d;</span><br><span class="line">Base* p = &amp;d;</span><br><span class="line">cout &lt;&lt; p-&gt;v &lt;&lt; endl;	<span class="comment">// 错误, p的静态类型是Base*, 不存在数据成员v</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="名字冲突与继承">名字冲突与继承</h3>
+<ul>
+<li>回忆：定义在<strong>内层作用域</strong>的名字将<strong>隐藏</strong>定义在<strong>外层作用域</strong>的名字</li>
+<li>派生类也能重用定义在其直接基类或间接基类中的名字，此时定义在<strong>派生类的名字</strong>将<strong>隐藏</strong>定义在<strong>基类的名字</strong></li>
+<li>这种情况下，如果我们想在派生类<strong>访问被隐藏的基类成员</strong>，可以通过<strong>作用域运算符</strong>访问</li>
+<li>因此，<strong>除了覆盖</strong>继承而来的<strong>虚函数</strong>之外，派生类最好<strong>不要重用其他定义在基类中的名字</strong></li>
+</ul>
+<h3 id="继承关系中的函数调用解析过程">继承关系中的函数调用解析过程</h3>
+<ul>
+<li>当我们调用<code>p-&gt;mem()</code>或<code>obj.mem()</code>，将按以下步骤解析</li>
+<li>确定<code>p</code>的<strong>静态类型</strong>，该类型必定是类类型</li>
+<li>在静态类型<strong>对应的类中查找</strong><code>mem</code>，若找不到则在<strong>直接基类中查找</strong>，不断往上<strong>直到到达继承链的顶端</strong>，如果仍然<strong>找不到将报错</strong></li>
+<li>若找到，则进行<strong>常规的类型检查</strong>，以确认本次调用是否合法</li>
+<li>若调用合法，则编译器将根据调用的<strong>是否虚函数</strong>而产生不同的代码
+<ul>
+<li>若<code>mem</code>为<strong>虚函数</strong>，且我们<strong>通过指针或引用调用</strong>，则将进行<strong>运行时解析</strong>，即运行时确定到底该运行该虚函数的哪个版本，依据指针或引用所指对象的动态类型</li>
+<li>若<code>mem</code><strong>不是虚函数</strong>，或者我们<strong>通过对象进行调用</strong>，则编译器将产生<strong>常规函数调用</strong></li>
+</ul></li>
+</ul>
+<h3 id="名字查找先于类型检查">名字查找先于类型检查</h3>
+<ul>
+<li><p>声明在<strong>内层作用域</strong>的函数并<strong>不会重载</strong>声明在<strong>外层作用域</strong>的同名函数</p></li>
+<li><p>如果派生类的成员与基类的成员同名，则派生类将在其作用域内<strong>隐藏</strong>该基类成员（<strong>无论形参列表是否一致</strong>，都将隐藏）</p></li>
+<li><p>代码示例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">memfcn</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span>:</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">memfcn</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Derived d; Base b;</span><br><span class="line">b.<span class="built_in">memfcn</span>();			<span class="comment">// 调用Base版本</span></span><br><span class="line">d.Base::<span class="built_in">memfcn</span>();	<span class="comment">// 通过作用域运算符访问被隐藏的成员, 调用Base版本呢</span></span><br><span class="line">d.<span class="built_in">memfcn</span>();			<span class="comment">// 类型检查不通过, 调用非法</span></span><br><span class="line">d.<span class="built_in">memfcn</span>(<span class="number">10</span>);		<span class="comment">// 调用Derived版本</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="虚函数与作用域">虚函数与作用域</h3>
+<ul>
+<li><p>如果派生类没有覆盖其基类的某个虚函数，则派生类会<strong>直接继承其在基类中的版本</strong></p></li>
+<li><p>基类与派生类中的虚函数必须有相同的形参列表，否则<strong>无法通过基类的指针或引用调用派生类的虚函数</strong></p></li>
+</ul>
+<blockquote>
+<ul>
+<li><p>这里有一个容易混淆的概念，对于虚函数，如果派生类没有覆盖，则它会直接<strong>继承基类中的版本</strong>。假如派生类又定义了同名的形参列表不一样的函数，则此时派生类有了两个同名的函数。相当于该函数名在派生类重载了（这与基类的版本会被隐藏不矛盾）</p></li>
+<li><p>代码示例如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">fcn</span><span class="params">()</span></span>;  </span><br><span class="line">&#125;;</span><br><span class="line">      </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fcn</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">      </span><br><span class="line">Base b; Derived d;</span><br><span class="line">Base* bp1 = &amp;b, bp2 = &amp;d;</span><br><span class="line">bp1-&gt;<span class="built_in">fcn</span>();		<span class="comment">// 调用Base版本</span></span><br><span class="line">bp2-&gt;<span class="built_in">fcn</span>();		<span class="comment">// 调用Derived从Base继承的版本</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</blockquote>
+<h3 id="覆盖重载的函数">覆盖重载的函数</h3>
+<ul>
+<li>派生类可以覆盖函数的0个或多个实例，如果派生类希望所有的重载版本对于它来说都是可见的，则它<strong>必须覆盖所有的版本或都不覆盖</strong></li>
+<li>如果只想覆盖其中的一部分版本，可以为重载的成员提供一条<code>using</code>声明语句，这样就不用覆盖基类中的每一个重载版本了</li>
+<li><code>using</code>声明语句指定一个名字，而不指定形参列表，因此<strong>一条<code>using</code>声明语句</strong>就可以把该函数在<strong>基类中的所有重载实例</strong>都添加到<strong>派生类作用域</strong>中</li>
+</ul>
+<h2 id="构造函数与拷贝控制">15.7 构造函数与拷贝控制</h2>
+<h3 id="虚析构函数">虚析构函数</h3>
+<ul>
+<li><p>继承关系对基类拷贝控制最直接的影响，是<strong>基类通常应该定义一个虚析构函数</strong></p></li>
+<li><p>当我们<code>delete</code>动态分配的对象的指针时将执行析构函数，若该指针指向继承体系中的某个类型，则可能出现<strong>指针的静态类型</strong>与<strong>被删除对象的动态类型不符</strong>的情况。我们通过在基类中将析构函数定义为虚函数，<strong>确保执行正确的析构函数版本</strong></p></li>
+<li><p>如果基类的析构函数不是虚函数，则<code>delete</code>一个<strong>指向派生类对象的基类指针</strong>将产生<strong>未定义</strong>的行为</p></li>
+<li><p><strong>三/五法则</strong>，如果一个类需要析构函数，则通常需要拷贝和赋值操作。基类析构函数是一个重要<strong>例外</strong>，我们<strong>总是需要为基类定义虚析构函数</strong>，但不一定要拷贝和赋值操作</p></li>
+<li><p>虚析构函数将阻止合成移动操作。如果类<strong>定义了析构函数</strong>，则即使通过<code>=default</code>的形式使用了合成的版本，编译器也<strong>不会为它合成移动操作</strong></p></li>
+</ul>
+<h3 id="合成拷贝控制与继承">合成拷贝控制与继承</h3>
+<ul>
+<li>继承体系中的<strong>合成拷贝控制成员</strong>，除了对类本身的成员依次进行初始化、赋值或销毁操作外，还会<strong>使用直接基类</strong>中对应的操作对一个<strong>对象的直接基类部分</strong>进行<strong>初始化、赋值或销毁操作</strong></li>
+<li>基类可能是<strong>合成的</strong>默认拷贝控制成员，或<strong>自定义的</strong>默认拷贝控制成员，唯一要求是相应的成员是<strong>可访问</strong>的，<strong>不是删除的函数</strong></li>
+<li>如果类<strong>定义了析构函数</strong>，则它<strong>没有合成的移动操作</strong>，此时如果移动该类的对象将执行拷贝操作</li>
+</ul>
+<h4 id="派生类中删除的拷贝控制成员与基类的关系">派生类中删除的拷贝控制成员与基类的关系</h4>
+<ul>
+<li>如果<strong>基类</strong>的<strong>默认构造函数、拷贝构造函数、拷贝赋值运算符或析构函数</strong>是被<strong>删除</strong>的或<strong>不可访问</strong>的，则<strong>派生类</strong>的对应成员是<strong>删除</strong>的，因为派生类无法使用基类成员执行派生类对象的基类部分的初始化、赋值或销毁</li>
+<li>如果<strong>基类</strong>有一个<strong>不可访问或删除</strong>的<strong>析构函数</strong>，则<strong>派生类</strong>的合成<strong>默认构造函数</strong>、<strong>拷贝构造函数</strong>是被删除的，因为编译器无法销毁派生类对象的基类部分</li>
+<li>如果基类的<strong>移动操作</strong>是删除或不可访问的，则派生类中<strong>对应操作是被删除的</strong>，因为派生对象的基类部分无法移动</li>
+<li>如果<strong>基类的析构函数</strong>不可访问或删除，则<strong>派生类的移动构造函数</strong>是删除的</li>
+</ul>
+<h4 id="移动操作与继承">移动操作与继承</h4>
+<ul>
+<li><p><strong>基类</strong>定义的<strong>虚析构函数</strong>，会<strong>阻止</strong>编译器<strong>合成移动操作</strong>，从而<strong>派生类也无法合成移动操作</strong></p></li>
+<li><p>如果我们确实需要移动操作，则应该<strong>首先在基类定义移动操作</strong>，否则基类缺少移动操作会阻止派生类拥有自己的合成移动操作，且即使派生类定义移动操作，也可能无法解决派生类对象的基类部分移动的问题</p></li>
+</ul>
+<h3 id="派生类的拷贝控制成员">派生类的拷贝控制成员</h3>
+<ul>
+<li><strong>派生类</strong>定义了<strong>拷贝或移动</strong>操作时，该操作负责拷贝或移动<strong>包括基类部分成员</strong>在内的<strong>整个对象</strong></li>
+<li>相反，<strong>析构函数只负责销毁派生类自己分配的资源</strong>，而对象的成员是被隐式销毁的，而派生类对象的<strong>基类部分也是自动销毁的</strong></li>
+</ul>
+<h4 id="定义派生类的拷贝或移动构造函数">定义派生类的拷贝或移动构造函数</h4>
+<ul>
+<li>默认情况下，<strong>基类默认构造函数</strong>初始化派生类对象的基类部分</li>
+<li>如果我们想<strong>拷贝或移动基类部分</strong>，必须在派生类的构造函数<strong>初始值列表</strong>中<strong>显式</strong>地使用<strong>基类的拷贝（或移动）操作</strong></li>
+</ul>
+<h4 id="派生类赋值运算符">派生类赋值运算符</h4>
+<ul>
+<li>派生类的赋值运算符也<strong>显式</strong>地调用<strong>基类的赋值运算符</strong>为基类部分赋值</li>
+</ul>
+<h4 id="派生类析构函数">派生类析构函数</h4>
+<ul>
+<li>析构函数的函数体执行完后，会隐式地销毁对象成员。类似地，<strong>派生类对象</strong>的<strong>基类部分</strong>也是<strong>隐式销毁</strong>的</li>
+<li>对象<strong>销毁的顺序与创建顺序相反</strong>，先执行<strong>派生类</strong>析构函数，再执行<strong>直接基类</strong>的析构函数，依次类推<strong>直至到达继承链的顶端</strong></li>
+</ul>
+<h4 id="在构造函数和析构函数中调用虚函数">在构造函数和析构函数中调用虚函数</h4>
+<ul>
+<li>派生类对象构造/析构期间进入了基类的构造/析构函数时，<strong>对象类型可看作是基类类型，而不是派生类类型</strong></li>
+<li>这意味着如果我们在构造/析构函数调用了某个<strong>虚函数</strong>，则会执行<strong>与该构造/析构函数所属类型相对应的虚函数版本</strong></li>
+</ul>
+<h3 id="继承的构造函数">继承的构造函数</h3>
+<ul>
+<li><p>派生类可以“继承”其<strong>直接基类</strong>定义的<strong>构造函数</strong></p></li>
+<li><p>一个类只能继承其直接基类的构造函数，<strong>不能继承默认、拷贝和移动构造函数</strong></p></li>
+<li><p>派生类通过<strong><code>using</code>声明</strong>继承直接基类的构造函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> Base::Base;		<span class="comment">// 继承Base的构造函数</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>当<code>using</code>声明作用于构造函数时，<code>using</code>声明语句将令编译器产生代码，对于<strong>基类的每个构造函数</strong>，编译器都生成一个<strong>与之对应的派生类构造函数</strong></li>
+<li>若派生类有自己的数据成员，则在继承的构造函数中它们被<strong>默认初始化</strong></li>
+<li><code>using</code>声明不会改变该构造函数的<strong>访问级别</strong></li>
+</ul></li>
+<li><p>例外</p>
+<ul>
+<li>如果派生类定义了<strong>形参列表相同</strong>的构造函数，则它<strong>不会继承该版本的基类构造函数</strong></li>
+<li><strong>不能继承默认构造函数、拷贝构造函数、移动构造函数</strong></li>
+</ul></li>
+</ul>
+<h2 id="容器与继承">15.8 容器与继承</h2>
+<ul>
+<li>因为容器只能存放同一类型的元素，因此容器存放继承体系中的对象时，通常采取<strong>间接存储</strong>的方式</li>
+<li>即<strong>存放基类的指针或智能指针</strong>，这些指针指向的<strong>对象的动态类型</strong>可能是<strong>基类</strong>类型或<strong>派生类</strong>类型</li>
+</ul>
+<h2 id="补充-虚函数表">补充-虚函数表</h2>
+<blockquote>
+<p>本节内容转自<a target="_blank" rel="noopener" href="https://leehao.me/C-虚函数表剖析/">Leo的博客
+“C++虚函数表剖析”</a>，做了适当精简</p>
+</blockquote>
+<h3 id="类的虚表">类的虚表</h3>
+<ul>
+<li><p>每个包含了<strong>虚函数</strong>的类都包含一个<strong>虚表</strong></p></li>
+<li><p>虚表是一个<strong>指针数组</strong>，每个<strong>元素</strong>都是<strong>一个虚函数的函数指针</strong></p></li>
+<li><p>普通的非虚函数的调用无需经过虚表，因此虚表<strong>不包含普通函数的指针</strong></p></li>
+<li><p>一个类<strong>只有一个虚表</strong>，该类的<strong>所有对象共享一个虚表</strong></p></li>
+<li><p>虚表内的条目，即<strong>虚函数指针的赋值</strong>发生在编译器的<strong>编译阶段</strong>，因此<strong>虚表的构造</strong>发生在代码的<strong>编译阶段</strong></p></li>
+<li><p>以下代码定义了类<code>A</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> m_data1, m_data2;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>类<code>A</code>的虚表如下</p></li>
+</ul>
+<p><img src="/.com//1.png"></p>
+<h3 id="虚表指针">虚表指针</h3>
+<ul>
+<li>为了指定对象的虚表，对象内部包含一个虚表的指针，<strong>指向对象所使用的虚表</strong>，称为<strong>虚表指针</strong></li>
+<li>编译器在类中添加了一个<strong>指针<code>*__vptr</code>来指向虚表</strong>，对象创建时便拥有了该指针，其值将在创建时被自动设置为指向类的虚表</li>
+</ul>
+<p><img src="/.com//2.png"></p>
+<h3 id="动态绑定-1">动态绑定</h3>
+<ul>
+<li><p>示例代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> m_data1, m_data2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> m_data3;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span> <span class="keyword">public</span> B &#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> m_data1, m_data4;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>基类为<code>A</code>，派生类<code>B</code>继承<code>A</code>，派生类<code>C</code>继承<code>B</code>，则它们的对象模型如下</p></li>
+</ul>
+<p><img src="/.com//3.png"></p>
+<ul>
+<li><p>三个类都包含虚函数，因此编译器为每个类都创建一个虚表，其虚表指针<code>*__vptr</code>分别指向自己的虚表</p></li>
+<li><p>类<code>A</code>包含两个虚函数，因此类<code>A</code>的虚表包含两个指针，分别指向<code>A::vfunc1()</code>和<code>A::vfunc2()</code></p></li>
+<li><p>类<code>B</code>继承于类<code>A</code>，故类<code>B</code>可以调用类<code>A</code>的函数，同时覆盖了<code>vfunc1()</code>，因此类<code>B</code>的虚表包含两个指针，分别指向<code>B::vfunc1()</code>和<code>A::vfunc2()</code></p></li>
+<li><p>类<code>C</code>继承于类<code>B</code>，故类<code>C</code>可以调用类<code>B</code>的函数，同时覆盖了<code>vfunc2()</code>，因此类<code>C</code>的虚表包含两个指针，分别指向<code>B::vfunc1()</code>和<code>C::vfunc2()</code></p></li>
+<li><p>对象的虚表指针用来指向自己所属类的虚表，<strong>虚表中的指针</strong>会指向其<strong>继承的最近的一个类的虚函数</strong></p></li>
+</ul>
+<h4 id="虚函数调用的过程">虚函数调用的过程</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    B bObject;</span><br><span class="line">    A *p = &amp; bObject;</span><br><span class="line">    p-&gt;<span class="built_in">vfunc1</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>函数调用时，发现<code>p</code>是个指针，且调用了虚函数</li>
+<li>根据虚表指针<code>p-&gt;__vptr</code>访问对象<code>bObject</code>对应的虚表，虽然<code>p</code>是<code>A*</code>类型的指针，但由于<code>*__vptr</code>也是基类的一部分，所以通过<code>p-&gt;__vptr</code>可正确访问对象对应的虚表</li>
+<li>在虚表中查找所调用的函数对应的条目，因此查找类<code>B</code>的虚表的<code>vfunc1</code>对应的条目</li>
+<li>根据虚表中找到的函数指针，对应函数，即调用<code>B::vfunc1()</code></li>
+</ul>
+<h4 id="动态绑定的三个条件">动态绑定的三个条件</h4>
+<ul>
+<li>通过指针或引用调用函数</li>
+<li>调用的是虚函数</li>
+<li>指针或引用是<code>upcast</code>向上转型的，如派生类向基类的转换</li>
+</ul>
+<h2 id="习题">习题</h2>
+<ul>
+<li><p>给定下面的类，问调用的函数版本是哪个？</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="function">string <span class="title">name</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> basename; &#125;</span><br><span class="line">    	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(ostream&amp; os)</span> </span>&#123; os &lt;&lt; basename; &#125;</span><br><span class="line">   	<span class="keyword">private</span>:</span><br><span class="line">    	string basename;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">  	<span class="keyword">public</span>:</span><br><span class="line">    	<span class="function">string <span class="title">name</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> basename; &#125;</span><br><span class="line">    	<span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">(ostream&amp; os)</span> <span class="keyword">override</span> </span>&#123; </span><br><span class="line">        	Base::<span class="built_in">print</span>(os);</span><br><span class="line">            os &lt;&lt; basename;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    	string basename;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Base obj1;</span><br><span class="line">Derived obj2;</span><br><span class="line">Base *bp1 = &amp;obj1;</span><br><span class="line">Base *bp2 = &amp;obj2;</span><br><span class="line">Base &amp;br1 = obj1;</span><br><span class="line">Base &amp;br2 = obj2;</span><br><span class="line"></span><br><span class="line">obj1.<span class="built_in">print</span>();		<span class="comment">// base, 编译时解析</span></span><br><span class="line">obj2.<span class="built_in">print</span>();		<span class="comment">// derived, 编译时解析</span></span><br><span class="line">bp1-&gt;<span class="built_in">name</span>();		<span class="comment">// base, 编译时解析(name()并非虚函数)</span></span><br><span class="line">bp2-&gt;<span class="built_in">name</span>();		<span class="comment">// base, 编译时解析</span></span><br><span class="line">br1.<span class="built_in">print</span>();		<span class="comment">// base, 动态绑定</span></span><br><span class="line">br2.<span class="built_in">print</span>();		<span class="comment">// derived, 动态绑定</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/02/21/C++-Primer-Chapter-15/" title="C++ Primer Chapter 15">http://example.com/2022/02/21/C++-Primer-Chapter-15/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/20/C++-Primer-Chapter-14/" rel="prev" title="C++ Primer Chapter 14">
+                  <i class="fa fa-chevron-left"></i> C++ Primer Chapter 14
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/22/C++-%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="next" title="C++-面试题">
+                  C++-面试题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

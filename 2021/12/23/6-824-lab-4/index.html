@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Part A  pass  Part B 1for i in &amp;#123;0..100&amp;#125;; do go test -race; done 2021-12-25  Client端的leader不从Server中获取，而是直接在Client端记录 将Operation（Put&#x2F;Append&#x2F;Get）与Migration（ConfigNum&#x2F;ReadMigration&#x2F;WriteMigrati">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.824 lab 4">
+<meta property="og:url" content="http://example.com/2021/12/23/6-824-lab-4/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="Part A  pass  Part B 1for i in &amp;#123;0..100&amp;#125;; do go test -race; done 2021-12-25  Client端的leader不从Server中获取，而是直接在Client端记录 将Operation（Put&#x2F;Append&#x2F;Get）与Migration（ConfigNum&#x2F;ReadMigration&#x2F;WriteMigrati">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-23T08:40:07.000Z">
+<meta property="article:modified_time" content="2022-04-08T12:08:32.849Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="6.824">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/12/23/6-824-lab-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/12/23/6-824-lab-4/","path":"2021/12/23/6-824-lab-4/","title":"6.824 lab 4"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>6.824 lab 4 | 元朗食品</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#part-a"><span class="nav-text">Part A</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-b"><span class="nav-text">Part B</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#section"><span class="nav-text">2021-12-25</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-1"><span class="nav-text">2021-12-26</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-2"><span class="nav-text">2021-12-27</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-3"><span class="nav-text">2021-12-28</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-4"><span class="nav-text">2021-12-29</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-5"><span class="nav-text">2021-12-30</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-6"><span class="nav-text">2021-12-31</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/23/6-824-lab-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6.824 lab 4
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-23 16:40:07" itemprop="dateCreated datePublished" datetime="2021-12-23T16:40:07+08:00">2021-12-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="part-a">Part A</h1>
+<ul>
+<li>pass</li>
+</ul>
+<h1 id="part-b">Part B</h1>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i in &#123;<span class="number">0.</span><span class="number">.100</span>&#125;; do <span class="keyword">go</span> test -race; done</span><br></pre></td></tr></table></figure>
+<h2 id="section">2021-12-25</h2>
+<ul>
+<li><p>Client端的leader不从Server中获取，而是直接在Client端记录</p></li>
+<li><p>将Operation（Put/Append/Get）与Migration（ConfigNum/ReadMigration/WriteMigration）分离，有各自的数据类型、Execute函数、消息channel等</p></li>
+<li><p>Test Snapshot问题描述：Client
+Get出现了大量的<strong>WrongLeader</strong>，导致了时间大量浪费</p>
+<ul>
+<li>经仔细检查，大量WrongLeader是由于<strong>Client中的leader赋值错误导致的</strong></li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ok &amp;&amp; (reply.Err == OK || reply.Err == ErrNoKey) &#123;</span><br><span class="line">    <span class="comment">// 正确赋值</span></span><br><span class="line">    ck.leader[gid] = (si + ck.leader[gid]) % <span class="built_in">len</span>(servers)</span><br><span class="line">    <span class="comment">// 之前的错误赋值</span></span><br><span class="line">    ck.leader[gid] = si</span><br><span class="line">    <span class="keyword">return</span> reply.Value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>十一次Test Snapshot出现了一次Get错误，成功的平均时间为27s</li>
+</ul></li>
+<li><p>问题描述：server端无法更新<code>kv.leaderHint</code></p>
+<ul>
+<li>若检测到config更新而自己并非leader，<strong>尝试提交empty
+op</strong></li>
+</ul></li>
+<li><p>问题描述，提交empty
+op的确能解决以上问题，但是会导致前三个test时间非常长</p>
+<ul>
+<li>可能原因是因为<strong>empty
+op不应该在<code>checkConfig</code>中提交</strong>，否则会导致每个服务器都向ctrler查询最新的config并向raft提交empty
+op，代价太大</li>
+<li>解决：在<strong>一个单独的协程中调用GetState()</strong>即可</li>
+</ul></li>
+<li><p>test4无法稳定通过，可能存在的问题：</p>
+<ul>
+<li>活锁？一直ErrWaiting</li>
+<li>有一个shard一直是2</li>
+<li>Get错误等</li>
+<li><strong>修改：</strong>Get和PutAppend的准入条件</li>
+</ul></li>
+<li><p>问题描述：在某个时刻某个shard在所有group的状态都是Waiting</p></li>
+</ul>
+<span id="more"></span>
+<h2 id="section-1">2021-12-26</h2>
+<ul>
+<li><p>ReadMigration回复的条件修改</p>
+<ul>
+<li>若当前的configNum小于read的configNum，则数据未更新，需要等待</li>
+<li>若当前的configNum等于read的configNum，则分两种情况，若该shard处于等待状态，说明其本质上还是上一个config，若非等待状态，则可以读取</li>
+<li>若当前的configNum大于read的configNum，则可以read</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check if the shard is in waiting status</span></span><br><span class="line"><span class="comment">// if kv.shardState[args.Index] == Waiting &#123;</span></span><br><span class="line"><span class="keyword">if</span> kv.configNum &lt; args.ConfigNum || (kv.configNum == args.ConfigNum &amp;&amp; kv.shardState[args.Index] == Waiting) &#123;</span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">    reply.Err = ErrWaiting</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>结果：t1-4用时稳定在50多秒，但t3/t4有接近20%的几率无法通过，表现为<strong>Get的结果缺少了某一个Append的数据</strong></p></li>
+<li><p>问题描述：<code>TestConcurrent</code>出现了活锁的问题</p>
+<ul>
+<li>问题检查：ReadMigration长期ErrTimeout，大量的ReadMigration堆积在Raft中</li>
+<li>解决一：对每个shard设置一个ReadMigration专用的锁，只有获取了锁才可以发送ReadMigration
+RPC</li>
+<li>解决二：在ReadMigration RPC
+handler中增加对重复Migration的检查，若session中有则直接返回</li>
+<li>结果：TestConcurrent能在10s左右通过，但可能出现<strong>goroutine数目过多、Get不正确、活锁</strong>的报错，需要考虑进一步考虑<code>SendReadMigrationRPC</code>的限制（现在的锁只能让其阻塞，但是仍然会创建该goroutine）</li>
+</ul></li>
+<li><p>问题描述：<code>TestConcurrent</code>出现了ConfigNum无法更新的活锁的问题</p>
+<ul>
+<li><p>解决：在向Raft提交ConfigNum更新时增加对重复Migration的检查，若session中有则直接返回</p></li>
+<li><p>解决：因为假如ConfigNum到达乱序，则会导致该操作被查重拒绝，因此必须增加标志位flag，如果ConfigNum则将flag置为false，不要保存到session中</p></li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> mg.Operation == <span class="string">&quot;ConfigNum&quot;</span> &#123;</span><br><span class="line">    DPrintf1(<span class="string">&quot;mg.ConfigNum %v, kv.configNum %v&quot;</span>, mg.ConfigNum, kv.configNum)</span><br><span class="line">    <span class="keyword">if</span> mg.ConfigNum == kv.configNum+<span class="number">1</span> &#123;</span><br><span class="line">        config := kv.mck.Query(mg.ConfigNum)</span><br><span class="line">        lastConfig := kv.mck.Query(mg.ConfigNum - <span class="number">1</span>)</span><br><span class="line">        <span class="comment">// update config and setup the shard state, which will start the shard migration process</span></span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(kv.shardState); i++ &#123;</span><br><span class="line">            <span class="keyword">if</span> lastConfig.Shards[i] == kv.gid &amp;&amp; config.Shards[i] != kv.gid &#123;</span><br><span class="line">                kv.shardState[i] = NotServed</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> lastConfig.Shards[i] != kv.gid &amp;&amp; config.Shards[i] == kv.gid &#123;</span><br><span class="line">                <span class="keyword">if</span> kv.configNum == <span class="number">0</span> &#123;</span><br><span class="line">                    kv.shardState[i] = Serving</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    kv.shardState[i] = Waiting</span><br><span class="line">                    <span class="comment">// go kv.SendReadMigrationRPC(i)</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        kv.configNum = mg.ConfigNum</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        flag = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    entry.Data = <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> flag &#123;</span><br><span class="line">    kv.migrationSession[mg.Gid][mg.Index][mg.Operation] = entry</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>结果TestConcurrent不会卡死，但是出现了几次<strong>Get的结果缺少最近一次Append的情况</strong></li>
+</ul></li>
+</ul>
+<h2 id="section-2">2021-12-27</h2>
+<ul>
+<li><p>问题描述：TestConcurrent成功时时间约为12s，但是会出现<strong>Get的结果缺少最近一次Append的情况</strong></p>
+<ul>
+<li>分析：怀疑是Operation的判断条件出现问题，在Concurrent的情况下暴露出来</li>
+</ul></li>
+<li><p>问题描述：TestUnreliable出现Get的结果多了一个Append的情况</p>
+<ul>
+<li>分析：同上，可能是<strong>Get/PutAppend的允许条件有问题</strong></li>
+</ul></li>
+<li><p>问题描述：Migration后Operation可能重复执行，由于session不一致的原因</p>
+<ul>
+<li>解决方法：Migration时候考虑将该shard的data和session一起转移</li>
+<li>修改：data目前是按shard的，<strong>同样地，将session也按shard划分</strong>，在migration时（包括ReadMigration和WriteMigration）相关的数据结构除了data还要带上session</li>
+</ul></li>
+<li><p>问题描述：修改后仍然存在不一致的情况</p>
+<ul>
+<li>分析：可能是各个map在传递时没有采用复制的形式</li>
+<li>修改：migration时，data和session都使用专门编写的copy函数进行复制，同时从migrationSession中获取data和session也使用copy的形式</li>
+<li>结果：Unreliable仍出现Get结果的问题，大部分表现为<strong>缺少某段前缀</strong>，而重复Append的问题似乎得到了解决</li>
+<li>重新测试Test1-4：20次通过</li>
+</ul></li>
+<li><p>问题描述：本问题来自于网上看到，如果snapshot大小为0则应该直接跳过而不应该尝试解码</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">snapshot := persister.ReadSnapshot()</span><br><span class="line"><span class="keyword">if</span> snapshot == <span class="literal">nil</span> || <span class="built_in">len</span>(snapshot) &lt; <span class="number">1</span> &#123; <span class="comment">// bootstrap without any state?</span></span><br><span class="line">    DPrintf(<span class="string">&quot;Error empty&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    r := bytes.NewBuffer(snapshot)</span><br><span class="line">    d := labgob.NewDecoder(r)</span><br><span class="line">    <span class="keyword">var</span> data []<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line">    <span class="keyword">var</span> opSession []<span class="keyword">map</span>[<span class="keyword">int64</span>]OpEntry</span><br><span class="line">    <span class="keyword">var</span> migrationSession <span class="keyword">map</span>[<span class="keyword">int</span>][]<span class="keyword">map</span>[<span class="keyword">string</span>]MigrationEntry</span><br><span class="line">    <span class="keyword">var</span> shardState []<span class="keyword">int</span></span><br><span class="line">    <span class="keyword">var</span> configNum <span class="keyword">int</span></span><br><span class="line">    <span class="keyword">if</span> d.Decode(&amp;data) != <span class="literal">nil</span> || d.Decode(&amp;opSession) != <span class="literal">nil</span> || d.Decode(&amp;migrationSession) != <span class="literal">nil</span> || d.Decode(&amp;configNum) != <span class="literal">nil</span> || d.Decode(&amp;shardState) != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="comment">// error...</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        kv.data = data</span><br><span class="line">        kv.opSession = opSession</span><br><span class="line">        kv.migrationSession = migrationSession</span><br><span class="line">        kv.configNum = configNum</span><br><span class="line">        kv.shardState = shardState</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在WriteMigration执行时，对比版本号<code>ConfigNum</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> mg.Operation == <span class="string">&quot;WriteMigration&quot;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> mg.ConfigNum == kv.configNum &amp;&amp; kv.shardState[mg.Index] == Waiting &#123;</span><br><span class="line">        kv.shardState[mg.Index] = Serving</span><br><span class="line">        kv.data[mg.Index] = kv.CopyMap(mg.Data)</span><br><span class="line">        kv.opSession[mg.Index] = kv.CopyMap1(mg.Session)</span><br><span class="line">        entry.Data = <span class="literal">nil</span></span><br><span class="line">        entry.Session = <span class="literal">nil</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        flag = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>问题描述：通过对Unreliable的log查找，发现在更新ConfigNum时，会用到LastConfig和config的对比，但有时候LastConfig获取的结果可能是最新的config</p>
+<ul>
+<li>问题分析：这个问题较为异常，因为lastConfig系通过<code>mg.ConfigNum - 1</code>获取的，而config正常说明<code>mg.ConfigNum - 1</code>不应该小于0或超过当前最新configNum，因此不应该出现LastConfig的情况，<strong>怀疑是Controller的问题</strong></li>
+<li>解决：根本上的解决可能涉及Controller的修改，目前通过获取LastConfig和config后，重新对比两者的ConfigNum暂时解决</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">config := kv.mck.Query(mg.ConfigNum)</span><br><span class="line">lastConfig := kv.mck.Query(mg.ConfigNum - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> config.Num == mg.ConfigNum &amp;&amp; lastConfig.Num == mg.ConfigNum<span class="number">-1</span> &#123;</span><br><span class="line">    <span class="comment">// update config and setup the shard state, which will start the shard migration process</span></span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(kv.shardState); i++ &#123;</span><br><span class="line">        <span class="keyword">if</span> config.Shards[i] != kv.gid &#123;</span><br><span class="line">            kv.shardState[i] = NotServed</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> lastConfig.Shards[i] != kv.gid &amp;&amp; config.Shards[i] == kv.gid &#123;</span><br><span class="line">            <span class="keyword">if</span> kv.configNum == <span class="number">0</span> &#123;</span><br><span class="line">                kv.shardState[i] = Serving</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                kv.shardState[i] = Waiting</span><br><span class="line">                <span class="comment">// go kv.SendReadMigrationRPC(i)</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    DPrintf1(<span class="string">&quot;group %v, lastConfig is %v, this is %v, my state is %v&quot;</span>, kv.gid, lastConfig, config, kv.shardState)</span><br><span class="line">    kv.configNum = mg.ConfigNum</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    flag = <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SendReadMigrationRPC中可能有同样的问题，进行相同处理</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lastConfig := kv.mck.Query(kv.configNum - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> lastConfig.Num != kv.configNum<span class="number">-1</span> &#123;</span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">    kv.readMigrationMu[i].Unlock()</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>问题描述：多余的SendReadMigration</p>
+<ul>
+<li>解决：为了避免创建多余的协程，为每个shard的SendReadMigration设置一个<code>readMigrationMu</code>，同时为每个shard设置一个<code>CheckMigration(i int)</code>，在调用<code>SendReadMigrationRPC</code>前必须获取<code>readMigrationMu</code>，从而避免了之前创建过多goroutine的问题</li>
+<li>代码：注意到此时<code>SendReadMigrationRPC</code>函数应直接调用，不要创建goroutine</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(kv *ShardKV)</span> <span class="title">CheckMigration</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> !kv.killed() &#123;</span><br><span class="line">		kv.mu.Lock()</span><br><span class="line">		_, isleader := kv.rf.GetState()</span><br><span class="line">		configNum := kv.configNum</span><br><span class="line">		kv.mu.Unlock()</span><br><span class="line">		<span class="keyword">if</span> isleader &#123;</span><br><span class="line">			kv.readMigrationMu[i].Lock()</span><br><span class="line">			kv.SendReadMigrationRPC(i, configNum)</span><br><span class="line">			kv.readMigrationMu[i].Unlock()</span><br><span class="line">		&#125;</span><br><span class="line">		time.Sleep(time.Millisecond * <span class="number">50</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>问题描述：ReadMigration得到了空的map</p>
+<ul>
+<li>修改：检查代码怀疑是ReadMigration RPC
+handler中的执行前查重器，由于其data和session的赋值没有使用编写的copy函数，因此进行了修改，执行前查重器仍然保留</li>
+<li>结果：出现了<strong>Get缺少最近一次Append的情况</strong></li>
+</ul></li>
+<li><p>WriteMigration不要直接覆盖</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// kv.data[mg.Index] = kv.CopyMap(mg.Data)</span></span><br><span class="line"><span class="comment">// kv.opSession[mg.Index] = kv.CopyMap1(mg.Session)</span></span><br><span class="line"><span class="keyword">for</span> k, v := <span class="keyword">range</span> mg.Data &#123;</span><br><span class="line">    kv.data[mg.Index][k] = v</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> k, v := <span class="keyword">range</span> mg.Session &#123;</span><br><span class="line">    kv.opSession[mg.Index][k] = kv.CopyEntry(v)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>结果：Unreliable50次测试有1次出错，<strong>Get缺少了一段前缀</strong></li>
+</ul></li>
+</ul>
+<h2 id="section-3">2021-12-28</h2>
+<ul>
+<li><p>问题描述：执行用时过长，TestConcurrent3用时超过了120s</p>
+<ul>
+<li>修改：考虑到Raft的执行顺序，尝试将状态从Waiting变为Serving的更改提前到Start(WriteMigration)后，而不是执行WriteMigration时</li>
+<li>结果：会出错，撤销修改</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> mg.Operation == <span class="string">&quot;WriteMigration&quot;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> mg.ConfigNum == kv.configNum &#123;</span><br><span class="line">        <span class="comment">// kv.shardState[mg.Index] = Serving</span></span><br><span class="line">        <span class="keyword">for</span> k, v := <span class="keyword">range</span> mg.Data &#123;</span><br><span class="line">            kv.data[mg.Index][k] = v</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> k, v := <span class="keyword">range</span> mg.Session &#123;</span><br><span class="line">            kv.opSession[mg.Index][k] = kv.CopyEntry(v)</span><br><span class="line">        &#125;</span><br><span class="line">        entry.Data = <span class="literal">nil</span></span><br><span class="line">        entry.Session = <span class="literal">nil</span></span><br><span class="line">        DPrintf1(<span class="string">&quot;group %v writeMigration, configNum %v, data %v&quot;</span>, kv.gid, kv.configNum, mg.Data)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        flag = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
+<li><p>问题描述：各个RPC
+handler在<strong>第一时间检查是否leader</strong>，若不是则直接回绝</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_, isleader := kv.rf.GetState()</span><br><span class="line"><span class="keyword">if</span> !isleader &#123;</span><br><span class="line">    reply.Err = ErrWrongLeader1</span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>问题描述：耗时过长</p>
+<ul>
+<li>一个可能的原因，SendReadMigrationRPC需要获取该shard的锁，如果该程序耗时过长，则可能导致性能大幅降低</li>
+<li>检查发现checkMigration的bug，<strong>没有预先检查Waiting状态再调用<code>SendReadMigrationRPC</code></strong>，修改后</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> isleader &amp;&amp; kv.shardState[i] == Waiting &#123;</span><br><span class="line">    configNum := kv.configNum</span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">    kv.readMigrationMu[i].Lock()</span><br><span class="line">    kv.SendReadMigrationRPC(i, configNum)</span><br><span class="line">    kv.readMigrationMu[i].Unlock()</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>服务端在进行Migration时长时间出现的WrongLeader，考虑对服务端也<strong>增加上一个leader的存储</strong></li>
+</ul></li>
+<li><p>目前状态：大概率通过所有测试，小概率出错表现在<strong>TestConcurrent2的Get缺少某次Append的结果</strong>。另外<strong>耗时过长</strong>，其中TestConcurrent3可能超过规定的120s，还需要进一步解决时间问题</p>
+<ul>
+<li>解决思路：由于Get结果出错概率小，复现需要测试次数多，考虑<strong>先解决耗时问题</strong>，再查bug</li>
+</ul></li>
+<li><p>问题描述：由于<strong>TestConcurrent2的Get缺少某次Append的结果出现概率较高</strong>，因此考虑先解决该问题</p>
+<ul>
+<li>观察log，难以直接确认，感觉是WriteMigration覆盖了之前的Append结果。由此联想到之前WriteMigration采取了追加而不是覆盖的方式，是否应该直接覆盖？</li>
+<li>如何处理<strong>Migration与Operation之间的关系</strong></li>
+</ul></li>
+</ul>
+<h2 id="section-4">2021-12-29</h2>
+<ul>
+<li><p>对于Get和PutAppend的读写也需要进行Serving校验</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> reflect.TypeOf(msg.Command).String() == <span class="string">&quot;shardkv.Op&quot;</span> &#123;</span><br><span class="line">    <span class="comment">// DPrintf1(&quot;Operation command&quot;)</span></span><br><span class="line">    op := msg.Command.(Op)</span><br><span class="line">    em := OpMsg&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> kv.shardState[key2shard(op.Key)] == Serving &#123;</span><br><span class="line">        res := kv.ExecuteWithLock(op)</span><br><span class="line">        kv.applyIndex = msg.CommandIndex</span><br><span class="line">        em.op = op</span><br><span class="line">        em.res = res</span><br><span class="line">        em.err = OK</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        em.err = ErrWrongGroup</span><br><span class="line">    &#125;</span><br><span class="line">    ch, ok := kv.channels1[msg.CommandIndex]</span><br><span class="line">    <span class="keyword">if</span> !ok &#123;</span><br><span class="line">        kv.mu.Unlock()</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// send ExecuteMsg to RPC handler througn go channel should be placed in goroutine</span></span><br><span class="line">    <span class="keyword">go</span> kv.SendApplyOpMsg(ch, em)</span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>如果一个Group的某个shard等待被拉取，那么它也不能提供读写服务或者更新config，增加状态Pushing表示正在等待其他group发来ReadMigration</strong></p></li>
+</ul>
+<h2 id="section-5">2021-12-30</h2>
+<ul>
+<li><p>问题描述：状态从Pushing改成NotServed时各个服务器之间不同步，有的服务器已经变为NotServed，有的却一直在Pushing</p>
+<ul>
+<li><p>分析：因为<strong>Migration可能存在执行不成功的情况</strong>，此时应该返回ErrWaiting，而不是OK</p></li>
+<li><p>修改：根据<code>MigrationWithLock</code>的返回值flag判断是否成功，若不成功则设置<code>em.err = ErrWaiting</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">flag, data, session := kv.MigrationWithLock(mg)</span><br><span class="line">em := MigrationMsg&#123;&#125;</span><br><span class="line">ch, ok := kv.channels2[msg.CommandIndex]</span><br><span class="line">DPrintf2(<span class="string">&quot;Migration ApplyMsg %v received&quot;</span>, msg.CommandIndex)</span><br><span class="line"><span class="keyword">if</span> !ok &#123;</span><br><span class="line">    DPrintf2(<span class="string">&quot;Nobody listen to the migration msg, type %v&quot;</span>, msg.Command.(Migration).Operation)</span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">    <span class="keyword">continue</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> flag &#123;</span><br><span class="line">    kv.applyIndex = msg.CommandIndex</span><br><span class="line">    em.migration = mg</span><br><span class="line">    em.data = data</span><br><span class="line">    em.session = session</span><br><span class="line">    em.err = OK</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    em.err = ErrWaiting</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>结果：问题仍然存在，考虑<strong>对状态为Pushing的shard增加InstallMigration
+RPC</strong></p></li>
+</ul></li>
+<li><p>问题描述：group重启后由于snapshot没有保存最新的状态，可能卡在上一个config的Pushing状态，而实际上相应的其他gruop读取了该shard数据并进入下一个config，因此之后也不会有gruop来读取该数据，从而使得状态一直被阻塞在Pushing</p>
+<ul>
+<li><p>解决：增加InstallMigrationRPC主动推送数据，从而pushing和pulling两者并列存在</p></li>
+<li><p>协调：由于Install的设置主要是为了协助解决Pushing阻塞问题，主要的功能已经由之前的ReadMigration实现。因此InstallMigration
+RPC handler需要特别注意以下几种情况</p>
+<ul>
+<li><code>kv.configNum &gt; args.ConfigNum</code>，说明当前gruop已经具有该数据，无需重复安装，直接返回OK</li>
+<li><code>kv.configNum == args.ConfigNum &amp;&amp; kv.shardState[args.Index] != Pulling</code>，同上，返回OK</li>
+<li><code>kv.configNum &lt; args.ConfigNum</code>，说明当前group未更新到该config，返回ErrWaiting</li>
+</ul>
+<p>因此，只有当前group的config与之相等且shard的状态为Pulling时才进行更新</p></li>
+<li><p><strong>InstallMigration RPC的调用者收到OK的回复后，向Raft
+commit一个NotServed
+Migration，用以将相应的shardState从Pushing设置为NotServed</strong></p></li>
+<li><p>测试结果：TestConcurrent3出现了Get缺少某次Append的错误</p></li>
+</ul></li>
+<li><p>问题描述：ReadMigration阻塞</p>
+<ul>
+<li>修改：对于<strong>configNum小于自己的ReadMigration</strong>，无论当前状态，都可以允许操作</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check if the shard is in waiting status</span></span><br><span class="line"><span class="keyword">if</span> kv.configNum &lt; args.ConfigNum || (kv.shardState[args.Index] != Pushing &amp;&amp; kv.configNum == args.ConfigNum) &#123;</span><br><span class="line"><span class="comment">// previous condition, which is wrong</span></span><br><span class="line"><span class="comment">// if kv.configNum &lt; args.ConfigNum || (kv.shardState[args.Index] != Pushing) &#123;</span></span><br><span class="line">    kv.mu.Unlock()</span><br><span class="line">    reply.Err = ErrWaiting</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试结果：59/60，其中第55次出现了TestConcurrent3缺少某段的情况，考虑对TestConcurrent3进行单独测试</li>
+</ul></li>
+<li><p>问题描述：TestConcurrent3的Get缺少了一段</p>
+<ul>
+<li>测试结果：连续200次的第79次出错，608438行</li>
+</ul></li>
+</ul>
+<h2 id="section-6">2021-12-31</h2>
+<ul>
+<li><p>发现WriteMigration覆盖了之前的数据，分析发现WriteMigration的config不应该使用当前的<code>kv.configNum</code>，而应该使用发送ReadMigration时候的configNum，<code>args.configNum</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(kv *ShardKV)</span> <span class="title">WriteMigration</span><span class="params">(index <span class="keyword">int</span>, data <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>, session <span class="keyword">map</span>[<span class="keyword">int64</span>]OpEntry, configNum <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	kv.mu.Lock()</span><br><span class="line">	<span class="comment">// check if that WriteMigration has been commited</span></span><br><span class="line">	_, ok := kv.migrationSession[kv.gid]</span><br><span class="line">	<span class="keyword">if</span> ok &amp;&amp; kv.migrationSession[kv.gid][index][<span class="string">&quot;WriteMigration&quot;</span>].ConfigNum &gt;= kv.configNum &#123;</span><br><span class="line">		kv.mu.Unlock()</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		mg := Migration&#123;&#125;</span><br><span class="line">		mg.Gid = kv.gid</span><br><span class="line">		mg.ConfigNum = configNum</span><br><span class="line">		mg.Operation = <span class="string">&quot;WriteMigration&quot;</span></span><br><span class="line">		mg.Index = index</span><br><span class="line">		mg.Data = data</span><br><span class="line">		mg.Session = session</span><br><span class="line">		_, isleader := kv.rf.GetState()</span><br><span class="line">		<span class="keyword">if</span> isleader &#123;</span><br><span class="line">			kv.mu.Unlock()</span><br><span class="line">			kv.rf.Start(mg)</span><br><span class="line">			kv.mu.Lock()</span><br><span class="line">		&#125;</span><br><span class="line">		kv.mu.Unlock()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>测试结果：连续190次pass</p></li>
+<li><p>连续对Concurrent3测试1000次pass</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/12/23/6-824-lab-4/" title="6.824 lab 4">http://example.com/2021/12/23/6-824-lab-4/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/6-824/" rel="tag"># 6.824</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/17/6-824-Lab-3/" rel="prev" title="6.824 Lab 3">
+                  <i class="fa fa-chevron-left"></i> 6.824 Lab 3
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/26/Leetcode-Week-Contest-273/" rel="next" title="Leetcode Week Contest 273">
+                  Leetcode Week Contest 273 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
