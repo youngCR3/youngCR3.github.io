@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">120</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -140,7 +140,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,233 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/6-824-Lab-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/14/6-824-Lab-2/" class="post-title-link" itemprop="url">6.824 Lab 2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-14 01:44:08" itemprop="dateCreated datePublished" datetime="2021-12-14T01:44:08+08:00">2021-12-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="part-2a-leader-election">Part 2A: leader election</h1>
+<ul>
+<li><p>论文Figure2的<strong>每一句话都必须严格遵守</strong>，否则就无法通过测试</p>
+<p><img src="/2021/12/14/6-824-Lab-2/figure2.png"></p></li>
+<li><p>leader的heartbeat间隔为100ms，election
+timer的间隔可设为300-600ms</p></li>
+<li><p>Election timer的<strong>reset时机</strong>有且只有三个</p>
+<ul>
+<li>收到来自当前leader的<strong>有效心跳信号</strong></li>
+<li><strong>为其他server投票时</strong></li>
+<li>timeout，并且<strong>成为candidate开始竞选时</strong></li>
+</ul></li>
+<li><p>RPC的接收者或发出者，只要遇到<code>args</code>或<code>reply</code>的<code>Term</code>大于自己的<code>currentTerm</code>，就要更新<code>currentTerm</code>，重新设置<code>VotedFor</code>，并成为follower</p></li>
+<li><p>参与竞选时，candidate应立刻vote for
+self，更新<code>VotedFor</code>和<code>receivedVotes</code>，之后发送<code>RequestVote RPC</code>时应跳过自己</p></li>
+<li><p>candidate参与竞选时的动作顺序应严格遵守Figure2</p></li>
+<li><p>困扰我最大的bug是，candidate发送<code>RequestVote</code>，以及leader发送<code>AppendEntries</code>都应该是<strong>并行</strong>的，切勿在循环中串行发送，否则等待RPC返回的时间加起来，大概率超过Election
+timer的timeout</p></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go test -run 2A -race</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/14/6-824-Lab-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/12/6-824-Lec5-Raft-I/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/12/6-824-Lec5-Raft-I/" class="post-title-link" itemprop="url">6.824 Lec5 Raft-I</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-12 17:00:30" itemprop="dateCreated datePublished" datetime="2021-12-12T17:00:30+08:00">2021-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="split-brain问题">Split brain问题</h1>
+<h2 id="primary结构">Primary结构</h2>
+<ul>
+<li>MapReduce、GFS、FT-VM都采用了primary结构</li>
+</ul>
+<h2 id="split-brain-in-ft-vm">Split brain in FT-VM</h2>
+<p><img src="/2021/12/12/6-824-Lec5-Raft-I/split%20brain.png"></p>
+<ul>
+<li>S1和S2通过网络形式提供Test and
+Set服务，C1和C2相当于FT-VM中的primary和backup</li>
+<li>假设网络故障，C1和C2无法通信，则它们会尝试go live</li>
+<li>本来C1应该同时与S1和S2通信，并进行Test and
+Set，但是C1现在只能与S1通信，同理C2只能与S2通信</li>
+<li>若允许client只与一台服务器通信执行Test and
+Set便上线，则上述情况可能导致C1和C2同时go live，<strong>造成split
+brain问题</strong>；若必须与两台服务器通信，则Test and
+Set<strong>无法容错</strong>，且两台replica反而使得可靠性下降</li>
+</ul>
+<h2 id="solution">Solution</h2>
+<p>上述问题主要通过两种方式解决</p>
+<ul>
+<li><strong>无故障网络</strong>：保证网络可靠无故障，需要大量资金</li>
+<li><strong>人工维护</strong>：当C无法与其中一台服务器联系时，则联系机房人员，将该服务器关闭，从而避免了Split
+brain</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/12/6-824-Lec5-Raft-I/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

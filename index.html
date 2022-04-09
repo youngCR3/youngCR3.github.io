@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">120</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -140,7 +140,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,174 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/" class="post-title-link" itemprop="url">Mac M1 VScode配置C++</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-09 22:04:29 / 修改时间：22:16:53" itemprop="dateCreated datePublished" datetime="2022-04-09T22:04:29+08:00">2022-04-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
+<li>直接搜索Mac的配置方法大多是Intel芯片版本的方法，因此搜索时应使用Mac M1作为关键词进行搜索</li>
+</ul>
+<h1 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h1><ul>
+<li>C&#x2F;C++</li>
+<li>CodeLLDB（Mac M1必须）</li>
+</ul>
+<h1 id="配置launch-json"><a href="#配置launch-json" class="headerlink" title="配置launch.json"></a>配置launch.json</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;clang++ - 生成和调试活动文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;lldb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;environment&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span>: <span class="string">&quot;lldb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;preLaunchTask&quot;</span>: <span class="string">&quot;C/C++: clang++ 生成活动文件&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="配置task-json"><a href="#配置task-json" class="headerlink" title="配置task.json"></a>配置task.json</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppbuild&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;label&quot;</span>: <span class="string">&quot;C/C++: clang++ 生成活动文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;command&quot;</span>: <span class="string">&quot;/usr/bin/clang++&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;-g&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;file&#125;&quot;</span>,</span><br><span class="line">                <span class="string">&quot;-o&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;options&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$gcc&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;group&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;kind&quot;</span>: <span class="string">&quot;build&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;isDefault&quot;</span>: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;detail&quot;</span>: <span class="string">&quot;调试器生成的任务。&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;2.0.0&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/09/B+%E6%A0%91%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/09/B+%E6%A0%91%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">B+树并发控制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-09 01:16:27 / 修改时间：23:15:04" itemprop="dateCreated datePublished" datetime="2022-04-09T01:16:27+08:00">2022-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Database-System/" itemprop="url" rel="index"><span itemprop="name">Database System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>索引查找的多线程并发控制原理</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/09/B+%E6%A0%91%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2552,396 +2720,6 @@ backlog</strong>：一个<strong>环形</strong>区域，记录master库写入�
     
     <div class="post-body" itemprop="articleBody">
           
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/" class="post-title-link" itemprop="url">红黑树</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-16 16:25:25" itemprop="dateCreated datePublished" datetime="2022-03-16T16:25:25+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="应用">应用</h1>
-<ul>
-<li>STL中的map和set的底层数据结构均为红黑树</li>
-</ul>
-<h1 id="特点">特点</h1>
-<p><strong>颜色</strong>：每个节点要么是红色，要么是黑色</p>
-<p><strong>根节点和叶节点</strong>：根节点和叶节点（nil
-node）都是黑色</p>
-<p><strong>红色节点的子节点</strong>：红色节点的子节点必定为黑色</p>
-<p><strong>路径黑色节点数相等</strong>：任意节点到其子树的叶节点的所有路径上，都具有相同数量的黑色节点</p>
-<h2 id="补充">补充</h2>
-<p><strong>额外存储空间</strong>：每个节点都需要一个比特存储其颜色信息</p>
-<p><strong>最长路径与最短路径的关系</strong>：最长路径长度不超过最短路径长度的两倍</p>
-<ul>
-<li>最长路径：从根节点到nil节点上总是黑红相间</li>
-<li>最短路径：从根节点到nil节点上全为黑色节点</li>
-</ul>
-<h1 id="时间复杂度">时间复杂度</h1>
-<p>插入、删除、查找：<span class="math inline">\(O(logN)\)</span></p>
-<h1 id="旋转">旋转</h1>
-<ul>
-<li><p>旋转不会破坏节点的有序性，时间复杂度<span class="math inline">\(O(1)\)</span></p></li>
-<li><p>左旋</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">LeftRotate</span>(Tree T, Node x) &#123;</span><br><span class="line">    <span class="comment">// set y</span></span><br><span class="line">	Node y = x.right;</span><br><span class="line">	x.right = y.left;</span><br><span class="line">    <span class="comment">// trun y&#x27;s left subtree into x&#x27;s right subtree</span></span><br><span class="line">	<span class="keyword">if</span> (y.left != T.nil)</span><br><span class="line">		y.left.p = x;</span><br><span class="line">    <span class="comment">// link x&#x27;s parent to y</span></span><br><span class="line">	y.p = x.p			</span><br><span class="line">	<span class="keyword">if</span> x.p == T.nil</span><br><span class="line">		T.root = y</span><br><span class="line">	elseif x == x.p.left</span><br><span class="line">		x.p.left = y</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		x.p.right = y</span><br><span class="line">    <span class="comment">// put x on y&#x27;s left</span></span><br><span class="line">	y.left = x;</span><br><span class="line">	x.p = y</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>右旋</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">RightRotate</span>()</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="插入">插入</h1>
-<h2 id="策略">策略</h2>
-<ul>
-<li><strong>总是插入红色节点</strong>：插入节点并将其涂为红色，如果其<strong>父节点为黑色，则无需其他操作</strong></li>
-<li><strong>recolor和rotate</strong>：通过recolor和rotate各个节点以满足红黑树约束</li>
-</ul>
-<h2 id="种情况">4种情况</h2>
-<ul>
-<li><p><strong>插入的是根节点</strong>：直接将其recolor为黑色</p></li>
-<li><p><strong>插入节点的uncle是红色</strong></p>
-<p><strong>recolor</strong>:
-parent和uncle改为黑色，grandparent为红色</p></li>
-<li><p><strong>插入节点的uncle是黑色（三角形）</strong></p>
-<p><strong>三角形</strong>：三角形指parent是left child，新节点是right
-child；或parent是right child，新节点是left child的情况</p>
-<p><strong>在parent上旋转</strong>：通过旋转使得三角形转化为直线的情况</p></li>
-<li><p><strong>插入节点的uncle是黑色（直线）</strong></p>
-<p><strong>直线</strong>：parent是left child，新节点也是left
-child；或parent是right child，新节点也是right child</p>
-<p><strong>在grandparent节点上进行旋转后recolor</strong></p></li>
-</ul>
-<h2 id="示例">示例</h2>
-<p><img src="/2022/03/16/%E7%BA%A2%E9%BB%91%E6%A0%91/RBTree.png"></p>
-<ul>
-<li><strong>插入</strong>：插入红色节点10，其父节点为红色节点9，因此需要调整</li>
-<li><strong>情况2，uncle是红色，recolor</strong>:
-uncle是红色时，将uncle和parent调整为黑色，并将grandparent调整为红色。此时grandparent12为红色，
-其parent15为红色， 因此需要继续调整</li>
-<li><strong>情况3，uncle是黑色的triangle情况，rotate on
-parent</strong>：节点12的uncle是黑色，且与parent形成三角形，则在parent上进行右旋，12变为15的parent</li>
-<li><strong>情况4，uncle是黑色的line情况，rotate on
-grandparent</strong>：节点15的uncle是黑色，且与parent12形成直线，则在grandparent上进行左旋，12变为8的parent</li>
-<li><strong>recolor</strong>：此时将12涂为黑色，将8涂为红色，即可满足要求</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/Modern-C++/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/16/Modern-C++/" class="post-title-link" itemprop="url">Modern C++</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-16 09:37:46" itemprop="dateCreated datePublished" datetime="2022-03-16T09:37:46+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="型别推导">型别推导</h1>
-<h2 id="模板类型推导">1 模板类型推导</h2>
-<ul>
-<li>函数模板形如</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(ParamType param)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="paramtype是个指针或引用不是万能引用">ParamType是个指针或引用（不是万能引用）</h3>
-<ul>
-<li>类型实参的引用性会被忽略</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>&amp; rx = x;</span><br><span class="line"><span class="built_in">f</span>(x);	<span class="comment">// T为int, ParamType为int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx);	<span class="comment">// T为const int, ParamType为const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cr);	<span class="comment">// T为const int, ParamType为const int&amp;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> T&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>&amp; rx = x;</span><br><span class="line"><span class="built_in">f</span>(x);	<span class="comment">// T为int, ParamType为const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx);	<span class="comment">// T为int, ParamType为const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cr);	<span class="comment">// T为int, ParamType为const int&amp;</span></span><br></pre></td></tr></table></figure>
-<h3 id="paramtype是个万能引用">ParamType是个万能引用</h3>
-<ul>
-<li>类型实参是左值则推导为左值引用，则T和ParamType都会被推导为左值引用</li>
-<li>类型实参是右值，T的类型会应用情况1的规则，ParamType被推导为右值引用</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp;&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>&amp; rx = x;</span><br><span class="line"><span class="built_in">f</span>(x);	<span class="comment">// T为int&amp;, ParamType为int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx);	<span class="comment">// T为const int&amp;, ParamType为const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cr);	<span class="comment">// T为const int&amp;, ParamType为const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(<span class="number">27</span>);	<span class="comment">// T为int, ParamType为int&amp;&amp;</span></span><br></pre></td></tr></table></figure>
-<h3 id="paramtype既非指针也非引用">ParamType既非指针也非引用</h3>
-<ul>
-<li>按值传递，param是传入实参的一个副本</li>
-<li>参数的引用类型将被忽略</li>
-<li>参数的const类型也将被忽略</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>&amp; rx = x;</span><br><span class="line"><span class="built_in">f</span>(x);	<span class="comment">// T为int, ParamType为int</span></span><br><span class="line"><span class="built_in">f</span>(cx);	<span class="comment">// T为int, ParamType为int</span></span><br><span class="line"><span class="built_in">f</span>(cr);	<span class="comment">// T为int, ParamType为int</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>如果是指向常量对象的常量指针作为实参，则<strong>顶层const忽略，底层const保留</strong></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> ptr = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="built_in">f</span>(ptr);		<span class="comment">// T和paramType被推导为const char*</span></span><br></pre></td></tr></table></figure>
-<h2 id="auto类型推导">2 auto类型推导</h2>
-<h3 id="类型修饰词非指针非引用">类型修饰词非指针非引用</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x = <span class="number">27</span>;		<span class="comment">// int</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> cx = x;	<span class="comment">// const int</span></span><br></pre></td></tr></table></figure>
-<h3 id="类型修饰词是指针或引用但非万能引用">类型修饰词是指针或引用，但非万能引用</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span>&amp; rx = x;	<span class="comment">// const int&amp;</span></span><br></pre></td></tr></table></figure>
-<h3 id="类型修饰词是万能引用">类型修饰词是万能引用</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span>&amp;&amp; r1 = x;		<span class="comment">// int&amp;</span></span><br><span class="line"><span class="keyword">auto</span>&amp;&amp; r2 = cx;		<span class="comment">// const int&amp;</span></span><br><span class="line"><span class="keyword">auto</span>&amp;&amp; r3 = <span class="number">27</span>;		<span class="comment">// int&amp;&amp;</span></span><br></pre></td></tr></table></figure>
-<h3 id="auto类型推导的不同点">auto类型推导的不同点</h3>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">int</span> x1 = &#123;<span class="number">27</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> x2&#123;<span class="number">27</span>&#125;;		<span class="comment">// 都将得到值为27的int变量</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x = <span class="number">27</span>;		<span class="comment">// int</span></span><br><span class="line"><span class="keyword">auto</span> x1 = &#123;<span class="number">27</span>&#125;;		<span class="comment">// std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="keyword">auto</span> x2&#123;<span class="number">27</span>&#125;;		<span class="comment">// std::initializer_list&lt;int&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>auto声明变量的初始化表达式用大括号括起时，推导得到的类型是<code>std::initializer_list</code></li>
-</ul>
-<h2 id="decltype类型推导">3 decltype类型推导</h2>
-<ul>
-<li>绝大多数情况会直接得到变量或表达式的类型</li>
-<li>对于类型为T的左值表达式，若表达式仅有一个名字，则得到类型<code>T</code>，否则得到类型<code>T&amp;</code></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">28</span>;</span><br><span class="line"><span class="comment">// decltype(x)得到类型int, 因为仅包含一个名字x</span></span><br><span class="line"><span class="comment">// decltype(x + 27)得到类型int&amp;</span></span><br><span class="line"><span class="comment">// 特别地, decltype((x))也得到类型int&amp;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>decltype(auto)</code>作为函数返回值类型，按decltype的规则根据返回表达式进行推导</li>
-</ul>
-<h1 id="auto">auto</h1>
-<h2 id="当auto推导的类型不符合要求时使用带显式型别的初始化物习惯用法">6
-当auto推导的类型不符合要求时，使用带显式型别的初始化物习惯用法</h2>
-<ul>
-<li><strong>隐形的代理类型</strong>可以导致auto根据初始化表达式推导出错误的型别，如<code>std::vector&lt;bool&gt;</code>的下标表达式返回<code>std::vector&lt;bool&gt;::reference</code>，而非<code>bool&amp;</code></li>
-<li>带显式型别的初始化物习惯用法强制auto推导出你想要的型别</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> highPriority = <span class="keyword">static_cast</span>&lt;<span class="keyword">bool</span>&gt;(<span class="built_in">features</span>(w)[<span class="number">5</span>]);</span><br></pre></td></tr></table></figure>
-<h1 id="modern-c">Modern C++</h1>
-<h2 id="创建对象时注意区分和">7 创建对象时注意区分()和</h2>
-<ul>
-<li>{}适用范围更宽泛，可以阻止隐式窄化类型转换</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">T</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> c_;</span><br><span class="line">    <span class="keyword">int</span> x_;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">T</span>(<span class="keyword">int</span> c, <span class="keyword">int</span> x): <span class="built_in">c_</span>(c), <span class="built_in">x_</span>(x) &#123;&#125; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">T <span class="title">t1</span><span class="params">(<span class="number">1</span>, <span class="number">3.0</span>)</span></span>;	<span class="comment">// 通过</span></span><br><span class="line">T t2&#123;<span class="number">1</span>, <span class="number">3.0</span>&#125;;	<span class="comment">// 编译错误</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>只要有<strong>任何可能</strong>，<strong>大括号</strong>初始化就会与带有<code>std::initializer_list</code>类型的形参匹配，即使其他重载版本有着更加匹配的形参表</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">T</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">T</span>(<span class="keyword">int</span> i, <span class="keyword">bool</span> b);</span><br><span class="line">    <span class="built_in">T</span>(<span class="keyword">int</span> i, <span class="keyword">double</span> d);</span><br><span class="line">    <span class="built_in">T</span>(std::initializer_list&lt;<span class="keyword">bool</span>&gt; il);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">T t&#123;<span class="number">10</span>, <span class="literal">true</span>&#125;;	</span><br><span class="line"><span class="comment">// 会匹配std::initializer_list版本, 而且因为要求窄化型别转换会导致编译错误</span></span><br></pre></td></tr></table></figure>
-<h2 id="优先选用nullptr而非0或null">8 优先选用nullptr，而非0或NULL</h2>
-<ul>
-<li>0和NULL都非指针类型</li>
-</ul>
-<h2 id="优先选用别名声明而非typedef补充">9
-优先选用别名声明，而非typedef（补充）</h2>
-<ul>
-<li>typedef不支持模板化，但别名声明支持</li>
-</ul>
-<h2 id="优先选用限定作用域的枚举类型而非不限作用域的枚举类型">10
-优先选用限定作用域的枚举类型，而非不限作用域的枚举类型</h2>
-<ul>
-<li>优先使用<code>enum class</code>而非<code>enum</code></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// enum Color &#123; black, white, red &#125;;</span></span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="keyword">class</span> <span class="title">Color</span> &#123;</span> black, white, red &#125;;</span><br></pre></td></tr></table></figure>
-<p><strong>限定作用域的枚举类型不会泄露名字</strong>：必须使用<code>Color::red</code></p>
-<p><strong>限定作用域的枚举类型不允许枚举量进行隐式类型转换</strong>：<code>enum</code>版本允许枚举量隐式转换为整数，造成不必要的错误</p>
-<h2 id="为意在改写的函数添加override声明">12
-为意在改写的函数添加override声明</h2>
-<ul>
-<li><p><strong>改写override需要满足的要求</strong></p>
-<p><strong>虚函数</strong>：基类中的函数必须是虚函数</p>
-<p><strong>名字相同</strong>：基类和派生类中的函数名字必须完全相同</p>
-<p><strong>形参类型相同</strong>：基类和派生类中的函数的形参类型必须完全相同</p>
-<p><strong>函数常量性相同</strong>：基类和派生类的函数常量性必须完全相同（const限定符）</p>
-<p><strong>函数返回值兼容</strong></p>
-<p><strong>函数引用限定词相同</strong>：<code>&amp;</code>限定了只能通过左值调用成员函数，<code>&amp;&amp;</code>限定了只能通过右值调用成员函数</p></li>
-<li><p><code>override</code><strong>声明的作用</strong>：只有在成员函数加上<code>override</code>声明，编译器才会检查它是否改写了基类的虚函数，若没有改写则报错</p></li>
-<li><p><code>&amp;</code>限定词与<code>&amp;&amp;</code>限定词</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">DataType&amp; <span class="title">data</span><span class="params">()</span> &amp; </span>&#123; <span class="keyword">return</span> values; &#125;				<span class="comment">// 返回左值</span></span><br><span class="line"></span><br><span class="line"><span class="function">DataType <span class="title">data</span><span class="params">()</span> &amp;&amp; </span>&#123; <span class="keyword">return</span> std::<span class="built_in">move</span>(values); &#125;	<span class="comment">// 返回右值</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="保证const成员函数的线程安全性">16
-保证const成员函数的线程安全性</h2>
-<ul>
-<li><strong>保证const成员函数的线程安全性</strong>：const成员函数可能使用缓存，因此实际上会修改声明为mutable的成员变量</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例: 多项式类, 其中roots成员函数用于计算该多项式的根, 结果缓存在rootVals中</span></span><br><span class="line"><span class="comment">// 缓存根：由于求根不会改变多项式, 因此该成员声明为const, 但为了防止重复计算, 我们对根使用了缓存, 并将变量设为mutable, 从而可在const限定的roots成员函数中修改缓存</span></span><br><span class="line"><span class="comment">// 问题：如果两个线程同时进行求根, 则可能引发问题, 虽然由于roots是const成员函数, 但实际上它会修改缓存内容, 为此必须使用std::mutex保证const成员函数的线程安全性</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Polynomial</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">RootsType <span class="title">roots</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!rootsAreValid) &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">            rootsAreValid = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> rootVals;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">bool</span> rootsAreValid&#123;<span class="literal">false</span>&#125;;</span><br><span class="line">    <span class="keyword">mutable</span> RootsType rootVals&#123;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="智能指针">智能指针</h1>
-<h2 id="shared_ptrunique_ptr和weak_ptr">shared_ptr、unique_ptr和weak_ptr</h2>
-<ul>
-<li>unique_ptr实现的是专属所有权的语义，它是个只移类型，不能复制或共享，unique_ptr大小等同于一个指针</li>
-<li>shared_ptr采用引用计数，大小等同于两个指针，一个用于指向所共享的对象，另一个指向包含引用计数的共享控制块</li>
-<li>weak_ptr是结合shared_ptr使用的特例智能指针，它提供对shared_ptr所共享对象的访问，但不参与引用计数</li>
-</ul>
-<h2 id="shared_ptr的线程安全性">shared_ptr的线程安全性</h2>
-<ul>
-<li><code>shared_ptr</code>包含两个指针，一个指向<strong>所共享的对象</strong>，一个指向引用<strong>计数器所在的内存</strong>，<code>shared_ptr</code>的操作都涉及对这两个指针的修改，操作不具有原子性。因此多线程修改<code>shared_ptr</code>时应该通过<code>std::mutex</code>保证线程安全性</li>
-</ul>
-<h1 id="右值引用移动语义和完美转发">右值引用、移动语义和完美转发</h1>
-<h2 id="理解stdmove和stdforward">23 理解std::move和std::forward</h2>
-<ul>
-<li><strong>强制类型转换</strong>：std::move不进行任何移动，std::forward不进行任何转发，它们不生成任何可执行代码，而是只执行强制类型转换的函数</li>
-<li><strong>std::move</strong>：无条件地将实参强制转换成<strong>右值</strong>，它并不进行移动，也不保证经过强制类型转换后的对象具备可移动能力，它只保证结果是个右值</li>
-<li><strong>std::forward</strong>：仅在某个<strong>特定条件</strong>满足时才执行右值强制转换，即传入的实参被绑定到右值时才进行向右值的强制转换</li>
-<li><strong>作用</strong>：std::move常用于为移动操作做铺垫，而std::forward常用作传递或转发一个对象到另一个对象</li>
-<li>std::move实现具体原理
-<ul>
-<li><strong>引用折叠</strong>：通过引用折叠原理，T&amp;&amp;类型参数，传入右值实参将得到右值，传入左值实参将得到左值</li>
-<li><strong>移除引用</strong>：通过remove_reference移除引用，得到具体类型T</li>
-<li><strong>强制转换</strong>：通过static_cast显式转换得到T&amp;&amp;右值引用类型</li>
-</ul></li>
-</ul>
-<h2 id="区分万能引用和右值引用">24 区分万能引用和右值引用</h2>
-<ul>
-<li>T&amp;&amp;：有两种含义，右值引用或万能引用（绑定到左值时为左值引用，绑定到右值时为右值引用）</li>
-<li><strong>万能引用：函数模板的形参</strong></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp;&amp; param)</span></span>;		<span class="comment">// param是个万能引用</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>万能引用：auto声明</strong></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span>&amp;&amp; var2 = var1;		<span class="comment">// var2是个万能引用</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>右值引用</strong>：如果T&amp;&amp;形式，没有涉及类型推导，则为右值引用</li>
-</ul>
-<h2 id="针对右值引用实施stdmove针对万能引用实施stdforward">25
-针对右值引用实施std::move，针对万能引用实施std::forward</h2>
-<ul>
-<li>右值引用实施std::move，万能引用实施std::forward</li>
-<li>若局部对象可能适用于返回值优化RVO，则不应实施std::move或std::forward</li>
-</ul>
-<h2 id="避免使用万能引用类型进行函数重载">26
-避免使用万能引用类型进行函数重载</h2>
-<ul>
-<li><strong>避免使用万能引用类型作为函数参数</strong>：万能引用作为重载函数的形参类型，几乎总会让该重载版本在始料未及的情况下被调用</li>
-<li><strong>避免使用完美转发构造函数</strong>：对于非常量的左值类型，一般会形成比复制构造函数的更佳匹配</li>
-</ul>
-<h2 id="理解引用折叠">28 理解引用折叠</h2>
-<ul>
-<li><strong>引用折叠发生的语境</strong>：模板实例化、auto类型生成、typedef和别名声明，decltype</li>
-<li><strong>引用折叠</strong>：编译器在引用折叠语境下生成引用的引用，结果会变为单个引用。若原始的引用中存在任意一个为左值引用，则结果为左值引用；否则，为右值引用</li>
-</ul>
 
       
     </div>
