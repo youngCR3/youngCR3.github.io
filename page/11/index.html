@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">120</span>
+          <span class="site-state-item-count">121</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -196,6 +196,112 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/02/CF-762/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/02/CF-762/" class="post-title-link" itemprop="url">CF 762</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-02 23:08:46" itemprop="dateCreated datePublished" datetime="2022-01-02T23:08:46+08:00">2022-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="总结">总结</h1>
+<ul>
+<li>这是一次Div3的竞赛，明显感觉到难度低于Div2的竞赛，且题目的知识点较为简单（除了最后一题还没看），最要困难在于阅读并理解题意，但由于题量较大，只能在规定时间内尽可能多地完成</li>
+<li>Div3的竞赛题目难度与Leetcode周赛相近，而且Leetcode周赛前三题的难度可以说低于Div3，第四题偶尔会高于Div3，但大部分时间也只是接近Div3的最后几道题</li>
+<li>后续练习，可以考虑从Div3入手，以完成该次竞赛的所有或者缺1/2道题目为目标</li>
+<li>C++语言的熟练度亟待提高</li>
+</ul>
+<h1 id="a.-square-string"><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1619/problem/A">A. Square
+String?</a></h1>
+<ul>
+<li>标签：字符串</li>
+<li>分析：直接遍历对比即可，若字符串长度为奇数可直接排除</li>
+<li>代码</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    string s;</span><br><span class="line">    cin &gt;&gt; s;</span><br><span class="line">    <span class="keyword">if</span> (s.<span class="built_in">size</span>() % <span class="number">2</span>) &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;NO&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> n = s.<span class="built_in">size</span>() / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s[i] != s[i + n]) &#123;</span><br><span class="line">            cout &lt;&lt; <span class="string">&quot;NO&quot;</span> &lt;&lt; endl;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;YES&quot;</span> &lt;&lt; endl;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    <span class="keyword">while</span> (t--) &#123;</span><br><span class="line">        <span class="built_in">solve</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/02/CF-762/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1191,153 +1297,8 @@ handler之间通过<code>commandIndex</code>唯一标识的管道通信</p></li>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/16/6-824-Lec6-Raft-II/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/16/6-824-Lec6-Raft-II/" class="post-title-link" itemprop="url">6.824 Lec6 Raft II</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-16 21:04:28" itemprop="dateCreated datePublished" datetime="2021-12-16T21:04:28+08:00">2021-12-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="日志恢复">日志恢复</h1>
-<h2 id="nextindex的作用"><code>NextIndex</code>的作用</h2>
-<ul>
-<li><code>NextIndex</code>存储了在leader看来，某个follower下一个应该匹配的log
-entry位置</li>
-<li>当leader发送AppendEntries
-RPC给follower时，follower会对比<code>prevLogIndex</code>位置（该位置是<code>NextIndex</code>的前一位置）上的log
-entry，如果该log匹配则从该位置之后开始添加leader发送过来的log
-entries，<strong>如果不匹配则拒绝该RPC并返回false</strong></li>
-<li>如果leader收到来自follower的拒绝，则leader知道该follower在<code>prevLogIndex</code>上的log
-entry不匹配，因此leader会<strong>将<code>NextIndex</code>减一</strong>，从而对比更前面的位置是否匹配</li>
-<li>该过程将持续<strong>直到follower成功匹配<code>prevLogIndex</code>上的log
-entry</strong>，并将leader发送过来的log entry添加到自己的log中</li>
-</ul>
-<h1 id="选举约束">选举约束</h1>
-<h2 id="成为leader的限制条件">成为leader的限制条件</h2>
-<ul>
-<li>当candidate向其他server发送<code>RequesetVote</code>
-RPC时，只有当candidate的log is <strong>at least as up-to-date as
-receiver's log</strong>时，server才会向其投票</li>
-<li>up-to-date
-<ul>
-<li>如果candidate的<strong>last term大于自己的last term</strong></li>
-<li>或两者一样大但candidate的<strong>last index大于等于自己的last
-index</strong>时，就认为它是at least as up-to-date as receiver</li>
-</ul></li>
-<li>当leader收到过半数选票，即它<strong>比过半数的服务器更加up-to-date时</strong>，才有可能成为leader</li>
-</ul>
-<h1 id="快速恢复">快速恢复</h1>
-<h2 id="日志恢复存在的问题">日志恢复存在的问题</h2>
-<ul>
-<li>日志恢复中<code>NextIndex</code>每次减一，这对于实际场景太慢</li>
-</ul>
-<h2 id="快速恢复-1">快速恢复</h2>
-<ul>
-<li>当follower因为log
-inconsistent而拒绝leader时，可携带额外信息来加速日志恢复</li>
-</ul>
-<h3 id="conflictterm">ConflictTerm</h3>
-<ul>
-<li>follower中与leader冲突的log对应的term，如果follower在对应位置没有log则设为-1</li>
-</ul>
-<h3 id="conflictindex">ConflictIndex</h3>
-<ul>
-<li>follower中对应任期号为ConflictTerm的第一条log的index，当follower在对应位置没有log时则返回log的长度</li>
-</ul>
-<h2 id="leader收到reply后的操作">leader收到reply后的操作</h2>
-<ul>
-<li>搜索其log，找到term等于ConflictTerm的log
-<ul>
-<li>若找到了则将nextIndex设为该term最后一个log entry之后的位置</li>
-<li>若没有找到则将nextIndex设为ConflictIndex</li>
-</ul></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/16/6-824-Lec6-Raft-II/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

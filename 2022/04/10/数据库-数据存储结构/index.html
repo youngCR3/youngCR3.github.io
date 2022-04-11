@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Level.drawio  存储器层次结构  易失性：CPU寄存器、CPU cache、内存DRAM（快速、容量小、单位成本高，支持随机访问） 非易失性：固态硬盘SSD、HDD、Network storage（慢、容量大、单位成本低，支持顺序访问） Non-volatile Memory非易失性内存：同时支持持久存储和随机访问 DRAM一般称为内存 SSD、HDD或Network storag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库-数据存储结构">
+<meta property="og:url" content="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="Level.drawio  存储器层次结构  易失性：CPU寄存器、CPU cache、内存DRAM（快速、容量小、单位成本高，支持随机访问） 非易失性：固态硬盘SSD、HDD、Network storage（慢、容量大、单位成本低，支持顺序访问） Non-volatile Memory非易失性内存：同时支持持久存储和随机访问 DRAM一般称为内存 SSD、HDD或Network storag">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Level.drawio.svg">
+<meta property="og:image" content="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Storage%20system.drawio.svg">
+<meta property="article:published_time" content="2022-04-10T04:36:09.000Z">
+<meta property="article:modified_time" content="2022-04-11T16:06:51.681Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="Database System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Level.drawio.svg">
+
+
+<link rel="canonical" href="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/","path":"2022/04/10/数据库-数据存储结构/","title":"数据库-数据存储结构"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据库-数据存储结构 | 元朗食品</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="nav-text">存储器层次结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="nav-text">存储系统的设计目标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#disk-oriented-dbms%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">Disk-oriented DBMS体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BC%93%E5%AD%98"><span class="nav-text">为什么不使用操作系统缓存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dbms%E5%9C%A8disk%E4%B8%AD%E5%A6%82%E4%BD%95%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">DBMS在disk中如何存储数据库的文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-text">文件系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E5%99%A8"><span class="nav-text">存储管理器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A1%B5"><span class="nav-text">数据库页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#page%E7%9A%84%E4%B8%8D%E5%90%8C%E5%90%AB%E4%B9%89"><span class="nav-text">page的不同含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93heap%E6%96%87%E4%BB%B6"><span class="nav-text">数据库heap文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-text">链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page-directory"><span class="nav-text">page directory</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#page-layout"><span class="nav-text">Page Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#page-header"><span class="nav-text">Page header</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#page-layout-1"><span class="nav-text">Page Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tuple-storage"><span class="nav-text">tuple storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#slotted-pages"><span class="nav-text">slotted pages</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tuple-layout"><span class="nav-text">Tuple Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tuple-header"><span class="nav-text">Tuple header</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tuple-data"><span class="nav-text">Tuple data</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据库-数据存储结构 | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库-数据存储结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-10 12:36:09" itemprop="dateCreated datePublished" datetime="2022-04-10T12:36:09+08:00">2022-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-12 00:06:51" itemprop="dateModified" datetime="2022-04-12T00:06:51+08:00">2022-04-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Database-System/" itemprop="url" rel="index"><span itemprop="name">Database System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <figure>
+<img src="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Level.drawio.svg" alt="Level.drawio">
+<figcaption aria-hidden="true">Level.drawio</figcaption>
+</figure>
+<h1 id="存储器层次结构">存储器层次结构</h1>
+<ul>
+<li>易失性：CPU寄存器、CPU
+cache、内存DRAM（快速、容量小、单位成本高，支持随机访问）</li>
+<li>非易失性：固态硬盘SSD、HDD、Network
+storage（慢、容量大、单位成本低，支持顺序访问）</li>
+<li>Non-volatile Memory非易失性内存：同时支持持久存储和随机访问</li>
+<li>DRAM一般称为内存</li>
+<li>SSD、HDD或Network storage一般统称为disk</li>
+</ul>
+<h1 id="存储系统的设计目标">存储系统的设计目标</h1>
+<ul>
+<li>允许DBMS管理超过内存大小的数据库</li>
+<li>磁盘I/O代价昂贵，所以存储管理必须尽可能减少磁盘I/O</li>
+</ul>
+<h1 id="disk-oriented-dbms体系结构">Disk-oriented DBMS体系结构</h1>
+<figure>
+<img src="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Storage%20system.drawio.svg" alt="Storage system">
+<figcaption aria-hidden="true">Storage system</figcaption>
+</figure>
+<h2 id="为什么不使用操作系统缓存">为什么不使用操作系统缓存</h2>
+<ul>
+<li><p>OS：使用mmap将文件内容映射到进程的地址空间，OS负责将文件的pages换入/换出内存</p></li>
+<li><p>通过一些方法让OS按DBMS的期望管理缓存</p>
+<p>madvise：告诉OS希望读取特定页</p>
+<p>mlock：告诉OS某段内存不能被换出</p>
+<p>msync：告诉OS将某段内存刷盘</p></li>
+<li><p>DBMS总是希望自己管理资源，以提高效率，OS无法满足DBMS管理资源的需求</p>
+<p>以正确的顺序将dirty pages刷盘</p>
+<p>预读取</p>
+<p>缓存替换策略</p>
+<p>线程/进程调度</p></li>
+</ul>
+<h1 id="dbms在disk中如何存储数据库的文件">DBMS在disk中如何存储数据库的文件</h1>
+<h2 id="文件系统">文件系统</h2>
+<ul>
+<li>DBMS将数据库存储为磁盘上的一个或多个文件，文件内容对于OS是透明的</li>
+</ul>
+<h2 id="存储管理器">存储管理器</h2>
+<ul>
+<li>负责维护数据库的文件，对读写进行调度以提高pages的时间和空间局不行</li>
+<li>将文件组织为一个pages的集合</li>
+</ul>
+<h2 id="数据库页">数据库页</h2>
+<ul>
+<li>page是一个具有固定大小的数据块，可以保存tuples、meta-data、indexes、records等</li>
+<li>通常，一个页保存同一种类型的数据，保存相同类型的页一起管理</li>
+<li>self-contained：将page的元信息保存在page自身中</li>
+<li>page id：每个page都有唯一的标识，即page id，DBMS将page
+id映射为物理位置（哪个文件，offset）</li>
+</ul>
+<h2 id="page的不同含义">page的不同含义</h2>
+<ul>
+<li>Hardware page，通常是4KB</li>
+<li>OS page，通常是4KB</li>
+<li>Database page，在512B-16KB之间，依赖于DBMS的具体实现</li>
+<li>Hardware page能够保证对该page读写的原子性，因此如果database
+page使用超过4KB的大小，则对一个database
+page的读写在事实上涉及对多个hardware pages的读写</li>
+</ul>
+<blockquote>
+<p>为什么Database page会采取不同的大小，各有什么好处</p>
+<ul>
+<li>采用更大的page，则一个page id代表着更多的信息，有利于TLB命中等</li>
+<li>采用更小的page，则避免了读取无用的数据，采用更大的page时，我们可能为了读取极少数据就将读入了大量数据</li>
+</ul>
+</blockquote>
+<h2 id="数据库heap文件">数据库heap文件</h2>
+<ul>
+<li><p>一个heap文件是一个pages的无序集合，tuples按随机顺序存储</p></li>
+<li><p>heap文件需要支持的操作：Create/Get/Write/Delete
+page，以及遍历其中的所有pages</p></li>
+<li><p>heap文件需要元数据去追踪哪些pages存在heap中，以及哪些有空闲空间</p></li>
+<li><p>表示heap文件的数据结构</p>
+<ul>
+<li><p>链表</p></li>
+<li><p>page directory</p></li>
+</ul></li>
+</ul>
+<h3 id="链表">链表</h3>
+<ul>
+<li>header page包含两个指针，一个指向free page
+list（empty），另一个指向data page list（fully occupied）</li>
+<li>每个page都需要追踪自己当前有多少个空闲的slots</li>
+</ul>
+<h3 id="page-directory">page directory</h3>
+<ul>
+<li><p>directory pages：保存了数据页在数据库文件中的位置
+(offset)，以及它们包含多少个空闲的slots</p></li>
+<li><p>DBMS需要保证directory pages与data pages的同步</p></li>
+<li><p>使用page directory组织heap文件时，data
+pages不是self-contained的</p></li>
+</ul>
+<h1 id="page-layout">Page Layout</h1>
+<h2 id="page-header">Page header</h2>
+<ul>
+<li><p>header：保存了关于page内容的元信息，包括</p>
+<p>页面大小page size</p>
+<p>检验和checksum</p>
+<p>DBMS版本</p>
+<p>事务可见性</p>
+<p>压缩信息</p></li>
+<li><p>self-contained：某些DBMS系统要求page是self-contained的，page
+header必须存储足够的元信息</p></li>
+</ul>
+<h2 id="page-layout-1">Page Layout</h2>
+<ul>
+<li><p>page内数据的组织方式（考虑存储的是tuple数据）</p>
+<ul>
+<li><p>tuple-oriented</p></li>
+<li><p>log-structured</p></li>
+</ul></li>
+</ul>
+<h3 id="tuple-storage">tuple storage</h3>
+<ul>
+<li>Num of tuples：保存当前存储的tuple数量</li>
+<li>插入方便：插入一个新的tuple时直接append即可</li>
+<li>删除麻烦：删除中间的某个tuple，将会导致产生一个空位，如果对整个page的tuple数据进行移动则删除效率低下；如果不移动则下次插入时可能需要遍历才能找到中间的空位；或者对中间的空闲位置维护额外的信息，但当tuple插入该空位时还需要将该中间空闲位置信息去除</li>
+</ul>
+<h3 id="slotted-pages">slotted pages</h3>
+<ul>
+<li>slot array将slots映射到tuple的起始地址</li>
+<li>header保存了page中被占用的slots个数，以及上一个使用的slot的起始地址</li>
+<li>slot array从首到尾增长，tuple从尾到首增长，当两者相遇时page已满</li>
+<li>优点：支持定长/变长tuples</li>
+</ul>
+<blockquote>
+<p>Q: 当删除中间的某个tuple时会出现碎片，如何处理？</p>
+<p>A:
+取决于DBMS的实现，它可以在下次插入的时候对数据进行压缩，也可以保留该碎片不管，并继续append直至page
+full时再压缩</p>
+</blockquote>
+<ul>
+<li><strong>使用RID检索某个tuple</strong>：RID通常是page_id + slot
+offset，查询某个tuple时，我们通常获取到的是它所在的page的page
+id以及它对应的slot offset，由此可以从该page的slot
+array得到该tuple的首地址并读取该tuple</li>
+</ul>
+<h1 id="tuple-layout">Tuple Layout</h1>
+<ul>
+<li>DBMS负责将一个tuple按attribute类型解析为值</li>
+</ul>
+<h2 id="tuple-header">Tuple header</h2>
+<ul>
+<li>每个tuple都添加了一个前缀作为header，包含的元信息为
+<ul>
+<li>可见性信息（用于并发控制）</li>
+<li>Bit Map for NULL values</li>
+</ul></li>
+<li>无需在tuple
+header存储schema的信息，DBMS会负责将tuple按schema进行解析</li>
+</ul>
+<h2 id="tuple-data">Tuple data</h2>
+<ul>
+<li><strong>顺序</strong>：tuple的各个attributes一般按照创建表时的顺序存储</li>
+<li>事实上， 为了提高效率，可以对attributes进行重新排列</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/" title="数据库-数据存储结构">http://example.com/2022/04/10/数据库-数据存储结构/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Database-System/" rel="tag"># Database System</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/" rel="prev" title="Mac M1 VScode配置C++">
+                  <i class="fa fa-chevron-left"></i> Mac M1 VScode配置C++
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
