@@ -241,7 +241,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-12 00:06:51" itemprop="dateModified" datetime="2022-04-12T00:06:51+08:00">2022-04-12</time>
+      <time title="修改时间：2022-04-12 00:18:22" itemprop="dateModified" datetime="2022-04-12T00:18:22+08:00">2022-04-12</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,168 +263,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <figure>
-<img src="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Level.drawio.svg" alt="Level.drawio">
-<figcaption aria-hidden="true">Level.drawio</figcaption>
-</figure>
-<h1 id="存储器层次结构">存储器层次结构</h1>
-<ul>
-<li>易失性：CPU寄存器、CPU
-cache、内存DRAM（快速、容量小、单位成本高，支持随机访问）</li>
-<li>非易失性：固态硬盘SSD、HDD、Network
-storage（慢、容量大、单位成本低，支持顺序访问）</li>
-<li>Non-volatile Memory非易失性内存：同时支持持久存储和随机访问</li>
-<li>DRAM一般称为内存</li>
-<li>SSD、HDD或Network storage一般统称为disk</li>
-</ul>
-<h1 id="存储系统的设计目标">存储系统的设计目标</h1>
-<ul>
-<li>允许DBMS管理超过内存大小的数据库</li>
-<li>磁盘I/O代价昂贵，所以存储管理必须尽可能减少磁盘I/O</li>
-</ul>
-<h1 id="disk-oriented-dbms体系结构">Disk-oriented DBMS体系结构</h1>
-<figure>
-<img src="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/Storage%20system.drawio.svg" alt="Storage system">
-<figcaption aria-hidden="true">Storage system</figcaption>
-</figure>
-<h2 id="为什么不使用操作系统缓存">为什么不使用操作系统缓存</h2>
-<ul>
-<li><p>OS：使用mmap将文件内容映射到进程的地址空间，OS负责将文件的pages换入/换出内存</p></li>
-<li><p>通过一些方法让OS按DBMS的期望管理缓存</p>
-<p>madvise：告诉OS希望读取特定页</p>
-<p>mlock：告诉OS某段内存不能被换出</p>
-<p>msync：告诉OS将某段内存刷盘</p></li>
-<li><p>DBMS总是希望自己管理资源，以提高效率，OS无法满足DBMS管理资源的需求</p>
-<p>以正确的顺序将dirty pages刷盘</p>
-<p>预读取</p>
-<p>缓存替换策略</p>
-<p>线程/进程调度</p></li>
-</ul>
-<h1 id="dbms在disk中如何存储数据库的文件">DBMS在disk中如何存储数据库的文件</h1>
-<h2 id="文件系统">文件系统</h2>
-<ul>
-<li>DBMS将数据库存储为磁盘上的一个或多个文件，文件内容对于OS是透明的</li>
-</ul>
-<h2 id="存储管理器">存储管理器</h2>
-<ul>
-<li>负责维护数据库的文件，对读写进行调度以提高pages的时间和空间局不行</li>
-<li>将文件组织为一个pages的集合</li>
-</ul>
-<h2 id="数据库页">数据库页</h2>
-<ul>
-<li>page是一个具有固定大小的数据块，可以保存tuples、meta-data、indexes、records等</li>
-<li>通常，一个页保存同一种类型的数据，保存相同类型的页一起管理</li>
-<li>self-contained：将page的元信息保存在page自身中</li>
-<li>page id：每个page都有唯一的标识，即page id，DBMS将page
-id映射为物理位置（哪个文件，offset）</li>
-</ul>
-<h2 id="page的不同含义">page的不同含义</h2>
-<ul>
-<li>Hardware page，通常是4KB</li>
-<li>OS page，通常是4KB</li>
-<li>Database page，在512B-16KB之间，依赖于DBMS的具体实现</li>
-<li>Hardware page能够保证对该page读写的原子性，因此如果database
-page使用超过4KB的大小，则对一个database
-page的读写在事实上涉及对多个hardware pages的读写</li>
-</ul>
-<blockquote>
-<p>为什么Database page会采取不同的大小，各有什么好处</p>
-<ul>
-<li>采用更大的page，则一个page id代表着更多的信息，有利于TLB命中等</li>
-<li>采用更小的page，则避免了读取无用的数据，采用更大的page时，我们可能为了读取极少数据就将读入了大量数据</li>
-</ul>
-</blockquote>
-<h2 id="数据库heap文件">数据库heap文件</h2>
-<ul>
-<li><p>一个heap文件是一个pages的无序集合，tuples按随机顺序存储</p></li>
-<li><p>heap文件需要支持的操作：Create/Get/Write/Delete
-page，以及遍历其中的所有pages</p></li>
-<li><p>heap文件需要元数据去追踪哪些pages存在heap中，以及哪些有空闲空间</p></li>
-<li><p>表示heap文件的数据结构</p>
-<ul>
-<li><p>链表</p></li>
-<li><p>page directory</p></li>
-</ul></li>
-</ul>
-<h3 id="链表">链表</h3>
-<ul>
-<li>header page包含两个指针，一个指向free page
-list（empty），另一个指向data page list（fully occupied）</li>
-<li>每个page都需要追踪自己当前有多少个空闲的slots</li>
-</ul>
-<h3 id="page-directory">page directory</h3>
-<ul>
-<li><p>directory pages：保存了数据页在数据库文件中的位置
-(offset)，以及它们包含多少个空闲的slots</p></li>
-<li><p>DBMS需要保证directory pages与data pages的同步</p></li>
-<li><p>使用page directory组织heap文件时，data
-pages不是self-contained的</p></li>
-</ul>
-<h1 id="page-layout">Page Layout</h1>
-<h2 id="page-header">Page header</h2>
-<ul>
-<li><p>header：保存了关于page内容的元信息，包括</p>
-<p>页面大小page size</p>
-<p>检验和checksum</p>
-<p>DBMS版本</p>
-<p>事务可见性</p>
-<p>压缩信息</p></li>
-<li><p>self-contained：某些DBMS系统要求page是self-contained的，page
-header必须存储足够的元信息</p></li>
-</ul>
-<h2 id="page-layout-1">Page Layout</h2>
-<ul>
-<li><p>page内数据的组织方式（考虑存储的是tuple数据）</p>
-<ul>
-<li><p>tuple-oriented</p></li>
-<li><p>log-structured</p></li>
-</ul></li>
-</ul>
-<h3 id="tuple-storage">tuple storage</h3>
-<ul>
-<li>Num of tuples：保存当前存储的tuple数量</li>
-<li>插入方便：插入一个新的tuple时直接append即可</li>
-<li>删除麻烦：删除中间的某个tuple，将会导致产生一个空位，如果对整个page的tuple数据进行移动则删除效率低下；如果不移动则下次插入时可能需要遍历才能找到中间的空位；或者对中间的空闲位置维护额外的信息，但当tuple插入该空位时还需要将该中间空闲位置信息去除</li>
-</ul>
-<h3 id="slotted-pages">slotted pages</h3>
-<ul>
-<li>slot array将slots映射到tuple的起始地址</li>
-<li>header保存了page中被占用的slots个数，以及上一个使用的slot的起始地址</li>
-<li>slot array从首到尾增长，tuple从尾到首增长，当两者相遇时page已满</li>
-<li>优点：支持定长/变长tuples</li>
-</ul>
-<blockquote>
-<p>Q: 当删除中间的某个tuple时会出现碎片，如何处理？</p>
-<p>A:
-取决于DBMS的实现，它可以在下次插入的时候对数据进行压缩，也可以保留该碎片不管，并继续append直至page
-full时再压缩</p>
-</blockquote>
-<ul>
-<li><strong>使用RID检索某个tuple</strong>：RID通常是page_id + slot
-offset，查询某个tuple时，我们通常获取到的是它所在的page的page
-id以及它对应的slot offset，由此可以从该page的slot
-array得到该tuple的首地址并读取该tuple</li>
-</ul>
-<h1 id="tuple-layout">Tuple Layout</h1>
-<ul>
-<li>DBMS负责将一个tuple按attribute类型解析为值</li>
-</ul>
-<h2 id="tuple-header">Tuple header</h2>
-<ul>
-<li>每个tuple都添加了一个前缀作为header，包含的元信息为
-<ul>
-<li>可见性信息（用于并发控制）</li>
-<li>Bit Map for NULL values</li>
-</ul></li>
-<li>无需在tuple
-header存储schema的信息，DBMS会负责将tuple按schema进行解析</li>
-</ul>
-<h2 id="tuple-data">Tuple data</h2>
-<ul>
-<li><strong>顺序</strong>：tuple的各个attributes一般按照创建表时的顺序存储</li>
-<li>事实上， 为了提高效率，可以对attributes进行重新排列</li>
-</ul>
-
+          <p>数据库是怎么存储数据的？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
