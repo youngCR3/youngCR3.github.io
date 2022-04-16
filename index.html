@@ -241,7 +241,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-16 22:03:16" itemprop="dateModified" datetime="2022-04-16T22:03:16+08:00">2022-04-16</time>
+      <time title="修改时间：2022-04-16 22:04:50" itemprop="dateModified" datetime="2022-04-16T22:04:50+08:00">2022-04-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -263,146 +263,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="基本命令">基本命令</h1>
-<ul>
-<li>commit：提交记录</li>
-<li>branch：创建新分支</li>
-<li>checkout：切换分支</li>
-</ul>
-<h1 id="合并分支">合并分支</h1>
-<ul>
-<li><p>merge：合并分支</p></li>
-<li><p>rebase：另一种合并分支</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase side1 side2</span><br><span class="line"><span class="comment"># 将分支side2合并到分支side1上</span></span><br><span class="line">git pull --rebase</span><br><span class="line"><span class="comment"># 拉取远程仓库，并将本地分支合并到远程分支上</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="移动位置">移动位置</h1>
-<ul>
-<li><p>HEAD：指向某个分支或指向某个提交记录，指向提交记录时称为分离的HEAD</p></li>
-<li><p>相对移动</p>
-<ul>
-<li>使用<code>^</code>向上移动1个记录，如<code>git checkout main^</code>会让HEAD移动到main分支的父节点</li>
-<li>使用<code>~&lt;num&gt;</code>向上移动多个提交记录，如<code>~3</code></li>
-</ul></li>
-<li><p>强制修改分支位置</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -f main HEAD~3</span><br><span class="line"><span class="comment"># 强制main分支指向HEAD的第3级父提交</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="撤销变更">撤销变更</h1>
-<ul>
-<li><p>reset</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD^</span><br><span class="line"><span class="comment"># 撤销本地分支</span></span><br></pre></td></tr></table></figure></li>
-<li><p>revert</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD</span><br><span class="line"><span class="comment"># 撤销远程分支，实际上会提交一个新纪录，其状态与HEAD的父节点状态一致</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="整理提交记录">整理提交记录</h1>
-<ul>
-<li>cherry-pick</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick C3 C4 C7</span><br><span class="line"><span class="comment"># 将其他分支的某些提交添加到当前HEAD</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>交互式rebase</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD^^</span><br></pre></td></tr></table></figure>
-<h1 id="debug分支的技巧">debug分支的技巧</h1>
-<ul>
-<li>debug分支中，可将打印log的语句作为一个提交记录，debug的修改作为另一个提交记录，合并时直接cherry-pick
-debug修改对应的提交记录即可</li>
-</ul>
-<h1 id="标签">标签</h1>
-<ul>
-<li><p>tag</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git tag v1 C1</span><br><span class="line"><span class="comment"># 为提交记录C1添加标签v1</span></span><br><span class="line">git tag v2</span><br><span class="line"><span class="comment"># 如果不指定提交记录，则为默认值HEAD</span></span><br></pre></td></tr></table></figure></li>
-<li><p>寻找离我最近的标签<code>git describe</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git describe &lt;ref&gt;</span><br><span class="line"><span class="comment"># &lt;ref&gt;是任意能被git识别成提交记录的引用，默认值为HEAD</span></span><br><span class="line"><span class="comment"># 输出结果是</span></span><br><span class="line">&lt;tag&gt;_&lt;numCommits&gt;_g&lt;<span class="built_in">hash</span>&gt;</span><br><span class="line"><span class="comment"># tag表示距离最近的标签，numCommits表示ref与tag相差多少个提交记录，hash表示ref所表示的提交记录的哈希值的前几位</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="多分支合并">多分支合并</h1>
-<h1 id="移动到指定的父提交">移动到指定的父提交</h1>
-<ul>
-<li><code>^</code>可以移动到父节点</li>
-<li><code>^2</code>可以移动到第二个父提交节点（其他数字以此类推）</li>
-</ul>
-<h2 id="移动支持链式操作">移动支持链式操作</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD~^2~2</span><br><span class="line"><span class="comment"># 移动到HEAD的父节点的第二个父提交节点的往上两个父节点</span></span><br></pre></td></tr></table></figure>
-<h1 id="远程分支">远程分支</h1>
-<ul>
-<li><p>git clone：拷贝远程分支到本地</p></li>
-<li><p>git commit导致分离的HEAD：在远程分支git
-commit会导致分离HEAD，因为本地修改并不会立刻同步到远程分支</p></li>
-<li><p>git fetch</p>
-<ul>
-<li>从远程仓库下载本地仓库缺失的提交记录，更新远程分支指针</li>
-<li>不会做的事：不会更新main分支，也不会修改磁盘上的文件，git
-fetch并不能让本地仓库与远程仓库同步</li>
-</ul></li>
-<li><p>git pull：相当于先执行git fetch，再执行git
-merge，实现本地仓库与远程仓库同步</p></li>
-<li><p>git
-push：将变更上传到指定的远程仓库，并在远程仓库上合并新提交记录</p></li>
-</ul>
-<h2 id="偏离的工作">偏离的工作</h2>
-<ul>
-<li><p>偏离的含义：克隆远程仓库，并基于提交记录C1开发功能，形成提交记录C3。同时，合作者基于C1提交了C2，并推送到远程仓库。此时我无法直接push，因为远程仓库已更新到C2。Git强制我先合并远程仓库，再进行push</p></li>
-<li><p>解决</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git rebase origin/master</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="远程服务器拒绝">远程服务器拒绝</h2>
-<ul>
-<li><p>如果你直接提交(commit)到本地main, 然后试图推送(push)修改,
-你将会收到这样类似的信息:</p>
-<p><code>! [远程服务器拒绝] main -&gt; main (TF402455: 不允许推送(push)这个分支; 你必须使用pull request来更新这个分支.)</code></p>
-<p>如果你是在一个大的合作团队中工作, 很可能是main被锁定了, 需要一些Pull
-Request流程来合并修改。</p></li>
-<li><p>解决方法：先创建一个feature分支并push，reset main分支再push</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature</span><br><span class="line">git push</span><br><span class="line">git checkout main</span><br><span class="line">git reset HEAD^</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="merge与rebase的优缺点对比">merge与rebase的优缺点对比</h2>
-<ul>
-<li>优点：rebase使提交数更干净，所有提交都在一条直线上</li>
-<li>缺点：rebase修改了提交树的历史。如下图，C2是比C3更早的提交记录，当使用rebase将side合并到main时，将使得C3成为C2的父节点，似乎C3比C2提交一样。</li>
-</ul>
-<p><img src="/2022/04/14/git/git_rebase.drawio.svg"></p>
-<h2 id="远程跟踪分支">远程跟踪分支</h2>
-<ul>
-<li><p>git中main分支与o/main是相关的</p>
-<p>pull操作时，提交记录先下载到o/main分支，再合并到本地的main分支</p>
-<p>push操作时，把工作从main推到远程仓库中的main分支，同时更新远程分支o/main</p></li>
-<li><p><strong>remote
-tracking属性</strong>：main和o/main分支的关联关系是由分支的remote
-tracking属性决定的，main被设定为跟踪o/main，即main分支制定了推送的目的地以及拉取后合并的目标</p></li>
-<li><p><strong>git clone所做的事</strong>：main分支的remote
-tracking属性无需我们手动设置，而是git
-clone时由git自动设置的。git为远程仓库中的每个分支在本地仓库中创建一个远程分支（如o/main），并创建一个跟踪远程仓库中活动分支的本地分支（如main）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local branch &quot;main&quot; set to track remote branch &quot;o/main&quot;</span><br></pre></td></tr></table></figure></li>
-<li><p>手动设置remote tracking属性</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b totallyNotMain o/main</span><br><span class="line"><span class="comment"># 创建一个totallyNotMain分支，跟踪远程分支o/main</span></span><br><span class="line">git branch -u o/main foo</span><br><span class="line"><span class="comment"># 让foo分支跟踪o/main</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="git-push的参数">git push的参数</h2>
-<ul>
-<li><p>git push可以指定参数</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git push &lt;remote&gt; &lt;place&gt;</span><br><span class="line">git push origin main</span><br><span class="line"><span class="comment"># 切换到本地仓库main分支，获取所有提交，并到远程仓库origin中找到main分支，将远程仓库中没有的提交记录都添加上去</span></span><br><span class="line"><span class="comment"># main是&lt;place&gt;参数，代表git提交记录来自于main，要推送到远程仓库中的main，就是要同步的两个仓库的位置</span></span><br></pre></td></tr></table></figure></li>
-<li><p>本地仓库的分支与远程仓库的分支名字（即上述place）不同的情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push origin &lt;<span class="built_in">source</span>&gt;:&lt;destination&gt;</span><br><span class="line"><span class="comment"># source和destination可以是不同名字的分支，事实上source只要是能被git识别的提交树位置即可，如HEAD^，而destination如果不存在于远程仓库将新建该分支</span></span><br><span class="line">git push origin HEAD^:main</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="git-fetch的参数">git fetch的参数</h2>
-<ul>
-<li><p>与git
-push的<code>&lt;source&gt;:&lt;destination&gt;</code>版本类似</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin &lt;<span class="built_in">source</span>&gt;:&lt;destination&gt;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="省略source参数">省略source参数</h2>
-<ul>
-<li><p>git fetch中省略source参数</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin :&lt;destination&gt;</span><br><span class="line">git fetch :bar</span><br><span class="line"><span class="comment"># fetch空到本地，创建bar分支</span></span><br></pre></td></tr></table></figure></li>
-<li><p>git push省略source参数</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push origin :&lt;destination&gt;</span><br><span class="line">git push origin :foo</span><br><span class="line"><span class="comment"># push传空值source，删除远程仓库的foo分支</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="git-pull的参数">git pull的参数</h2>
-<ul>
-<li><p>git pull就是git fetch后跟git merge的缩写，因此git
-pull的参数可以理解为用同样的参数执行git
-fetch，再将当前checkout的位置merge所抓取的提交记录（如果提供了destination参数，则当前checkout的位置会merge到destination参数）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main:bar</span><br><span class="line"><span class="comment"># 将远程仓库的main分支拉取到本地仓库的bar分支，同时将本地仓库当前checkout的位置merge到本地仓库的bar分支上</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
+          <p>git常用命令</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/git/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -548,9 +417,24 @@ fetch，再将当前checkout的位置merge所抓取的提交记录（如果提�
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-04-09 22:04:29 / 修改时间：22:16:53" itemprop="dateCreated datePublished" datetime="2022-04-09T22:04:29+08:00">2022-04-09</time>
+      <time title="创建时间：2022-04-09 22:04:29" itemprop="dateCreated datePublished" datetime="2022-04-09T22:04:29+08:00">2022-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-16 22:05:22" itemprop="dateModified" datetime="2022-04-16T22:05:22+08:00">2022-04-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
+        </span>
     </span>
 
   
@@ -563,20 +447,15 @@ fetch，再将当前checkout的位置merge所抓取的提交记录（如果提�
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
-<li>直接搜索Mac的配置方法大多是Intel芯片版本的方法，因此搜索时应使用Mac M1作为关键词进行搜索</li>
-</ul>
-<h1 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h1><ul>
-<li>C&#x2F;C++</li>
-<li>CodeLLDB（Mac M1必须）</li>
-</ul>
-<h1 id="配置launch-json"><a href="#配置launch-json" class="headerlink" title="配置launch.json"></a>配置launch.json</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;clang++ - 生成和调试活动文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;lldb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;environment&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span>: <span class="string">&quot;lldb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;preLaunchTask&quot;</span>: <span class="string">&quot;C/C++: clang++ 生成活动文件&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="配置task-json"><a href="#配置task-json" class="headerlink" title="配置task.json"></a>配置task.json</h1><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;tasks&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppbuild&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;label&quot;</span>: <span class="string">&quot;C/C++: clang++ 生成活动文件&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;command&quot;</span>: <span class="string">&quot;/usr/bin/clang++&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;-g&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;file&#125;&quot;</span>,</span><br><span class="line">                <span class="string">&quot;-o&quot;</span>,</span><br><span class="line">                <span class="string">&quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;options&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;problemMatcher&quot;</span>: [</span><br><span class="line">                <span class="string">&quot;$gcc&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">&quot;group&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;kind&quot;</span>: <span class="string">&quot;build&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;isDefault&quot;</span>: <span class="literal">true</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">&quot;detail&quot;</span>: <span class="string">&quot;调试器生成的任务。&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;2.0.0&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+          <p>Mac M1配置VSCode的C++环境</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
