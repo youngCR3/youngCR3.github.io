@@ -129,18 +129,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,229 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/14/git/" class="post-title-link" itemprop="url">git</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 21:31:37" itemprop="dateCreated datePublished" datetime="2022-04-14T21:31:37+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-16 22:03:16" itemprop="dateModified" datetime="2022-04-16T22:03:16+08:00">2022-04-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基本命令">基本命令</h1>
+<ul>
+<li>commit：提交记录</li>
+<li>branch：创建新分支</li>
+<li>checkout：切换分支</li>
+</ul>
+<h1 id="合并分支">合并分支</h1>
+<ul>
+<li><p>merge：合并分支</p></li>
+<li><p>rebase：另一种合并分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase side1 side2</span><br><span class="line"><span class="comment"># 将分支side2合并到分支side1上</span></span><br><span class="line">git pull --rebase</span><br><span class="line"><span class="comment"># 拉取远程仓库，并将本地分支合并到远程分支上</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="移动位置">移动位置</h1>
+<ul>
+<li><p>HEAD：指向某个分支或指向某个提交记录，指向提交记录时称为分离的HEAD</p></li>
+<li><p>相对移动</p>
+<ul>
+<li>使用<code>^</code>向上移动1个记录，如<code>git checkout main^</code>会让HEAD移动到main分支的父节点</li>
+<li>使用<code>~&lt;num&gt;</code>向上移动多个提交记录，如<code>~3</code></li>
+</ul></li>
+<li><p>强制修改分支位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -f main HEAD~3</span><br><span class="line"><span class="comment"># 强制main分支指向HEAD的第3级父提交</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="撤销变更">撤销变更</h1>
+<ul>
+<li><p>reset</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD^</span><br><span class="line"><span class="comment"># 撤销本地分支</span></span><br></pre></td></tr></table></figure></li>
+<li><p>revert</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD</span><br><span class="line"><span class="comment"># 撤销远程分支，实际上会提交一个新纪录，其状态与HEAD的父节点状态一致</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="整理提交记录">整理提交记录</h1>
+<ul>
+<li>cherry-pick</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick C3 C4 C7</span><br><span class="line"><span class="comment"># 将其他分支的某些提交添加到当前HEAD</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>交互式rebase</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD^^</span><br></pre></td></tr></table></figure>
+<h1 id="debug分支的技巧">debug分支的技巧</h1>
+<ul>
+<li>debug分支中，可将打印log的语句作为一个提交记录，debug的修改作为另一个提交记录，合并时直接cherry-pick
+debug修改对应的提交记录即可</li>
+</ul>
+<h1 id="标签">标签</h1>
+<ul>
+<li><p>tag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git tag v1 C1</span><br><span class="line"><span class="comment"># 为提交记录C1添加标签v1</span></span><br><span class="line">git tag v2</span><br><span class="line"><span class="comment"># 如果不指定提交记录，则为默认值HEAD</span></span><br></pre></td></tr></table></figure></li>
+<li><p>寻找离我最近的标签<code>git describe</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git describe &lt;ref&gt;</span><br><span class="line"><span class="comment"># &lt;ref&gt;是任意能被git识别成提交记录的引用，默认值为HEAD</span></span><br><span class="line"><span class="comment"># 输出结果是</span></span><br><span class="line">&lt;tag&gt;_&lt;numCommits&gt;_g&lt;<span class="built_in">hash</span>&gt;</span><br><span class="line"><span class="comment"># tag表示距离最近的标签，numCommits表示ref与tag相差多少个提交记录，hash表示ref所表示的提交记录的哈希值的前几位</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="多分支合并">多分支合并</h1>
+<h1 id="移动到指定的父提交">移动到指定的父提交</h1>
+<ul>
+<li><code>^</code>可以移动到父节点</li>
+<li><code>^2</code>可以移动到第二个父提交节点（其他数字以此类推）</li>
+</ul>
+<h2 id="移动支持链式操作">移动支持链式操作</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD~^2~2</span><br><span class="line"><span class="comment"># 移动到HEAD的父节点的第二个父提交节点的往上两个父节点</span></span><br></pre></td></tr></table></figure>
+<h1 id="远程分支">远程分支</h1>
+<ul>
+<li><p>git clone：拷贝远程分支到本地</p></li>
+<li><p>git commit导致分离的HEAD：在远程分支git
+commit会导致分离HEAD，因为本地修改并不会立刻同步到远程分支</p></li>
+<li><p>git fetch</p>
+<ul>
+<li>从远程仓库下载本地仓库缺失的提交记录，更新远程分支指针</li>
+<li>不会做的事：不会更新main分支，也不会修改磁盘上的文件，git
+fetch并不能让本地仓库与远程仓库同步</li>
+</ul></li>
+<li><p>git pull：相当于先执行git fetch，再执行git
+merge，实现本地仓库与远程仓库同步</p></li>
+<li><p>git
+push：将变更上传到指定的远程仓库，并在远程仓库上合并新提交记录</p></li>
+</ul>
+<h2 id="偏离的工作">偏离的工作</h2>
+<ul>
+<li><p>偏离的含义：克隆远程仓库，并基于提交记录C1开发功能，形成提交记录C3。同时，合作者基于C1提交了C2，并推送到远程仓库。此时我无法直接push，因为远程仓库已更新到C2。Git强制我先合并远程仓库，再进行push</p></li>
+<li><p>解决</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git rebase origin/master</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="远程服务器拒绝">远程服务器拒绝</h2>
+<ul>
+<li><p>如果你直接提交(commit)到本地main, 然后试图推送(push)修改,
+你将会收到这样类似的信息:</p>
+<p><code>! [远程服务器拒绝] main -&gt; main (TF402455: 不允许推送(push)这个分支; 你必须使用pull request来更新这个分支.)</code></p>
+<p>如果你是在一个大的合作团队中工作, 很可能是main被锁定了, 需要一些Pull
+Request流程来合并修改。</p></li>
+<li><p>解决方法：先创建一个feature分支并push，reset main分支再push</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature</span><br><span class="line">git push</span><br><span class="line">git checkout main</span><br><span class="line">git reset HEAD^</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="merge与rebase的优缺点对比">merge与rebase的优缺点对比</h2>
+<ul>
+<li>优点：rebase使提交数更干净，所有提交都在一条直线上</li>
+<li>缺点：rebase修改了提交树的历史。如下图，C2是比C3更早的提交记录，当使用rebase将side合并到main时，将使得C3成为C2的父节点，似乎C3比C2提交一样。</li>
+</ul>
+<p><img src="/2022/04/14/git/git_rebase.drawio.svg"></p>
+<h2 id="远程跟踪分支">远程跟踪分支</h2>
+<ul>
+<li><p>git中main分支与o/main是相关的</p>
+<p>pull操作时，提交记录先下载到o/main分支，再合并到本地的main分支</p>
+<p>push操作时，把工作从main推到远程仓库中的main分支，同时更新远程分支o/main</p></li>
+<li><p><strong>remote
+tracking属性</strong>：main和o/main分支的关联关系是由分支的remote
+tracking属性决定的，main被设定为跟踪o/main，即main分支制定了推送的目的地以及拉取后合并的目标</p></li>
+<li><p><strong>git clone所做的事</strong>：main分支的remote
+tracking属性无需我们手动设置，而是git
+clone时由git自动设置的。git为远程仓库中的每个分支在本地仓库中创建一个远程分支（如o/main），并创建一个跟踪远程仓库中活动分支的本地分支（如main）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local branch &quot;main&quot; set to track remote branch &quot;o/main&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>手动设置remote tracking属性</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b totallyNotMain o/main</span><br><span class="line"><span class="comment"># 创建一个totallyNotMain分支，跟踪远程分支o/main</span></span><br><span class="line">git branch -u o/main foo</span><br><span class="line"><span class="comment"># 让foo分支跟踪o/main</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="git-push的参数">git push的参数</h2>
+<ul>
+<li><p>git push可以指定参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git push &lt;remote&gt; &lt;place&gt;</span><br><span class="line">git push origin main</span><br><span class="line"><span class="comment"># 切换到本地仓库main分支，获取所有提交，并到远程仓库origin中找到main分支，将远程仓库中没有的提交记录都添加上去</span></span><br><span class="line"><span class="comment"># main是&lt;place&gt;参数，代表git提交记录来自于main，要推送到远程仓库中的main，就是要同步的两个仓库的位置</span></span><br></pre></td></tr></table></figure></li>
+<li><p>本地仓库的分支与远程仓库的分支名字（即上述place）不同的情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push origin &lt;<span class="built_in">source</span>&gt;:&lt;destination&gt;</span><br><span class="line"><span class="comment"># source和destination可以是不同名字的分支，事实上source只要是能被git识别的提交树位置即可，如HEAD^，而destination如果不存在于远程仓库将新建该分支</span></span><br><span class="line">git push origin HEAD^:main</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="git-fetch的参数">git fetch的参数</h2>
+<ul>
+<li><p>与git
+push的<code>&lt;source&gt;:&lt;destination&gt;</code>版本类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin &lt;<span class="built_in">source</span>&gt;:&lt;destination&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="省略source参数">省略source参数</h2>
+<ul>
+<li><p>git fetch中省略source参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin :&lt;destination&gt;</span><br><span class="line">git fetch :bar</span><br><span class="line"><span class="comment"># fetch空到本地，创建bar分支</span></span><br></pre></td></tr></table></figure></li>
+<li><p>git push省略source参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push origin :&lt;destination&gt;</span><br><span class="line">git push origin :foo</span><br><span class="line"><span class="comment"># push传空值source，删除远程仓库的foo分支</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="git-pull的参数">git pull的参数</h2>
+<ul>
+<li><p>git pull就是git fetch后跟git merge的缩写，因此git
+pull的参数可以理解为用同样的参数执行git
+fetch，再将当前checkout的位置merge所抓取的提交记录（如果提供了destination参数，则当前checkout的位置会merge到destination参数）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main:bar</span><br><span class="line"><span class="comment"># 将远程仓库的main分支拉取到本地仓库的bar分支，同时将本地仓库当前checkout的位置merge到本地仓库的bar分支上</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2133,599 +2356,6 @@ offer报文给中继代理，中继代理将该offer报文广播，以发送给D
 <li><strong>设置分片禁止标志位</strong>：发送端主机发送IP数据报时，将IP首部的分片禁止标志位设置为1，则沿途的路由器在需要进行分片时不会对IP数据报进行分片，而是直接丢弃</li>
 <li><strong>ICMP不可达消息</strong>：通过ICMP不可达消息将数据链路上<strong>MTU的值</strong>返回给发送主机</li>
 <li><strong>调整包大小</strong>：发送主机端收到ICMP不可达消息后即调整包的大小，最终得到能到达目标主机的合适的MTU</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/18/Redis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/18/Redis/" class="post-title-link" itemprop="url">Redis</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-18 23:08:51" itemprop="dateCreated datePublished" datetime="2022-03-18T23:08:51+08:00">2022-03-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="问题">问题</h1>
-<ul>
-<li>Redis应用场景有哪些？</li>
-<li>为什么需要使用缓存？</li>
-<li>Redis支持的数据类型有哪些？底层数据结构是什么?</li>
-<li>为什么说Redis是单线程模型？它由哪几部分组成？</li>
-<li>Redis不使用多线程的原因是什么？Redis6.0后引入多线程是为了解决什么问题？</li>
-<li>Redis为什么需要设置过期机制？</li>
-<li>Redis如何判断数据过期？</li>
-<li>Redis如何删除过期数据？该策略有何问题？</li>
-<li>Redis的内存淘汰机制是怎样的？常用的策略是什么？</li>
-<li>Redis的持久化机制目的是什么？</li>
-<li>Redis持久化方式有哪两种？</li>
-<li>Redis事务由哪些命令组成？redis事务与关系型数据库的事务有何区别？</li>
-<li>Redis缓存穿透是什么？如何解决该问题？</li>
-<li>Redis缓存雪崩是什么?如何解决?</li>
-<li>缓存读写策略有哪几种？Redis采取哪种？</li>
-<li>单机redis有何缺点？为什么要使用redis集群？</li>
-<li>redis集群有几种实现模式？</li>
-<li>redis主从模式是怎样的？有何优点？有何缺点？</li>
-<li>redis哨兵模式中，哨兵集群有何作用？该模式有何优点？有何缺点？</li>
-<li>redis自研模式中，客户端分片是怎样的，代理分片是怎样的，分别有何优点、缺点？</li>
-<li>redis cluster模式中
-<ul>
-<li>分片是怎样实现的？什么是一致性哈希技术？什么是虚拟slot技术？</li>
-<li>redis cluster结构是怎样的？</li>
-<li>redis bus的作用是什么?</li>
-<li>节点交互的配置信息包括哪些？</li>
-</ul></li>
-<li>redis主从架构中数据会丢失吗？如何解决？</li>
-<li>redis集群的主从复制过程是怎样的？</li>
-<li>什么是分布式锁？有何实现方案？</li>
-<li>redis实现分布式锁的方案是怎样的？</li>
-<li>RedLock算法是怎样的？</li>
-</ul>
-<h1 id="redis应用场景">Redis应用场景</h1>
-<h2 id="缓存">缓存</h2>
-<ul>
-<li><p><strong>缓存</strong>：Redis常用作缓存，因为它是内存数据库，读写速度非常快</p></li>
-<li><p><strong>缓存数据的处理流程</strong></p>
-<p><strong>查找缓存</strong>：如果用户请求的数据在缓存中就直接返回</p>
-<p><strong>查找数据库</strong>：如果用户请求的数据在数据库中，则更新缓存数据并返回</p>
-<p><strong>返回空数据</strong>：如果数据库中也不存在该数据，则返回空数据</p></li>
-<li><p>为什么要用缓存？</p>
-<p><strong>高性能</strong>：从内存中的缓存读取数据，比从磁盘读取数据更快</p>
-<p><strong>高并发</strong>：诸如MySQL的数据库的QPS大概在1w左右，而使用Redis缓存则可达10w以上</p>
-<blockquote>
-<p>QPS: Query Per Second，服务器每秒可以执行的查询次数</p>
-</blockquote></li>
-</ul>
-<h2 id="其他">其他</h2>
-<ul>
-<li>分布式锁</li>
-<li>限流</li>
-<li>消息队列</li>
-</ul>
-<h1 id="redis支持五种数据类型">Redis支持五种数据类型</h1>
-<h2 id="string">string</h2>
-<ul>
-<li><strong>字符串类型</strong>：Redis构建了简单动态字符串SDS类型，可以保存二进制数据，获取字符串长度的复杂度为<span class="math inline">\(O(1)\)</span></li>
-<li><strong>常用命令</strong>：set、get、strlen、exists、decr、incr、setex</li>
-<li><strong>应用场景</strong>：计数，如统计用户访问次数、文章点赞转发数量</li>
-</ul>
-<h3 id="普通字符串操作">普通字符串操作</h3>
-<ul>
-<li><p><strong>设置键值对</strong>：set key value</p></li>
-<li><p><strong>根据key获取值</strong>：get key</p></li>
-<li><p><strong>判断某个key是否存在</strong>：exists key</p></li>
-<li><p><strong>返回key存储的字符串值的长度</strong>：strlen key</p></li>
-<li><p><strong>删除某个key对应的值</strong>：del key</p></li>
-</ul>
-<h3 id="计数器">计数器</h3>
-<ul>
-<li>字符串内容为<strong>整数</strong>时可以使用</li>
-<li><strong>递增</strong>：incr number</li>
-<li><strong>递减</strong>：decr number</li>
-</ul>
-<h3 id="过期">过期</h3>
-<ul>
-<li><strong>设置过期时间</strong>：expire key
-60，设置数据在60s后过期</li>
-<li><strong>同时设置数据值和过期时间</strong>：setex key 60 value</li>
-</ul>
-<blockquote>
-<p>setex = <a href="#set">set</a> + [ex]pire</p>
-</blockquote>
-<ul>
-<li><strong>查询过期时间</strong>：ttl key，返回还有多少秒过期</li>
-</ul>
-<h2 id="list">list</h2>
-<ul>
-<li><strong>链表类型</strong>：Redis实现的list是双向链表，支持反向查找和遍历</li>
-<li><strong>常用命令</strong>：rpush、lpush、rpop、lpop、lrange、llen等</li>
-<li><strong>应用场景</strong>：发布与订阅、消息队列、慢查询</li>
-</ul>
-<h3 id="队列">队列</h3>
-<ul>
-<li>通过rpush、lpop实现队列</li>
-</ul>
-<h3 id="栈">栈</h3>
-<ul>
-<li><p>通过rpush、rpop实现栈</p></li>
-<li><p>lrange可以查询对应下表范围的列表元素</p></li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lrange myList 0 1</span><br><span class="line"># 查询链表中下标从0到1(包括1)的元素</span><br></pre></td></tr></table></figure>
-<ul>
-<li>llen查看链表长度</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">llen myList</span><br></pre></td></tr></table></figure>
-<h2 id="hash">hash</h2>
-<ul>
-<li><strong>哈希表类型</strong>：内部实现为数组+链表，类似JDK1.8之前的HashMap，常用于存储对象</li>
-<li><strong>常用命令</strong>：hset、hmset、hexists、hget、hgetall、hkeys、hvals等</li>
-<li><strong>应用场景</strong>：系统中<strong>对象数据</strong>的存储</li>
-</ul>
-<h2 id="set">set</h2>
-<ul>
-<li><p><strong>无序集合类型</strong>：类似于Java中的HashSet</p></li>
-<li><p><strong>常用命令</strong>：sadd、spop、smembers、sismember、scard、sinterstore、sunion</p></li>
-<li><p><strong>应用场景</strong>：需要存放数据不能重复，且需要获取多个数据源交集、并集的场景</p></li>
-<li><p><strong>交集</strong>：sinterstore set1 set2
-set3，求set2与set3的交集，并存放在set1中</p></li>
-<li><p><strong>并集</strong>：sunion set1
-set2，求set1与set2的并集</p></li>
-</ul>
-<h2 id="sorted-set">sorted set</h2>
-<ul>
-<li><p><strong>zset类型</strong>：与set相比，增加了一个权重参数score，使得集合的元素能按score进行有序排列，还可以通过score的范围获取元素列表</p></li>
-<li><p><strong>常用命令</strong>：zadd、zcard、zscore、zrange、zrevrange、zrem等</p></li>
-<li><p><strong>应用场景</strong>：对数据根据某个权重进行排序的场景，如直播系统中的礼物排行榜等</p></li>
-</ul>
-<h2 id="bitmap">bitmap</h2>
-<ul>
-<li><strong>bitmap类型</strong>：存储连续的二进制数字，只需要1个bit就可以表示某个元素对应的值或状态，key就是对应元素本身</li>
-<li><strong>常用命令</strong>：setbit、getbit、bitcount、bitop</li>
-<li><strong>应用场景</strong>：保存状态信息，如是否签到、是否登录，并进一步对这些信息进行分析的场景</li>
-</ul>
-<h3 id="统计活跃用户">统计活跃用户</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setbit 20220319 1 1		# id为1的用户在20220319活跃</span><br><span class="line">setbit 20220319 2 1		# id为2的用户在20220319活跃</span><br><span class="line">setbit 20220320 1 1		# id为1的用户在20220320活跃</span><br><span class="line">bitop and desk1 20220319 20220320</span><br><span class="line">bitcount desk1			# 20220319和20220310都活跃的人数</span><br><span class="line">bitop or desk2 20220319 20220320</span><br><span class="line">bitcount desk2			# 任意一天活跃的人数</span><br></pre></td></tr></table></figure>
-<h1 id="redis单线程模型">Redis单线程模型</h1>
-<h2 id="reactor模式">Reactor模式</h2>
-<ul>
-<li><strong>两种体系</strong>：处理Web请求时，通常有两种体系结构，分别是thread-based
-architecture，event-driven architecture</li>
-</ul>
-<h3 id="thread-based结构">thread-based结构</h3>
-<ul>
-<li><p><strong>每个请求一个线程</strong>：每接收到一个请求，便开启一个独立的线程处理</p></li>
-<li><p><strong>适用场景</strong>：并发访问量不大的场景，因为线程需要占用一定的内存资源，且操作系统在线程之间的切换也需要一定的开销，线程数过多时会降低web服务器的性能</p></li>
-</ul>
-<h3 id="event-driven结构">event-driven结构</h3>
-<ul>
-<li><p><strong>事件</strong>：状态的改变，如tcp中socket的new incoming
-connection、ready for read、ready for write</p></li>
-<li><p><strong>事件处理器</strong>：用于响应特定事件的发生，服务端接受连接与对事件的处理分离</p></li>
-</ul>
-<h3 id="reactor">reactor</h3>
-<ul>
-<li><p><strong>reactor设计模式</strong>：event-driven
-architecture的一种实现方式</p>
-<ul>
-<li><p><strong>并发请求</strong>：处理多个客户端并发的向服务端请求服务的场景</p></li>
-<li><p><strong>服务由多个方法组成</strong>：每种服务在服务端可能由多个方法组成</p></li>
-<li><p><strong>解耦服务、分发给事件处理器</strong>：reactor解耦并发请求的服务，并分发给对应的事件处理器处理</p></li>
-</ul></li>
-<li><p><strong>角色</strong>：文件描述符、同步时间分离器、初始分发器、事务处理器、具体的事务处理器</p>
-<ul>
-<li><strong>文件描述符</strong> handle</li>
-<li><strong>同步事件分离器</strong> Synchronous Event
-Demultiplexer，本质上是系统调用，如linux中的select、poll、epoll</li>
-<li><strong>初始分发器</strong> Initiation
-Dispatcher，即reactor角色，提供了注册、删除、转发event
-handler的方法</li>
-<li><strong>事务处理器</strong> Event Handler</li>
-<li><strong>具体的事务处理器</strong> Concrete Event
-Handler，实现具体的业务逻辑</li>
-</ul></li>
-</ul>
-<h2 id="redis单线程模型-1">Redis单线程模型</h2>
-<ul>
-<li><p><strong>Redis的事件处理模型</strong>：Redis的文件事件处理器，它是以单线程方式运行的</p></li>
-<li><p>Redis如何监听大量客户端连接？</p>
-<p><strong>IO多路复用程序</strong>：redis使用IO多路复用监听多个socket，并根据socket目前执行的任务为socket关联不同的事件处理器</p>
-<p><strong>事件驱动程序</strong>：Redis服务器是一个事件驱动程序，服务器需要处理文件事件、时间事件。当socket准备好执行accept、read、write、close等操作时，对应的文件事件就会发生，文件事件处理器就会调用socket之前关联的事件管理器来处理这些事件</p>
-<p><strong>文件事件处理器</strong>以单线程方式运行，但通过I/O多路复用程序监听多个套接字，实现了高性能的网络通信模型，又很好地与Redis服务器中其他同样以单线程方式运行的模块对接</p></li>
-<li><p><strong>文件事件处理器的组成</strong></p>
-<ul>
-<li><p><strong>多个socket</strong>：客户端连接</p></li>
-<li><p><strong>IO多路复用程序</strong></p></li>
-<li><p><strong>文件事件分派器</strong>，将socket关联到相应的事件处理器</p></li>
-<li><p><strong>事件处理器</strong>：accept处理器、命令请求处理器、命令回复处理器等</p></li>
-</ul></li>
-</ul>
-<h2 id="redis为何不使用多线程">Redis为何不使用多线程？</h2>
-<ul>
-<li><strong>易于维护</strong>：单线程编程简单，且易于维护</li>
-<li><strong>性能瓶颈</strong>：Redis的性能瓶颈不在CPU，而在<strong>内存和网络</strong></li>
-<li><strong>死锁、上下文切换</strong>：多线程存在以上问题</li>
-</ul>
-<h2 id="redis6.0后引入了多线程的原因">Redis6.0后引入了多线程的原因</h2>
-<ul>
-<li><strong>提高网络IO读写性能</strong>：Redis引入多线程主要为了提高网络IO读写性能</li>
-<li>Redis只在网络数据读写等耗时操作上使用了多线程，而执行命令仍然是单线程顺序执行的</li>
-</ul>
-<h1 id="redis的过期机制">Redis的过期机制</h1>
-<ul>
-<li><strong>目的</strong>：防止内存耗尽，如果缓存中的所有数据一直保存，则最终会导致out
-of memory</li>
-</ul>
-<h2 id="redis如何判断数据过期">Redis如何判断数据过期？</h2>
-<ul>
-<li><p><strong>过期字典</strong>：保存数据过期的时间，可看作哈希表，键指向Redis数据库中的某个键，值是一个long
-long类型的整数，保存了key所指向的数据库键的过期时间</p></li>
-<li><p>过期字典存储在<code>redisDb</code>结构体的<code>expires</code>变量中</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisDb</span> &#123;</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    dict *dict;     <span class="comment">//数据库键空间,保存着数据库中所有键值对</span></span><br><span class="line">    dict *expires   <span class="comment">// 过期字典,保存着键的过期时间</span></span><br><span class="line">    ...</span><br><span class="line">&#125; redisDb;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="过期数据的删除策略">过期数据的删除策略</h2>
-<ul>
-<li><strong>惰性删除</strong>：在取出key时对数据进行过期检查，对CPU友好，但可能会导致大量过期key没被删除</li>
-<li><strong>定期删除</strong>：每隔一段时间则抽取一批key，删除其中的过期键，对内存友好</li>
-<li><strong>Redis策略：定期删除 + lazy删除</strong></li>
-</ul>
-<h2 id="redis内存淘汰机制">Redis内存淘汰机制</h2>
-<ul>
-<li><p><strong>目的</strong>：redis采用定期删除 +
-lazy删除策略，但仍有可能漏掉许多过期key，导致内存空间耗尽，为此redis引入了内存淘汰机制</p></li>
-<li><p><strong>数据淘汰机制</strong></p>
-<p><strong>volatile-lru</strong>：从已设置过期时间的数据淘汰最近最少使用的数据</p>
-<p><strong>volatile-ttl</strong>：从已设置过期时间的数据集中挑选将要过期的数据淘汰</p>
-<p><strong>volatile-random</strong>：从已设置过期时间的数据集中任意选择数据淘汰</p>
-<p><strong>allkeys-lru</strong>：当内存不足以容纳新写入数据时，移除最近最少使用的key（<strong>最常用策略</strong>）</p>
-<p><strong>allkeys-random</strong>：从数据集中任意选择数据淘汰</p>
-<p><strong>no-eviction</strong>：禁止驱逐数据，当内存不足以容纳新数据时则报错</p>
-<p><strong>volatile-lfu</strong>：从已设置过期时间的数据淘汰最不经常使用的数据</p>
-<p><strong>allkeys-lfu</strong>：当内存不足以容纳新数据时，移除最不经常使用的键</p></li>
-</ul>
-<h1 id="redis持久化机制">Redis持久化机制</h1>
-<ul>
-<li><p><strong>目的</strong>：持久化数据，即将内存中的数据写入磁盘，从而在系统故障后仍然可以恢复数据</p></li>
-<li><p><strong>Redis支持两种持久化方式</strong>：快照RDB、只追加文件AOF</p></li>
-<li><p><strong>快照持久化</strong>：创建快照，获取存储在内存中的数据在某个时间点上的副本</p>
-<ul>
-<li><strong>备份快照</strong>：创建快照后可对快照进行备份，将快照复制到其他服务器从而创建具有相同数据的服务器副本</li>
-<li><strong>数据恢复</strong>：快照留在原地可用于重启服务器时的数据恢复</li>
-</ul></li>
-<li><p><strong>只追加文件持久化</strong></p>
-<p><strong>AOF文件</strong>：每执行一条改变数据的命令，就会将该命令写入到内存缓存中，并在某时刻同步到硬盘中的AOF文件</p>
-<p><strong>三种AOF持久化方式</strong>（从内存缓存写入AOF文件的时机）</p>
-<ul>
-<li>每次数据修改时都写入AOF文件</li>
-<li>每秒同步一次，将多个命令同步到硬盘的AOF文件中（常用）</li>
-<li>操作系统决定何时同步</li>
-</ul></li>
-</ul>
-<h1 id="redis事务">Redis事务</h1>
-<ul>
-<li><p><strong>MULTI命令</strong>：开始事务，此后输入的多个命令不会立刻执行，而是放入队列中（FIFO）</p></li>
-<li><p><strong>EXEC命令</strong>：执行事务</p></li>
-<li><p><strong>DISCARD命令</strong>：取消事务</p></li>
-<li><p><strong>WATCH命令</strong>：监听指定的键，调用exec命令执行事务时，若一个被watch命令监听的键被修改，则事务不会执行</p></li>
-<li><p><strong>redis事务与关系型数据库的事务区别</strong></p>
-<p>redis事务不支持rollback，因而不具备原子性，也不满足持久性</p></li>
-</ul>
-<h1 id="缓存穿透">缓存穿透</h1>
-<ul>
-<li><p><strong>含义</strong>：大量请求的key不存在于缓存中，导致请求直接到数据上</p></li>
-<li><p><strong>场景</strong>：攻击者故意对不存在缓冲中的key发起大量请求</p></li>
-<li><p>解决方法</p>
-<p><strong>参数校验</strong>：对于不合法参数的请求应抛出异常信息</p>
-<p><strong>缓存无效key</strong>：如果缓存和数据库都查不到某个key的数据，则写一个到redis中并设置过期时间</p>
-<p><strong>布隆过滤器</strong>：把所有可能存在的请求的值都存放在布隆过滤器中，用户请求时先判断用户发来的请求的值是否存在于布隆过滤器中，不存在则返回错误参数信息，存在才继续查询缓存</p>
-<ul>
-<li><strong>先查询布隆过滤器，再查询缓存</strong></li>
-<li><strong>误判</strong>：布隆过滤器认为一个数据存在，它可能不存在；但布隆过滤器认为数据不存在，则一定不存在</li>
-</ul></li>
-</ul>
-<h1 id="缓存雪崩">缓存雪崩</h1>
-<ul>
-<li><p>含义</p>
-<p><strong>缓存在同一时间大面积失效</strong>：缓存在同一时间大面积失效，导致后面的请求都直接落在数据库上，数据库在短时间内承受大量请求（如系统缓存的某个模块宕机不可用）</p>
-<p><strong>多个热点缓存在某一时刻失效</strong>：同样地，可能导致大量请求直接落在数据库上</p></li>
-<li><p><strong>Redis服务不可用</strong>的解决方法</p>
-<p><strong>采用redis集群</strong>，避免单机出现问题导致整个缓存服务不可用</p>
-<p><strong>限流</strong>，避免同时处理大量请求</p></li>
-<li><p><strong>热点缓存失效</strong>的解决方法</p>
-<p><strong>设置不同的失效时间</strong>，如随机设置缓存失效时间</p>
-<p><strong>设置缓存永不失效</strong></p></li>
-</ul>
-<h1 id="缓存读写策略">缓存读写策略</h1>
-<h2 id="旁路缓存模式">旁路缓存模式</h2>
-<ul>
-<li><p><strong>写策略</strong>：先更新数据库，然后<strong>删除缓存</strong></p></li>
-<li><p><strong>读策略</strong>：先从缓存读数据；若读不到则从数据库读数据，并更新缓存</p></li>
-<li><p><strong>一致性问题</strong></p>
-<ul>
-<li><p>写数据的过程中可以<strong>先删除缓存，再更新数据库</strong>吗？</p>
-<p>不行。可能造成数据库和缓存数据不一致问题，如（1）请求1把缓存中的A数据删除（2）请求2从数据库读取数据（3）请求1更新数据库。这样，请求2便无法读取到比自己早执行的请求1写入的数据</p></li>
-<li><p>写数据<strong>先更新数据库，再删除缓存</strong>便没有一致性问题吗？</p>
-<p>仍然存在。（1）请求1从数据库读取数据，（2）请求2写数据A到数据库，并删除缓存的A数据，（3）请求1将数据A写入缓存。这样，请求2往数据库写入了新数据，但缓存中仍然保留着旧数据</p></li>
-<li><p>解决办法</p>
-<p><strong>要求强一致性</strong>：更新数据库的同时更新缓存，但需要加<strong>分布式锁</strong>保证更新缓存时不能存在线程安全问题</p>
-<p><strong>允许短暂不一致</strong>：更新数据时同样更新缓存，给缓存加一个较短的过期时间</p></li>
-</ul></li>
-<li><p><strong>缺点</strong></p>
-<ul>
-<li>首次请求数据一定不在cache中（解决：先将热点数据提前放入cache中）</li>
-<li>写操作比较频繁的话，导致cache中的数据被频繁删除，影响缓存命中率</li>
-<li>数据不一致问题</li>
-</ul></li>
-</ul>
-<h2 id="读写穿透模式">读写穿透模式</h2>
-<ul>
-<li><p><strong>缓存视作主要数据存储</strong>：服务端把缓存视为主要数据存储，从中读取数据并将数据写入其中，缓存负责从数据库读取数据，将数据写入数据库</p></li>
-<li><p><strong>写策略</strong>：先查缓存，若缓存则存在则更新缓存，缓存服务自己负责更新数据库；若缓存不存在则更新数据库</p></li>
-<li><p><strong>读策略</strong>：读缓存，若存在则直接返回；若不存在则从数据库加载，写入缓存后返回</p></li>
-<li><p><strong>特点</strong>：在旁路缓存模式中，若读请求的数据不在缓存中，由应用程序自己访问数据库读取并写入缓存；而在读写穿透模式，若读请求的数据不在缓存中，则缓存服务自己会从数据库读取数据并写入缓存，这一过程对用户是透明的</p></li>
-<li><p><strong>缺点</strong>：首次请求数据一定不在缓存（解决：把热点数据提前放入缓存）</p></li>
-</ul>
-<h2 id="异步缓存写入模式">异步缓存写入模式</h2>
-<ul>
-<li>与读写穿透共同点：由<strong>缓存服务负责更新缓存和数据库的读写</strong></li>
-<li>与读写穿透的不同：读写穿透同步更新缓存和数据库，异步缓存写入模式则<strong>只更新缓存</strong>，不直接更新数据库，而是以<strong>异步批量的方式更新数据库</strong></li>
-<li><strong>优点</strong>：读写性能高</li>
-<li><strong>缺点</strong>：一致性更差</li>
-</ul>
-<h1 id="redis集群">redis集群</h1>
-<ul>
-<li>redis单机的缺点：服务器宕机导致服务不可用；性能瓶颈，内存限制了处理能力</li>
-<li>redis集群方案：主从模式、哨兵模式、自研、Clustert模式</li>
-</ul>
-<h2 id="redis主从模式">redis主从模式</h2>
-<ul>
-<li><p><strong>复制功能</strong>：在master数据库中的数据更新后，自动将更新的数据同步到slave数据库上，即主从模式的redis集群</p></li>
-<li><p><strong>优点</strong></p>
-<p><strong>高可靠性</strong>，master数据库故障后，可以切换到slave数据库</p>
-<p><strong>读写分离</strong>，slave数据库可以扩展master数据库节点的都能力，应对大并发量的读操作</p></li>
-<li><p><strong>缺点</strong></p>
-<p><strong>不具备自动容错和恢复能力</strong>，主节点故障，
-从节点需要<strong>手动</strong>升为主节点</p></li>
-</ul>
-<h2 id="redis哨兵模式">redis哨兵模式</h2>
-<ul>
-<li><p><strong>哨兵集群作用</strong></p>
-<p><strong>监控运行状态</strong>：监控所有服务器是否正常运行，除监控主服务器、从服务器外，哨兵服务器也相互监控</p>
-<p><strong>故障切换</strong>：哨兵检测到master宕机后，会自动将slave切换成master，通过发布订阅模式通知其他从服务器，修改配置文件让其切换master。旧master若从故障恢复后将成为新master的slave服务器</p></li>
-<li><p><strong>优点</strong>：解决了主从模式中master故障不能自动切换的问题</p></li>
-<li><p><strong>缺点</strong></p>
-<p><strong>浪费资源</strong>，集群里所有节点都保存全量数据</p>
-<p><strong>切换时间</strong>，主节点宕机后，投票选举结束前，redis会开启保护机制，禁止写操作，直至产生新的redis主机</p>
-<p><strong>写操作性能瓶颈</strong>，只有master节点可以执行写请求</p></li>
-</ul>
-<h2 id="redis自研模式">redis自研模式</h2>
-<ul>
-<li>各个开发者为了解决redis哨兵模式的问题，自研的redis集群方案</li>
-</ul>
-<h3 id="客户端分片">客户端分片</h3>
-<ul>
-<li><p><strong>分片逻辑</strong>：在redis客户端实现，通过预定义的路由规则将对key的访问转发到不同的redis实例中</p></li>
-<li><p><strong>路由规则</strong>：对key求哈希值</p></li>
-<li><p><strong>优点</strong>：redis实例之间彼此独立，相互无关联，易于扩展，系统灵活性强</p></li>
-<li><p><strong>缺点</strong></p>
-<p><strong>redis群拓扑结构变化</strong>：客户端sharding不支持动态增删节点，服务端redis实例群拓扑结构变化时，每个客户端都需要更新调整</p>
-<p><strong>运维成本</strong>：运维成本较高，集群的数据出了任何问题都需要运维人员和开发人员一起解决</p>
-<p><strong>客户端维护分片逻辑</strong>：不同的客户端需要编写和维护多套相同的逻辑</p></li>
-</ul>
-<h3 id="代理分片">代理分片</h3>
-<ul>
-<li><strong>目的</strong>：redis实例群拓扑结构变化时，<strong>不需要客户端更新调整</strong>，而是由代理分片完成</li>
-<li><strong>实现</strong>：<strong>代理分片</strong>将客户端分片模块单独分出来，作为redis客户端和服务端的桥梁</li>
-<li><strong>优点</strong>：解决了服务端redis实例群拓扑结构变化时，每个客户端需要更新调整的问题</li>
-<li><strong>缺点</strong>：redis客户端的请求都经过代理才能到达redis服务器，<strong>性能损失</strong></li>
-</ul>
-<h2 id="redis-cluster模式">redis cluster模式</h2>
-<h3 id="redis哈希槽">Redis哈希槽</h3>
-<ul>
-<li><p><strong>一致性哈希</strong>技术</p>
-<p><strong>圆环</strong>：一致性哈希将范围抽象为一个圆环，对key计算hash值后对<span class="math inline">\(2^{32}\)</span>取模，则值的范围在<span class="math inline">\([0,2^{32}-1]\)</span>之间</p>
-<p><strong>分配</strong>：将redis示例均匀分布在圆环上，通过上述方法计算key的哈希值后找到其在圆环的位置，然后将其分配到该位置按顺时针旋转的下一个redis实例。若redis实例故障，则继续按顺时针旋转直到找到下一个正常redis实例</p>
-<p><strong>缺点</strong>：redis实例节点较少时，节点变化将导致数据倾斜，即部分节点数据过多，部分节点数据过少</p>
-<p><strong>虚拟节点</strong>：与真实节点一起分布在圆环上，而且每个虚拟节点都会映射到某个真实节点中</p></li>
-<li><p><strong>虚拟槽</strong>技术</p>
-<p><strong>槽数量</strong>：redis集群一共有<span class="math inline">\(2^{14}=16384\)</span>个槽</p>
-<p><strong>槽范围</strong>：所有的master节点都有一个槽范围，槽数是可以迁移的。master节点的从节点不分配槽，只拥有读权限</p>
-<p><strong>分配</strong>：计算key的哈希值，然后对16384取模得到对应的槽位，然后根据槽找到对应的节点</p>
-<p><strong>更方便地添加和移除节点</strong></p>
-<ul>
-<li>增加节点时，只需要把其他节点的某些哈希槽挪到新节点即可</li>
-<li>移除节点时，只需要把移除节点上的哈希槽分配到其他节点即可，不需要停止redis任何节点的服务</li>
-<li>如果使用一致性哈希技术，则增加和移除节点都需要rehash</li>
-</ul></li>
-</ul>
-<h3 id="redis-cluster结构">redis cluster结构</h3>
-<ul>
-<li><p><strong>结构</strong>：可以看作多个主从架构结合在一起</p>
-<ul>
-<li>redis推荐redis
-cluster至少包含三个主节点，每个主节点至少有一个从节点，即三主三从六个节点</li>
-<li>每组节点都可看做一个主从模式，且负责不同的slot</li>
-</ul></li>
-<li><p><strong>主备复制</strong>：与主从模式类似，master库数据更新后，将自动同步到slave库上</p></li>
-<li><p><strong>对外服务</strong>：外部对redis进行读写操作时，必须访问master进行写操作，可以访问slave进行读操作</p></li>
-<li><p><strong>Redis bus</strong></p>
-<p><strong>去中心化</strong>：redis
-cluster是一个去中心化的架构，不存在统一的配置中心，redis
-cluster的每个节点都保存了集群的配置信息</p>
-<p><strong>配置信息交互</strong>：节点之间通过redis cluster
-bus完成配置信息的交互，最终达成一致性</p>
-<p><strong>PING/PONG</strong>：配置信息的一致性主要依靠PING/PONG，每个节点向其他节点频繁地周期性地发送PING/PONG消息，每次PING/PONG都随机携带一部分节点信息，由于交互频繁，短时间内的几次交互后集群状态会达成一致</p>
-<p><strong>交互信息</strong>包括</p>
-<ul>
-<li><strong>数据分片slot和节点的对应关系</strong></li>
-<li><strong>集群中每个节点的可用状态</strong></li>
-<li><strong>集群结构变更信息</strong>，数据分片的迁移、主备切换、单点master的发现等都会导致集群结构变化</li>
-</ul></li>
-</ul>
-<h2 id="redis主从架构会发生数据丢失吗">redis主从架构会发生数据丢失吗</h2>
-<ul>
-<li><p><strong>异步复制同步丢失</strong>：redis主节点和从节点的复制是异步的，若主节点的数据未完全复制到从节点，主节点就发生了宕机，则主节点内存中的数据会丢失</p></li>
-<li><p><strong>split
-brain问题</strong>：一个集群中产生多个主节点，如由于网络原因，集群出现了分区，master与slave节点之间的联系断开，哨兵检测后认为主节点故障，重新选举某个从节点为主节点。而旧的主节点并未故障，客户端仍在其上写数据，当旧的主节点被降为从节点后，会同步新的主节点数据，导致此前客户端写入旧主节点的数据丢失</p></li>
-<li><p><strong>解决</strong>：通过设定配置参数，规定至少有x个slave与master的同步复制延迟时间不超过y秒，若不满足该条件则master暂不接受任何客户端请求（降低系统的可用性换取数据一致性）</p></li>
-</ul>
-<h2 id="redis集群的主从复制过程">redis集群的主从复制过程</h2>
-<ul>
-<li><p>步骤</p>
-<p><strong>设置服务器的地址和端口号</strong></p>
-<p><strong>建立套接字连接</strong>：建立主从服务器之间的连接</p>
-<p><strong>发送PING命令</strong>：检验套接字是否可用</p>
-<p><strong>身份验证</strong></p>
-<p><strong>同步</strong>：从master库向slave库同步数据，分为全量复制、部分复制</p>
-<p><strong>命令传播</strong>：当同步后主从数据库状态一致，此后若主服务器接受并执行新的写命令，则将该命令发送给从节点，从节点也接收并执行命令，保证主从节点数据的一致性</p></li>
-<li><p>全量复制与部分复制</p>
-<p><strong>全量复制</strong>：用于<strong>初次复制</strong>或无法进行部分复制的情况，将主节点的所有数据都发送给从节点</p>
-<p><strong>部分复制</strong>：用于网络中断恢复后的复制，只将中断期间主节点执行的写命令发送给从节点，更加<strong>高效</strong></p></li>
-<li><p>redis如何保证主从服务器一致</p>
-<p><strong>心跳检测机制</strong>：命令传播阶段，slave利用心跳检测机制，定时向主服务器发送消息</p></li>
-<li><p><strong>网络问题</strong>导致主从复制过程中停止复制会怎样？</p>
-<p><strong>断点续传</strong>：网络重新连接后，接着上次复制的地方继续复制，而不是重新复制</p>
-<p><strong>replication
-buffer</strong>：master库连接的每一个slave库对应一个replication
-buffer，master库执行完每一个操作命令后，将命令分别写入每一个从库对应的replication
-buffer</p>
-<p><strong>replication
-backlog</strong>：一个<strong>环形</strong>区域，记录master库写入的位置和slave库读取的位置</p>
-<p><strong>master_repl_offset</strong>：记录master库写入记录的偏移量</p>
-<p><strong>slave_repl_offset</strong>：记录slave库读取记录的偏移量</p>
-<blockquote>
-<p>开始时两者相等，当master写入命令时master_repl_offset递增，slave读取命令时master_repl_offset递增，因此两者之间的命令就是从库未复制的命令记录</p>
-</blockquote></li>
-</ul>
-<h1 id="redis的分布式问题">redis的分布式问题</h1>
-<h2 id="什么是分布式锁">什么是分布式锁</h2>
-<ul>
-<li><p><strong>锁的作用</strong>：同步，保证共享资源在同一时刻只能被同一线程访问</p></li>
-<li><p><strong>分布式锁</strong>：保证分布式场景下，共享资源在同一时刻只能被同一线程访问，或是用来控制分布式系统之间同步访问共享资源</p></li>
-<li><p>分布式锁的特性</p>
-<p><strong>互斥性</strong>：任意时刻，同一条数据只能被一台机器上的一个线程执行</p>
-<p><strong>高可用性</strong>：部分节点宕机后，客户端仍可以正常地获取锁和释放锁</p>
-<p><strong>独占性</strong>：加锁和解锁必须在同一服务器执行，不能在一个服务器上加锁，在另一个服务器上解锁</p>
-<p><strong>防锁超时</strong>：如果客户端没有主动释放锁，服务器会在一定时间后自动释放锁，防止客户端宕机或网络异常导致宕机</p></li>
-</ul>
-<h2 id="分布式锁的实现方法">分布式锁的实现方法</h2>
-<ul>
-<li><p>基于<strong>关系型数据库</strong></p></li>
-<li><p>基于<strong>redis</strong></p>
-<p><strong>优点</strong>：性能好，实现方便</p>
-<p><strong>缺点</strong>：key的过期时间设置难以确定；redis集群并非强一致性</p></li>
-<li><p>基于<strong>zookeeper</strong></p>
-<p><strong>优点</strong>：解决了单点问题、不可重入问题、非阻塞问题以及锁无法释放问题，实现简单</p>
-<p><strong>缺点</strong>：性能上不如使用缓存实现分布式锁</p></li>
-</ul>
-<h2 id="redis如何实现分布式锁">Redis如何实现分布式锁</h2>
-<ul>
-<li><p><strong>SETNX命令</strong>：该命令的作用是，当key不存在时设置key的值，当key存在时则不进行任何操作</p></li>
-<li><p><strong>简单流程</strong></p>
-<p><strong>实现</strong>：SETNX获取锁，若获取成功则执行业务，然后删除锁并结束</p>
-<p><strong>问题</strong>：如执行业务时代码<strong>异常</strong>，导致无法删除锁，则其他线程也无法获取锁</p></li>
-<li><p>改进方案1：try-catch-finally</p>
-<p><strong>实现</strong>：将删除锁操作放在finally代码块中，保证出现异常时也能释放锁</p>
-<p><strong>问题</strong>：若执行业务时<strong>宕机</strong>，则仍然无法删除锁</p></li>
-<li><p>改进方案2：<strong>给锁设置过期时间</strong></p>
-<p><strong>问题</strong>：线程1获取锁时设置了过期时间，但若执行业务时间超过了该过期时间，则锁到期释放后线程1仍在执行。若此时线程2获取了锁并开始执行业务，而线程1此后执行结束并删除锁，会导致线程2获取的锁被释放</p></li>
-<li><p>改进方案3</p>
-<p><strong>给锁加上标识UUID</strong>：每个线程获取锁时都会生成一个不同的UUID作为锁的标识，删除锁时，锁的标识和自己生成的UUID相等时才进行删除操作</p>
-<p><strong>守护线程</strong>：加锁时设置一个预估的过期时间，并开启守护线程，定时检测锁的失效时间，若快要过期而访问共享资源的操作还未完成，则守护线程对该锁进行续期，重设过期时间</p>
-<p><strong>尚存在的问题</strong>：不具备可重入性（同一线程可以重复获取锁）</p></li>
-<li><p>改进方案4：<strong>重入计数</strong></p>
-<p><strong>实现</strong>：对锁进行重入计数，加锁时加1，解锁时减1，当计数归零时才释放锁</p>
-<p><strong>尚存问题</strong>：若线程获取锁失败后，它如何得知该锁被释放而再次获取？</p></li>
-<li><p>改进方案5：轮询/发布订阅</p>
-<p><strong>轮询</strong>：客户端轮询，即周期性地检测是否可以获取锁，消耗服务器资源</p>
-<p><strong>redis的发布订阅功能</strong>：线程获取锁失败时，<strong>订阅锁释放消息</strong>；线程获取锁并执行业务完成后，释放锁时<strong>发送锁释放消息</strong></p></li>
-<li><p>改进方案6：<strong>多节点redis的分布式锁——RedLock算法</strong></p></li>
-</ul>
-<h2 id="redlock算法">RedLock算法</h2>
-<ul>
-<li><p><strong>客户端获取锁</strong></p>
-<ul>
-<li><strong>时间戳</strong>：获取当前时间戳</li>
-<li><strong>获取锁</strong>：在redis实例中按顺序获取锁，在所有实例中使用相同的键名和随机值，<strong>锁的获取时间</strong>设置为比锁的过期时间短得多（如果一个redis实例不可用，应尽快尝试下一个redis实例）</li>
-<li><strong>获取成功</strong>：客户端在超过一半的实例中获得锁，则认为获取锁成功</li>
-<li><strong>有效时间</strong>：锁的有效时间为锁初始设置的过期时间，减去锁的获取时间</li>
-<li><strong>获取失败</strong>：若客户端无法成功获取锁（无法在超过一半的redis实例中获取锁，或锁的有效时间为负数），则尝试解锁所有redis实例</li>
-</ul></li>
-<li><p><strong>失败重试</strong></p>
-<p>如果无法获取锁，则客户端在<strong>随机时间</strong>后重试</p></li>
-<li><p><strong>释放锁</strong></p>
-<p>尝试释放所有实例的锁，无需考虑是否释放成功（删除时会判断这个锁是否由自己设置，避免释放其他客户端上设置的锁）</p></li>
 </ul>
 
       

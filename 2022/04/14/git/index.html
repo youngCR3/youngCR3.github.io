@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基本命令  commit：提交记录 branch：创建新分支 checkout：切换分支  合并分支  merge：合并分支 rebase：另一种合并分支 1234git rebase side1 side2# 将分支side2合并到分支side1上git pull --rebase# 拉取远程仓库，并将本地分支合并到远程分支上  移动位置  HEAD：指向某个分支或指向某个提交记录，指向提交记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git">
+<meta property="og:url" content="http://example.com/2022/04/14/git/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="基本命令  commit：提交记录 branch：创建新分支 checkout：切换分支  合并分支  merge：合并分支 rebase：另一种合并分支 1234git rebase side1 side2# 将分支side2合并到分支side1上git pull --rebase# 拉取远程仓库，并将本地分支合并到远程分支上  移动位置  HEAD：指向某个分支或指向某个提交记录，指向提交记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/04/14/git/git_rebase.drawio.svg">
+<meta property="article:published_time" content="2022-04-14T13:31:37.000Z">
+<meta property="article:modified_time" content="2022-04-16T14:03:16.260Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/14/git/git_rebase.drawio.svg">
+
+
+<link rel="canonical" href="http://example.com/2022/04/14/git/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/14/git/","path":"2022/04/14/git/","title":"git"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>git | 元朗食品</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-text">基本命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF"><span class="nav-text">合并分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E4%BD%8D%E7%BD%AE"><span class="nav-text">移动位置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E5%8F%98%E6%9B%B4"><span class="nav-text">撤销变更</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E7%90%86%E6%8F%90%E4%BA%A4%E8%AE%B0%E5%BD%95"><span class="nav-text">整理提交记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#debug%E5%88%86%E6%94%AF%E7%9A%84%E6%8A%80%E5%B7%A7"><span class="nav-text">debug分支的技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE"><span class="nav-text">标签</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6"><span class="nav-text">多分支合并</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9A%84%E7%88%B6%E6%8F%90%E4%BA%A4"><span class="nav-text">移动到指定的父提交</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%94%AF%E6%8C%81%E9%93%BE%E5%BC%8F%E6%93%8D%E4%BD%9C"><span class="nav-text">移动支持链式操作</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="nav-text">远程分支</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%81%8F%E7%A6%BB%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-text">偏离的工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%8B%92%E7%BB%9D"><span class="nav-text">远程服务器拒绝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#merge%E4%B8%8Erebase%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94"><span class="nav-text">merge与rebase的优缺点对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E8%B7%9F%E8%B8%AA%E5%88%86%E6%94%AF"><span class="nav-text">远程跟踪分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-push%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-text">git push的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-fetch%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-text">git fetch的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%81%E7%95%A5source%E5%8F%82%E6%95%B0"><span class="nav-text">省略source参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-pull%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-text">git pull的参数</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="git | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 21:31:37" itemprop="dateCreated datePublished" datetime="2022-04-14T21:31:37+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-16 22:03:16" itemprop="dateModified" datetime="2022-04-16T22:03:16+08:00">2022-04-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基本命令">基本命令</h1>
+<ul>
+<li>commit：提交记录</li>
+<li>branch：创建新分支</li>
+<li>checkout：切换分支</li>
+</ul>
+<h1 id="合并分支">合并分支</h1>
+<ul>
+<li><p>merge：合并分支</p></li>
+<li><p>rebase：另一种合并分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase side1 side2</span><br><span class="line"><span class="comment"># 将分支side2合并到分支side1上</span></span><br><span class="line">git pull --rebase</span><br><span class="line"><span class="comment"># 拉取远程仓库，并将本地分支合并到远程分支上</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="移动位置">移动位置</h1>
+<ul>
+<li><p>HEAD：指向某个分支或指向某个提交记录，指向提交记录时称为分离的HEAD</p></li>
+<li><p>相对移动</p>
+<ul>
+<li>使用<code>^</code>向上移动1个记录，如<code>git checkout main^</code>会让HEAD移动到main分支的父节点</li>
+<li>使用<code>~&lt;num&gt;</code>向上移动多个提交记录，如<code>~3</code></li>
+</ul></li>
+<li><p>强制修改分支位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -f main HEAD~3</span><br><span class="line"><span class="comment"># 强制main分支指向HEAD的第3级父提交</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="撤销变更">撤销变更</h1>
+<ul>
+<li><p>reset</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD^</span><br><span class="line"><span class="comment"># 撤销本地分支</span></span><br></pre></td></tr></table></figure></li>
+<li><p>revert</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git revert HEAD</span><br><span class="line"><span class="comment"># 撤销远程分支，实际上会提交一个新纪录，其状态与HEAD的父节点状态一致</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="整理提交记录">整理提交记录</h1>
+<ul>
+<li>cherry-pick</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick C3 C4 C7</span><br><span class="line"><span class="comment"># 将其他分支的某些提交添加到当前HEAD</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>交互式rebase</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i HEAD^^</span><br></pre></td></tr></table></figure>
+<h1 id="debug分支的技巧">debug分支的技巧</h1>
+<ul>
+<li>debug分支中，可将打印log的语句作为一个提交记录，debug的修改作为另一个提交记录，合并时直接cherry-pick
+debug修改对应的提交记录即可</li>
+</ul>
+<h1 id="标签">标签</h1>
+<ul>
+<li><p>tag</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git tag v1 C1</span><br><span class="line"><span class="comment"># 为提交记录C1添加标签v1</span></span><br><span class="line">git tag v2</span><br><span class="line"><span class="comment"># 如果不指定提交记录，则为默认值HEAD</span></span><br></pre></td></tr></table></figure></li>
+<li><p>寻找离我最近的标签<code>git describe</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git describe &lt;ref&gt;</span><br><span class="line"><span class="comment"># &lt;ref&gt;是任意能被git识别成提交记录的引用，默认值为HEAD</span></span><br><span class="line"><span class="comment"># 输出结果是</span></span><br><span class="line">&lt;tag&gt;_&lt;numCommits&gt;_g&lt;<span class="built_in">hash</span>&gt;</span><br><span class="line"><span class="comment"># tag表示距离最近的标签，numCommits表示ref与tag相差多少个提交记录，hash表示ref所表示的提交记录的哈希值的前几位</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="多分支合并">多分支合并</h1>
+<h1 id="移动到指定的父提交">移动到指定的父提交</h1>
+<ul>
+<li><code>^</code>可以移动到父节点</li>
+<li><code>^2</code>可以移动到第二个父提交节点（其他数字以此类推）</li>
+</ul>
+<h2 id="移动支持链式操作">移动支持链式操作</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD~^2~2</span><br><span class="line"><span class="comment"># 移动到HEAD的父节点的第二个父提交节点的往上两个父节点</span></span><br></pre></td></tr></table></figure>
+<h1 id="远程分支">远程分支</h1>
+<ul>
+<li><p>git clone：拷贝远程分支到本地</p></li>
+<li><p>git commit导致分离的HEAD：在远程分支git
+commit会导致分离HEAD，因为本地修改并不会立刻同步到远程分支</p></li>
+<li><p>git fetch</p>
+<ul>
+<li>从远程仓库下载本地仓库缺失的提交记录，更新远程分支指针</li>
+<li>不会做的事：不会更新main分支，也不会修改磁盘上的文件，git
+fetch并不能让本地仓库与远程仓库同步</li>
+</ul></li>
+<li><p>git pull：相当于先执行git fetch，再执行git
+merge，实现本地仓库与远程仓库同步</p></li>
+<li><p>git
+push：将变更上传到指定的远程仓库，并在远程仓库上合并新提交记录</p></li>
+</ul>
+<h2 id="偏离的工作">偏离的工作</h2>
+<ul>
+<li><p>偏离的含义：克隆远程仓库，并基于提交记录C1开发功能，形成提交记录C3。同时，合作者基于C1提交了C2，并推送到远程仓库。此时我无法直接push，因为远程仓库已更新到C2。Git强制我先合并远程仓库，再进行push</p></li>
+<li><p>解决</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git rebase origin/master</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="远程服务器拒绝">远程服务器拒绝</h2>
+<ul>
+<li><p>如果你直接提交(commit)到本地main, 然后试图推送(push)修改,
+你将会收到这样类似的信息:</p>
+<p><code>! [远程服务器拒绝] main -&gt; main (TF402455: 不允许推送(push)这个分支; 你必须使用pull request来更新这个分支.)</code></p>
+<p>如果你是在一个大的合作团队中工作, 很可能是main被锁定了, 需要一些Pull
+Request流程来合并修改。</p></li>
+<li><p>解决方法：先创建一个feature分支并push，reset main分支再push</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b feature</span><br><span class="line">git push</span><br><span class="line">git checkout main</span><br><span class="line">git reset HEAD^</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="merge与rebase的优缺点对比">merge与rebase的优缺点对比</h2>
+<ul>
+<li>优点：rebase使提交数更干净，所有提交都在一条直线上</li>
+<li>缺点：rebase修改了提交树的历史。如下图，C2是比C3更早的提交记录，当使用rebase将side合并到main时，将使得C3成为C2的父节点，似乎C3比C2提交一样。</li>
+</ul>
+<p><img src="/2022/04/14/git/git_rebase.drawio.svg"></p>
+<h2 id="远程跟踪分支">远程跟踪分支</h2>
+<ul>
+<li><p>git中main分支与o/main是相关的</p>
+<p>pull操作时，提交记录先下载到o/main分支，再合并到本地的main分支</p>
+<p>push操作时，把工作从main推到远程仓库中的main分支，同时更新远程分支o/main</p></li>
+<li><p><strong>remote
+tracking属性</strong>：main和o/main分支的关联关系是由分支的remote
+tracking属性决定的，main被设定为跟踪o/main，即main分支制定了推送的目的地以及拉取后合并的目标</p></li>
+<li><p><strong>git clone所做的事</strong>：main分支的remote
+tracking属性无需我们手动设置，而是git
+clone时由git自动设置的。git为远程仓库中的每个分支在本地仓库中创建一个远程分支（如o/main），并创建一个跟踪远程仓库中活动分支的本地分支（如main）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local branch &quot;main&quot; set to track remote branch &quot;o/main&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>手动设置remote tracking属性</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b totallyNotMain o/main</span><br><span class="line"><span class="comment"># 创建一个totallyNotMain分支，跟踪远程分支o/main</span></span><br><span class="line">git branch -u o/main foo</span><br><span class="line"><span class="comment"># 让foo分支跟踪o/main</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="git-push的参数">git push的参数</h2>
+<ul>
+<li><p>git push可以指定参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git push &lt;remote&gt; &lt;place&gt;</span><br><span class="line">git push origin main</span><br><span class="line"><span class="comment"># 切换到本地仓库main分支，获取所有提交，并到远程仓库origin中找到main分支，将远程仓库中没有的提交记录都添加上去</span></span><br><span class="line"><span class="comment"># main是&lt;place&gt;参数，代表git提交记录来自于main，要推送到远程仓库中的main，就是要同步的两个仓库的位置</span></span><br></pre></td></tr></table></figure></li>
+<li><p>本地仓库的分支与远程仓库的分支名字（即上述place）不同的情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push origin &lt;<span class="built_in">source</span>&gt;:&lt;destination&gt;</span><br><span class="line"><span class="comment"># source和destination可以是不同名字的分支，事实上source只要是能被git识别的提交树位置即可，如HEAD^，而destination如果不存在于远程仓库将新建该分支</span></span><br><span class="line">git push origin HEAD^:main</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="git-fetch的参数">git fetch的参数</h2>
+<ul>
+<li><p>与git
+push的<code>&lt;source&gt;:&lt;destination&gt;</code>版本类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin &lt;<span class="built_in">source</span>&gt;:&lt;destination&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="省略source参数">省略source参数</h2>
+<ul>
+<li><p>git fetch中省略source参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin :&lt;destination&gt;</span><br><span class="line">git fetch :bar</span><br><span class="line"><span class="comment"># fetch空到本地，创建bar分支</span></span><br></pre></td></tr></table></figure></li>
+<li><p>git push省略source参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push origin :&lt;destination&gt;</span><br><span class="line">git push origin :foo</span><br><span class="line"><span class="comment"># push传空值source，删除远程仓库的foo分支</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="git-pull的参数">git pull的参数</h2>
+<ul>
+<li><p>git pull就是git fetch后跟git merge的缩写，因此git
+pull的参数可以理解为用同样的参数执行git
+fetch，再将当前checkout的位置merge所抓取的提交记录（如果提供了destination参数，则当前checkout的位置会merge到destination参数）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git pull origin main:bar</span><br><span class="line"><span class="comment"># 将远程仓库的main分支拉取到本地仓库的bar分支，同时将本地仓库当前checkout的位置merge到本地仓库的bar分支上</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/04/14/git/" title="git">http://example.com/2022/04/14/git/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/" rel="prev" title="数据库-数据存储结构">
+                  <i class="fa fa-chevron-left"></i> 数据库-数据存储结构
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
