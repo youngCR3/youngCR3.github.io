@@ -129,18 +129,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,557 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/24/%E5%9B%BE%E8%A7%A3%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/24/%E5%9B%BE%E8%A7%A3%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">图解网络笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-24 10:23:21" itemprop="dateCreated datePublished" datetime="2022-03-24T10:23:21+08:00">2022-03-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Computer-Network/" itemprop="url" rel="index"><span itemprop="name">Computer Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="http1.1">HTTP/1.1</h1>
+<h2 id="无状态">无状态</h2>
+<ul>
+<li><p><strong>优点</strong>：服务器不记忆HTTP状态，不需要额外资源记录状态信息，<strong>减轻服务器的负担</strong></p></li>
+<li><p><strong>缺点</strong>：进行<strong>关联性操作</strong>时非常麻烦，如对于购物网站，登录、添加购物车、下单、结算、支付等系列操作都需要知道用户身份，若无状态则服务器每次都需要询问身份信息</p></li>
+<li><p><strong>Cookie工作原理</strong></p>
+<p><strong>Cookie</strong>：服务器发送到浏览器并保存在浏览器本地的一小块数据</p>
+<p><strong>Set-Cookie</strong>：服务器发送的HTTP响应报文包含<strong>Set-Cookie首部字段</strong>，字段内容是Cookie的数据</p>
+<p><strong>携带Cookie</strong>：浏览器之后向同一服务器再次发起请求时会携带该Cookie数据，并放在HTTP请求报文的<strong>Cookie首部字段</strong></p></li>
+</ul>
+<h2 id="不安全">不安全</h2>
+<ul>
+<li><strong>明文</strong>：通信使用明文（不加密），内容可能会被<strong>窃听</strong></li>
+<li><strong>无身份验证</strong>：不验证通信方的身份，可能遭遇<strong>伪装</strong></li>
+<li><strong>无完整性保护</strong>：无法证明报文的完整性，所以可能遭遇<strong>篡改</strong></li>
+</ul>
+<h2 id="长连接">长连接</h2>
+<ul>
+<li><strong>HTTP1.0默认使用短链接</strong>：每个请求-响应对都建立一个TCP连接</li>
+<li><strong>HTTP1.1默认使用长连接</strong>：只要任意一端没有明确提出断开连接，则保持TCP连接状态</li>
+</ul>
+<h2 id="管道传输网络">管道传输网络</h2>
+<ul>
+<li><strong>管道</strong>：在同一个TCP连接里面，客户端可以发起多个HTTP请求，不必等第一个请求响应，即可发出第二个请求，减少整体响应时间</li>
+<li><strong>服务器按顺序处理</strong>：尽管客户端可以发送多个请求，服务器还是按照顺序响应，若前面的响应特别慢，就会导致后面的请求排队等候，称为<strong>队头堵塞</strong></li>
+<li><strong>队头堵塞</strong>：顺序发送的请求序列中一个请求因某种原因被阻塞时，后面排队的所有请求
+也一同被阻塞</li>
+</ul>
+<h1 id="https">HTTPS</h1>
+<h2 id="http与https的区别">HTTP与HTTPS的区别</h2>
+<ul>
+<li><strong>加密</strong>：HTTP使用明文传输，存在安全风险；HTTPS在HTTP和TCP之间加入了SSL/TLS安全协议，使得报文能够加密传输</li>
+<li><strong>连接建立过程</strong>：HTTP只需要经过TCP三次握手，即可进行HTTP报文传输；HTTPS在TCP三次握手后，还需要进行SSL/TLS握手过程，才可进行加密报文传输</li>
+<li><strong>端口号</strong>：HTTP端口号是80，HTTPS端口号是443</li>
+<li><strong>认证</strong>：HTTPS协议需要向CA（证书权威机构）申请数字证书，保证服务器身份可信</li>
+</ul>
+<h2 id="https解决了http的哪些问题">HTTPS解决了HTTP的哪些问题</h2>
+<ul>
+<li><p>HTTP的安全风险</p>
+<p><strong>窃听风险</strong>：HTTP采用明文传输，攻击者可能从通信链路上获取通信内容</p>
+<p><strong>篡改风险</strong>：HTTP没有完整性保护，攻击者可能篡改报文信息</p>
+<p><strong>冒充风险</strong>：HTTP没有认证，攻击者可能伪造身份</p></li>
+<li><p>HTTPS在HTTP与TCP之间加入了SSL/TLS协议，解决了上述风险</p>
+<p><strong>加密</strong>：通过混合加密的方式保证信息的机密性，解决了窃听的风险</p>
+<p><strong>认证</strong>：通过数字证书签名机制，认证身份</p>
+<p><strong>完整性保护</strong>：通过摘要算法，为数据生成独一无二的指纹，校验数据的完整性，解决了篡改的风险</p></li>
+</ul>
+<h3 id="混合加密">混合加密</h3>
+<ul>
+<li><strong>非对称加密</strong>：通信建立前采用非对称加密方式交换“会话密钥”</li>
+<li><strong>对称加密</strong>：通信过程中使用对称加密的会话密钥加密明文数据</li>
+</ul>
+<h3 id="摘要算法">摘要算法</h3>
+<ul>
+<li><strong>发送方计算指纹</strong>：客户端在发送前通过摘要算法算出明文的“指纹”，发送时把“指纹+明文”一同加密后发送</li>
+<li><strong>接收方计算指纹并比对</strong>：服务器解密后，用相同的摘要算法算出发送过来的明文的”指纹“，并与客户端携带的”指纹“进行对比，若两者相同则数据完整</li>
+</ul>
+<h3 id="数字证书">数字证书</h3>
+<ul>
+<li>公钥不被篡改：通信建立前，客户端需要用服务器发来的公钥对会话密钥进行加密，客户端如何保证该公钥的确是由服务器发送的，且未被篡改呢？</li>
+<li><strong>服务器向CA注册</strong>：客户端</li>
+<li>与服务器都信任的第三方机构，服务端将自己的公钥注册到CA，CA会用CA私钥对服务端公钥进行加密得到数字签名</li>
+<li><strong>CA颁发数字证书</strong>：CA将数字签名与服务器公钥一起放入数字证书，并发送给服务器</li>
+<li><strong>服务器发送数字证书</strong>：服务器将CA颁发的数字证书发送给客户端，里面包含服务器公钥，以及CA对该公钥的数字签名</li>
+<li><strong>客户端进行认证</strong>：客户端浏览器或操作系统已经内置了CA的公钥，客户收到数字证书后，将数字签名用CA公钥解密，并比对解密后的服务器公钥与数字证书中的服务器公钥是否匹配，若匹配则认证成功</li>
+</ul>
+<h2 id="ssltls的四次握手过程">SSL/TLS的四次握手过程</h2>
+<ul>
+<li><p><code>ClientHello</code>：客户端向服务器发起加密通信请求，告诉服务器自己</p>
+<p>所支持的<strong>SSL/TLS协议版本</strong></p>
+<p>所生成的<strong>随机数</strong>（Client
+Random，用于生成会话密钥）</p>
+<p>所支持的<strong>密码套件列表</strong>，如RSA加密算法</p></li>
+<li><p><code>ServerHello</code>：服务器收到客户端请求后进行响应，包含内容</p>
+<p>确认<strong>SSL/TLS协议版本</strong></p>
+<p>服务器生成的<strong>随机数</strong>（Server
+Random，用于生成会话密钥）</p>
+<p>确认<strong>密码套件列表</strong></p>
+<p>服务器的<strong>数字证书</strong></p></li>
+<li><p><strong>客户端回应</strong>：收到Server
+Hello后，客户端通过CA公钥解密数字签名，确认数字证书真实性，认证后从数字证书取出服务器公钥，发送以下信息</p>
+<p>经服务器公钥加密的<strong>随机数</strong></p>
+<p>加密通信算法改变通知，表示随后信息都将用“会话密钥”加密通信</p>
+<p>客户端握手结束通知，表示客户端的握手阶段已结束</p>
+<blockquote>
+<p>整个握手过程中，客户端和服务器总共生成了<strong>三个随机数</strong>，且双方都知道这三个随机数，它们会用协商的加密算法，各自生成本次通信的会话密钥</p>
+</blockquote></li>
+<li><p><strong>服务器回应</strong>：服务器收到客户端的第三个随机数后，通过协商的加密算法，计算出本次通信的”会话密钥“，发送以下信息</p>
+<p>加密通信算法改变通知</p>
+<p>服务器握手结束通知</p></li>
+</ul>
+<h1 id="http2">HTTP/2</h1>
+<h2 id="头部压缩">头部压缩</h2>
+<ul>
+<li><strong>头部压缩</strong>：如果同时发出多个请求，而其Header是一样或相似的，则协议会帮助消除重复的部分</li>
+<li><strong>原理-HPACK算法</strong>：客户端和服务器同时维护一张头信息表，所有字段都会存入这个表并生成一个索引号，以后则不发送同样字段，而是只发送索引号，提高了速度</li>
+</ul>
+<h2 id="二进制格式">二进制格式</h2>
+<ul>
+<li><strong>二进制格式</strong>：HTTP/2不再使用纯文本形式的报文，而是采用二进制格式，头部和数据体都是二进制，分别称为header
+frame和data frame</li>
+<li><strong>优点</strong>：接收方收到报文后，直接解析二进制报文，增加了数据传输效率</li>
+</ul>
+<h2 id="数据流">数据流</h2>
+<ul>
+<li><strong>编号</strong>：HTTP/2的每个请求或响应的所有数据包称为一个数据流（Stream），每个<strong>数据流都有唯一的编号</strong></li>
+<li><strong>顺序</strong>：数据包不是按顺序发送，同一个连接里的数据包可能属于不同的响应</li>
+</ul>
+<h2 id="多路复用">多路复用</h2>
+<ul>
+<li><strong>并发</strong>：HTTP/2可以在一个连接中并发多个请求或响应，不用按顺序一一对应，<strong>解决了队头阻塞问题</strong></li>
+</ul>
+<h2 id="服务器推送">服务器推送</h2>
+<ul>
+<li><strong>服务器推送</strong>：浏览器刚请求html时，服务器提前把可能用到的js、css文件等静态资源主动发给客户端</li>
+</ul>
+<h1 id="http3">HTTP/3</h1>
+<h2 id="http2尚存问题">HTTP/2尚存问题</h2>
+<ul>
+<li><strong>HTTP/1.1的阻塞</strong>：管道传输中的<strong>队头阻塞</strong>，即一个请求阻塞，队列后的请求也统统被阻塞</li>
+<li><strong>HTTP/2的阻塞</strong>：多个HTTP请求复用一个TCP连接，一旦发生<strong>丢包</strong>则会触发TCP重传机制，一个TCP连接中的所有HTTP请求都必须等待这个丢了的包被重传回来</li>
+</ul>
+<h2 id="quic协议">QUIC协议</h2>
+<ul>
+<li><p><strong>UDP</strong>：HTTP/3的下层使用UDP协议，而不是TCP协议，同时通过基于UDP的QUIC协议实现了类似TCP的可靠传输</p></li>
+<li><p><strong>可靠传输</strong>：QUIC实现的可靠传输机制，在某个流发生丢包时，只阻塞这个流，而不会阻塞其他流</p></li>
+<li><p><strong>TLS协议版本</strong>：使用TLS1.3</p></li>
+<li><p><strong>头部压缩算法</strong>：使用QPack算法</p></li>
+<li><p><strong>QUIC三次握手</strong>：HTTPS建立连接时，需要进行TCP三次握手和TLS/1.3的三次握手共<strong>六次握手</strong>，而QUIC将握手过程合并，只需要进行QUIC三次握手</p></li>
+</ul>
+<h1 id="tcp">TCP</h1>
+<h2 id="三次握手">三次握手</h2>
+<h3 id="三次握手的详细过程">三次握手的详细过程</h3>
+<ul>
+<li>客户端发送SYN报文段</li>
+<li>服务器回复SYN + ACK报文段</li>
+<li>客户端发送ACK报文段</li>
+</ul>
+<h3 id="为什么不能是两次握手">为什么不能是两次握手</h3>
+<ul>
+<li><strong>防止历史连接初始化连接</strong>：客户端发送的第一个SYN报文段由于网络拥塞暂时未到达服务器，它又发起了第二个TCP连接，此时服务器收到第一个连接的SYN报文段，并返回SYN+ACK报文段，如果客户端该过期的SYN+ACK报文段，应该发送RST报文段终止该过期连接</li>
+<li><strong>防止服务器资源浪费</strong>：若只需两次握手即建立TCP连接，则服务器收到SYN报文段后就建立连接。如果客户端SYN阻塞，则它可能建立多次SYN报文，那么服务器在收到请求后就会建立多个冗余的无效连接，造成资源浪费</li>
+</ul>
+<h3 id="为什么不是四次握手">为什么不是四次握手</h3>
+<ul>
+<li><strong>减少通信次数</strong>：可以使用四次握手，即客户端发送SYN，服务器回复ACK，服务器发送SYN，客户端回复ACK，但是可以将服务器发送的SYN与ACK合并为SYN
++ ACK报文段，从而减少通信次数</li>
+</ul>
+<h3 id="为什么客户端和服务端的初始序列号isn不同">为什么客户端和服务端的初始序列号ISN不同</h3>
+<ul>
+<li><strong>分辨历史报文</strong>：通信双方能根据序号将不属于本连接的报文段丢弃</li>
+<li><strong>安全性</strong>：防止黑客伪造相同序列号的TCP报文段被对方接收</li>
+</ul>
+<h3 id="ip层会进行分片为什么tcp层还需要mss">IP层会进行分片，为什么TCP层还需要MSS？</h3>
+<ul>
+<li><strong>MTU</strong>：物理层帧的最大数据长度，对于以太网为1500字节，包含IP头部、TCP头部和TCP数据</li>
+<li><strong>MSS</strong>：TCP数据段的最大长度</li>
+<li><strong>IP分片</strong>：如果IP层有超过MTU大小的数据要发送，则IP层会对其分片，使得每一分片都小于MTU，目标主机的IP层将分片进行重新组装后再交给TCP</li>
+<li><strong>IP分片丢失</strong>：若一个IP分片丢失，则整个IP数据报的所有分片都要重传，<strong>效率较低</strong></li>
+<li>因此，TCP层发现数据超过MSS，则先对数据进行分片，保证IP数据报长度不超过MTU，从而避免了IP分片</li>
+</ul>
+<h3 id="syn攻击是什么如何避免">SYN攻击是什么？如何避免</h3>
+<ul>
+<li><p><strong>SYN攻击</strong>：TCP连接建立需要三次握手，若攻击者短时间伪造不同IP地址的SYN报文，服务端收到后进入SYN_RCVD状态，并发送SYN+ACK报文段，但该报文段无法得到未知IP地址主机的ACK应答，从而导致这些报文段占满服务端的SYN接收队列，服务器无法正常提供服务</p></li>
+<li><p><strong>避免SYN攻击方式一</strong>：设置SYN_RCVD状态连接的最大个数，超出处理能力时，服务器对于新的SYN将直接回复RST报文段以丢弃该连接</p></li>
+</ul>
+<h4 id="linux的syn队列和accept队列">Linux的SYN队列和Accept队列</h4>
+<ul>
+<li><p><strong>SYN队列</strong>：收到客户端的SYN报文后，将连接加入SYN队列</p></li>
+<li><p><strong>Accpet队列</strong>：发送SYN+ACK报文段，等待客户端回应ACK报文段，收到ACK报文段后，将连接从SYN队列移除，加入Accept队列</p></li>
+<li><p><strong>应用调用</strong>：应用通过调用<code>accept()</code>socket接口，从Accept队列取出连接</p></li>
+<li><p><strong>Accept队列占满</strong>：如果应用程序过慢，会导致Accept队列被占满</p></li>
+<li><p><strong>SYN队列被占满</strong>：不断受到SYN攻击，会导致SYN队列被占满</p></li>
+<li><p><strong>避免SYN攻击方式二</strong>：当SYN队列满之后，后续服务器收到SYN包，不进入SYN队列，而是计算一个cookie值作为SYN+ACK报文段的序列号返回客户端，收到客户端的ACK报文段后，讲检查其ACK的合法性，若合法则将该连接直接放入Accept队列</p></li>
+</ul>
+<h2 id="四次挥手">四次挥手</h2>
+<h3 id="四次挥手过程和状态变迁">四次挥手过程和状态变迁</h3>
+<ul>
+<li>客户端发送FIN报文段，并进入FIN_WAIT1状态</li>
+<li>服务器回复ACK报文段，进入CLOSE_WAIT状态、</li>
+<li>客户端收到服务器对FIN报文段的ACK，进入FIN_WAIT2状态</li>
+<li>服务器处理完已发送的报文段后，发送FIN报文段，进入LAST_ACK状态</li>
+<li>客户端收到服务端的FIN报文段，回复ACK报文段，进入TIME_WAIT状态</li>
+<li>服务器收到ACK报文段，关闭连接并进入CLOSED状态</li>
+<li>客户端在2MSL时间内未收到服务器重传的FIN报文段，断开连接并进入CLOSED状态</li>
+</ul>
+<h3 id="为什么需要四次挥手">为什么需要四次挥手</h3>
+<ul>
+<li>客户端和发送方都需要发送FIN报文段，并对对方的FIN报文段回复ACK报文段</li>
+<li>而且服务段发送ACK报文段与FIN报文段无法合并，因为通常它需要处理完所有需要发送的报文段后，才能发送FIN报文段</li>
+</ul>
+<h3 id="为什么time_wait等待的时间是2msl">为什么TIME_WAIT等待的时间是2MSL</h3>
+<ul>
+<li><p><strong>MSL</strong>：maximum segment
+lifetime，报文最大生存时间，它是任何报文在网络上存在的最长时间，超过这个时间报文将被丢弃</p></li>
+<li><p><strong>等待2MSL</strong>：TIME_WAIT等待2MSL，是因为如果报文段从发送方到接收方最多需要1MSL，接收方回复的报文段到达发送方最多需要1MSL，因此一来一回为2MSL</p></li>
+<li><p><strong>重新计时</strong>：若在等待时间内，客户端收到了服务端重传的FIN报文段，则客户端再次发送ACK报文段，且2MSL将重新计时</p></li>
+<li><p><strong>Linux系统的MSL</strong>：2MSL默认是60秒，即1MSL是30秒，Linux系统停留在TIME_WAIT的时间为固定的60秒</p></li>
+</ul>
+<h3 id="为什么需要time_wait状态">为什么需要TIME_WAIT状态</h3>
+<ul>
+<li><strong>防止旧连接的数据包</strong>：经过2MSL，网络中阻塞的数据包都肯定被丢弃，这样此后同一客户端、服务端在之前的端口号再次发起TCP连接，也不会被上一连接的旧数据包所干扰</li>
+<li><strong>保证连接正确关闭</strong>：保证被动关闭连接的一方能够被正确地关闭，即保证最后的ACK能让被动关闭方接收，从而帮助其正常关闭。否则，服务端会一直处于LAST_ACK状态，此时任何客户端向其发起连接，服务段都会回复RST报文段</li>
+</ul>
+<h3 id="time_wait过多有何危害">TIME_WAIT过多有何危害</h3>
+<h4 id="客户端受端口资源限制">客户端受端口资源限制</h4>
+<ul>
+<li><strong>内存资源占用</strong></li>
+<li><strong>端口资源占用</strong>：一个TCP连接至少消耗一个本地端口，如果发起连接一方的TIME_WAIT状态过多，占满了所有端口资源，将导致无法创建新连接</li>
+</ul>
+<h4 id="服务端受系统资源限制">服务端受系统资源限制</h4>
+<ul>
+<li>一个TCP连接由四元组标识，理论上服务端可以建立很多连接，它只监听一个端口，并把连接交给处理线程。但由于线程池也无法处理大量的连接，所以服务端出现大量TIME_WAIT时，系统资源被耗尽</li>
+</ul>
+<h3 id="如果建立连接后客户端故障怎么办">如果建立连接后，客户端故障怎么办？</h3>
+<ul>
+<li><strong>TCP保活机制</strong>：如果一个时间段内，没有任何连接相关的活动，则启动TCP保活机制。每隔一个时间间隔发送一个探测报文，若连续几个探测报文都没有得到响应，则认为当前的TCP连接已死亡，系统内核将错误信息通知上层应用程序</li>
+<li>TCP保活机制的可能情况
+<ul>
+<li><strong>对端正常工作</strong>，则探测报文能够得到对端正常响应，TCP保活时间被重置</li>
+<li><strong>对端崩溃并重启</strong>，此时对端收到探测报文后，将回复RST报文段</li>
+<li><strong>对端崩溃或由于其他原因导致报文不可达</strong>，则TCP连续重传探测报文后，将报告该TCP连接已死亡</li>
+</ul></li>
+</ul>
+<h2 id="重传机制">重传机制</h2>
+<h3 id="超时重传">超时重传</h3>
+<ul>
+<li><p><strong>含义</strong>：发送数据时，设定一个定时器，当超过指定时间后，没有收到对方的ACK确认应答报文，就会重发该数据，即超时重传</p></li>
+<li><p><strong>原因</strong>：发送方发送的报文段丢失，或接收方回复的应答报文丢失，都可能导致超时重传</p></li>
+<li><p><strong>超时时间RTO的设置</strong></p>
+<p><strong>RTT</strong>：RTO大小至少为RTT往返时延，即数据从网络一端传送到另一端，并收到另一端的确认应答的时间，即包的<strong>往返时间</strong></p>
+<p><strong>RTO设置过大</strong>：重传太慢，效率低，性能差</p>
+<p><strong>RTO设置过小</strong>：在没有丢包的情况下就重发，增加了冗余报文，加剧网络拥塞</p>
+<p><strong>Linux计算RTO的方法</strong></p>
+<ul>
+<li><strong>采样RTT时间</strong>，并进行加权平均得到平滑RTT的值</li>
+<li><strong>采样RTT的波动范围</strong>，当RTT变化较大时需要增加RTO的值</li>
+</ul>
+<p><strong>超时重传时RTO的变化</strong>，当发生超时重传时，TCP将RTO加倍，即在网络拥塞的情况下允许更长的等待时间</p></li>
+</ul>
+<h3 id="快速重传">快速重传</h3>
+<ul>
+<li><strong>冗余ACK</strong>：接收方对于之前已经确认过的报文段，进行了重复的确认，原因是因为接收方收到了一个乱序的报文，而并未收到所期望的下一个报文</li>
+<li><strong>快速重传</strong>：当发送方接收到三个相同的冗余ACK报文时，会立刻重传当前第一个未确认的报文段，而无需等待定时器中断</li>
+</ul>
+<h3 id="sack方法选择性确认">SACK方法（选择性确认）</h3>
+<ul>
+<li><strong>SACK</strong>：接收方在TCP头部选项字段加入SACK，将接收缓存的map发送给发送方，发送方从SACK获取哪些数据没收到，只重传丢失的数据</li>
+</ul>
+<h3 id="d-sack方法duplicate-sack">D-SACK方法（Duplicate SACK）</h3>
+<ul>
+<li>使用SACK告诉发送方有哪些数据被重复接收了，发送方能根据SACK判断出这些重复接收的报文的ACK报文丢失了，无需重传</li>
+</ul>
+<h2 id="流量控制">流量控制</h2>
+<ul>
+<li><p><strong>窗口大小限制发送速率</strong>：发送方无需等待确认应答，可以继续发送数据的最大值</p></li>
+<li><p><strong>窗口大小的决定</strong>：TCP首部包含接收窗口字段，<strong>接收方根据自己的缓冲区还能接收多少数据决定</strong>，告诉发送方接收窗口大小</p></li>
+<li><p><strong>接收窗口大小为0</strong>：此时发送方仍然需要发送报文段（<strong>窗口探测报文</strong>）并携带1字节数据，这是为了从接收方回复的应答报文中，获取接收窗口大小的变化，否则发送方将一直认为接收窗口为0而不发送报文</p></li>
+</ul>
+<h2 id="拥塞控制">拥塞控制</h2>
+<ul>
+<li><strong>慢启动</strong>：拥塞窗口cwnd为1，表示可以发送一个携带MSS字节数据的报文段，每接收1个ACK则cwnd就增加1。当不断增长直至发生超时，则将慢启动阈值设为cwnd/2，并进入拥塞避免状态</li>
+<li><strong>拥塞避免</strong>：拥塞窗口cwnd设为慢启动阈值，此后每接收1个ACK则cwnd增加1/cwnd</li>
+<li><strong>快速恢复</strong>：当发送方收到3个重复的冗余ACK报文，则进行快速重传，将慢启动阈值设为cwnd/2，cwnd设为慢启动阈值
++
+3。快速恢复阶段中，每收到1个冗余ACK则cwnd增加1，若收到一个新的有效ACK，则恢复拥塞避免状态</li>
+</ul>
+<h1 id="ip协议">IP协议</h1>
+<ul>
+<li><p><strong>网络层</strong>和<strong>数据链路层</strong>之间的区别和联系</p>
+<p>MAC的作用是实现<strong>直连</strong>的两个设备之间的通信，而IP则负责在<strong>没有直连</strong>的两个网络之间进行通信传输</p>
+<p>MAC负责<strong>某一个区间</strong>之内的通信传输，而IP负责将数据包发给最终的目的地址</p>
+<p>在此过程中，源MAC地址和目标MAC地址一直在<strong>变化</strong>，而源IP地址和目标IP地址在传输过程中<strong>不会改变</strong></p></li>
+</ul>
+<h2 id="ip地址的分类">IP地址的分类</h2>
+<ul>
+<li><p><strong>分类</strong>：IP地址划分为5种类型，分别是A类、B类、C类、D类、E类</p>
+<p>A类以0开头，地址范围为0.0.0.0-127.255.255.255</p>
+<p>B类以10开头，地址范围为128.0.0.0-191.255.255.255</p>
+<p>C类以110开头，地址范围为192.0.0.0-223.255.255.255</p>
+<p>D类以1110开头，地址范围为224.0.0.0-239.255.255.255</p>
+<p>E类以1111开头，地址范围为240.0.0.0-255.255.255.255</p></li>
+<li><p><strong>广播地址</strong></p>
+<p><strong>主机号全为0</strong>指定某个网络</p>
+<p><strong>主机号全为1</strong>指定某个网络下的所有主机，用于广播</p>
+<p>广播地址用于在同一个链路中相互连接的主机之间发送数据包</p></li>
+<li><p>分类地址的<strong>缺点</strong></p>
+<p>同一网络下<strong>没有地址层次</strong></p>
+<p>不能很好地与现实网络匹配，因为C类地址只包含254个主机数量，而B类地址包含65534个主机，容易造成<strong>地址浪费</strong></p></li>
+</ul>
+<h2 id="cidr无分类地址">CIDR无分类地址</h2>
+<ul>
+<li><strong>网络号+主机号</strong>，32位的IP地址划分为网络号和主机号，<code>a.b.c.d/x</code>，其中<code>/x</code>表示前x位为网络号，x的范围为0-32</li>
+<li><strong>子网掩码</strong>：掩盖掉主机号，将IP地址和子网掩码按位相与即可得到网络号，因此子网掩码的高x位为1，低位为0</li>
+<li><strong>广播地址</strong>：网络号 + 主机号全为1的地址</li>
+</ul>
+<h3 id="网络号和主机号分离的原因">网络号和主机号分离的原因</h3>
+<ul>
+<li><strong>直接交付</strong>：两台计算机通讯，首先应判断是否处于同一个广播域内，若网络号相同，则接收方在本网络上，可以把数据包直接发送到目标主机</li>
+</ul>
+<h3 id="子网划分">子网划分</h3>
+<ul>
+<li><p><strong>子网划分</strong>：将主机地址划分为两个部分，子网网络地址和子网主机地址</p>
+<p><strong>未做子网划分的IP地址</strong>：网络地址 + 主机地址</p>
+<p><strong>做了子网划分的IP地址</strong>：网络地址 + 子网网络地址 +
+子网主机地址</p></li>
+</ul>
+<h2 id="公有ip地址和私有ip地址">公有IP地址和私有IP地址</h2>
+<ul>
+<li>A、B、C分类地址中，实际上有公有IP地址和私有IP地址</li>
+<li><strong>私有IP地址</strong>允许组织内部的IT人员自己管理、自己分配，且<strong>可以重复</strong>，如学校、办公室使用的IP地址常为私有IP地址</li>
+<li><strong>公有IP地址</strong>在整个互联网范围内保持<strong>唯一</strong>，由<strong>ICANN</strong>组织统一管理，称为互联网名称与数字地址分配机构</li>
+</ul>
+<h2 id="ip地址与路由控制">IP地址与路由控制</h2>
+<ul>
+<li><strong>路由控制表</strong>：网络地址用于进行路由控制，路由控制表记录着网络地址与下一步应该发送到的路由器地址</li>
+<li><strong>路由器转发</strong>：根据IP包首部中的目标IP地址，在路由控制表中找到与该地址具有相同网络地址的记录，根据该记录将IP包转发给响应的下一个路由器</li>
+<li><strong>最长匹配</strong>：如果路由控制表中存在多条相同网络地址的记录，就选择相同位数最多的网络地址</li>
+</ul>
+<h3 id="默认路由">默认路由</h3>
+<ul>
+<li><strong>默认路由</strong>：如果路由控制表中没有找到匹配的项，则数据包被转发到默认路由</li>
+</ul>
+<h3 id="环回地址">环回地址</h3>
+<ul>
+<li><strong>环回地址</strong>：在同一台计算机上的程序之间进行网络通信时，使用环回地址，即127.0.0.1。使用环回地址时，数据包不会流向网络</li>
+</ul>
+<h2 id="ip分片与重组">IP分片与重组</h2>
+<ul>
+<li><strong>MTU</strong>：数据链路的最大传输单元，如以太网MTU是1500字节，且不同数据链路的MTU常常不同</li>
+<li><strong>IP分片</strong>：若IP数据报的大小大于MTU，则会由路由器进行分片，而重组则由目标主机进行</li>
+<li><strong>IP分片丢失</strong>：某个分片丢失，将会导致整个IP数据报重传。为此，TCP引入了MSS，在运输层进行分片而不是IP层分片，则某个分组丢失只需要重传该分组即可。对于UDP，尽量不要发送一个大于MTU的数据报文</li>
+</ul>
+<h2 id="ipv6">IPv6</h2>
+<ul>
+<li><p>优点</p>
+<p><strong>自动配置</strong>，即使没有DHCP服务器也可以实现自动分配IP地址</p>
+<p><strong>首部长度固定</strong>为40字节</p>
+<p><strong>安全性</strong>提高，具有应对伪造IP地址、防止线路窃听等功能</p></li>
+<li><p>标识方法</p>
+<p>IPv6地址长度为128位，每16位为1组，共8组，用冒号分隔</p></li>
+</ul>
+<h1 id="重要协议">重要协议</h1>
+<h2 id="dns">DNS</h2>
+<ul>
+<li><p><strong>域名解析功能</strong>：将域名网址转换为具体的IP地址</p></li>
+<li><p><strong>域名的层级关系</strong>：根DNS服务器、顶级域DNS服务器、权威DNS服务器</p></li>
+<li><p>域名解析流程</p>
+<p>查看<strong>浏览器缓存</strong></p>
+<p>查看<strong>操作系统缓存</strong></p>
+<p>查看<strong>本机域名解析文件hosts</strong></p>
+<p>若均未查到则向<strong>DNS服务器</strong>进行查询：本地DNS服务器（递归查询）、根DNS服务器（迭代查询）、顶级域DNS服务器（迭代）、权威DNS服务器（迭代）</p></li>
+</ul>
+<h2 id="arp">ARP</h2>
+<ul>
+<li><p><strong>功能</strong>：根据IP地址获取MAC地址</p></li>
+<li><p><strong>ARP协议</strong></p>
+<p><strong>ARP请求报文</strong>：将IP地址放入ARP请求，广播发送ARP请求</p>
+<p><strong>ARP响应报文</strong>：同一链路的所有设备收到ARP请求时，会比对其中的IP地址与自己的IP地址，若匹配则将自己的MAC地址放入ARP响应报文并返回</p>
+<p><strong>操作系统缓存</strong>：操作系统会将ARP获取的MAC地址缓存起来，该缓存有一定期限</p></li>
+<li><p><strong>RARP协议</strong>：已知MAC地址，求IP地址</p></li>
+</ul>
+<h2 id="dhcp">DHCP</h2>
+<ul>
+<li><p>动态主机配置协议</p>
+<p><strong>DHCP
+discover报文</strong>：客户端发送DHCP发现报文，由于此时客户端没有IP地址，也不知道DHCP服务器地址，因此目的IP地址设为广播地址255.255.255.255:
+67，源地址为0.0.0.0: 68</p>
+<p><strong>DHCP offer报文</strong>：DHCP服务器收到DHCP发现报文后，用DHCP
+offer报文响应，仍然使用IP广播地址，其中携带可租约的IP地址、子网掩码、默认网关、DNS服务器以及IP地址租用期等</p>
+<p><strong>DHCP request报文</strong>：客户端可能收到多个服务器的DHCP
+offer报文，从中选择一个，并向选中的服务器发送DHCP请求报文响应，回显配置的参数</p>
+<p><strong>DHCP ACK报文</strong>：最后服务器用DHCP
+ACK报文进行响应，应答所要求的参数</p></li>
+<li><p><strong>DHCP中继代理</strong>：现实中并非每个子网都有一个DHCP服务器，使用DHCP中继代理解决。中继代理收到DHCP发现报文后，以单播的形式将其发送给DHCP服务器，DHCP服务器返回DHCP
+offer报文给中继代理，中继代理将该offer报文广播，以发送给DHCP客户端</p></li>
+</ul>
+<h2 id="nat">NAT</h2>
+<ul>
+<li><p><strong>网络地址转换</strong>：将私有IP地址转换为公有IP地址</p></li>
+<li><p><strong>网络地址与端口转换</strong>，将<strong>IP地址 +
+端口号</strong>一起进行转换</p>
+<ul>
+<li>如某个家庭子网的公有IP地址为120.299.175.121，其主机A具有私有IP地址192.168.1.10、主机B具有私有IP地址192.168.1.11</li>
+<li>主机A端口1025和主机B端口1025与远程服务器进行通信，则NAT将其都转换为公有IP地址120.299.175.121，并以<strong>不同的端口号进行区分</strong></li>
+<li>NAT路由器转换表</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>私有IP地址</th>
+<th>公有IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>192.168.1.10:1025</td>
+<td>120.299.175.121:1025</td>
+</tr>
+<tr class="even">
+<td>192.168.1.11:1025</td>
+<td>120.299.175.121:1026</td>
+</tr>
+</tbody>
+</table></li>
+<li><p><strong>NAT缺点</strong></p>
+<p>NAT转换表的生成，转换操作本身都会产生<strong>性能开销</strong></p>
+<p>若<strong>NAT路由器重启</strong>，则所有TCP连接都将重置</p></li>
+</ul>
+<h2 id="icmp">ICMP</h2>
+<ul>
+<li><p><strong>名称</strong>：互联网控制报文协议</p></li>
+<li><p><strong>功能</strong>：确认IP数据报是否成功送达目标地址、报告发送过程中IP数据报被丢弃的原因、改善网络设置等</p></li>
+<li><p>类型</p>
+<p><strong>查询报文类型</strong>：用于诊断的查询消息</p>
+<p><strong>差错报文类型</strong>：通知出错原因的错误消息</p></li>
+</ul>
+<h1 id="ping的工作原理">ping的工作原理</h1>
+<h2 id="icmp协议">ICMP协议</h2>
+<ul>
+<li><p><strong>功能</strong></p>
+<p>报告IP数据报是否送达目的地址</p>
+<p>报告IP数据报被丢弃的原因</p>
+<p>改善网络设置</p></li>
+<li><p>ICMP报文格式</p>
+<p>ICMP报文封装在<strong>IP数据报</strong>，工作在网络层</p></li>
+<li><p>类型</p>
+<p><strong>查询报文类型</strong>：用于诊断的查询消息，包括</p>
+<ul>
+<li>0 <strong>回送应答</strong></li>
+<li>8 <strong>回送请求</strong></li>
+</ul>
+<p><strong>差错报文类型</strong>：通知出错原因，包括</p>
+<ul>
+<li>3
+<strong>目标不可达</strong>，又可细分为：网络不可达、主机不可达、协议不可达、端口不可达、需要进行分片但设置了不分片位</li>
+<li>4 <strong>原点抑制</strong>，为了缓解网络拥堵</li>
+<li>5
+<strong>重定向或改变路由</strong>，路由器发现发送端主机使用了非最优路径发送数据时，通过ICMP重定向消息告知主机最合适的路由信息</li>
+<li>11
+<strong>超时</strong>，当IP数据报的<strong>TTL字段变为0时</strong>该IP数据报将被丢弃，路由器发送ICMP超市消息给发送端主机</li>
+</ul></li>
+</ul>
+<h2 id="ping查询报文类型的使用">ping—查询报文类型的使用</h2>
+<ul>
+<li><p>ICMP报文字段</p>
+<p><strong>类型字段</strong>：0或8</p>
+<p><strong>标识符</strong>：区分哪个应用程序发送ICMP包，如用进程PID作为标识符</p>
+<p><strong>序号</strong>：每发送一个新的ICMP回送请求则递增</p>
+<p><strong>选项</strong>：常存放发送请求的时间值，用于计算往返时间</p></li>
+<li><p><strong>ICMP回送请求</strong>：源主机生成ICMP回送请求消息，包含<strong>类型字段为8</strong>、序号字段、发送时间等，并交给IP层发送给目的主机</p></li>
+<li><p><strong>ICMP回送响应</strong>：目的主机构建ICMP回送响应消息数据包，包含<strong>类型字段为0</strong>、序号字段（与接收的ICMP回送请求序号一致），并交付给IP层发送给源主机</p></li>
+<li><p><strong>是否可达</strong>：规定时间内，源主机收到ICMP回送响应，则目标主机可达；否则，目标主机不可达</p></li>
+<li><p><strong>往返时延</strong>：源主机利用发送时间和接收时间可以计算往返时延RTT</p></li>
+</ul>
+<h2 id="traceroute差错报文类型的使用">traceroute—差错报文类型的使用</h2>
+<h3 id="作用一追踪去往目的地时沿途经过的路由器">作用一：追踪去往目的地时沿途经过的路由器</h3>
+<ul>
+<li>发送端主机不断发送UDP报文段，设置端口号为不可能的端口号，IP数据包的<strong>TTL从1</strong>开始不断递增</li>
+<li>若未达到目的主机将返回<strong>ICMP超时消息</strong>，若达到主机将返回<strong>ICMP端口不可达消息</strong></li>
+</ul>
+<h3 id="作用二确定路径的mtu">作用二：确定路径的MTU</h3>
+<ul>
+<li><strong>设置分片禁止标志位</strong>：发送端主机发送IP数据报时，将IP首部的分片禁止标志位设置为1，则沿途的路由器在需要进行分片时不会对IP数据报进行分片，而是直接丢弃</li>
+<li><strong>ICMP不可达消息</strong>：通过ICMP不可达消息将数据链路上<strong>MTU的值</strong>返回给发送主机</li>
+<li><strong>调整包大小</strong>：发送主机端收到ICMP不可达消息后即调整包的大小，最终得到能到达目标主机的合适的MTU</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2686,98 +3237,6 @@ Server</h2>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/03/04/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">OS-文件管理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-04 08:57:15" itemprop="dateCreated datePublished" datetime="2022-03-04T08:57:15+08:00">2022-03-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/OS/" itemprop="url" rel="index"><span itemprop="name">OS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>操作系统文件管理重要知识总结</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/04/OS-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

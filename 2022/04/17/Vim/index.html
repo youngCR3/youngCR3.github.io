@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Vim使用教程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim">
+<meta property="og:url" content="http://example.com/2022/04/17/Vim/index.html">
+<meta property="og:site_name" content="元朗食品">
+<meta property="og:description" content="Vim使用教程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-17T06:42:23.000Z">
+<meta property="article:modified_time" content="2022-04-17T13:41:04.816Z">
+<meta property="article:author" content="Young">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/04/17/Vim/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/17/Vim/","path":"2022/04/17/Vim/","title":"Vim"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vim | 元朗食品</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">元朗食品</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#art-of-vim"><span class="nav-text">art of Vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%A7%8D%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-text">多种操作模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2"><span class="nav-text">模式切换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%96%87%E6%9C%AC"><span class="nav-text">插入文本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E6%A0%87%E7%AD%BE%E9%A1%B5%E7%AA%97%E5%8F%A3"><span class="nav-text">缓存、标签页、窗口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-text">命令行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vim%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-text">Vim的接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8"><span class="nav-text">移动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9"><span class="nav-text">选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%BE%91"><span class="nav-text">编辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0"><span class="nav-text">计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E9%A5%B0%E8%AF%AD"><span class="nav-text">修饰语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89vim"><span class="nav-text">自定义vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95vim"><span class="nav-text">扩展Vim</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Young"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Young</p>
+  <div class="site-description" itemprop="description">Talk is cheap, show me the code.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+<!-- require APlayer -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<!-- require MetingJS-->
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script> 
+<!--playlist外链地址-->   
+<meting-js
+  server="tencent"
+  type="playlist" 
+  id="8356942170"
+  mini="false"
+  fixed="false"
+  list-folded="true"
+  autoplay="false"
+  volume="0.4"
+  theme="#FADFA3"
+  order="list"
+  loop="all"
+  preload="auto"
+  lrc-type="1"
+  mutex="true">
+</meting-js>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/17/Vim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vim | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vim
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-17 14:42:23 / 修改时间：21:41:04" itemprop="dateCreated datePublished" datetime="2022-04-17T14:42:23+08:00">2022-04-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Vim使用教程</p>
+<span id="more"></span>
+<h1 id="art-of-vim">art of Vim</h1>
+<ul>
+<li>编程时的操作：大量时间用于阅读/编辑代码，而不是写代码</li>
+<li>Vim被设置为<strong>多模态编辑器</strong>，对于插入文字和操纵文字有不同的模式</li>
+<li>Vim是可编程的，Vim的接口本身也是一个程序语言，键入操作是命令，命令是可组合的</li>
+<li>Vim<strong>避免了使用鼠标</strong>，<strong>避免了使用上下左右方向键</strong>，因此极限速度更快</li>
+</ul>
+<h1 id="多种操作模式">多种操作模式</h1>
+<ul>
+<li><p>Vim的设计以大多数时间都花在阅读、浏览和进行少量编辑改动为基础</p></li>
+<li><p>具有多种操作模式</p>
+<p>正常模式：文件中四处移动光标进行修改</p>
+<p>插入模式：插入文本</p>
+<p>替换模式：替换文本</p>
+<p>可视化模式：选中文本块</p>
+<p>命令模式：用于执行命令</p></li>
+<li><p>不同模式下，同样的键有不同的含义</p>
+<p>如，x在插入模式下会插入字母x，在正常模式下会删除当前光标所在的字母，在可视模式下会删除选中文本块</p></li>
+<li><p>默认情况下，在左下角显示当前模式。启动时，默认为正常模式</p></li>
+</ul>
+<h2 id="模式切换">模式切换</h2>
+<ul>
+<li>从其他模式返回正常模式：Esc</li>
+<li>正常模式下：按<code>i</code>进入插入模式，按<code>R</code>进入替换模式，按<code>v</code>进入可视（一般）模式，按<code>V</code>进入可视（行）模式，按<code>^V</code>进入可视（块）模式，按<code>:</code>进入命令模式</li>
+<li>由于Vim中会大量使用Esc键，可以考虑将大小写键重定义为Esc键</li>
+</ul>
+<h1 id="基本操作">基本操作</h1>
+<h2 id="插入文本">插入文本</h2>
+<ul>
+<li>按<code>i</code>进入插入模式即可插入文本，按Esc返回正常模式</li>
+</ul>
+<h2 id="缓存标签页窗口">缓存、标签页、窗口</h2>
+<ul>
+<li>Vim维护一系列打开的文件，称为缓存</li>
+<li>一个Vim包含一系列标签页，每个标签页包含一系列窗口，每个窗口显示一个缓存</li>
+<li>缓存和窗口不是一一对应的，窗口只是视角。一个缓存可以在多个窗口打开，甚至在同一个标签页内的多个窗口打开同一个缓存。此功能可用于查看同一个文件的不同部分</li>
+<li>Vim默认打开一个标签页，这个标签也包含一个窗口</li>
+</ul>
+<h2 id="命令行">命令行</h2>
+<ul>
+<li><p>正常模式下键入<code>:</code>进入命令行模式，光标立刻跳到屏幕下方的命令行</p></li>
+<li><p>命令行模式，常用于打开、保存、关闭文件，以及退出vim</p></li>
+<li><p>命令行模式下的命令</p>
+<p><code>:q</code>退出（关闭窗口）</p>
+<p><code>:w</code>保存（写）</p>
+<p><code>:wq</code>保存然后退出</p>
+<p><code>:e &#123;文件名&#125;</code>打开要编辑的文件</p>
+<p><code>:ls</code>显示已打开的缓存</p>
+<p><code>:help &#123;标题&#125;</code>打开帮助文档</p>
+<ul>
+<li><code>:help :w</code>打开<code>:w</code>命令的帮助文档</li>
+<li><code>:help w</code>打开<code>w</code>移动的帮助文档</li>
+</ul></li>
+</ul>
+<h1 id="vim的接口">Vim的接口</h1>
+<h2 id="移动">移动</h2>
+<ul>
+<li><p>正常模式下，用移动命令在缓存中导航</p>
+<p>基本移动：<code>hjkl</code>，左下上右移动</p>
+<p>词：<code>w</code>下一个词，<code>b</code>词初，<code>e</code>词尾</p>
+<p>行：<code>0</code>行初，<code>^</code>第一个非空字符串，<code>$</code>行尾</p>
+<p>屏幕：<code>H</code>屏幕首行，<code>M</code>屏幕中间，<code>L</code>屏幕底部</p>
+<p>翻页：<code>^u</code>上翻，<code>^d</code>下翻</p>
+<p>文件：<code>gg</code>文件头，<code>G</code>文件尾</p>
+<p>行数：<code>:&#123;行数&#125;&lt;CR&gt;</code>或者<code>&#123;行数&#125;G</code>，移动到某一行</p>
+<p>查找：<code>f&#123;字符&#125;</code>，<code>t&#123;字符&#125;</code>，<code>F&#123;字符&#125;</code>，<code>T&#123;字符&#125;</code></p>
+<ul>
+<li>查找到/向前/向后在本行的字符</li>
+</ul>
+<p>搜索：<code>/&#123;正则表达式&#125;</code></p></li>
+</ul>
+<h2 id="选择">选择</h2>
+<ul>
+<li><p>进入不同的可视化模式</p>
+<p>可视化：<code>v</code></p>
+<p>可视化行：<code>V</code></p>
+<p>可视化块：<code>^v</code></p></li>
+<li><p>进入可视化模式后，结合移动命令进行选中</p></li>
+</ul>
+<h2 id="编辑">编辑</h2>
+<ul>
+<li><p><code>i</code>，进入插入模式</p></li>
+<li><p><code>O</code>，在之上插入行（Normal模式）</p></li>
+<li><p><code>o</code>，在之下插入行（Normal模式）</p></li>
+<li><p><code>d&#123;移动命令&#125;</code>，删除移动命令</p>
+<p><code>dw</code>删除词，<code>d$</code>删除到行尾，<code>d0</code>删除到行头，<code>dj</code>删除到上一行</p></li>
+<li><p><code>c&#123;移动命令&#125;</code>，改变移动命令</p>
+<p><code>cw</code>改变词</p></li>
+<li><p><code>x</code>删除字符，等同于<code>dl</code>，删除右侧字符</p></li>
+<li><p><code>s</code>替换字符，等同于<code>xi</code>，删除字符并切换到插入模式</p></li>
+<li><p>可视化模式下，选中文本块后，<code>d</code>删除</p></li>
+<li><p><code>u</code>，撤销</p></li>
+<li><p><code>^</code>重做</p></li>
+<li><p><code>y</code>复制</p></li>
+<li><p><code>p</code>粘贴</p></li>
+</ul>
+<h2 id="计数">计数</h2>
+<ul>
+<li><code>3w</code>向前移动三个词</li>
+<li><code>5j</code>向下移动5行</li>
+<li><code>7dw</code>删除7个词</li>
+</ul>
+<h2 id="修饰语">修饰语</h2>
+<ul>
+<li>修饰语<code>i</code>表示内部，如<code>ci(</code>表示该变当前括号内的内容</li>
+</ul>
+<h1 id="自定义vim">自定义vim</h1>
+<ul>
+<li>Vim由位于<code>~/.vimrc</code>的文件配置。通过修改设置文件可以自定义Vim</li>
+</ul>
+<h1 id="扩展vim">扩展Vim</h1>
+<ul>
+<li>vim支持很多扩展插件，vim使用插件管理器管理插件，只需要创建<code>~/.vim/pack/vendor/start/</code>文件夹，并把插件放在该文件夹即可</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Young
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2022/04/17/Vim/" title="Vim">http://example.com/2022/04/17/Vim/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/tools/" rel="tag"># tools</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/14/git/" rel="prev" title="git">
+                  <i class="fa fa-chevron-left"></i> git
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Young</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
