@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -196,6 +196,139 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/05/C++-%E5%AE%9E%E7%8E%B0Vector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/05/C++-%E5%AE%9E%E7%8E%B0Vector/" class="post-title-link" itemprop="url">C++ 实现Vector</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-05 23:10:19" itemprop="dateCreated datePublished" datetime="2022-04-05T23:10:19+08:00">2022-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vector">Vector</h1>
+<h2 id="数据成员">数据成员</h2>
+<ul>
+<li>容量：capacity，表示当前数组的大小</li>
+<li>大小：sz，表示当前Vector存放的元素个数</li>
+<li>存放数据的数组arr</li>
+</ul>
+<h2 id="接口">接口</h2>
+<h3 id="构造函数">构造函数</h3>
+<ul>
+<li>默认构造函数</li>
+<li>接受元素数量参数的构造函数</li>
+<li>接受元素数量参数和元素初始值的构造函数</li>
+<li>接受初始值列表的构造函数</li>
+<li>拷贝构造函数</li>
+<li>移动构造函数</li>
+</ul>
+<h3 id="赋值运算符">赋值运算符</h3>
+<ul>
+<li>拷贝赋值运算符</li>
+<li>移动赋值运算符</li>
+</ul>
+<h3 id="增加元素">增加元素</h3>
+<ul>
+<li>insert</li>
+<li>push_back</li>
+</ul>
+<h3 id="删除元素">删除元素</h3>
+<ul>
+<li>pop_back</li>
+<li>erase</li>
+</ul>
+<h3 id="获取信息">获取信息</h3>
+<ul>
+<li>size</li>
+<li>empty</li>
+<li>getCapacity</li>
+</ul>
+<h3 id="访问元素">访问元素</h3>
+<ul>
+<li>重载[]运算符</li>
+</ul>
+<h3 id="扩容">扩容</h3>
+<ul>
+<li>reserve，用户请求容量</li>
+<li>grow，当溢出时将容量扩大为之前的两倍（使得添加元素的均摊复杂度为O(1)）</li>
+</ul>
+<h2 id="实现">实现</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;initializer_list&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// 默认构造函数</span></span><br><span class="line">	<span class="built_in">Vector</span>(): <span class="built_in">arr</span>(<span class="literal">nullptr</span>), <span class="built_in">capacity</span>(<span class="number">1</span>), <span class="built_in">sz</span>(<span class="number">0</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 接受元素数量的构造函数</span></span><br><span class="line">	<span class="built_in">Vector</span>(<span class="keyword">int</span> cnt): <span class="built_in">arr</span>(<span class="keyword">new</span> T[std::<span class="built_in">max</span>(<span class="number">1</span>, cnt * <span class="number">2</span>)]), <span class="built_in">capacity</span>(std::<span class="built_in">max</span>(<span class="number">1</span>, cnt * <span class="number">2</span>)), <span class="built_in">sz</span>(cnt) &#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 接受元素数量和元素值的构造函数</span></span><br><span class="line">	<span class="built_in">Vector</span>(<span class="keyword">int</span> cnt, T val): <span class="built_in">arr</span>(<span class="keyword">new</span> T[std::<span class="built_in">max</span>(<span class="number">1</span>, cnt * <span class="number">2</span>)]), <span class="built_in">capacity</span>(std::<span class="built_in">max</span>(<span class="number">1</span>, cnt * <span class="number">2</span>)), <span class="built_in">sz</span>(cnt) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; ++i) &#123;</span><br><span class="line">			arr[i] = val;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 接受初始值列表的构造函数</span></span><br><span class="line">	<span class="built_in">Vector</span>(std::initializer_list&lt;T&gt; li): <span class="built_in">arr</span>(<span class="keyword">new</span> T[std::<span class="built_in">max</span>(<span class="number">1</span>, (<span class="keyword">int</span>)li.<span class="built_in">size</span>() * <span class="number">2</span>)]), <span class="built_in">capacity</span>(std::<span class="built_in">max</span>(<span class="number">1</span>, (<span class="keyword">int</span>)li.<span class="built_in">size</span>() * <span class="number">2</span>)), <span class="built_in">sz</span>(li.<span class="built_in">size</span>()) &#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;v: li) &#123;</span><br><span class="line">			arr[i] = v;</span><br><span class="line">			++i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 拷贝构造函数</span></span><br><span class="line">	<span class="built_in">Vector</span>(<span class="keyword">const</span> Vector&amp; other) &#123;</span><br><span class="line">		arr = <span class="keyword">new</span> T[other.capacity];</span><br><span class="line">		capacity = other.capacity;</span><br><span class="line">		sz = other.sz;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; ++i)</span><br><span class="line">			arr[i] = other.arr[i];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 移动构造函数</span></span><br><span class="line">	<span class="built_in">Vector</span>(Vector&amp;&amp; other) &#123;</span><br><span class="line">		arr = other.arr;</span><br><span class="line">		capacity = other.capacity;</span><br><span class="line">		sz = other.sz;</span><br><span class="line">		other.arr = <span class="literal">nullptr</span>;</span><br><span class="line">		other.capacity = <span class="number">0</span>;</span><br><span class="line">		other.sz = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 拷贝赋值运算符</span></span><br><span class="line">	Vector&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Vector&amp; other) &#123;</span><br><span class="line">		arr = <span class="keyword">new</span> T[other.capacity];</span><br><span class="line">		capacity = other.capacity;</span><br><span class="line">		sz = other.sz;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; ++i)</span><br><span class="line">			arr[i] = other.arr[i];</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 移动赋值运算符</span></span><br><span class="line">	Vector&amp; <span class="keyword">operator</span>=(Vector&amp;&amp; other) &#123;</span><br><span class="line">		arr = other.arr;</span><br><span class="line">		capacity = other.capacity;</span><br><span class="line">		sz = other.sz;</span><br><span class="line">		other.arr = <span class="literal">nullptr</span>;</span><br><span class="line">		other.capacity = <span class="number">0</span>;</span><br><span class="line">		other.sz = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 析构函数</span></span><br><span class="line">	~<span class="built_in">Vector</span>() &#123;</span><br><span class="line">		<span class="keyword">delete</span>[] arr;</span><br><span class="line">		arr = <span class="literal">nullptr</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 插入</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">int</span> pos, T val)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (sz == capacity)</span><br><span class="line">			<span class="built_in">grow</span>();</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = sz; i &gt; pos; --i)</span><br><span class="line">			arr[i] = arr[i - <span class="number">1</span>];</span><br><span class="line">		arr[pos] = val;</span><br><span class="line">		++sz;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除第一个等于val的元素</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(T val)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; ++i) &#123;</span><br><span class="line">			<span class="keyword">if</span> (arr[i] == val) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; sz - <span class="number">1</span>; ++j) &#123;</span><br><span class="line">					arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">				&#125;</span><br><span class="line">				--sz;</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 末尾添加/删除</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(T val)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (sz == capacity)</span><br><span class="line">			<span class="built_in">grow</span>();</span><br><span class="line">		arr[sz] = val;</span><br><span class="line">		++sz;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pop_back</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (!<span class="built_in">empty</span>()) &#123;</span><br><span class="line">			--sz;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 返回元素数量</span></span><br><span class="line">	<span class="function"><span class="keyword">size_t</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> sz;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 返回是否空的vector</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> sz == <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 随机访问</span></span><br><span class="line">	T&amp; <span class="keyword">operator</span>[](<span class="keyword">int</span> index) &#123;</span><br><span class="line">		<span class="keyword">if</span> (index &gt;= sz || index &lt; <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">throw</span> <span class="string">&quot;Out of range&quot;</span>;</span><br><span class="line">		<span class="keyword">return</span> arr[index];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 扩容reserve</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">reserve</span><span class="params">(<span class="keyword">int</span> cap)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (cap &lt;= capacity)</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		T* newArrary = <span class="keyword">new</span> T[cap];</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; ++i)</span><br><span class="line">			newArrary[i] = arr[i];</span><br><span class="line">		<span class="keyword">delete</span> arr;</span><br><span class="line">		arr = newArrary;</span><br><span class="line">		capacity = cap;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 测试接口, 获取当前容量</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getCapacity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> capacity;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 测试接口, 获取当前数组</span></span><br><span class="line">	<span class="function">T* <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> arr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	T* arr;</span><br><span class="line">	<span class="keyword">int</span> capacity;</span><br><span class="line">	<span class="keyword">int</span> sz;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 溢出, 分配当前两倍的空间</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">grow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		T* newArrary = <span class="keyword">new</span> T[capacity * <span class="number">2</span>];</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; ++i)</span><br><span class="line">			newArrary[i] = arr[i];</span><br><span class="line">		<span class="keyword">delete</span> arr;</span><br><span class="line">		arr = newArrary;</span><br><span class="line">		capacity *= <span class="number">2</span>;</span><br><span class="line">	&#125;	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BasicTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="function">Vector&lt;<span class="keyword">int</span>&gt; <span class="title">vec</span><span class="params">(<span class="number">10</span>, <span class="number">3</span>)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)vec.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">		<span class="built_in">assert</span>(vec[i] == <span class="number">3</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	vec.<span class="built_in">push_back</span>(<span class="number">4</span>);</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">size</span>() == <span class="number">11</span>);</span><br><span class="line">	<span class="built_in">assert</span>(vec[<span class="number">10</span>] == <span class="number">4</span>);</span><br><span class="line">	vec.<span class="built_in">pop_back</span>();</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">size</span>() == <span class="number">10</span>);</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;BasicTest passed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CopyTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="function">Vector&lt;<span class="keyword">int</span>&gt; <span class="title">v1</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">	Vector&lt;<span class="keyword">int</span>&gt; v2 = v1;</span><br><span class="line">	<span class="function">Vector&lt;<span class="keyword">int</span>&gt; <span class="title">v3</span><span class="params">(v2)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)v2.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">		<span class="built_in">assert</span>(v2[i] == <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)v3.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">		<span class="built_in">assert</span>(v3[i] == <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;CopyTest passed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="function">Vector&lt;<span class="keyword">int</span>&gt; <span class="title">vec</span><span class="params">(<span class="number">10</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">	vec.<span class="built_in">insert</span>(<span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">size</span>() == <span class="number">11</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)vec.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">		<span class="built_in">assert</span>(vec[i] == (i == <span class="number">0</span>? <span class="number">3</span>: <span class="number">1</span>));</span><br><span class="line">		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;InsertTest passed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">EraseTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Vector&lt;<span class="keyword">int</span>&gt; vec&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">	vec.<span class="built_in">erase</span>(<span class="number">2</span>);</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">size</span>() == <span class="number">4</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)vec.<span class="built_in">size</span>(); ++i)</span><br><span class="line">		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;EraseTest passed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReserveTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Vector&lt;<span class="keyword">int</span>&gt; vec&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">getCapacity</span>() == <span class="number">10</span>);</span><br><span class="line">	vec.<span class="built_in">reserve</span>(<span class="number">8</span>);</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">getCapacity</span>() == <span class="number">10</span>);</span><br><span class="line">	vec.<span class="built_in">reserve</span>(<span class="number">11</span>);</span><br><span class="line">	<span class="built_in">assert</span>(vec.<span class="built_in">getCapacity</span>() == <span class="number">11</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)vec.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">		<span class="built_in">assert</span>(vec[i] == i);</span><br><span class="line">		std::cout &lt;&lt; vec[i] &lt;&lt; <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;ReserveTest passed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GrowTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Vector&lt;<span class="keyword">int</span>&gt; v&#123;<span class="number">0</span>&#125;;</span><br><span class="line">	v.<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">assert</span>(v.<span class="built_in">getCapacity</span>() == <span class="number">2</span>);</span><br><span class="line">	v.<span class="built_in">push_back</span>(<span class="number">2</span>);</span><br><span class="line">	<span class="built_in">assert</span>(v.<span class="built_in">getCapacity</span>() == <span class="number">4</span>);</span><br><span class="line">	<span class="built_in">assert</span>(v.<span class="built_in">size</span>() == <span class="number">3</span>);</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;GrowTest passed\n&quot;</span>;</span><br><span class="line">&#125;	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MoveTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Vector&lt;<span class="keyword">int</span>&gt; v1&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">	<span class="function">Vector&lt;<span class="keyword">int</span>&gt; <span class="title">v2</span><span class="params">(std::move(v1))</span></span>;</span><br><span class="line">	<span class="built_in">assert</span>(v1.<span class="built_in">size</span>() == <span class="number">0</span>);</span><br><span class="line">	<span class="built_in">assert</span>(v1.<span class="built_in">getData</span>() == <span class="literal">nullptr</span>);</span><br><span class="line">	<span class="built_in">assert</span>(v2.<span class="built_in">size</span>() == <span class="number">4</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="keyword">int</span>)v2.<span class="built_in">size</span>(); ++i)</span><br><span class="line">		<span class="built_in">assert</span>(v2[i] == i);</span><br><span class="line">	std::cout &lt;&lt; <span class="string">&quot;MoveTest passed\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="built_in">BasicTest</span>();</span><br><span class="line">	<span class="built_in">CopyTest</span>();</span><br><span class="line">	<span class="built_in">InsertTest</span>();</span><br><span class="line">	<span class="built_in">EraseTest</span>();</span><br><span class="line">	<span class="built_in">ReserveTest</span>();</span><br><span class="line">	<span class="built_in">GrowTest</span>();</span><br><span class="line">	<span class="built_in">MoveTest</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3168,743 +3301,6 @@ follower的日志记录中任期号为ConflictTerm的第一条log的index，当f
 <h2 id="线性一致">线性一致</h2>
 <ul>
 <li>如果一个服务表现得像只有一个服务器，且服务器没有故障，每次只执行一个客户端请求并正确返回，则认为该服务是线性一致的</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E9%A1%B9%E7%9B%AE-6-824%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/10/%E9%A1%B9%E7%9B%AE-6-824%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">项目-6.824总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-10 16:20:34" itemprop="dateCreated datePublished" datetime="2022-03-10T16:20:34+08:00">2022-03-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="lab1-mapreduce">Lab1 MapReduce</h1>
-<h2 id="任务需求">任务需求</h2>
-<h2 id="关键问题分析">关键问题分析</h2>
-<h3 id="rpc设计">RPC设计</h3>
-<ul>
-<li>需要设计两种类型的RPC
-<ul>
-<li><strong>请求任务RPC</strong>：Workers向Coordinator请求任务，Coordinator向Workers返回其角色、任务</li>
-<li><strong>任务完成RPC</strong>：Worker告知Coordinator任务已完成，包含输出文件等信息，Coordinator返回Workers已收到</li>
-</ul></li>
-</ul>
-<h4 id="请求任务rpc">请求任务RPC</h4>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TaskArgs <span class="keyword">struct</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> TaskReply <span class="keyword">struct</span> &#123;</span><br><span class="line">    Role <span class="keyword">int</span></span><br><span class="line">    Index <span class="keyword">int</span></span><br><span class="line">    NReduce <span class="keyword">int</span></span><br><span class="line">    Files []<span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>Role</p>
-<p><code>Role=-1</code>代表返回错误，可能由于coordinator已经完成所有任务或coordinator故障</p>
-<p><code>Role=0</code>代表当前未分配任务，worker应该在一段时间后再发送请求</p>
-<p><code>Role=1</code>代表分配map任务</p>
-<p><code>Role=2</code>代表分配reduce任务</p></li>
-<li><p>Files</p>
-<p>如果coordinator给worker分配了任务，则Files存储了worker需要读取的文件名，如果是map任务则为输入文件，如果是reduce任务则为map产生的中间值存储的文件</p></li>
-<li><p>NReduce</p>
-<p><strong>输出文件数量</strong>：代表由客户指定的输出文件的数量，Map生成的中间值也会分为NReduce份，并存储在NReduce个中间值文件中</p>
-<p><strong>中间值分配</strong>：采用<code>hash(key)%NReduce</code>的方法决定一个数据应该存储在哪个中间值文件</p></li>
-<li><p>Index</p>
-<p>标识worker的序号，对于Map worker，总共有M个，因此<span class="math inline">\(1 \leq Index \leq M\)</span>；对于Reduce
-worker，总共有R个，因此<span class="math inline">\(1 \leq Index \leq
-R\)</span></p></li>
-</ul>
-<h4 id="任务完成rpc">任务完成RPC</h4>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> CompleteArgs <span class="keyword">struct</span> &#123;</span><br><span class="line">	Files []<span class="keyword">int</span></span><br><span class="line">	Role  <span class="keyword">int</span></span><br><span class="line">	Index <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> CompleteReply <span class="keyword">struct</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>Role</p>
-<p>worker告知master自己的身份，在请求任务RPC中由master分配</p>
-<p><code>Role=1</code>代表Map worker</p>
-<p><code>Role=2</code>代表Reduce worker</p></li>
-<li><p>Index</p>
-<p>worker的序号，在请求任务RPC中由master分配</p></li>
-<li><p>Files</p>
-<p>worker产生的结果文件的名字，若为Map worker则是中间值文件；若为Reduce
-worker则是输出文件</p></li>
-</ul>
-<h3 id="master需要维护的状态">Master需要维护的状态</h3>
-<ul>
-<li><p>保存<strong>用户提供的参数</strong></p>
-<p><code>files</code>，输入文件的名字</p>
-<p><code>nReduce</code>，用户希望划分的输出文件数量</p></li>
-<li><p><strong>map任务的状态</strong></p>
-<p>Master根据用户提供的M个输入文件分配M个Map任务，每个Map任务都需要维护其是否完成的状态，<strong>0标识未分配，1标识已分配，2标识已完成</strong></p></li>
-<li><p><strong>reduce任务的状态</strong></p>
-<p>Master根据用户提供的nReduce参数分配R个Reduce任务，每个Reduce任务都需要维护其是否完成的状态，<strong>0标识未分配，1标识已分配，2标识已完成</strong></p></li>
-<li><p>map任务产生的<strong>中间值文件的名字</strong></p>
-<p>Map
-worker通过任务完成RPC向master发送自己生成的中间值文件名字，master需要存储该中间值文件，以便分配给Reduce
-workers</p></li>
-</ul>
-<h3 id="master的行为">Master的行为</h3>
-<h4 id="初始化">初始化</h4>
-<ul>
-<li>保存用户提供的参数，初始化状态变量，并创建一个goroutine监听客户发送的RPC请求</li>
-</ul>
-<h4 id="分配任务rpc-handle">分配任务RPC handle</h4>
-<ul>
-<li><p>map任务分配</p>
-<p>如果存在未分配的map任务，则进行分配并返回<code>Role=1</code></p>
-<p>如果所有map任务已分配，但有map任务未完成，则返回<code>Role=0</code>，表示当前暂无新任务</p></li>
-<li><p>Reduce任务分配</p>
-<p>只有所有map任务都完成时，才分配Reduce任务</p>
-<p>如果存在未分配的reduce任务，则分配并返回<code>Role=2</code></p>
-<p>如果所有reduce任务已分配，存在未完成的reduce任务，则返回<code>Role=0</code>，表示当前暂无新任务</p></li>
-<li><p>如果所有任务都已经完成</p>
-<p>返回<code>Role=-1</code>，告知所有任务已完成</p></li>
-</ul>
-<h4 id="任务完成rpc-handle">任务完成RPC handle</h4>
-<ul>
-<li><p>Map任务完成</p>
-<p>master查看任务状态</p>
-<ul>
-<li>若为0则表示此任务已经超时，忽略之</li>
-<li>若任务状态为1则表示处于分配状态，继续以下处理</li>
-</ul>
-<p>master在handle中存储中间值文件的名字，以便后续分配给reduce worker</p>
-<p>master更新map任务的状态为2，表示已完成</p></li>
-<li><p>Reduce任务完成</p>
-<p>master查看任务状态</p>
-<ul>
-<li>若为0则表示此任务已经超时，忽略之</li>
-<li>若任务状态为1则表示处于分配状态，继续以下处理</li>
-</ul>
-<p>master更新reduce任务的状态为2，表示已完成</p>
-<p>master保存输出文件的名字</p></li>
-</ul>
-<h4 id="监听goroutine"><strong>监听goroutine</strong></h4>
-<ul>
-<li><p><strong>作用</strong>：为了防止由于部分worker执行速度较慢导致的任务处理速度变慢，master为<strong>每个分配的任务</strong>都创建一个<strong>监听goroutine</strong>，该goroutine保证任务在超时间隔内未完成，将<strong>重新分配给其他worker</strong></p></li>
-<li><p><strong>超时</strong>：监听goroutine定期查看任务状态，若任务状态变为2，即已完成则退出。若任务状态始终为1，且时间达到了timeout，则将任务状态修改为0。这样分配任务RPC
-handler就会将该任务分配给之后请求任务的worker</p></li>
-</ul>
-<h4 id="告知用户是否完成的done方法">告知用户是否完成的Done方法</h4>
-<ul>
-<li>MapReduce开放Done方法，供用户查询所有任务是否完成</li>
-<li>检查每个map任务与reduce任务的状态，若都为已完成则返回true</li>
-</ul>
-<h3 id="worker的行为">Worker的行为</h3>
-<ul>
-<li>在循环中不断地进行请求任务RPC
-<ul>
-<li>若返回<code>Role=-1</code>，则说明任务都已完成或Master故障，退出程序</li>
-<li>若返回<code>Role=0</code>，则说明暂时无新任务，等待1s后重新请求</li>
-<li>若返回<code>Role=1</code>，则执行map任务</li>
-<li>若返回<code>Role=2</code>，则执行Reduce任务</li>
-</ul></li>
-</ul>
-<h4 id="map-worker">Map worker</h4>
-<p>扫描每个一分配的输入文件</p>
-<ul>
-<li><p><strong>打开文件</strong>：打开该文件（实际情况是，如果文件并非存储在本地的GFS，则需要向chunk
-server发送请求并接收文件）</p></li>
-<li><p><strong>map保存中间键值对</strong>：map并保存中间键值对：对该文件中的所有数据执行map，并将产生的中间键值对保存（先将所有的）</p></li>
-<li><p><strong>根据哈希值分配</strong>：创建R个中间值文件，并将每个中间键值对分配到R个中间值文件中的一个（根据<code>hash(key)%R</code>的值进行分配）</p></li>
-<li><p><strong>中间值文件的命名</strong>：<code>mr-x-y</code>表示由第x个Map
-worker产生的第y个中间值文件，y的意思是该中间值文件应该由编号为y的Reduce
-worker进行处理</p>
-<blockquote>
-<p>x由master分配的index决定</p>
-<p>y由该中间值的键经y = hash(key) % R求得</p>
-</blockquote></li>
-<li><p><strong>任务完成RPC</strong>：当完成所有map任务后，则将产生的中间值文件名字列表，通过任务完成RPC的方式发送给master</p></li>
-</ul>
-<h4 id="reduce-worker">Reduce worker</h4>
-<p>扫描每一个分配的中间值文件</p>
-<ul>
-<li><strong>打开文件</strong>：打开该文件（实际情况是，如果中间值文件并非存储在本地的GFS，则需要向chunk
-server发送请求并接收文件）</li>
-<li><strong>读取所有键值对</strong>：读取每个文件的键值对并保存在一个临时区</li>
-<li><strong>排序</strong>：按键进行排序，则具有相同键的数据将排列在一起</li>
-<li><strong>扫描所有键值对并进行reduce</strong>：扫描键值对时，如果下一个数据与其具有相同的键则一起处理，直至下一个数据的键不相同，然后将该项数据reduce并存入输出文件</li>
-<li><strong>输出文件的命名</strong>：index为y的reduce
-worker的输出结果保存在输出文件<code>mr-out-y</code></li>
-</ul>
-<h3 id="锁的使用">锁的使用</h3>
-<ul>
-<li>master的RPC
-handler中需要修改共享数据结构，如中间文件名列表等，此时需要获取锁</li>
-<li>读取数据时获取<strong>共享锁</strong>，修改数据时获取<strong>排他锁</strong></li>
-</ul>
-<h2 id="成员函数实现">成员函数实现</h2>
-<h2 id="总结">总结</h2>
-<ul>
-<li><p>实现了MapReduce框架中的Master节点与Worker节点的基本功能</p>
-<p>对于Master节点，实现的<strong>基本功能</strong>包括</p>
-<ul>
-<li>接收用户的请求，获取输入文件名字、输出文件数量等参数，并开始执行任务</li>
-<li>将Map划分为M份，并将M份map任务分配给map workers，map
-workers完成任务后告知master，包含其产生的中间文件名字。每个map
-worker可能产生最多R份中间文件</li>
-<li>待所有map任务完成后，开始执行reduce。将Reduce划分为R份，并将R份reduce任务分配给reduce
-workers，reduce
-workers完成任务后告知master，包含其产生的输出文件名字</li>
-<li>接收用户的查询请求，如果当前任务已经完成则返回true</li>
-</ul>
-<p>此外，Master节点还提供了一定程度的<strong>负载均衡分配</strong></p>
-<ul>
-<li>假如一个Map worker或Reduce
-worker长期未返回（lab中超时时间为10s），则将其任务重新分配给其他空闲的workers</li>
-</ul>
-<p>Master节点与Worker节点的<strong>通信</strong></p>
-<ul>
-<li><p>在实际场景中，Master节点与Worker节点位于不同地理位置，需要通过网络通信</p></li>
-<li><p>lab中采用了RPC远程过程调用的方式实现Master节点向Worker节点分配任务，以及Worker节点告知Master节点任务执行结果</p></li>
-<li><p>具体地，设计了两种类型的RPC：请求任务RPC和任务完成RPC，均由worker主动调用，master中的RPC
-handle对相应的RPC进行处理</p>
-<p>请求任务RPC中，worker向master请求任务，master返回worker被分配的任务类型、worker编号、输入/中间文件的名字</p>
-<p>任务完成RPC中，worker向master告知完成，master接收worker传来的中间/输出文件的名字并保存</p></li>
-</ul></li>
-<li><p>在基础上实现一个读取多文件并统计各个单词出现次数的引用</p></li>
-</ul>
-<h1 id="lab2-raft">Lab2 Raft</h1>
-<h2 id="lab2a-leader选举">Lab2A leader选举</h2>
-<h3 id="任务需求-1">任务需求</h3>
-<ul>
-<li><strong>心跳信号</strong>：实现leader节点的心跳信号，实现时可通过向其他节点发送不带有日志记录的<strong>添加日志指令</strong>实现</li>
-<li><strong>leader选举机制</strong>：实现leader选举机制，包括
-<ul>
-<li><strong>选举计时器</strong>：选举计时器的正确设置，每次超时后都需要随机选择一个超时时间，然后重启计时器，超时时间的上限为MBTF、下限为心跳信号间隔的数倍</li>
-<li><strong>开始选举</strong>：节点开始选举时将自己设为candidate，给自己投票，然后发送<strong>选举请求RPC</strong>给其他节点</li>
-</ul></li>
-</ul>
-<h3 id="raft规则">Raft规则</h3>
-<h4 id="requesetvote-rpc">RequesetVote RPC</h4>
-<ul>
-<li><p>参数</p>
-<p><code>term</code>：候选人的任期号</p>
-<p><code>candidateId</code>：候选人的id</p>
-<p><code>lastLogIndex</code>：候选人最后一个日志记录的index</p>
-<p><code>lastLogTerm</code>：候选人最后一个日志记录的任期号</p></li>
-<li><p>返回</p>
-<p><code>term</code>：如果其他节点的任期号更新，则它会返回它的任期号，当前candidate则退化为follower并更新自己的任期号</p>
-<p><code>voteGranted</code>：若为true则代表候选人收到了选票</p></li>
-<li><p>其他节点中RPC处理函数的逻辑</p>
-<p><strong>拒绝</strong>：如果自己的任期号更新，则返回false，并将任期号附在<code>term</code></p>
-<p><strong>投票</strong>：如果当前<code>votedFor</code>为空或是该候选人的id，而且候选人的日志记录至少和自己一样<strong>up-to-date</strong>，则向其投票</p>
-<blockquote>
-<p>回顾：up-to-date的概念</p>
-<ul>
-<li>对方的<code>lastLogTerm</code>更大</li>
-<li><code>lastLogTerm</code>一样，而<code>lastLogIndex</code>更大或相等，则认为对方至少和自己一样up-to-date</li>
-</ul>
-</blockquote></li>
-</ul>
-<h4 id="服务器行为">服务器行为</h4>
-<ul>
-<li><strong>降级为follower</strong>：一旦收到一个RPC请求或回复，传递了一个任期号大于自身的任期号，则将自身的任期号更新，并转换为folloewr</li>
-</ul>
-<h5 id="follower行为">follower行为</h5>
-<ul>
-<li><strong>回复</strong>：回复leader或candidate发送的RPC</li>
-<li><strong>超时竞选</strong>：一旦超时，则转换为candidate，并开始竞选</li>
-</ul>
-<h5 id="candidate行为">Candidate行为</h5>
-<ul>
-<li><strong>竞选</strong>：成为candidate后立刻开始竞选，增加任期号，为自己投票，并向其他节点发送请求投票RPC</li>
-<li><strong>统计选票</strong>：收到其他服务器发送的RequestVote
-RPC的回复，并统计获得的选票</li>
-<li><strong>获得过半数选票</strong>：一旦收到过半数选票，则变为leader身份</li>
-<li><strong>放弃竞选</strong>：如果收到其他节点的添加日志RPC，说明已存在leader，竞选失败，变为follower</li>
-<li><strong>超时重新竞选</strong>：如果定时器超时，仍然未获得过半数选票，且未收到其他节点的添加日志RPC以声明它们是leader，则重设定时器并重新开始竞选</li>
-</ul>
-<h5 id="leader行为">Leader行为</h5>
-<ul>
-<li><p><strong>发送心跳</strong>：竞选成功后，立即向其他服务器都发送心跳信号（空的添加日志RPC）,以表明自己的leader身份</p></li>
-<li><p><strong>接收客户请求</strong>：添加日志记录到本地的日志，并向其他服务器发送添加日志RPC，过半数节点确认后，提交日志，并执行该操作然后将结果返回给客户</p></li>
-<li><p><strong>发送添加日志指令</strong>：如果某个服务器的<code>nextIndex</code>小于等于当前的日志最大index，则向其发送添加日志RPC，并附上从<code>nextIndex</code>开始的日志。如果服务器由于日志不一致而拒绝该请求，则递减该服务器的<code>nextIndex</code>并重新发送</p></li>
-<li><p><strong>提交日志</strong>：如果有过半数的写入了某个日志，且该日志的index大于当前的commitIndex，且该日志的任期等于当前任期，则将这个新日志提交，并更新commitIndex</p>
-<blockquote>
-<p>从上述表述可知，假如该日志不是当前任期写入的，即使过半数的节点添加了该日志，仍然不能进行提交</p>
-</blockquote></li>
-</ul>
-<h3 id="关键问题分析-1">关键问题分析</h3>
-<h4 id="超时间隔的选取">超时间隔的选取</h4>
-<ul>
-<li><strong>心跳信号间隔</strong>：心跳信号的间隔选择为100ms</li>
-<li><strong>超时间隔</strong>：超时时间的间隔选择为300-600ms</li>
-<li><strong>随机种子</strong>：每次随机选择超时间隔时，设置一个随机种子，可使用时间作为随机种子，但需要注意<code>time.Now().Unix()</code>返回的是<strong>秒</strong>，应该使用<code>time.Now().UnixNano()</code>返回的<strong>纳秒</strong>作为随机种子</li>
-</ul>
-<h4 id="选举计时器的行为">选举计时器的行为</h4>
-<ul>
-<li><p>什么时候重启计时器？</p>
-<p><strong>收到心跳</strong>：收到来自其他leader的有效的心跳信号时</p>
-<p><strong>收到选票请求</strong>：其他candidate发送选票请求RPC，并接收请求向其投票时</p>
-<p><strong>超时</strong>：此时需要成为candidate并开始新的选举，同时随机选择超时间隔，然后重启计时器</p></li>
-</ul>
-<h4 id="参与竞选时的行为">参与竞选时的行为</h4>
-<ul>
-<li><p><strong>状态变量</strong></p>
-<p>维护<code>votedFor</code>代表当前任期内向哪个节点投票</p>
-<p>维护<code>receiveVotes</code>代表如果参加了竞选，获得了多少选票</p></li>
-<li><p><strong>超时</strong>：若选举计时器超时，则参与竞选，角色设置为candidate</p></li>
-<li><p><strong>为自己投票</strong>：竞选者设置<code>votedFor</code>和<code>receiveVotes</code></p></li>
-<li><p><strong>并行拉票</strong>：向其他节点发送投票请求RPC，每个节点都应该<strong>并行地向其他节点发送投票请求RPC</strong>，即创建多个goroutine，每个goroutine向某个节点发送投票请求RPC</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(rf.peers); i++ &#123;</span><br><span class="line">    <span class="keyword">if</span> i == rf.me &#123;</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// send RequestVote in parallel</span></span><br><span class="line">    <span class="keyword">go</span> rf.helperRequestVotes(i, &amp;args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="节点退化为follower">节点退化为follower</h4>
-<ul>
-<li><strong>退化为follower</strong>：任何时候，只要节点收到了一个选票请求RPC或添加指令RPC，其任期号term大于自己当前的任期号，则节点退化为follower</li>
-</ul>
-<h3 id="总结-1">总结</h3>
-<ul>
-<li><p><strong>bug-串行发送RPC</strong>：习惯性地将candidate发送RequestVote
-RPC的行为写在for循环之中，从而导致它们是串行发送的，如此导致等待RPC返回的时间加起来，几乎一定超过Election
-timer的timeout，则无法产生稳定的leader</p>
-<p>解决：candidate发送<code>RequestVote</code>，以及leader发送<code>AppendEntries</code>都应该是<strong>并行</strong>的，切勿在循环中串行发送，否则</p></li>
-</ul>
-<h2 id="lab2b-log">Lab2B log</h2>
-<h3 id="功能需求">功能需求</h3>
-<ul>
-<li>实现leader和follower添加日志的功能</li>
-</ul>
-<h3 id="raft规则-1">Raft规则</h3>
-<h4 id="appendentries-rpc">AppendEntries RPC</h4>
-<ul>
-<li><p>参数</p>
-<p><code>term</code>：leader的任期号</p>
-<p><code>leadId</code>: leader的id</p>
-<p><code>prevLogIndex</code>：新添加日志记录的上一个日志记录的index</p>
-<p><code>prevLogTerm</code>: 新添加日志记录的上一个日志记录的term</p>
-<p><code>entries[]</code>：日志记录数组</p>
-<p><code>leaderCommitIndex</code>：leader的提交index，表示该index及其之前的日志记录都已提交</p></li>
-<li><p>返回</p>
-<p><code>term</code>：如果follower的任期号更大，则返回给leader让它更新</p>
-<p><code>success</code>:
-表示follower所拥有的日志记录与<code>prevLogIndex</code>和<code>prevLogTerm</code>相符，并成功添加leader所发送的日志记录</p></li>
-<li><p>接收方规则</p>
-<p><strong>更新term</strong>：如果<code>term</code>比自己当前的任期号更小，则leader应该更新，返回false</p>
-<p><strong>日志不一致</strong>：如果<code>prevLogIndex</code>位置上不存在日志记录或者该日志记录的任期号与<code>prevLogTerm</code>不相符，则返回false</p>
-<p><strong>删除冲突日志记录</strong>：如果已存在的日志记录与新的日志记录不一致，则将其及之后的日志记录都删除</p>
-<p><strong>添加新日志</strong>：添加leader发送的日志记录<code>entries</code></p>
-<p><strong>提交日志</strong>：如果<code>leaderCommitIndex</code>大于自己的<code>commitIndex</code>，则尽心更新，将<code>commitIndex</code>更新为<code>leaderCommitIndex</code>与当前拥有的最新日志记录的index的较小者</p></li>
-</ul>
-<h3 id="关键问题分析-2">关键问题分析</h3>
-<h4 id="是否需要额外的sendheartbeat-rpc">是否需要额外的SendHeartBeat
-RPC？</h4>
-<ul>
-<li>并不需要，因为SendHeartBeat心跳信号只是为了让follower知道当前leader处于正常工作状态，这可以通过AppendEntries
-RPC实现。且AppendEntries在需要时应附上发送的数据，否则只是发送一个空的AppendEntries
-RPC即可</li>
-</ul>
-<h4 id="日志快速回复是怎样实现的">日志快速回复是怎样实现的？</h4>
-<ul>
-<li><p><strong>follower返回额外信息</strong></p>
-<p><strong>ConflictTerm</strong>:
-follower与leader冲突的日志记录的term，如果follower在对应位置没有log则设为-1</p>
-<p><strong>ConflictIndex</strong>:
-follower的日志记录中任期号为ConflictTerm的第一条log的index，当follower在对应位置没有log时则返回log的长度</p></li>
-<li><p><strong>leader快速恢复</strong></p>
-<p>找到term等于ConflictTerm的log，若找到则将nextIndex设为该term的最后一个日志记录之后的位置；若没有找到则将nextIndex设为ConflictIndex</p></li>
-</ul>
-<h2 id="lab2c-persistence">Lab2C persistence</h2>
-<h3 id="功能需求-1">功能需求</h3>
-<ul>
-<li><p><strong>故障恢复机制</strong>：当某些节点shutdown后，可通过启动另外一些服务器以替换shutdown的节点继续工作的方式，实现故障恢复</p></li>
-<li><p><strong>持久化存储状态信息</strong>：但必须将某些状态信息持久化存储，从而可以恢复新启动的服务器的状态</p></li>
-<li><p><strong>需要持久化的状态信息</strong>：votedFor、currentTerm、log</p>
-<ul>
-<li><p>持久化<code>votedFor</code>和<code>currentTerm</code>确保每个节点在某个任期内<strong>只给一个candidate投票</strong>，保证了任何时候只有一个leader</p></li>
-<li><p>持久化<code>log</code>是因为这是进行快速恢复状态的唯一信息</p></li>
-</ul></li>
-</ul>
-<h3 id="raft规则-2">Raft规则</h3>
-<h4 id="需要持续化存储的状态">需要持续化存储的状态</h4>
-<ul>
-<li><p><strong>实时写入稳定存储器</strong>：以下状态一旦变化，则应该写入稳定存储器</p></li>
-<li><p><code>currentTerm</code>：从0开始，不断递增</p></li>
-<li><p><code>votedFor</code>：当前任期内该节点向谁投票了</p></li>
-<li><p><code>log[]</code>：保存了日志记录，每个<strong>日志记录</strong>都包含需要state
-machine执行的<strong>指令</strong>，以及从leader收到该日志记录时的<strong>任期号</strong></p></li>
-</ul>
-<h4 id="存储在内存的状态">存储在内存的状态</h4>
-<ul>
-<li><code>commitIndex</code>：当前最后一条提交的日志记录的序号</li>
-<li><code>lastApplied</code>：当前最后一条应用在状态机上的日志记录的序号</li>
-</ul>
-<h4 id="leader需要存储在内存的状态">leader需要存储在内存的状态</h4>
-<ul>
-<li><code>nextIndex[]</code>:
-对每个服务器都会一个<code>nextIndex</code>，代表leader需要发送给follower让其添加的第一条日志记录的序号</li>
-<li><code>matchIndex[]</code>：每个服务器与leader匹配的的日志记录中最后一条的序号</li>
-<li><strong>初始化</strong>：以上两个状态会在选举成为leader后重新初始化，<code>nextIndex</code>初始化为当前leader日志记录的最后一条的序号+1，<code>matchIndex</code>初始化为0</li>
-</ul>
-<h2 id="lab2d-日志压缩">Lab2D 日志压缩</h2>
-<h3 id="功能需求-2">功能需求</h3>
-<ul>
-<li><p><strong>日志占用空间</strong>：如果任由日志持续增长，最终会导致磁盘空间被占满</p></li>
-<li><p><strong>根据日志恢复耗费时间</strong>：如果每次重启服务器，都要从日志的第一条记录开始重新执行，则将耗费大量时间</p></li>
-<li><p><strong>日志快照功能</strong>：为此，需要实现日志快照功能</p>
-<p><code>Snapshot()</code>：上层应用调用<code>Snapshot()</code>告知Raft自己当前的状态，Raft用该状态生成一个快照，并丢弃该快照对应的index之前的所有日志记录清除</p>
-<p><code>CondInstallSnapshot()</code>：Raft收到leader发送的一个快照后会通过<code>ApplyMsg</code>发送给上层应用。如果上层应用装载了该快照，则通过<code>CondInstallSnapshot()</code>告知raft自己装载了快照，因此raft可以将该快照对应的index之前的所有日志记录清除</p>
-<p><code>InstallSnapshot RPC</code>：当leader发现follower的日志落后太多时，它会调用<code>InstallSnapshot RPC</code>，让follower装载快照，以跟上自己的日志进度</p></li>
-</ul>
-<h2 id="lab2-实现具体解析">Lab2 实现具体解析</h2>
-<h3 id="make">Make()</h3>
-<ul>
-<li><strong>初始化</strong>：主要负责初始化各个状态变量，包括从存储空间中读取持久化的状态变量，读取快照并恢复状态等</li>
-<li><strong>开始竞选</strong>：在一个goroutine中开始ticker()函数，它将实现竞选计时器，并在计时器中断时重启，然后开始竞选</li>
-<li><strong>开始应用操作</strong>：在另一个goroutine中开始Apply()函数，主要根据当前CommitIndex判断某个日志记录是否已提交，若提交则将该操作应用在state
-machine上</li>
-</ul>
-<h3 id="ticker">ticker()</h3>
-<ul>
-<li><p><strong><code>timerReset</code>变量</strong>：根据raft原理，在收到leader的心跳信号，或者收到其他candidate的requestVote时，都会重启计时器，在实现时我们不会直接重启，而是设置<code>timerReset</code>变量为true</p></li>
-<li><p><strong>定时器计时行为</strong></p>
-<p><strong>随机选择超时间隔</strong>：首先每次定时都会随机选取一个超时间隔（300-600ms），然后Sleep以等待该间隔</p>
-<p><strong>在循环中每次Sleep10ms</strong>：实现时，为了监控重启计时器的行为，我们不会直接Sleep超时间隔，而是在循环中每次Sleep10ms</p>
-<p><strong>检查是否重启计时器</strong>：然后唤醒并检查是否重启了计时器（<code>timerReset</code>是否为true），如果为true则跳出循环并重启计时器（重新选择超时间隔，然后循环中Sleep）</p></li>
-<li><p><strong>开始竞选</strong></p>
-<ul>
-<li><p><strong>超时</strong>：如果在循环Sleep过程中一直没有重启计时器，且循环次数达到设定值，则发生了超时。此时需要</p></li>
-<li><p><strong>变为candidate</strong>：设置<code>Roles</code>为candidate</p></li>
-<li><p><strong>为自己投票</strong>：<code>votedFor</code>设为自己的id，<code>receivedVotes</code>设为1</p></li>
-<li><p><strong>并行发送RequestVote
-RPC</strong>：<strong>立刻并行地</strong>（创建多个goroutine，每个goroutine运行<code>helperRequestVotes</code>，负责向某一个服务器发送）向其他服务器发送<code>RequestVote RPC</code>，且带上自己的<code>LastLogIndex</code>和<code>LastLogTerm</code>等信息</p></li>
-</ul></li>
-</ul>
-<h3 id="helperrequestvotes">helperRequestVotes()</h3>
-<ul>
-<li><p><strong>功能</strong>：该函数负责发送RequestVote
-RPC，并根据返回的参数做出相应 的操作</p></li>
-<li><p><strong>发送RPC</strong>：通过系统提供的接口<code>sendRequestVote</code>发送RequesetVote
-RPC</p></li>
-<li><p><strong>返回处理</strong></p>
-<p><strong>降级</strong>：如果返回了更大的任期号，则从candidate降级为follower</p>
-<p><strong>获得选票</strong>：如果返回投票，则更新<code>receivedVotes</code></p>
-<p><strong>获得超过半数选票</strong>：升级为leader，创建goroutine并执行<code>sendHeartbeat</code>发送心跳信号，初始化各个server的<code>nextIndex</code>为当前自己日志记录中的下一个index，初始化各个server的<code>matchIndex</code>为0</p></li>
-</ul>
-<h3 id="sendheartbeat">SendHeartbeat()</h3>
-<ul>
-<li><strong>确认leader身份</strong>：若并非leader则返回</li>
-<li><strong>并行发送空的AppendEntries
-RPC</strong>：对每个其他server，创建一个goroutine并执行<code>helperSendAppendEntries</code></li>
-<li><strong>等待100ms</strong>：Sleep心跳信号间隔时间100ms后，开始下一次循环</li>
-</ul>
-<h3 id="helpersendappendentries">helperSendAppendEntries()</h3>
-<ul>
-<li><p><strong>功能</strong>：AppendEntries
-RPC包含两个功能，让follower<strong>添加日志的指令</strong>，同时也作为<strong>心跳信号</strong>让follower知道leader正在正常工作</p></li>
-<li><p><strong>确认leader身份</strong>：若非leader则返回</p></li>
-<li><p><strong>设置RPC参数并发送</strong>：任期号、leader
-id、prevLogIndex、PrevLogTerm、Entries、LeaderCommit等</p></li>
-<li><p><strong>返回处理</strong></p>
-<p><strong>降级</strong>：如果返回了更大的任期号，则从candidate降级为follower</p>
-<p><strong>心跳信号</strong>：则设置心跳信号发送成功标志<code>successHeartBeats[server]</code></p>
-<p><strong>添加日志成功</strong>：更新该follower的<code>nextIndex</code>和<code>matchIndex</code></p>
-<p><strong>提交日志</strong>：如果超过半数的节点的<code>matchIndex&gt;=N</code>，且第N个日志记录的任期号是当前leader的任期号，且N对应的日志记录未提交，则提交N以及之前的所有未提交日志记录</p>
-<blockquote>
-<p>实现中，由于我们在一个独立的goroutine运行了Apply()程序，它将持续检测commitIndex，如果大于当前已提交的日志记录，则讲新的日志记录提交并让state
-machine执行。因此，我们只需要更新commitIndex即可，而且自动就是累积提交形式</p>
-</blockquote>
-<p><strong>添加日志失败</strong>：假如follower由于日志不一致，拒绝了我们的添加日志指令，此时我们只需要递减<code>nextIndex</code>并再次发送请求即可</p>
-<p><strong>加速日志恢复</strong>：如果每次都只是递减<code>nextIndex</code>则速度太慢，可以由follower在返回中附带额外信息，加速日志恢复。follower会在返回中携带<code>ConflictIndex</code>和<code>ConflictTerm</code>，意为冲突日志记录的任期号，以及follower中该任期号的第一条日志记录的index。leader收到后，将在自己的日志记录中查找<code>ConflictTerm</code>，找到了则将<code>nextIndex</code>设为该任期最后一条日志记录的下一位置，没找到则将<code>nextIndex</code>设为<code>ConflictIndex</code></p></li>
-</ul>
-<h3 id="requestvote">RequestVote()</h3>
-<ul>
-<li><p><strong>功能</strong>：响应其他candidate发送的RequestVote
-RPC</p></li>
-<li><p><strong>candidate过时</strong>：如果当前term比candidate传过来的term更新，则拒绝该请求，并让candidate更新它的term</p></li>
-<li><p><strong>更新自己的term</strong>：如果当前term小于candidate传过来的term，则更新自己的term，并转换为follower</p></li>
-<li><p><strong>投票</strong>：如果当前任期内还未投票，而且candidate的log至少跟自己一样up-to-date，则进行投票</p></li>
-<li><p><strong>重启计时器</strong>：由于收到了其他candidate的请求投票RPC，因此需要重启计时器，设置<code>timerReset</code></p></li>
-</ul>
-<h3 id="appendentries">AppendEntries()</h3>
-<ul>
-<li><strong>功能</strong>：响应leader发送的AppendEntries
-RPC的handle</li>
-<li><strong>检查过时</strong>：如果发送方任期号小于自己任期号，返回false</li>
-<li><strong>检查日志一致性</strong>：如果<code>prevLogIndex</code>没有日志记录，或者该日志记录的<code>prevLogTerm</code>不符，则返回false并携带相应信息</li>
-<li><strong>添加日志</strong>：如果检查通过，则将leader发送过来的日志记录添加到自己的日志中，假如自己的日志中相应位置已有记录，则先将他们切除再添加</li>
-<li><strong>提交日志</strong>：如果leader的commitIndex比自己的commitIndex打，则更新，goroutine中运行的Apply会将相应的日志记录提交给state
-machine执行</li>
-<li><strong>重设定时器</strong>：因为收到了leader的AppendEntries
-RPC，应该重设计时器</li>
-</ul>
-<h3 id="snapshot">Snapshot()</h3>
-<ul>
-<li><p><strong>功能</strong>：上层应用将当前状态告知raft，请求其创建快照并压缩log</p></li>
-<li><p><strong>检查<code>index</code>是否更新</strong>：如果上层应用发送的状态的<code>index</code>比之前快照的<code>lastIncludedIndex</code>更新则创建快照，否则忽略</p></li>
-<li><p><strong>保存快照</strong>：如果更新则将快照保存在<code>rf.snapshot</code></p></li>
-<li><p><strong>压缩日志</strong>：将<code>index</code>及之前的日志记录都删除，并将其写入稳定存储器（持久化）</p></li>
-</ul>
-<h3 id="condinstallsnapshot">CondInstallSnapshot()</h3>
-<ul>
-<li><strong>功能</strong>：上层应用状态机希望加载某个快照，它通过此函数询问raft是否加载</li>
-<li><strong>检查该index后是否进行提交</strong>：如果raft的<code>commitIndex</code>比该快照的<code>lastIncludedIndex</code>更新，则在该快照后raft已提交了新的日志记录，不能加载该快照</li>
-<li><strong>保存快照并压缩日志</strong>：如果该快照比当前raft的快照更新，则保存在<code>rf.snapshot</code>，同时修建日志，写入稳定存储器（持久化）</li>
-<li><strong>返回true让上层应用加载该快照</strong>：返回true代表上层应用状态机可以加载快照</li>
-</ul>
-<h3 id="helpersendinstallsnapshot">helperSendInstallSnapshot()</h3>
-<ul>
-<li><p><strong>功能</strong>：leader向follower发送该RPC，让其加载快照以跟上自己的日志进度</p></li>
-<li><p><strong>参数</strong></p>
-<p><code>term</code>：leader的任期号</p>
-<p><code>leaderId</code>：leader的id</p>
-<p><code>lastIncludedIndex</code>：这个快照包含了这个序号前的所有日志记录</p>
-<p><code>lastIncludedTerm</code>：这个快照包含的最后一个日志记录的任期号</p>
-<p><code>data[]</code>：快照数据内容</p></li>
-<li><p><strong>返回</strong></p>
-<p><code>term</code>：如果返回了一个更新的任期号，则更新自己的任期号并变为follower</p></li>
-</ul>
-<h3 id="installsnapshot">InstallSnapshot()</h3>
-<ul>
-<li><strong>功能</strong>：处理上述<code>InstallSnapshot RPC</code></li>
-<li><strong>leader有效检测</strong>：如果leader的任期号小于自己，则该leader已经过时，返回任期号告知其进行更新</li>
-<li><strong>重启定时器</strong>：由于收到leader的有效信息，因此重启定时器</li>
-<li><strong>检测snapshot是否更新</strong>：如果<code>lastIncludedIndex</code>大于自己的，则该snapshot更新，将其通过ApplyMsg传递给上层应用</li>
-</ul>
-<h3 id="apply">Apply()</h3>
-<ul>
-<li><strong>功能</strong>：不断检测commitIndex以判断raft是否提交新日志记录，若提交则将其应用于state
-machine</li>
-<li><strong>检测新提交日志记录</strong>：在循环中（sleep
-10ms）不断比较commitIndex与lastApplied</li>
-<li><strong>将日志应用于上层应用</strong>：如果有新日志记录则调用<code>sendApplyMsg()</code>将该应用操作发送给上层应用</li>
-</ul>
-<h3 id="sendapplymsg">sendApplyMsg()</h3>
-<ul>
-<li><p><strong>功能</strong>：将序号为index的日志记录中的操作提交给上层应用让其执行</p></li>
-<li><p><strong>发送ApplyMsg</strong>：设置ApplyMsg中的Command、CommandValid、CommandIndex、LeaderId等参数，然后将其送入applych</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rf.mu.Lock()</span><br><span class="line">msg := ApplyMsg&#123;&#125;</span><br><span class="line">msg.Command = rf.logs[rf.GetLogIndexWithLock(index)].Command</span><br><span class="line">msg.CommandValid = <span class="literal">true</span></span><br><span class="line">msg.CommandIndex = index</span><br><span class="line">msg.LeaderId = rf.leaderId</span><br><span class="line">rf.mu.Unlock()</span><br><span class="line">rf.applyCh &lt;- msg</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="start">Start()</h3>
-<ul>
-<li><strong>功能</strong>：接收上层应用提交的操作，若为leader则往日志中添加一条该操作的日志记录，并向其他节点都发送添加日志指令</li>
-<li><strong>若自己并非leader</strong>：只有leader可以添加日志记录，如果并非leader，则返回false同时将当前的leaderId告知客户</li>
-<li><strong>若自己为leader</strong>：若为leader则添加日志记录，同时向其他节点都发送添加日志指令，该<strong>函数应该立即向客户返回true</strong>。如果此后该操作的日志记录提交，raft会通过SendApplyMsg的形式告知客户操作已提交。上层客户会监听通道上的ApplyMsg并获取到该消息，从而将操作应用在state
-machine上</li>
-</ul>
-<h1 id="lab3-kv-service">Lab3 K/V service</h1>
-<h2 id="lab3a-kv-service-without-snapshots">Lab3A K/V service without
-snapshots</h2>
-<h3 id="功能需求-3">功能需求</h3>
-<ul>
-<li><strong>Clerk中的客户接口</strong>：客户调用Clerk接口执行Put/Append/Get操作，Clerk通过相应的RPC调用向服务器发送请求执行Put/Append/Get操作</li>
-<li><strong>服务器RPC
-handle</strong>：客户调用RPC请求执行Put/Append/Get操作，服务器中相应的RPC
-handle进行处理。它将该操作通过<code>start</code>发送给raft，并不断监听ApplyMsg消息以获取该操作是否提交，若提交则将操作应用在state
-machine上，并将结果返回给客户</li>
-<li><strong>去重</strong>：客户可能向多个服务器发送相同的操作请求，state
-machine最多执行一次，因此需要唯一标识客户的操作</li>
-</ul>
-<h3 id="raft规则-3">raft规则</h3>
-<h4 id="getargs">GetArgs</h4>
-<ul>
-<li><strong>功能</strong>：用户发送Get操作请求时的参数</li>
-<li><code>Key</code>：查询的键</li>
-<li><code>ClientId</code>：客户id</li>
-<li><code>CommandId</code>：指令id</li>
-</ul>
-<h4 id="getreply">GetReply</h4>
-<ul>
-<li><p><strong>功能</strong>：服务器返回告知Get操作的结果</p></li>
-<li><p><code>Err</code>：错误码，包含OK（执行成功）、ErrWrongLeader（当前服务器非leader）、ErrExpired（请求已过期）、ErrTimeout（超时）错误码</p></li>
-<li><p><code>Value</code>：若查询成功，则返回<code>Key</code>对应的值</p></li>
-<li><p><code>LeaderHint</code>：若当前server非leader，它可以在此变量存放当前leader的id</p></li>
-</ul>
-<h4 id="putappendargs">PutAppendArgs</h4>
-<ul>
-<li><strong>功能</strong>：客户端向服务器请求Get/Append时的参数</li>
-<li><code>Key</code>：Put或Append的键</li>
-<li><code>Value</code>：Put或Append的值</li>
-<li><code>ClientId</code>：客户id</li>
-<li><code>CommandId</code>：指令id</li>
-<li><code>Op</code>：指示操作类型为Get或Append</li>
-</ul>
-<h4 id="putappendreply">PutAppendReply</h4>
-<ul>
-<li><strong>功能</strong>：服务器向客户端返回Get/Append的执行结果</li>
-<li><code>Err</code>：错误提示码，含义同上</li>
-<li><code>LeaderHint</code>：若服务器非leader则返回当前leader id</li>
-</ul>
-<h3 id="关键问题分析-3">关键问题分析</h3>
-<h4 id="为什么客户的操作可能重复执行">为什么客户的操作可能重复执行？</h4>
-<p><strong>客户对每个请求都设置最大等待时间</strong>：因为客户对每个申请的reply都设置有一定的超时时间（1s），它不可能一直阻塞，一旦超时了它就会向其他server再次申请该操作</p>
-<p><strong>网络延迟等导致raft
-leader提交日志的时间过长</strong>：假如某个raft
-leader由于网络延迟等原因，从添加日志到操作日志的时间间隔过长，则可能无法及时向用户返回该reply，但实际上该操作已经被apply在state
-machine上</p>
-<p><strong>该操作已被apply，而客户又再次发起了该操作</strong>：为此，必须使用session结构记录某个<code>clientId</code>客户当前已执行的最后操作的id<code>commandId</code>，若收到小于等于该id的操作则应该忽略，保证不重复执行</p>
-<h4 id="如何保证客户操作不重复执行">如何保证客户操作不重复执行？</h4>
-<p><strong>唯一标识</strong>：通过clientId +
-commandId的方式，对客户操作进行唯一标识，将一个command应用在state
-machine的同时，还需要记录该客户当前应用的上一个commandId</p>
-<p><strong>去重</strong>：如果应用一个消息时发现<code>op.CommandId &lt;= kv.session[op.ClientId].CommandId</code>，则说明该操作已执行，无需重复执行，直接返回其保存的结果<code>kv.session[op.ClientId].Response</code>即可</p>
-<p><strong>start前去重与执行前去重</strong>：我们在将操作发送给raft前执行一次查重，若重复则无需让raft添加该日志记录。此外，收到raft返回的提交记录后，我们调用<code>Execute()</code>执行该操作前也进行一次查重，若重复则无需再次执行</p>
-<h3 id="具体实现">具体实现</h3>
-<h4 id="客户端">客户端</h4>
-<h5 id="getputappend">Get()/PutAppend()</h5>
-<ul>
-<li><strong>传入Get/Put/Append参数</strong>：填写GetArgs/PutAppendArgs中的clientId、commandId、Key、Value等参数</li>
-<li><strong>向服务器发送Get/Put/Append RPC</strong></li>
-<li><strong>可能的返回结果</strong>
-<ul>
-<li><strong>该操作的日志记录已提交</strong>：则获取操作结果Value即可</li>
-<li><strong>该服务器并非leader</strong>：取<code>LeaderHint</code>返回值作为下一次请求的服务器对象，若<code>LeaderHint</code>值无效则随机选择一台服务器</li>
-<li><strong>超时/过期</strong>：随机选择
-一台服务器作为下一次请求的目的地</li>
-</ul></li>
-</ul>
-<h4 id="服务端">服务端</h4>
-<h5 id="getputappend-1">Get()/PutAppend()</h5>
-<ul>
-<li><p><strong>功能</strong>：接收客户端发送的Get/PutAppend操作请求，并发送给raft，让其添加并提交一条包含该操作的日志记录</p></li>
-<li><p><strong>查重</strong>：在将操作发送给raft前，先检查对应clientId当前的commandId，若该操作已经执行，则直接返回结果</p></li>
-<li><p><strong>调用Start将操作发送给raft</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index, _, isleader := kv.rf.Start(op)</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>可能的返回结果</strong></p>
-<p><strong>该raft节点并非leader</strong>：则返回客户相应的leaderHint</p>
-<p><strong>提交成功</strong>：该raft节点是leader，则它会添加日志并发送给其他follower，此时我们需要监听raft发送的Apply消息</p>
-<p><strong>监听raft的ApplyMsg</strong></p>
-<ul>
-<li><p><strong>成功收到applyMsg</strong>：若收到raft发送的apply消息，则将其与所发送的Get/PutAppend操作进行对比，如果clientId和commandId都相符，则说明请求的操作已被raft提交，返回结果给用户</p></li>
-<li><p><strong>超时</strong>：等待一定时间后仍未收到消息，则告知客户超时，让其重新请求操作</p></li>
-</ul></li>
-</ul>
-<h5 id="apply-1">Apply()</h5>
-<ul>
-<li><p><strong>监听applyCh</strong>：如果raft提交了某个日志记录，则会通过applyCh告知state
-machine，因此我们在一个goroutine上执行<code>Apply()</code>持续监听raft发送的ApplyMsg</p></li>
-<li><p><strong>收到操作提交的消息并执行</strong>：调用<code>Execute()</code>执行该操作</p></li>
-<li><p><strong>将结果发送给Get()/PutAppend()</strong>：服务器的Get/PutAppend运行在某个goroutine并一直监听其通道上的执行成功消息，因此执行操作后向该通道发送一个消息，携带相应的操作内容与执行结果</p></li>
-</ul>
-<h5 id="execute">Execute()</h5>
-<ul>
-<li><strong>查重</strong>：执行前根据该操作指令的commandId和clientId确认其是否重复</li>
-<li><strong>执行并更新session</strong>：若该操作未执行则执行，同时更新session，然后返回结果</li>
-</ul>
-<h2 id="lab3b-keyvalue-service-with-snapshots">Lab3B Key/Value service
-with snapshots</h2>
-<h3 id="功能需求-4">功能需求</h3>
-<ul>
-<li><p><strong>检查日志记大小</strong>：因为raft的日志记录需要持久化存储，若日志记录持续增长最终将导致空间耗尽。为此上层应用会定期检查日志空间，若超过一定大小则利用当前state
-machine的当前状态生成一个快照，并发送给raft，请求它进行日志快照</p></li>
-<li><p><strong>快照</strong>：客户通过<code>Snapshot()</code>和<code>CondInstallSnapshot()</code>与raft交互，并进行快照操作</p></li>
-</ul>
-<h3 id="具体实现-1">具体实现</h3>
-<h4 id="checksnapshot">CheckSnapshot()</h4>
-<ul>
-<li><strong>监视日志大小</strong>：在一个goroutine中，（sleep
-10ms）循环监视当前的<code>persister.RaftStateSize()</code>是否超过了<code>masraftstate</code></li>
-<li><strong>生成snapshot并发送给raft</strong>：若超过了则将当前的状态变量保存，包含当前的键值对关系和去重用的<code>session</code>，生成snapshot后调用<code>rf.Snapshot()</code>发送给raft</li>
-</ul>
-<h4 id="apply中监听snapshot">Apply()中监听snapshot</h4>
-<ul>
-<li><strong>监听snapshot消息</strong>：raft一旦提交某个操作，会将该操作相应的ApplyMsg发送给上层应用。此外，raft装载了某个快照，也会将该快照通过ApplyMsg发送给上层应用</li>
-<li><strong>调用<code>CondInstallSnapshot</code>确认快照可装载</strong>：如果raft在发送Snapshot的ApplyMsg后，又提交了新的操作，则不可以装载该快照，否则可能造成覆盖。因此调用<code>CondInstallSnapshot</code>进行确认</li>
-<li><strong>装载快照</strong>：将当前的键值对数据<code>data</code>和去重数据<code>session</code>替换为快照中的值</li>
-</ul>
-<h1 id="lab4-shard-kv-service">Lab4 Shard K/V Service</h1>
-<h2 id="lab4a-the-shard-controller">Lab4A The Shard Controller</h2>
-<h3 id="关键问题分析-4">关键问题分析</h3>
-<ul>
-<li><p><strong>Multi-raft</strong>：一个raft集群里只有一个leader节点，客户请求任何操作都必须与该leader节点进行通信，因此吞吐量较低。为此增加若干个raft集群共同提供服务，客户可以与其中某个raft的leader进行通信，从而增加吞吐量</p></li>
-<li><p><strong>multi-raft管理</strong>：当前有多个raft群，对于K/V服务，规定每个raft集群都负责某一部分键值对存储。因此我们需要一个mutli-raft控制器，去管理当前系统中的多个raft集群，并保存各个raft集群管理哪部分K/V的信息。常用的方法可以是将具有键<code>key</code>的键值划分为第<code>i=hash(key)%N</code>个分片，每个raft集群管理哪些分片则由controller负责管理</p></li>
-<li><p><strong>multi-raft控制器</strong>：如上所述，整个系统只设置一个multi-raft控制器，为了保证容错性，控制器也必须运行在一个raft集群上。同时，它能够处理其他raft集群的请求，包括</p>
-<p><strong>Join</strong>：raft集群<strong>加入</strong>系统</p>
-<p><strong>Leave</strong>：raft集群<strong>退出</strong>系统）</p>
-<p><strong>Move</strong>：分片<strong>迁移</strong>，将某个分片从集群A移动到集群B</p>
-<p><strong>Query</strong>：某个集群<strong>查询</strong>当前自己管理的分片</p></li>
-<li><p><strong>负载均衡原则</strong>：为了尽量在多个raft集群间平衡负载，我们按键值将数据分为N个分片，保证每个raft集群负责的分片数的差不超过1</p></li>
-</ul>
-<h2 id="lab4b-sharded-keyvalue-server">Lab4B Sharded Key/Value
-Server</h2>
-<h3 id="关键问题分析-5">关键问题分析</h3>
-<h4 id="raft集群获取config更新信息">raft集群获取config更新信息</h4>
-<ul>
-<li><strong>config</strong>：指的是哪个集群负责哪些分片的信息</li>
-<li><strong>获取并更新config</strong>：控制器不会主动发送消息告知raft集群config更新，因此raft集群需要在一个goroutine中不断地调用Query获取当前最新的config更新</li>
-</ul>
-<h4 id="raft集群进行分片迁移">raft集群进行分片迁移</h4>
-<ul>
-<li><p><strong>分片迁移</strong>：由于config更新，可能导致分片迁移，分为两种情况，要么是之前不属于自己的分片被分配给自己管理，要么是之前属于自己的分片被分配给自己管理。</p></li>
-<li><p><strong>分片状态</strong>：因此对于每个raft集群，其分片状态包含以下四种可能</p>
-<ul>
-<li><code>NotServed</code>：该分片不属于自己管理</li>
-<li><code>Serving</code>：该分片正在由自己管理</li>
-<li><code>Pulling</code>：该分片正在进行迁移，从其他raft集群获取中</li>
-<li><code>Pushing</code>：该分片正在进行迁移，推送给其他raft集群，在推送完成前不能清除该分片的数据</li>
-</ul></li>
-<li><p>分片迁移时需要<strong>传输的数据</strong></p>
-<ul>
-<li><p>当前保存的<strong>键值</strong></p></li>
-<li><p>查重数据<strong>session</strong></p></li>
-</ul></li>
-<li><p><strong>分片迁移需要经过raft进行</strong>：分片迁移时我们可能会往data或session插入数据，也可能删除数据，为了保证一致性，分片迁移操作都应该向raft的leader节点发送请求，raft提交该日志后再进行apply</p></li>
 </ul>
 
       

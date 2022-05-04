@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -196,6 +196,129 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/CF-746-Div-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/22/CF-746-Div-2/" class="post-title-link" itemprop="url">CF 746 (Div 2)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-22 20:29:14" itemprop="dateCreated datePublished" datetime="2022-01-22T20:29:14+08:00">2022-01-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="总结">总结</h1>
+<ul>
+<li>本次竞赛难度较高，除了A-C题外，其余题目都只有小于1000人完成；此外，C题需要正确分析出答案，也需花不少时间</li>
+<li>竞赛时间只完成了A、B题；C题思路不够清晰，没发现程序的bug，赛后补完</li>
+<li>C题：假如一棵子树<span class="math inline">\(T_1\)</span>的异或和为0，且该子树的子树中存在异或和为target的情况<span class="math inline">\(T_2\)</span><strong>（比赛时忽略必须存在异或和为target的子树的子树的条件，误以为找到异或和为0的子树即可）</strong></li>
+</ul>
+<h1 id="c.-bakry-and-partitioning"><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1592/problem/C">C. Bakry and
+Partitioning</a></h1>
+<ul>
+<li>标签：树、dfs</li>
+<li>分析
+<ul>
+<li>假如树中所有节点的值异或和为0，则任意将树分为两部分，其异或和必定相等，返回Yes</li>
+<li>假如树中所有节点的值异或和非0，此时必定只能将树分为奇数部分。而且必定可以将树分为3部分，这是因为假如我们分为超过三部分，可以通过不断地将三部分合成一部分使得其变为3部分（相当于不断减2）</li>
+</ul></li>
+<li>因此我们需要考虑能否将树分为3部分，使其异或值相等，均等于原来所有节点值的异或和<span class="math inline">\(target\)</span>
+<ul>
+<li>假如我们存在两棵不重叠的子树，其异或和均为target，则将这两棵子树分开后，剩下的树的异或和也必定为target</li>
+<li>此外，假如一棵子树<span class="math inline">\(T_1\)</span>的异或和为0，且该子树的子树中存在异或和为target的情况<span class="math inline">\(T_2\)</span><strong>（比赛时忽略了这一点，误以为找到异或和为0的子树即可）</strong>，则该子树的子树<span class="math inline">\(T_2\)</span>分离后，该子树的剩下部分<span class="math inline">\(T_1-T_2\)</span>的异或和也必定等于target</li>
+</ul></li>
+</ul>
+<h2 id="常数优化">常数优化</h2>
+<ul>
+<li>本题需要用DFS求解，其中一种思路就是返回该节点为根的子树中，任意子树的异或和的集合。但这样DFS函数返回时就要创建一个新的集合，空间复杂度是<span class="math inline">\(O(N^2)\)</span></li>
+<li>正确的做法应该是只使用一个哈希表data，然后将每个子树的异或和添加到该data中。但这样做会带来新的问题
+<ul>
+<li>首先是找到异或和为target的子树时，我们只有在另外一个分支也有异或和为target的子树时才返回true。如果使用同一个data，则无法确保该和为target的子树是否来自其他分支，正确做法是在DFS子树时先记录<code>data[target]</code>的数值，若大于0则保证必定有来自其他分支的有效子树</li>
+<li>另外，找到异或和为0的子树时，我们需要确认该子树上存在异或和为target的子子树。解决方法同样是在DFS子树时先记录<code>data[target]</code>的数值<span class="math inline">\(old\)</span>，并在DFS后将其与<code>data[target]</code>进行对比，若DFS后数值变大了，说明该分支子树上的确存在异或和为target的子树</li>
+</ul></li>
+<li>代码</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">bool</span> flag;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(unordered_map&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&amp; data, vector&lt;<span class="keyword">int</span>&gt;&amp; a, vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; edges, <span class="keyword">int</span> node, <span class="keyword">int</span> pa, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (data.<span class="built_in">find</span>(target) != data.<span class="built_in">end</span>())</span><br><span class="line">		cnt = data[target];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; v: edges[node]) &#123;</span><br><span class="line">		<span class="keyword">if</span> (v != pa) &#123;</span><br><span class="line">			<span class="keyword">auto</span> p = <span class="built_in">dfs</span>(data, a, edges, v, node, target);</span><br><span class="line">			val ^= p;</span><br><span class="line">			<span class="keyword">if</span> (flag)</span><br><span class="line">				<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	val ^= a[node];</span><br><span class="line">	<span class="keyword">if</span> (val == <span class="number">0</span> &amp;&amp; data.<span class="built_in">find</span>(target) != data.<span class="built_in">end</span>() &amp;&amp; data[target] &gt; cnt) &#123;</span><br><span class="line">		flag = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (val == target &amp;&amp; cnt &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		flag = <span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	data[val]++;</span><br><span class="line">	<span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	flag = <span class="literal">false</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> n, k;</span><br><span class="line">	cin &gt;&gt; n &gt;&gt; k;</span><br><span class="line">	<span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">a</span><span class="params">(n + <span class="number">1</span>)</span></span>;</span><br><span class="line">	<span class="keyword">int</span> v = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		cin &gt;&gt; a[i];</span><br><span class="line">		v ^= a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt; <span class="built_in">edges</span>(n + <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> u, v;</span><br><span class="line">		cin &gt;&gt; u &gt;&gt; v;</span><br><span class="line">		edges[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">		edges[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (v == <span class="number">0</span>) &#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;YES&quot;</span> &lt;&lt; endl;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (k - <span class="number">1</span> &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">		unordered_map&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; data;</span><br><span class="line">		<span class="built_in">dfs</span>(data, a, edges, <span class="number">1</span>, <span class="number">-1</span>, v);</span><br><span class="line">		<span class="keyword">if</span> (flag) &#123;</span><br><span class="line">			cout &lt;&lt; <span class="string">&quot;YES&quot;</span> &lt;&lt; endl;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;NO&quot;</span> &lt;&lt; endl;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">  	cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>);</span><br><span class="line">	<span class="keyword">int</span> t;</span><br><span class="line">	cin &gt;&gt; t;</span><br><span class="line">	<span class="keyword">while</span>(t--) &#123;</span><br><span class="line">		<span class="built_in">solve</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/22/CF-746-Div-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1209,109 +1332,6 @@ Tournament</a></h1>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/01/17/CF-Edu-121/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/16/CF-Edu-116/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/16/CF-Edu-116/" class="post-title-link" itemprop="url">CF Edu 116</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-01-16 19:55:02" itemprop="dateCreated datePublished" datetime="2022-01-16T19:55:02+08:00">2022-01-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="总结">总结</h1>
-<ul>
-<li>完成了A-C题，D-F题都很难</li>
-<li>E题是组合数学的动态规划，但是状态定义太难想到</li>
-</ul>
-<h1 id="a.-ab-balance"><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1606/problem/A">A. AB
-Balance</a></h1>
-<ul>
-<li>标签：模拟</li>
-<li>分析：ab和ba的数量最多只相差1个，若ab更多则将结尾的b改为a，若ba更多则将结尾的a改为b</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="comment">// const ll INF = 1e18;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	string s;</span><br><span class="line">	cin &gt;&gt; s;</span><br><span class="line">	<span class="keyword">int</span> ab = <span class="number">0</span>, ba = <span class="number">0</span>;</span><br><span class="line">	string t;</span><br><span class="line">	t += s[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; (<span class="keyword">int</span>)s.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (s[i] == <span class="string">&#x27;a&#x27;</span> &amp;&amp; s[i - <span class="number">1</span>] == <span class="string">&#x27;b&#x27;</span>)</span><br><span class="line">			ba++;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(s[i] == <span class="string">&#x27;b&#x27;</span> &amp;&amp; s[i - <span class="number">1</span>] == <span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">			ab++;</span><br><span class="line">		<span class="keyword">if</span> (i + <span class="number">1</span> &lt; (<span class="keyword">int</span>)s.<span class="built_in">size</span>())</span><br><span class="line">			t += s[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (ab == ba) &#123;</span><br><span class="line">		cout &lt;&lt; s &lt;&lt; endl;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span>(ab &gt; ba) &#123;</span><br><span class="line">		cout &lt;&lt; t &lt;&lt; <span class="string">&quot;a&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		cout &lt;&lt; t &lt;&lt; <span class="string">&quot;b&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">	ios::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">  	cin.<span class="built_in">tie</span>(<span class="literal">nullptr</span>);</span><br><span class="line">    <span class="keyword">int</span> t;</span><br><span class="line">	cin &gt;&gt; t;</span><br><span class="line">	<span class="keyword">while</span>(t--) &#123;</span><br><span class="line">		<span class="built_in">solve</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/16/CF-Edu-116/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

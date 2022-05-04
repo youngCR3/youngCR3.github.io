@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -196,6 +196,104 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/28/CF-Edu-120/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/28/CF-Edu-120/" class="post-title-link" itemprop="url">CF Edu 120</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-28 16:42:43" itemprop="dateCreated datePublished" datetime="2021-12-28T16:42:43+08:00">2021-12-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="a-construct-a-rectangle">A Construct a Rectangle</h1>
+<ul>
+<li><p>标签：<code>math</code></p></li>
+<li><p>分析：有两种可能的情况，一种是两个边分别为邻边（长、宽），第三条边可以切割为长、宽；一种是两个边为对边，第三条边可以切割为两条相等的边</p></li>
+<li><p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">int</span>(<span class="built_in">input</span>())):</span><br><span class="line">    arr = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="built_in">input</span>().split()))</span><br><span class="line">    arr.sort()</span><br><span class="line">    a, b, c = arr</span><br><span class="line">    <span class="keyword">if</span> a + b == c <span class="keyword">or</span> (a == b <span class="keyword">and</span> c % <span class="number">2</span> == <span class="number">0</span>) <span class="keyword">or</span> (b == c <span class="keyword">and</span> a % <span class="number">2</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;YES&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;NO&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/28/CF-Edu-120/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1286,176 +1384,6 @@ FT的复制：<strong>复制完整的机器状态，包括所有内存和寄存�
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/12/11/6-824-Lec4-FT-VM/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/10/Fault-tolerant-virtual-machine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/10/Fault-tolerant-virtual-machine/" class="post-title-link" itemprop="url">Fault tolerant virtual machine</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-10 20:22:41" itemprop="dateCreated datePublished" datetime="2021-12-10T20:22:41+08:00">2021-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="intro">Intro</h1>
-<ul>
-<li>研究对象：具有容错机制的虚拟机，Fault-Tolerant Virtual Machine</li>
-<li>架构：primary/backup
-approach，primary故障时，backup上线，且应用程序感受不到切换过程</li>
-</ul>
-<h1 id="basic-fault-tolerant-design">Basic Fault-Tolerant Design</h1>
-<figure>
-<img src="/2021/12/10/Fault-tolerant-virtual-machine/1616773-20200814212404116-959184244.png" alt="img">
-<figcaption aria-hidden="true">img</figcaption>
-</figure>
-<h2 id="deterministic-replay-implementation">Deterministic Replay
-Implementation</h2>
-<h3 id="有限状态机">有限状态机</h3>
-<ul>
-<li>对于两个有限状态机，如果起始状态相同，经过相同内容和顺序的输入后，会产生相同的输出</li>
-</ul>
-<h3 id="non-deterministic">Non-deterministic</h3>
-<ul>
-<li>VM执行过程中存在不确定因素，主要包含
-<ul>
-<li>Non-deterministic events（如中断的确切发生时机）</li>
-<li>Non-deterministic operations（如获取CPU时钟）</li>
-</ul></li>
-</ul>
-<h3 id="vmware-vsphere平台提供的vmware-deterministic-replay功能">VMware
-vSphere平台提供的VMware deterministic replay功能</h3>
-<ul>
-<li>该功能会记录所有input和执行中的不确定因素（如中断的确切发生时机，CPU时钟的值等），并将其放在一系列log
-entries中，最终写入一个log file</li>
-<li>通过重新执行log，即可实现replay</li>
-</ul>
-<h2 id="fault-tolerant-protocol">Fault-Tolerant Protocol</h2>
-<h3 id="log-channel">log channel</h3>
-<ul>
-<li>Primary与Backup通过log channel通信，primary向backup发送log
-entries以保证同步执行</li>
-</ul>
-<h3 id="output-rule">Output Rule</h3>
-<ul>
-<li>Output
-requirement：使backup在primary故障后接手时，仍能保证与primary的输出具有一致的行为</li>
-<li>Primary输出到external
-world前，必须先向backup发送log并收到backup返回的acknowledgement</li>
-</ul>
-<figure>
-<img src="/2021/12/10/Fault-tolerant-virtual-machine/image-20211210204305175.png" alt="image-20211210204305175">
-<figcaption aria-hidden="true">image-20211210204305175</figcaption>
-</figure>
-<h3 id="duplicate-output">Duplicate output</h3>
-<ul>
-<li>backup接受primary后，由于无法确定primary故障时机是在output前还是output后，因此它会重新output</li>
-<li>由于网络连接机制能够处理duplicate
-packets（如TCP），因此无需特殊处理</li>
-</ul>
-<h2 id="detecting-and-responding-to-failure">Detecting and Responding to
-Failure</h2>
-<h3 id="how-to-detect">How to detect?</h3>
-<ul>
-<li>UDP heartbeating between servers running the primary and backup
-servers</li>
-<li>A halt in the flow of log entries of acknowledgements</li>
-</ul>
-<h3 id="how-to-handle">How to handle?</h3>
-<ul>
-<li><strong>go live</strong>：当一方故障时，另一VM会退出recording
-mode，停止发送log entries或acknowledgement，像普通虚拟机一样执行</li>
-<li><strong>Primary fail</strong>：backup会继续执行完log
-channel的所有log entries，然后提升为primary，并go live</li>
-<li><strong>Backup fail</strong>：Primary go live即可</li>
-<li>go live后，primary会在另一主机启动新的backup VM</li>
-</ul>
-<h3 id="split-brain-problem">Split-brain problem</h3>
-<ul>
-<li>如果primary和backup之间的连接丢失，但是primary和backup均未故障，则<strong>两个虚拟机都可能尝试go
-live</strong>，必须避免出现这种情况</li>
-<li>因此，规定<strong>go live前必须在shared storage中执行atomic
-test-and-set操作</strong>，该操作保证同时只有一台VM可能go live</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/10/Fault-tolerant-virtual-machine/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
