@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -196,6 +196,141 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/11/Raft/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/11/Raft/" class="post-title-link" itemprop="url">Raft</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-11 17:35:51" itemprop="dateCreated datePublished" datetime="2021-12-11T17:35:51+08:00">2021-12-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="intro">Intro</h1>
+<h2 id="从paxos到raft">从Paxos到Raft</h2>
+<ul>
+<li>Paxos算法一经提出，便成为了一致性算法的代言词，但是它晦涩难懂，对分布式系统教学、实际应用中的分布式系统搭建非常不友好，因此作者提出了一种新的易于理解的一致性算法，即Raft</li>
+</ul>
+<h2 id="raft的一些特征">Raft的一些特征</h2>
+<ul>
+<li>Strong leader</li>
+<li>Leader election</li>
+<li>Membership change</li>
+</ul>
+<h1 id="replicated-state-machine复制状态机">Replicated State
+Machine复制状态机</h1>
+<h2 id="复制状态机的应用">复制状态机的应用</h2>
+<ul>
+<li>replicated state machine被广泛应用于分布式系统的容错问题</li>
+</ul>
+<h2 id="复制状态机模型">复制状态机模型</h2>
+<ul>
+<li>server由<strong>consensus module、log、state
+machine</strong>等模块组成</li>
+<li>client向server发送请求后，其中一个server的consensus
+module收到指令将其添加在log，同时与其他server的consensus
+module通信，以保证<strong>所有server的log都以同样的顺序保存了同样的请求</strong></li>
+<li>state machine执行该请求，并将输出返回client</li>
+</ul>
+<h2 id="一致性算法的作用">一致性算法的作用</h2>
+<ul>
+<li>consensus algorithm必须保证所有replicated logs的一致性</li>
+</ul>
+<h2 id="对一致性算法的要求">对一致性算法的要求</h2>
+<ul>
+<li>在所有非拜占庭情况下，保证safety（never returning an incorrect
+result），包括网络延迟、分区、丢包、重复包、乱序等</li>
+<li>高可用性，只要集群中大多数机器能运行，且能够相互通信以及和客户端通信，集群就是可用的</li>
+<li>一致性不依赖于timing，faulty
+clocks和极端情况下的消息延迟最多只引起可用性问题</li>
+<li>少部分慢的机器不影响系统的整体性能</li>
+</ul>
+<h1 id="paxos的缺点">Paxos的缺点</h1>
+<ul>
+<li>晦涩难懂</li>
+<li>难以用于建立实际系统，如没有提供multi-Paxos的具体做法</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/11/Raft/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1142,7 +1277,7 @@ handle the queries below:</p>
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
