@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">127</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -196,6 +196,141 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/11/6-824-Lec4-FT-VM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/11/6-824-Lec4-FT-VM/" class="post-title-link" itemprop="url">6.824 Lec4 FT-VM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-11 16:23:10" itemprop="dateCreated datePublished" datetime="2021-12-11T16:23:10+08:00">2021-12-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="复制">复制</h1>
+<h2 id="复制能解决的故障">复制能解决的故障</h2>
+<ul>
+<li>fail-stop fault，即一旦故障则停止运行，而不会产生错误结果的情况</li>
+</ul>
+<h2 id="复制不能够解决的故障">复制不能够解决的故障</h2>
+<ul>
+<li>由于硬件漏洞、软件bug造成的运算结果错误</li>
+</ul>
+<h2 id="关联错误对复制的影响">关联错误对复制的影响</h2>
+<ul>
+<li>replicas之间的故障应该是相互独立的，否则复制可能无效，因为一个replica上的错误在另一replica上很可能再次发生</li>
+</ul>
+<h3 id="对实际应用的指导">对实际应用的指导</h3>
+<ul>
+<li>两个replicas的服务器最好购自于不同厂商</li>
+<li>两个servers的布置应保证物理隔离，有独立的供电系统</li>
+<li>为了防止地震、台风等自然灾害影响，可将不同servers布置在不同城市</li>
+</ul>
+<h2 id="replica是否值得">replica是否值得</h2>
+<ul>
+<li>可从故障带来的经济损失进行考量</li>
+</ul>
+<h1 id="复制的模型">复制的模型</h1>
+<h2 id="state-transfer">State transfer</h2>
+<ul>
+<li>primary将能表示当前状态的完整信息发送给backup，backup通过该信息执行并还原该状态</li>
+<li>缺点是传输信息太多，降低性能</li>
+</ul>
+<h2 id="复制状态机">复制状态机</h2>
+<ul>
+<li>考虑有限状态机模型，若两个状态机的起始状态相同，且输入的内容和顺序一致，则必定产生相同的输出，因此primary只需将其输入传给backup即可</li>
+<li>优点是传输信息少，缺点是VM过程中存在Non-deterministic event</li>
+</ul>
+<h2 id="vmware的实现">VMware的实现</h2>
+<ul>
+<li>VMware使用的是<strong>复制状态机模型</strong>，为了应对非确定性事件或操作，primary必须将相关信息发送给backup，使得backup可以准确复制该状态</li>
+<li>当任一VM故障时，剩下的primary
+VM必须在另一服务器上<strong>启动新的backup VM，此时只能使用state
+transfer</strong>保证该VM的状态与当前primary VM一致</li>
+<li>VMware
+FT的复制：<strong>复制完整的机器状态，包括所有内存和寄存器</strong></li>
+<li>VMware没有考虑的因素：多核会带来不确定性，而<strong>VMware只考虑两个VM都是单核的情况</strong></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/11/6-824-Lec4-FT-VM/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
