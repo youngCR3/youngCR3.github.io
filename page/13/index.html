@@ -129,18 +129,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,262 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/16/6-824-Lec6-Raft-II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/16/6-824-Lec6-Raft-II/" class="post-title-link" itemprop="url">6.824 Lec6 Raft II</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-16 21:04:28" itemprop="dateCreated datePublished" datetime="2021-12-16T21:04:28+08:00">2021-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="日志恢复">日志恢复</h1>
+<h2 id="nextindex的作用"><code>NextIndex</code>的作用</h2>
+<ul>
+<li><code>NextIndex</code>存储了在leader看来，某个follower下一个应该匹配的log
+entry位置</li>
+<li>当leader发送AppendEntries
+RPC给follower时，follower会对比<code>prevLogIndex</code>位置（该位置是<code>NextIndex</code>的前一位置）上的log
+entry，如果该log匹配则从该位置之后开始添加leader发送过来的log
+entries，<strong>如果不匹配则拒绝该RPC并返回false</strong></li>
+<li>如果leader收到来自follower的拒绝，则leader知道该follower在<code>prevLogIndex</code>上的log
+entry不匹配，因此leader会<strong>将<code>NextIndex</code>减一</strong>，从而对比更前面的位置是否匹配</li>
+<li>该过程将持续<strong>直到follower成功匹配<code>prevLogIndex</code>上的log
+entry</strong>，并将leader发送过来的log entry添加到自己的log中</li>
+</ul>
+<h1 id="选举约束">选举约束</h1>
+<h2 id="成为leader的限制条件">成为leader的限制条件</h2>
+<ul>
+<li>当candidate向其他server发送<code>RequesetVote</code>
+RPC时，只有当candidate的log is <strong>at least as up-to-date as
+receiver's log</strong>时，server才会向其投票</li>
+<li>up-to-date
+<ul>
+<li>如果candidate的<strong>last term大于自己的last term</strong></li>
+<li>或两者一样大但candidate的<strong>last index大于等于自己的last
+index</strong>时，就认为它是at least as up-to-date as receiver</li>
+</ul></li>
+<li>当leader收到过半数选票，即它<strong>比过半数的服务器更加up-to-date时</strong>，才有可能成为leader</li>
+</ul>
+<h1 id="快速恢复">快速恢复</h1>
+<h2 id="日志恢复存在的问题">日志恢复存在的问题</h2>
+<ul>
+<li>日志恢复中<code>NextIndex</code>每次减一，这对于实际场景太慢</li>
+</ul>
+<h2 id="快速恢复-1">快速恢复</h2>
+<ul>
+<li>当follower因为log
+inconsistent而拒绝leader时，可携带额外信息来加速日志恢复</li>
+</ul>
+<h3 id="conflictterm">ConflictTerm</h3>
+<ul>
+<li>follower中与leader冲突的log对应的term，如果follower在对应位置没有log则设为-1</li>
+</ul>
+<h3 id="conflictindex">ConflictIndex</h3>
+<ul>
+<li>follower中对应任期号为ConflictTerm的第一条log的index，当follower在对应位置没有log时则返回log的长度</li>
+</ul>
+<h2 id="leader收到reply后的操作">leader收到reply后的操作</h2>
+<ul>
+<li>搜索其log，找到term等于ConflictTerm的log
+<ul>
+<li>若找到了则将nextIndex设为该term最后一个log entry之后的位置</li>
+<li>若没有找到则将nextIndex设为ConflictIndex</li>
+</ul></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/16/6-824-Lec6-Raft-II/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/14/6-824-Lab-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/14/6-824-Lab-2/" class="post-title-link" itemprop="url">6.824 Lab 2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-12-14 01:44:08" itemprop="dateCreated datePublished" datetime="2021-12-14T01:44:08+08:00">2021-12-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Distributed-System/" itemprop="url" rel="index"><span itemprop="name">Distributed System</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="part-2a-leader-election">Part 2A: leader election</h1>
+<ul>
+<li><p>论文Figure2的<strong>每一句话都必须严格遵守</strong>，否则就无法通过测试</p>
+<p><img src="/2021/12/14/6-824-Lab-2/figure2.png"></p></li>
+<li><p>leader的heartbeat间隔为100ms，election
+timer的间隔可设为300-600ms</p></li>
+<li><p>Election timer的<strong>reset时机</strong>有且只有三个</p>
+<ul>
+<li>收到来自当前leader的<strong>有效心跳信号</strong></li>
+<li><strong>为其他server投票时</strong></li>
+<li>timeout，并且<strong>成为candidate开始竞选时</strong></li>
+</ul></li>
+<li><p>RPC的接收者或发出者，只要遇到<code>args</code>或<code>reply</code>的<code>Term</code>大于自己的<code>currentTerm</code>，就要更新<code>currentTerm</code>，重新设置<code>VotedFor</code>，并成为follower</p></li>
+<li><p>参与竞选时，candidate应立刻vote for
+self，更新<code>VotedFor</code>和<code>receivedVotes</code>，之后发送<code>RequestVote RPC</code>时应跳过自己</p></li>
+<li><p>candidate参与竞选时的动作顺序应严格遵守Figure2</p></li>
+<li><p>困扰我最大的bug是，candidate发送<code>RequestVote</code>，以及leader发送<code>AppendEntries</code>都应该是<strong>并行</strong>的，切勿在循环中串行发送，否则等待RPC返回的时间加起来，大概率超过Election
+timer的timeout</p></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go test -run 2A -race</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/14/6-824-Lab-2/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1256,103 +1512,8 @@ program</strong></p></li>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/cmu15-445%20Project#3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/03/cmu15-445%20Project#3/" class="post-title-link" itemprop="url">cmu15-445 Project#3</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-12-03 16:44:26" itemprop="dateCreated datePublished" datetime="2021-12-03T16:44:26+08:00">2021-12-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-08 20:08:32" itemprop="dateModified" datetime="2022-04-08T20:08:32+08:00">2022-04-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Database-System/" itemprop="url" rel="index"><span itemprop="name">Database System</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="project3-query-execution">Project#3 Query Execution</h2>
-<p>This project helps a to build a SQL query execution engine, which can
-handle the queries below:</p>
-<ul>
-<li>SELECT</li>
-<li>DISTINCT</li>
-<li>JOIN</li>
-<li>INSERT</li>
-<li>UPDATE</li>
-<li>DELETE</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

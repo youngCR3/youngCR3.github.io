@@ -129,18 +129,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">131</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -196,6 +196,538 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/11/The-Go-Programming-Language-Note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/11/The-Go-Programming-Language-Note/" class="post-title-link" itemprop="url">The Go Programming Language Note</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-11 00:58:52" itemprop="dateCreated datePublished" datetime="2023-02-11T00:58:52+08:00">2023-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-20 01:27:31" itemprop="dateModified" datetime="2023-02-20T01:27:31+08:00">2023-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming Language</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="chapter1-tutorial">Chapter1 Tutorial</h1>
+<blockquote>
+<p>Ex1.3要求测试不同版本echo的性能差异，学习time
+package和benchmark测试后补</p>
+</blockquote>
+<ol type="1">
+<li><p>Go的发展历史：受到C、Pascal、CSP等语言的影响</p></li>
+<li><p>Go程序的结构总是：package声明、package import、程序主体</p></li>
+<li><p>命令行参数：从os.Args[1:]可以读取string
+slice格式存储的命令行参数</p></li>
+<li><p>读取标准输入：bufio.NewScanner(os.Stdin)返回Scanner对象，Scanner.Scan()读取标准输入的一行，返回值表示是否到达eof</p></li>
+<li><p>读取文件</p>
+<p>使用bufio：os.Open(filename)返回文件对象，bufio.NewScanner(f)返回对该文件的Scanner</p>
+<p>使用ioutil：ioutil.ReadFile(filename)返回byte
+slice，转换为string后可通过strings.Split(text, '')得到每行</p></li>
+<li><p>访问URL</p>
+<p>通过package net，可以收发网络信息，建立网络连接，设置服务器等</p>
+<p>net/http中的http.Get(url)可以通过HTTP获取信息，返回一个resp
+struct</p>
+<p>resp.Body：通过iouitil.ReadAll(resp.Body)可读取其Body字段（a readable
+stream）的信息，读取完resp.Body后需要关闭，resp.Body.Close()</p>
+<p>resp.Status：HTTP响应报文的状态码</p></li>
+<li><p>并发</p>
+<p>goroutine之间可通过channel传递特定类型的值（由channel类型决定）</p></li>
+<li><p>switch语句</p>
+<p>只会进入其中一个分支，若都不匹配则进入default分支，default分支的位置可以任意</p></li>
+<li><p>指针</p>
+<p>允许&amp;获取地址，*解指针，但指针无法算术运算</p></li>
+<li><p>文档</p>
+<p>通过go doc指令可直接查看go标准库中函数等的解释</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go doc http.Get</span></span><br></pre></td></tr></table></figure></li>
+<li><p>注释</p>
+<p>在package声明前注释本程序文件，在每个function前注释函数</p></li>
+<li><p>if、for、switch允许的额外语句</p>
+<p>short variable declaration、increment、assignment statement、function
+call，如</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err := r.ParseForm(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// err handling</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="chapter2-promgram-structure">Chapter2 Promgram Structure</h1>
+<ol type="1">
+<li><p>作用域：在函数内声明的变量具有局部作用域，在函数外声明的变量在整个package可见，若该变量首字母大写则package外也可以访问该变量</p></li>
+<li><p>驼峰式命名</p></li>
+<li><p>零值机制：若声明时不显式地初始化，则变量初始化为其零值，数组的各个元素被初始化为零值，struct的各个字段被分别初始化为该类型的零值</p></li>
+<li><p>初始化变量的时间：package
+level的变量在main函数执行前初始化，local变量在函数执行到其声明的语句时初始化</p></li>
+<li><p><code>:=</code>声明方式</p>
+<p>左侧允许存在已声明变量（对其进行赋值），但应至少包含一个新变量</p>
+<p>上述已声明变量必须是在同一个最小作用域内声明的变量，若是外层作用域声明的变量将被忽略，因而在该作用域内声明了新的变量</p>
+<p><code>:=</code>是Go语言的主要声明方式，var仅在以下情况使用</p>
+<ul>
+<li>变量初始值不重要，将在之后为变量赋值</li>
+<li>变量类型与其初始值类型不一，必须显式地声明其类型，如</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> temperature <span class="keyword">float64</span> = <span class="number">19</span></span><br></pre></td></tr></table></figure></li>
+<li><p>指针</p>
+<p>函数允许返回指向局部变量的指针，且多次运行该函数所返回的指针值不同</p>
+<p>alias：当为指针赋值、复制引用类型变量（map、slice等）时，都会为该变量创建新的alias</p>
+<blockquote>
+<p>问：函数允许返回指向局部变量的指针，该局部变量何时被释放？</p>
+</blockquote></li>
+<li><p>变量生命周期</p>
+<p>package-level变量在整个程序执行期间存活</p>
+<p>local变量在其声明语句执行时创建，在它变为unreachable时销毁</p>
+<p>Go的<strong>垃圾回收器（GC）</strong>负责上述local变量销毁后的内存释放等工作，其基本工作原理为：每个package-level变量或local变量都可看作是经过多个pointer/reference最终指向目标变量的路径的起点，当目标变量的上述路径都不存在时，目标变量就被视为unreachable，因而可被释放</p>
+<p>逃逸：当从函数返回某个局部变量的指针时，可以说该局部变量逃逸了其所在的函数，逃逸会导致额外的内存开销</p>
+<p>内存管理：GC为我们进行内存管理，无需手动分配/释放空间，但了解变量生命周期、内存分配/释放时机，对编写高效率程序大有帮助</p>
+<p>不良实践：keeping unnecessary pointers to short-lived objects within
+long-lived objects will prevent the GC from reclaiming the short-lived
+objects，若在长生命周期对象中保存了指向短生命周期对象的pointer，将导致该短生命周期对象一直无法得到释放</p></li>
+<li><p>tuple
+assignment：常用于变量需要同时出现在赋值表达式左右两边的情况</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a, b = b, a</span><br></pre></td></tr></table></figure>
+<p>赋值表达式要求，该value能够赋予左侧变量的变量类型</p></li>
+<li><p>类型声明定义了一种新类型，它与已知的某种类型拥有相同的底层类型，能够防止不同类型的变量被错误地混用（尽管其底层类型相同）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Celsius <span class="keyword">float64</span></span><br><span class="line"><span class="keyword">type</span> Fahrenheit <span class="keyword">float64</span></span><br><span class="line"><span class="comment">// 摄氏度和华氏度类型, 尽管其底层都是float64, 但两种类型的变量无法替换使用, 算术运算时需要显式地进行类型转换</span></span><br></pre></td></tr></table></figure></li>
+<li><p>类型方法：可以为类型定义一些特定方法，如String，它将控制该类型变量被fmt打印时输出的内容</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c Celsius)</span> <span class="title">String</span><span class="params">()</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> fmt.Sprintf(<span class="string">&quot;%g°C&quot;</span>, c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>package注释：对于整个包的注释放在pacakge声明的前面，且一般整个package只有一个文件拥有该注释。额外的文档注释可以放在doc.go</p></li>
+<li><p>package命名规范</p>
+<p>pcakge名字与其import path最后一段的名字一致</p>
+<p>import声明将一个名字与被引入的package绑定，默认为该package的名字，但import声明可以为其起一个别名以避免冲突（如不同路径下的两个package有相同的名字时，为其中一个package起一个别名）</p></li>
+<li><p>import但不使用package会导致错误，使用goimport工具可自动管理package
+import，并像gofmt一样格式化代码</p></li>
+<li><p>包的初始化</p>
+<ul>
+<li>从初始化package-level变量开始，在解决依赖顺序后将按声明顺序初始化package-level变量</li>
+<li>如果package a引入了package b，则必须保证package
+b完全初始化后再初始化package a</li>
+<li>package main总是最后初始化的</li>
+<li>init函数：package的每个文件都可以定义一个或多个init函数，将在程序运行时按照其声明顺序首先执行init函数，init函数通常用于完成复杂的初始化工作</li>
+</ul></li>
+</ol>
+<blockquote>
+<p>Ex2.3-2.5要求比较不同PopCount算法的效率：每8位查表、每次右移1位，x&amp;(x-1)，学习11.4节benchmark测试后补</p>
+</blockquote>
+<ol start="15" type="1">
+<li><p>作用域</p>
+<ul>
+<li><p>语法块：全局语法块、package语法块（package-level变量）、file语法块（该文件import的package）、局部语法块（function、for、if、switch等语句、switch或select中的case标签）</p></li>
+<li><p>编译器从最内层作用域搜索变量声明，直至到达全局语法块，内层作用域会屏蔽外层作用域的同名变量声明</p></li>
+<li><p>隐式的语法块：for语句包含两个语法块，其condition以及循环体；if-else语句类似，且连续的if-
+else if语句的多个condition位于同一个语法块中，即</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第二个if语句条件中的i在第一个if语句中的条件声明</span></span><br><span class="line"><span class="keyword">if</span> i := gcd(a, b); i &lt; <span class="number">3</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> i &lt; <span class="number">10</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>:=</code>的“贪婪性”，使用<code>:=</code>声明多个变量时，即使外层作用域存在同名变量也将被屏蔽，而是在里层作用域重新声明新变量。因此如果想要使用在外层作用域声明的变量，则不要使用<code>:=</code>，应该先声明其他变量后使用tuple
+assignment</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x <span class="keyword">int</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> &#123;</span><br><span class="line">	x, y := <span class="number">2</span>, <span class="number">3</span> <span class="comment">// 此处的x具有局部作用域, 因此不会改变package-level变量x的值</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;%d %d\n&quot;</span>, x, y)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	f()</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%d\n&quot;</span>, x) <span class="comment">// 输出结果为1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>关于init()的测试</p>
+<p>下列程序的初始化过程为，变量x、y先根据零值机制初始化为0、0，然后执行第一个init()令y变为0，再执行第二个init()令x变为1，最终在main()执行前x=1，y=0</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x, y <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	y = x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	x = <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="chapter3-basic-data-type">Chapter3 Basic Data Type</h1>
+<ol type="1">
+<li><p>Go的类型分为四种：基础类型、复合类型（数组、struct）、引用类型（slice、map）、接口类型</p></li>
+<li><p>int8、int16、int32、int64，int根据编译器可能是32位或64位的，但它与int32、int64属于不同类型，不能一起算术运算</p></li>
+<li><p>无符号数只应该在位运算等特殊场合使用，即使一个变量的意义保证其为非负数，一般也用有符号数保存（如slice长度等）</p></li>
+<li><p>%结果与被取模数符号一致</p></li>
+<li><p>左移<code>&lt;&lt;</code>会在低位补0，右移<code>&gt;&gt;</code>会在最高位补0或1（对于有符号数，与符号位一致）</p></li>
+<li><p>使用fmt打印整数</p>
+<ul>
+<li><code>%d</code>十进制、<code>%o</code>八进制、<code>%x</code>十六进制</li>
+<li><code>[1]</code>表示重复使用第一个操作数</li>
+<li><code>#</code>表示打印八/十六进制数时带上前缀</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">v := <span class="number">16</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;%d %[1]o %#[1]X&quot;</span>, v)	<span class="comment">// 16 20 0x10</span></span><br></pre></td></tr></table></figure></li>
+<li><p>float32和float64，一般使用后者，前者有效bit位仅有23位，常造成精度不足问题</p></li>
+<li><p>math
+package提供了+Inf、-Inf和NaN值，并有IsNaN方法判断值是否非数字。但是最好不要直接返回NaN代表计算错误，而是返回一个额外的boolean值，因为NaN之间的比较总是返回false</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nan := Math.NaN()</span><br><span class="line">fmt.Println(nan == nan, nan &lt; nan, nan &gt; nan) <span class="comment">// false false false</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p>3.2、3.3节的练习题跳过</p>
+</blockquote>
+<ol start="9" type="1">
+<li><p>Go的complex、real、imag函数用于处理复数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x := <span class="built_in">complex</span>(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">x := <span class="number">1</span> + <span class="number">2i</span>			<span class="comment">// 两个声明等价</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;%d %d\n&quot;</span>, <span class="built_in">real</span>(x), <span class="built_in">imag</span>(x)) <span class="comment">// 1 2</span></span><br></pre></td></tr></table></figure>
+<p>复数类型有complex64和complex128两种，分别使用了float32、float64作为实部、虚部的数据类型</p></li>
+<li><p>boolean值不会隐式转换为0或1</p></li>
+<li><p>字符串</p>
+<ul>
+<li>len(s)返回字符串s的字节数（而不是字符数）</li>
+<li>通过s[i]可以获取字符串s的第i个byte，但是不一定是其第i个字符，因为非ASCII字符的UTF8编码需要使用两个或多个字节</li>
+</ul></li>
+<li><p>使用s[i]访问字符串的字节时，若i超出了字符串的范围会导致panic</p>
+<p>使用s[i:
+j]获取子字符串时，若i或j超出范围，或者i大于j会导致panic</p></li>
+<li><p>复制字符串、获取子字符串操作都不会导致额外的空间分配，该字符串与其<strong>副本或子字符串</strong>变量<strong>共享</strong>同一份存储中的数据</p></li>
+<li><p>原生字符串字面值：字符串字面值中以，原生字符串字面值（raw string
+literal）通过反引号相括，不进行任何转义</p></li>
+<li><p>Unicode：Unicode的诞生是因为ASCII只包含128个字符，无法表示世界上许多国家的字符，后制定的Unicode
+code point几乎能囊括世界上国家的字符。Unicode code
+point使用int32（Go中也称为rune）进行存储</p></li>
+<li><p>UTF-8：一种将字符串编码为字节序列的变长编码方式</p>
+<ul>
+<li><p>原理：ASCII码编码为1个字节，以0开头；对于非ASCII字符，编码为2-4个字节，第一个字节必定以1开头，且当编码为2字节时以110开头，当编码为3字节时以1110开头，当编码为4字节时以11110开头，其后的字节以10开头</p></li>
+<li><p>Go的range循环应用于字符串时，会隐式地执行UTF-8解码，或者调用unicode/utf8
+package的DecodeRuneInString执行解码</p></li>
+<li><p>当UTF-8解码遇到错误输入时，将返回特殊字符，打印结果为黑色六边形中含有白色问号�</p></li>
+<li><p>Go的源文件统一采用UTF-8编码</p></li>
+</ul></li>
+<li><p>Go的四个基础包用于进行字符串操作</p>
+<p>strings提供字符串搜索、替换、对比、剪切、分割、聚合等操作，其方法有</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Contains</span><span class="params">(s, substr <span class="keyword">string</span>)</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Count</span><span class="params">(s, sep <span class="keyword">string</span>)</span> <span class="title">int</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Fields</span><span class="params">(s <span class="keyword">string</span>)</span> []<span class="title">string</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">HasPrefix</span><span class="params">(s, prefix <span class="keyword">string</span>)</span> <span class="title">bool</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Index</span><span class="params">(s, sep <span class="keyword">string</span>)</span> <span class="title">int</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Join</span><span class="params">(a []<span class="keyword">string</span>, sep <span class="keyword">string</span>)</span> <span class="title">string</span></span></span><br></pre></td></tr></table></figure>
+<p>bytes与strings类似，但是针对[]byte类型</p>
+<p>strconv实现基本类型与其字符串的相互转换</p>
+<ul>
+<li>数字转字符串：fmt.Sprintf或strconv.Itoa</li>
+<li>字符串转数字：strconv.Atoi或strconv.ParseInt</li>
+</ul>
+<p>unicode常用于判断rune是否字母、数字、大小写，以及大小写转换等</p></li>
+<li><p>bytes
+package提供了bytes.Buffer类型，用于构建[]bytes（字符串），常用方法有</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WriteString</span><span class="params">(s <span class="keyword">string</span>)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WriteRune</span><span class="params">(c <span class="keyword">rune</span>)</span>	// 对于<span class="title">Unicode</span>码点, 优先使用<span class="title">WriteRune</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WriteByte</span><span class="params">(b <span class="keyword">byte</span>)</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>常量</p>
+<ul>
+<li>常量表达式在编译时计算其值，不可修改</li>
+<li>常量可以作为类型的 一部分，如具有常量大小的数组</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> IPv4Len = <span class="number">4</span></span><br><span class="line"><span class="keyword">var</span> p [IPv4Len]<span class="keyword">byte</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用()声明一组常量时，允许某个常量省略其等式右边，代表与上一个常量拥有相同的值和类型</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Alice <span class="keyword">int64</span> = <span class="number">0</span></span><br><span class="line">    Bob			<span class="comment">// Bob is 0 int64 type, the same as Alice</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>iota常量生成器：生成枚举类型、定义标志变量中不同bit的含义等</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Weekday <span class="keyword">int</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Sunday Weekday = <span class="literal">iota</span>	<span class="comment">// iota的值从0开始不断递增</span></span><br><span class="line">	Monday</span><br><span class="line">	Tuesday</span><br><span class="line">	Wednesday</span><br><span class="line">	Thursday</span><br><span class="line">	Friday</span><br><span class="line">	Saturday</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>Untyped Constants常量面值</p>
+<ul>
+<li>诸如0、0.0、\000、0i、true、"hello"等常量面值分别是untyped
+integer、untyped floating-point、untyped rune、untyped complex、untyped
+boolean、untyped string</li>
+<li>untyped
+constants被赋值给变量或出现在显式指明类型的变量声明中时，会转换为该类型</li>
+<li>如果untyped
+constants出现在未显式指明类型的变量声明中时，则该变量类型为：untyped
+integer对应int（底层可能为32或64位）、untyped
+floating-point对应float64、untyped complex对应complex128、untyped
+rune对应rune(int32)</li>
+</ul></li>
+</ol>
+<h1 id="chapter4-composite-types">Chapter4 Composite Types</h1>
+<ol type="1">
+<li><p>四种常用的复合类型：array、slice、struct、map</p></li>
+<li><p>数组声明时需要指定数组大小和元素类型，数组具有固定大小，不可增加或删除元素，只可以修改元素的值</p></li>
+<li><p>数组列表初始化方式：允许使用{}括起的列表（数组字面值）初始化数组，且使用这种方式声明的数组可以将其类型中的大小信息替换为<code>...</code>，并由初始值列表大小决定数组大小</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x [<span class="number">10</span>]<span class="keyword">int</span> = [<span class="number">10</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">y := [...]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>数组传参问题</p>
+<p>Go中函数传参时会拷贝数组，效率较低</p>
+<p>通过传入数组的指针而不是数组本身，使得函数可以对数组元素进行修改</p></li>
+<li><p>数组or
+slice：但由于数组具有固定大小，无法动态增删元素，除了SHA256摘要算法等场景会使用外，一般选择slice而不是array</p></li>
+<li><p>slice由指针、len、cap三部分组成，slice底层引用了某个数组</p></li>
+<li><p>切片操作：切片运算符<code>s[i:j]</code>中的s可以是数组、数组指针或者slice，并返回一个新的slice。切片超出cap(s)将导致panic，但只是超出len(s)意味着扩展了slice，不一定会panic（取决于s的底层数组）</p></li>
+<li><p>slice的复制：slice的复制只是为该底层数组创建了一个新的alias，没有额外的内存分配和数据拷贝，新的slice与旧的slice的指针指向底层数组相同位置，len与cap相等</p></li>
+<li><p>slice不可比较</p>
+<ul>
+<li>slice是间接引用，slice甚至可以自包含</li>
+<li>对于chan、指针等引用类型的==操作会比较两者是否引用同一个对象，如果slice的比较这么定义则与array的比较显著不同（但slice与array又密切相关，容易造成混淆）</li>
+<li>唯一允许的slice比较是slice==nil，代表该slice没有指向任何底层数组。但是len=0的slice不一定是nil，即其指针指向某个数组元素，但是len和cap为0。一般地，Go函数应该平等地对待nil
+slice和零长度的非nil slice</li>
+</ul></li>
+<li><p>make创建slice</p>
+<p>make创建了一个匿名的底层数组，并创建了slice引用该数组</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">make</span>([]T, <span class="built_in">len</span>)		<span class="comment">// 不指定cap时, cap与len一致</span></span><br><span class="line"><span class="built_in">make</span>([]T, <span class="built_in">len</span>, <span class="built_in">cap</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>append</p>
+<p>append可能导致内存分配：append时若底层数组容量不足，会重新创建一个容量double的底层数组，将数据进行拷贝，然后让slice指向新的数组并返回</p>
+<p>append返回值：Go中append使用的策略可能更复杂，我们无法对append是否导致内存分配进行任何假设，因此每次append对应该将其返回值赋予原slice变量</p>
+<p>复杂度：append发生内存分配时容量double的原因是，保证append单个元素的均摊时间复杂度为O(1)</p>
+<p>append多个元素或一个slice：由于Go内置的append是一个variadic函数，即可以接受变长参数，因此可以append多个元素甚至append另一个slice。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">appendInt</span><span class="params">(x []<span class="keyword">int</span>, y ...<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> z []<span class="keyword">int</span></span><br><span class="line">    zlen := <span class="built_in">len</span>(x) + <span class="built_in">len</span>(y)</span><br><span class="line">    <span class="comment">// expand z to at least zlen</span></span><br><span class="line">    <span class="keyword">if</span> zlen &lt;= <span class="built_in">cap</span>(x) &#123;</span><br><span class="line">        z = x[:zlen]</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        zcap := zlen</span><br><span class="line">        <span class="keyword">if</span> zlen &lt;= <span class="number">2</span> * <span class="built_in">len</span>(x) &#123;</span><br><span class="line">            zcap = <span class="number">2</span> * <span class="built_in">len</span>(x)</span><br><span class="line">        &#125;</span><br><span class="line">        z = <span class="built_in">make</span>([]<span class="keyword">int</span>, zlen, zcap)</span><br><span class="line">        <span class="built_in">copy</span>(z, x)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">copy</span>(z[<span class="built_in">len</span>(x):], y)</span><br><span class="line">    <span class="keyword">return</span> z</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p>Ex4.7，使用原地算法翻转UTF-8编码的字符串，参数类型为[]byte</p>
+<p>Sol：首先用utf8.DecodeRune解码每个rune，然后翻转该rune对应的1-4个byte，最后反转整个[]byte</p>
+<p>总结：这个练习题设计巧妙，结合了UTF-8编码知识，以及slice原地修改的技巧。初看之下，由于UTF-8中每个rune占用的byte数量不一定，因此要设计原地算法颇有难度</p>
+</blockquote>
+<ol start="12" type="1">
+<li><p>map</p>
+<ul>
+<li><p>底层为哈希表：map是对哈希表的引用，nil
+map代表其没有引用任何哈希表</p></li>
+<li><p>key可比较：map要求key类型必须能用<code>==</code>比较。如slice是不可比较的，不能直接作为map的key类型，但可以通过辅助函数将其转换为可比较类型（如string）再存入map，但必须保证k(s1)==k(s2)当且仅当s1==s2</p></li>
+<li><p>创建map</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f1 <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>	<span class="comment">// nil map</span></span><br><span class="line">f2 := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;&#125;	<span class="comment">// map with no elements, but not nil map</span></span><br><span class="line">f3 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>) <span class="comment">// not nil</span></span><br></pre></td></tr></table></figure></li>
+<li><p>删除map中的元素</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>)</span><br><span class="line"><span class="built_in">delete</span>(f, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>对nil map执行删除是安全的，实际不会做任何事</p></li>
+<li><p>map元素不是变量：不能对map元素取地址，因为map元素增长时可能导致rehash，使得元素的地址改变</p></li>
+<li><p>遍历元素顺序随机：使用range遍历map中的元素的时候顺序是不确定的，每次遍历的顺序都是随机的</p></li>
+<li><p>lookup操作：可以返回两个值，分别是value值和布尔值，布尔值代表该key是否存在于map中，若不存在则第一个返回值是该value类型的zero
+value</p></li>
+<li><p>nil map：对nil
+map执行lookup、删除、len、range操作都是安全的，但是尝试<strong>将元素存入nil
+map会导致panic</strong>。对nil
+map执行lookup时，返回的时该map的value类型的零值</p></li>
+<li><p>no set type：Go中没有set类型，map代替完成其工作</p></li>
+<li><p>map的value也可以是复合类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">bool</span></span><br><span class="line">f[<span class="string">&quot;abc&quot;</span>][<span class="string">&quot;def&quot;</span>]	</span><br><span class="line"><span class="comment">// 此lookup操作是安全的, f本身是nil map, 因此第一个lookup会返回其value类型map[string]bool的zero value, 也是一个nil map, 第二个lookup则对返回的nil map操作得到其value类型bool的zero value, 因此最终结果为false</span></span><br></pre></td></tr></table></figure></li>
+</ul></li>
+<li><p>Structs</p>
+<p>点操作符：struct变量、struct指针可以通过点操作符获取其成员</p>
+<p>成员的顺序：struct的成员顺序影响struct类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Employee <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID 		<span class="keyword">int</span></span><br><span class="line">	Name	<span class="keyword">string</span></span><br><span class="line">	Age 	<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Employee1 <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID 		<span class="keyword">int</span></span><br><span class="line">	Age 	<span class="keyword">int</span></span><br><span class="line">	Name 	<span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不可自包含：类型为S的结构体不可以包含类型为S的成员，但可以包含*S指针类型的成员，常用于定义链表、树等结构</p>
+<p>空struct：不含任何成员的struct，写作struct{}</p>
+<p>零值：零值的struct的各个成员均为各自类型的零值</p>
+<p>struct面值：struct面值初始化struct有两种形式，分别是按顺序列出所有成员值；或列出任意成员的名字以及值（常用）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Point <span class="keyword">struct</span> &#123;</span><br><span class="line">    X, Y <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line">p1 := Point&#123;X: <span class="number">1</span>, Y: <span class="number">2</span>&#125;</span><br><span class="line">p2 := Point&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>struct比较：如果每个成员都是可比较的，且每个成员的值都相等，则两个struct相等</p></li>
+<li><p>struct嵌入和匿名成员</p>
+<p>struct声明时可以声明最多一个<strong>匿名成员</strong>，即声明其类型但不指定名字，该类型必须是一个命名类型或指向命名类型的指针类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Point <span class="keyword">struct</span> &#123;</span><br><span class="line">    X, Y <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Circle <span class="keyword">struct</span> &#123;</span><br><span class="line">    Point</span><br><span class="line">    Radius <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Point类型被嵌入到了Circle结构体</span></span><br></pre></td></tr></table></figure>
+<p>对于匿名成员中的类型可以直接用点运算符访问</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c Circle</span><br><span class="line">c.X	 	<span class="comment">// 还可以写作c.Point.X, 可以认为匿名成员并非真正匿名, 其名字就是它的类型的名字</span></span><br><span class="line">c.Y		<span class="comment">// 还可以写作c.Point.Y</span></span><br></pre></td></tr></table></figure>
+<p>对于包含匿名成员的结构体字面值</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c Circle</span><br><span class="line">c = Circle&#123;Point&#123;<span class="number">1</span>, <span class="number">1</span>&#125;, <span class="number">5</span>&#125;</span><br><span class="line">c = Circle&#123;</span><br><span class="line">    Point: Point&#123;X: <span class="number">1</span>, Y: <span class="number">1</span>&#125;,</span><br><span class="line">    Radius: <span class="number">5</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>匿名成员的方法：匿名成员并非一定是结构体类型，任何命名类型都可以作为匿名成员。使用点运算符不仅能访问匿名成员嵌套的成员，<strong>还可以访问匿名成员的方法</strong>。通过这种方式实现的<strong>组合</strong>是Go语言OOP的核心</p></li>
+<li><p>JSON是JavaScript对象表示法，常用作为传输结构化信息的格式。Go提供了encoding/json
+package用于编解码JSON</p>
+<p>JSON的基础类型是numbers、booleans和strings，此外还有JSON array和JSON
+object类型</p>
+<p>JSON object类型可以与Go struct类型相互转换，为此可以在声明Go
+struct时为成员加上field
+name，表示该成员与JSON中哪个名字的成员匹配。用于与JSON转换的Go
+struct中的成员应该是exported的</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Movie <span class="keyword">struct</span> &#123;</span><br><span class="line">        Title 	<span class="keyword">string</span></span><br><span class="line">        Year 	<span class="keyword">int</span> 	<span class="string">`json:&quot;released&quot;`</span></span><br><span class="line">        Color 	<span class="keyword">bool</span> 	<span class="string">`json:&quot;color,omitempty&quot;`</span></span><br><span class="line">        Actors 	[]<span class="keyword">string</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// field name中的omitempty表示如果该成员是空或零值，则生成的JSON不包含该字段</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Marshal与Unmarshal</p>
+<p>marshal表示将Go struct转换为JSON，encoding/json
+package中的json.Marshal和json.MarshalIndent提供了此功能</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data, err := json.Marshal(movies)</span><br><span class="line">data, err := json.MarshalIndent(movies, <span class="string">&quot;&quot;</span>, <span class="string">&quot;	&quot;</span>)</span><br><span class="line"><span class="comment">// Marhsal生成的JSON不含任何空白字符, 而MarshalIndent生成的JSON打印时具有每行前缀(第二个参数)和缩紧(第三个参数)</span></span><br></pre></td></tr></table></figure>
+<p>unmarshal是将JSON转换为Go struct。通过定义Go
+struct可以选择性解码JSON中感兴趣的成员，即unmarshal只会将JSON中能与Go
+struct成员名字匹配的数据保存。且该名字匹配是忽略大小写的，因此如果Go
+struct成员名字和JSON名字只有大小写不同，无需额外定义feild
+tag，通常是在JSON名字包含下划线时才定义field tag</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> titles []<span class="keyword">struct</span>&#123;Title <span class="keyword">string</span>&#125;</span><br><span class="line"><span class="keyword">if</span> err := json.unmarshal(data, &amp;titles); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// err handling</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>除了json.Marshal和json.Unmarshal外，Go还提供了基于流式的编解码器json.Decoder和json.Encoder，能够从一个输入流解码JSON数据，或者针对一个输出流编码JSON对象</p></li>
+</ol>
+<h1 id="chapter5-functions">Chapter5 Functions</h1>
+<ol type="1">
+<li><p>GC不做什么：Go的GC只会回收不再使用的内存，不会回收OS层面的资源，如打开的文件、网络连接等，程序必须显式地释放这些资源</p></li>
+<li><p>可以讲返回多个值的函数调用，作为调用另一个接受多个参数的函数的唯一参数，常用于debug时的log</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">log.Println(findLinks(url))</span><br><span class="line"><span class="comment">// the same as</span></span><br><span class="line">links, err := findLinks(url)</span><br><span class="line">log.Println(links, err)</span><br></pre></td></tr></table></figure></li>
+<li><p>bare
+return：如果函数的每个返回值都命名了，则可以使用一个只含return的语句代替原return语句。bare
+return减少代码重复的同时，也可能使得代码更难以阅读，应谨慎使用</p></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Young">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="元朗食品">
+      <meta itemprop="description" content="Talk is cheap, show me the code.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 元朗食品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-10 16:11:24" itemprop="dateCreated datePublished" datetime="2023-02-10T16:11:24+08:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-11 00:58:28" itemprop="dateModified" datetime="2023-02-11T00:58:28+08:00">2023-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" itemprop="url" rel="index"><span itemprop="name">面向对象</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="引言">引言</h1>
+<ol type="1">
+<li><p>设计模式是什么</p>
+<p>在设计面向对象系统时，通过合理定义类、相互通信对象的职责及其协作关系，得到的针对不同问题场景的一般性解决方案</p></li>
+<li><p>每种设计模式的学习重点</p>
+<p>意图：该设计模式所解决的问题</p>
+<p>参与者：设计模式中的类/对象及其职责</p>
+<p>协作：类/对象之间的协作关系</p>
+<p>效果：程序的时空复杂度，使用设计模式对程序灵活性、可拓展性、可移植性的影响</p>
+<p>结构：设计模式中类关系的图示</p></li>
+<li><p>分类</p>
+<p>创建型：与类/对象的创建有关</p>
+<p>结构型：与类/对象的组合有关</p>
+<p>行为型：类/对象的交付和职责分配</p>
+<p>类模式、对象模式</p>
+<blockquote>
+<p>图1-1描述了设计模式之间的关系，后续回顾</p>
+</blockquote></li>
+<li><p>设计模式如何解决OOP问题</p>
+<p>定义对象</p>
+<p>决定对象的粒度</p>
+<p>指定对象接口：确定接口的主要组成部分及经接口发送的数据类型，指定接口之间的关系</p>
+<p>描述对象的实现：实例化、继承、抽象类、混入类，接口继承，<strong>对接口编程</strong></p></li>
+<li><p><strong>复用机制</strong></p>
+<p>继承和组合</p>
+<p>委托</p>
+<p>参数化类型（C++中的template）</p></li>
+<li><p>运行时结构与编译时结构</p>
+<p>聚合：一个对象拥有另一个对象，或对另一个对象负责，常具有相同生命周期</p>
+<p>相识：知道另一个对象，较弱的耦合</p></li>
+<li><p>面向对象设计原则</p>
+<ul>
+<li>针对接口编程，而不是针对实现编程</li>
+<li>优先使用对象组合，而不是类继承</li>
+</ul></li>
+<li><p>设计模式增加程序的灵活性（格式为存在问题：设计模式的解决方法）</p>
+<p>显式地创建对象：使用工厂模式等间接创建对象</p>
+<p>对特殊操作的依赖：使用职责链、命令模式等在编译/运行时改变响应请求的方法</p>
+<p>对对象表示或实现的依赖：对客户隐藏信息</p>
+<p>算法依赖：策略模式等</p>
+<p>紧耦合：抽象耦合+分层技术</p>
+<p>通过生成子类扩充功能：对象组合+继承混合使用</p>
+<p>不能方便地对类进行修改：adapater、decorator等</p></li>
+</ol>
+<blockquote>
+<p>1.6.7节中的场景描述暂时难以理解，但是十分重要，它充分说明了使用设计模式的优势，后续学习具体的设计模式时再回顾</p>
+</blockquote>
+<ol start="9" type="1">
+<li><p>设计模式在不同软件中的作用</p>
+<p>应用程序：内部服用性、可维护性、可扩充性</p>
+<p>工具箱：代码复用</p>
+<p>框架：设计复用</p>
+<p>对比：使用工具箱时，要求编写应用软件的主体，调用工具箱中需要复用的代码；使用框架时，应该复用应用的主体，写主体调用的代码</p>
+<p>应用程序&lt;&lt;工具箱&lt;&lt;框架，设计难度不断提高，对灵活性、可扩展性的要求不断提高</p></li>
+</ol>
+<h1 id="一个具体的例子">一个具体的例子</h1>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1494,192 +2026,8 @@ odd</li>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据库-数据存储结构</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-10 12:36:09" itemprop="dateCreated datePublished" datetime="2022-04-10T12:36:09+08:00">2022-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-12 00:18:22" itemprop="dateModified" datetime="2022-04-12T00:18:22+08:00">2022-04-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Database-System/" itemprop="url" rel="index"><span itemprop="name">Database System</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>数据库是怎么存储数据的？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Young">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="元朗食品">
-      <meta itemprop="description" content="Talk is cheap, show me the code.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 元朗食品">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/" class="post-title-link" itemprop="url">Mac M1 VScode配置C++</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-09 22:04:29" itemprop="dateCreated datePublished" datetime="2022-04-09T22:04:29+08:00">2022-04-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-16 22:05:22" itemprop="dateModified" datetime="2022-04-16T22:05:22+08:00">2022-04-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Mac M1配置VSCode的C++环境</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/09/Mac-M1-VScode%E9%85%8D%E7%BD%AEC/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
