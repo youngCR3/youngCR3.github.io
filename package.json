@@ -15,7 +15,7 @@
     "aplayer": "^1.10.1",
     "brew": "^0.0.8",
     "chromedriver": "^96.0.0",
-    "hexo": "^5.0.0",
+    "hexo": "^7.1.1",
     "hexo-asset-image": "^1.0.0",
     "hexo-deployer-git": "^3.0.0",
     "hexo-generator-archive": "^1.0.0",
