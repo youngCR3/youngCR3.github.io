@@ -14,7 +14,7 @@
   "dependencies": {
     "aplayer": "^1.10.1",
     "brew": "^0.0.8",
-    "chromedriver": "^96.0.0",
+    "chromedriver": "^122.0.3",
     "hexo": "^5.0.0",
     "hexo-asset-image": "^1.0.0",
     "hexo-deployer-git": "^3.0.0",
