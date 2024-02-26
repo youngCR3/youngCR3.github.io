@@ -32,7 +32,7 @@
     "hexo-theme-landscape": "^0.0.3",
     "hexo-theme-next": "^8.11.0",
     "highlight": "^0.2.4",
-    "highlight.js": "^11.5.0",
+    "highlight.js": "^11.9.0",
     "operadriver": "^1.0.0",
     "phantomjs": "^2.1.7"
   }
